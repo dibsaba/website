@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dibs ABA: Expert insurance denial management, agency consulting, and clinical supervision.">
+    <title>Dibs ABA | Clinical Consulting</title>
+    
+    <!-- 1. Load Master Design File -->
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-setup.js"></script>
+
+    <style>
+        body.opacity-0 { opacity: 0; }
+        body.opacity-100 { opacity: 1; transition: opacity 0.4s ease-in; }
+    </style>
+</head>
+<body class="font-sans text-stone-600 bg-brand-surface antialiased flex flex-col min-h-screen opacity-0" onload="document.body.classList.remove('opacity-0'); document.body.classList.add('opacity-100');">
+
+    <!-- Navbar Placeholder -->
+	<nav id="navbar-placeholder" class="bg-white/90 backdrop-blur-md sticky top-0 w-full z-50 border-b border-stone-200 shadow-sm transition-all duration-300">
+    	<!-- Content will be loaded by JS -->
+    </nav>
+
+    <!-- Hero Section (Darkened Background for Contrast) -->
+    <!-- Changed bg-brand-surface to bg-brand-cream for more color -->
+    <section class="relative overflow-hidden bg-brand-cream pt-20 pb-28 md:pt-32 md:pb-40">
+        <!-- Increased opacity from 0.4 to 0.6 for better visibility -->
+        <div class="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-brand-accentLight/20 via-brand-sand/50 to-transparent rounded-bl-full transform translate-x-20"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/60 border border-brand-accent/20 text-brand-accentDark text-xs font-bold uppercase tracking-wider mb-8 shadow-sm backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+                    Accepting New Agencies
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold text-brand-primary leading-[1.1] mb-8 font-serif">
+                    Clinical integrity <br>meets <span class="text-brand-accent italic">revenue recovery.</span>
+                </h1>
+                <p class="text-xl text-stone-500 mb-12 leading-relaxed max-w-xl font-medium">
+                    We help ABA agencies fight unjust denials and build clinical systems that prioritize client outcomes—without sacrificing your bottom line.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-5">
+                    <a href="denials.html" class="bg-brand-accent text-white px-10 py-4 rounded-xl font-bold hover:bg-brand-accentDark transition text-center shadow-glow shadow-brand-accent/30 flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-shield-heart"></i> Fight a Denial
+                    </a>
+                    <a href="consulting.html" class="bg-white border border-stone-200 text-brand-primary px-10 py-4 rounded-xl font-semibold hover:bg-stone-50 hover:border-stone-300 transition text-center text-stone-600 shadow-sm">
+                        View Agency Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-24 bg-brand-surface relative border-t border-brand-sand">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-3xl md:text-5xl font-bold text-brand-primary mb-6 font-serif">A Personal Approach to Consulting</h2>
+                <p class="text-stone-500 text-lg leading-relaxed">Most consultants focus purely on operations. We focus on the <span class="text-brand-accentDark font-medium">human intersection</span> of clinical quality and business health.</p>
+            </div>
+
+            <!-- Changed from md:grid-cols-3 to md:grid-cols-2 to fit 4 items evenly -->
+			<div class="grid md:grid-cols-2 gap-8">
+				
+				<!-- Card 1: Fractional Director -->
+				<div class="group bg-brand-sand/50 border border-brand-sand rounded-3xl p-10 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+					<div class="w-16 h-16 bg-white border border-stone-200 text-stone-700 rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition duration-300 shadow-sm">
+						<i class="fa-solid fa-chess-queen"></i>
+					</div>
+					<h3 class="text-2xl font-bold text-brand-primary mb-4 font-serif">Fractional Director</h3>
+					<p class="text-stone-500 leading-relaxed mb-8">Executive clinical leadership without the full-time salary. We handle audits, compliance, and high-level problem solving.</p>
+					<a href="consulting.html" class="text-brand-primary font-bold text-sm flex items-center group-hover:translate-x-2 transition-transform">View Services <i class="fa-solid fa-arrow-right ml-2"></i></a>
+				</div>
+				
+				<!-- Card 2: Revenue Recovery -->
+				<div class="group bg-brand-sand/50 border border-brand-sand rounded-3xl p-10 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+					<div class="w-16 h-16 bg-brand-cream border border-brand-accent/10 text-brand-accentDark rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition duration-300 shadow-sm">
+						<i class="fa-solid fa-file-invoice-dollar"></i>
+					</div>
+					<h3 class="text-2xl font-bold text-brand-primary mb-4 font-serif">Revenue Recovery</h3>
+					<p class="text-stone-500 leading-relaxed mb-8">Stop leaving money on the table. We draft clinical addendums with care and fight "medical necessity" denials.</p>
+					<a href="denials.html" class="text-brand-accentDark font-bold text-sm flex items-center group-hover:translate-x-2 transition-transform">Recover Revenue <i class="fa-solid fa-arrow-right ml-2"></i></a>
+				</div>
+			
+				<!-- Card 3: Family & Crisis Support -->
+				<div class="group bg-brand-sand/50 border border-brand-sand rounded-3xl p-10 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    				<div class="w-16 h-16 bg-brand-cream border border-brand-accent/10 text-brand-accentDark rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition duration-300 shadow-sm">
+        				<i class="fa-solid fa-house-medical"></i>
+    				</div>
+    				<h3 class="text-2xl font-bold text-brand-primary mb-4 font-serif">Family Crisis Support</h3>
+    				<p class="text-stone-500 leading-relaxed mb-8">Expert guidance for severe behaviors, safety planning, and independent educational evaluations (IEE).</p>
+    				<a href="family.html" class="text-brand-accentDark font-bold text-sm flex items-center group-hover:translate-x-2 transition-transform">Get Family Support <i class="fa-solid fa-arrow-right ml-2"></i></a>
+				</div>
+				
+				<!-- Card 4: Intelligent Scheduling -->
+				<div class="group bg-brand-sand/50 border border-brand-sand rounded-3xl p-10 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+					<div class="w-16 h-16 bg-white border border-stone-200 text-stone-700 rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition duration-300 shadow-sm">
+						<i class="fa-solid fa-calendar-check"></i>
+					</div>
+					<h3 class="text-2xl font-bold text-brand-primary mb-4 font-serif">Intelligent Scheduling</h3>
+					<p class="text-stone-500 leading-relaxed mb-8">We build constraint-based engines to prevent burnout. Ensure clinical continuity with our custom software solutions.</p>
+					<a href="software.html" class="text-brand-primary font-bold text-sm flex items-center group-hover:translate-x-2 transition-transform">See The Engine <i class="fa-solid fa-arrow-right ml-2"></i></a>
+				</div>
+			
+			</div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="py-24 bg-brand-primary text-stone-300 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4 font-serif">Proven Results</h2>
+                <p class="text-stone-400 max-w-2xl mx-auto">We don't just advise; we execute. Here is how we are currently helping agencies.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 1 -->
+                <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition flex flex-col">
+                    <div class="h-20 w-full bg-white rounded-xl p-4 mb-6 flex items-center justify-center">
+                        <img src="Learning Solutions.png" alt="Learning Solutions" class="h-full w-auto object-contain">
+                    </div>
+                    <div class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4">Vernal, Utah</div>
+                    <p class="text-stone-300 text-sm leading-relaxed mb-6 flex-grow">
+                        Providing executive-level consulting to stabilize operations. Implementing safety protocols and developing in-house scheduling software.
+                    </p>
+                    <span class="text-brand-accent text-xs font-bold bg-white/10 px-2 py-1 rounded w-fit">Turnaround</span>
+                </div>
+                <!-- 2 -->
+                <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition flex flex-col">
+                    <div class="h-20 w-full bg-white rounded-xl p-4 mb-6 flex items-center justify-center">
+                        <img src="All Behavior Community.png" alt="All Behavior Community" class="h-full w-auto object-contain">
+                    </div>
+                    <div class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4">Tampa, Florida</div>
+                    <p class="text-stone-300 text-sm leading-relaxed mb-6 flex-grow">
+                        Clinical Director. Managing Medicaid denials and re-authorizations while training the next generation of RBTs and BCBAs.
+                    </p>
+                    <span class="text-brand-accentLight text-xs font-bold bg-white/10 px-2 py-1 rounded w-fit">Clinical Director</span>
+                </div>
+                <!-- 3 -->
+                <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition flex flex-col">
+                    <div class="h-20 w-full bg-white rounded-xl p-4 mb-6 flex items-center justify-center">
+                        <img src="ABA Center.png" alt="ABA Center" class="h-full w-auto object-contain">
+                    </div>
+                    <div class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-4">Miami, Florida</div>
+                    <p class="text-stone-300 text-sm leading-relaxed mb-6 flex-grow">
+                        Specialized revenue recovery. Successfully managing the denial and re-authorization pipeline for complex Medicaid funding.
+                    </p>
+                    <span class="text-red-400 text-xs font-bold bg-red-900/30 px-2 py-1 rounded w-fit">Denial Recovery</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bio Section -->
+    <section class="py-24 bg-brand-cream">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-14 shadow-xl flex flex-col md:flex-row items-center gap-16 border border-brand-sand">
+                <div class="w-full md:w-5/12 shrink-0">
+                    <div class="relative group">
+                        <div class="absolute -inset-4 bg-brand-accent/20 rounded-[2rem] rotate-3 group-hover:rotate-6 transition duration-500"></div>
+                        <img src="headshot.webp" alt="Joshua Kingston" class="relative rounded-2xl w-full object-cover object-top shadow-md aspect-[3/4] grayscale-[10%] group-hover:grayscale-0 transition duration-500" loading="lazy">
+                    </div>
+                </div>
+                <div class="w-full md:w-7/12">
+                    <div class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-brand-accent uppercase bg-brand-sand rounded-lg">Founder & Lead Clinician</div>
+                    <h2 class="text-4xl font-bold text-brand-primary mb-6 font-serif">Joshua Kingston, MS, BCBA</h2>
+                    <p class="text-stone-600 leading-relaxed mb-6 text-lg">
+                        After years of serving as a Clinical Director, I realized that many agencies struggle to <strong>scale safely</strong> while <strong>optimizing client outcomes</strong> in an ethical way.
+                    </p>
+                    <p class="text-stone-500 leading-relaxed mb-8">
+                        Dibs ABA was founded to provide the high-level support that small-to-mid-sized agencies often lack. Whether it's fighting a complex Medicaid denial or restructuring clinical operations, I bring a hands-on approach to consulting.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="bg-brand-sand px-5 py-3 rounded-xl text-sm font-bold text-stone-700 flex items-center border border-stone-200"><i class="fa-solid fa-certificate text-brand-accent mr-2"></i> Board Certified</div>
+                        <div class="bg-brand-sand px-5 py-3 rounded-xl text-sm font-bold text-stone-700 flex items-center border border-stone-200"><i class="fa-solid fa-check-double text-brand-accent mr-2"></i> Denial Specialist</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-brand-primary py-24 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-brand-cream mb-6 font-serif">Ready to Scale Safely?</h2>
+            <p class="text-stone-400 text-lg mb-12 font-light">Send us a message about your current agency challenges.</p>
+			<!-- UPDATED CONTACT FORM with Message Box -->
+			<form action="https://formspree.io/f/mreaqlpl" method="POST" class="max-w-lg mx-auto bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
+				
+				<input type="text" name="_gotcha" style="display:none" />
+				
+				<div>
+					<label for="email" class="sr-only">Email Address</label>
+					<input 
+						type="email" 
+						name="email" 
+						id="email"
+						placeholder="Enter your email address..." 
+						class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:border-brand-accent transition" 
+						required
+					>
+				</div>
+			
+				<div>
+					<label for="message" class="sr-only">Message</label>
+					<textarea 
+						name="message" 
+						id="message"
+						rows="4" 
+						placeholder="How can we help your agency?" 
+						class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:border-brand-accent transition resize-none" 
+						required
+					></textarea>
+				</div>
+				
+				<button 
+					type="submit" 
+					class="bg-brand-accent text-white font-bold py-4 rounded-xl hover:bg-brand-accentDark transition shadow-lg w-full"
+				>
+					Send Message
+				</button>
+			</form>
+            <p class="text-xs text-stone-500 mt-6">Or email: <a href="mailto:dibs.aba@takedibsonlife.com" class="text-stone-300 border-b border-stone-600 hover:text-brand-accent hover:border-brand-accent transition">dibs.aba@takedibsonlife.com</a></p>
+        </div>
+    </section>
+
+    <footer class="bg-brand-primaryDark text-stone-500 py-12 border-t border-stone-800 text-center text-sm">
+        &copy; 2026 Dibs ABA. All rights reserved.
+    </footer>
+    
+    <!-- Load Navbar Script -->
+	<script src="navbar.js"></script>
+</body>
+</html>

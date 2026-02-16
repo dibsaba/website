@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dibs Scheduler: The first ABA scheduling engine designed to prevent burnout and ensure clinical continuity.">
+    <title>Dibs ABA | The Scheduler</title>
+    
+    <!-- 1. Load Master Design File -->
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-setup.js"></script>
+
+    <style>
+        body.opacity-0 { opacity: 0; }
+        body.opacity-100 { opacity: 1; transition: opacity 0.4s ease-in; }
+        
+        /* Mac Window Container */
+        .mac-window {
+            background: #f8fafc; /* slate-50 */
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(88, 58, 55, 0.25);
+            border: 1px solid #cbd5e1; /* slate-300 */
+            overflow: hidden;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        .mac-header {
+            background: #fff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .mac-buttons { display: flex; gap: 8px; position: absolute; left: 16px; }
+        .mac-title { width: 100%; text-align: center; font-size: 12px; font-weight: bold; color: #94a3b8; }
+        
+        .mac-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #22c55e; }
+        
+        /* --- MOCKUP 1: SCHEDULE VIEWER --- */
+        .viewer-toolbar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: flex-end; /* Push button to right */
+            align-items: center;
+            height: 44px;
+        }
+        
+        .btn-save-disabled {
+            background: #f1f5f9; border: 1px solid #e2e8f0; color: #94a3b8;
+            font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 6px;
+            cursor: not-allowed; display: flex; align-items: center; gap: 6px;
+        }
+
+        .viewer-grid-container {
+            overflow-x: auto; /* Allow horizontal scroll if columns get tight */
+        }
+        .viewer-grid {
+            border-collapse: collapse; width: 100%; font-size: 11px; table-layout: fixed;
+            min-width: 600px; /* Force width to ensure headers fit */
+        }
+        .viewer-grid th {
+            background: #f8fafc; color: #475569; padding: 6px; 
+            border-bottom: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;
+            text-transform: uppercase; 
+        }
+        .th-group { font-size: 10px; font-weight: 800; letter-spacing: 0.5px; background: #f1f5f9 !important; }
+        .th-day { font-size: 9px; font-weight: 700; color: #64748b; width: 6%; text-align: center; }
+        
+        .viewer-grid td {
+            background: white; border-bottom: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9;
+            padding: 2px; height: 36px; vertical-align: middle;
+        }
+        .viewer-row-header {
+            font-weight: 700; padding-left: 12px !important; color: #334155; width: 100px; background: #f8fafc !important;
+        }
+
+        .viewer-cell {
+            border-radius: 3px; font-weight: 700; font-size: 9px; height: 28px;
+            display: flex; align-items: center; justify-content: center;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            cursor: default;
+        }
+        /* Needs Levels Colors */
+        .needs-1 { background-color: #fef9c3; color: #854d0e; border: 1px solid #fde047; } /* Yellow */
+        .needs-2 { background-color: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; } /* Orange */
+        .needs-3 { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; } /* Red */
+        .needs-empty { background: transparent; }
+
+        /* --- MOCKUP 2: STRATEGY EDITOR --- */
+        .strat-top-bar {
+            background-color: #eff6ff; border-bottom: 1px solid #dbeafe;
+            padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .strat-time-input {
+            background: white; border: 1px solid #bfdbfe; border-radius: 6px; 
+            padding: 4px 8px; display: flex; align-items: center; gap: 4px;
+        }
+        .strat-label { font-size: 9px; font-weight: 700; color: #1e40af; text-transform: uppercase; }
+        .strat-val { font-family: monospace; font-size: 11px; font-weight: bold; color: #1e3a8a; width: 16px; text-align: center; }
+        
+        .strat-card {
+            background: white; border: 1px solid #e2e8f0; border-radius: 8px; 
+            overflow: hidden; margin: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .strat-card-header {
+            background: #f8fafc; padding: 8px 16px; border-bottom: 1px solid #e2e8f0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .strat-item {
+            background: white; border: 1px solid #e2e8f0; border-radius: 6px;
+            padding: 8px 12px; margin-bottom: 6px; display: flex; align-items: center;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.02);
+        }
+        .pat-badge { padding: 1px 5px; border-radius: 3px; border: 1px solid; font-size: 9px; font-weight: 700; }
+        .pat-high { background-color: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+        .pat-same { background-color: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+
+        /* --- MOCKUP 3: OPTIMIZATION LOG --- */
+        .log-toolbar {
+            background: white; border-bottom: 1px solid #e2e8f0; height: 36px;
+            display: flex; align-items: center; padding: 0 12px;
+        }
+        .view-dropdown {
+            border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px 8px; font-size: 11px; 
+            color: #334155; font-weight: 600; background: linear-gradient(to bottom, #fff, #f1f5f9);
+            display: flex; align-items: center; gap: 6px; box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
+
+        .log-table { width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10px; table-layout: fixed;}
+        .log-table th { background: #1e293b; color: white; padding: 6px 10px; text-align: left; font-weight: 500;}
+        .log-table td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .log-row-alt { background-color: #f8fafc; }
+
+    </style>
+</head>
+<body class="font-sans text-stone-600 bg-brand-cream antialiased flex flex-col min-h-screen opacity-0" onload="document.body.classList.remove('opacity-0'); document.body.classList.add('opacity-100');">
+
+    <!-- Navbar Placeholder -->
+    <nav id="navbar-placeholder" class="bg-white/90 backdrop-blur-md sticky top-0 w-full z-50 border-b border-stone-200 shadow-sm transition-all duration-300">
+        <!-- Make sure to paste the HTML code provided in the chat here -->
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden pt-20 pb-20 md:pt-32 md:pb-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <!-- Text Content -->
+                <div class="md:w-1/2">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent font-bold text-xs uppercase tracking-wider mb-6">
+                        <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+                        Custom Development
+                    </div>
+                    <h1 class="text-5xl md:text-6xl font-bold text-brand-primary leading-[1.1] mb-6 font-serif">
+                        Schedules that <br><span class="text-brand-accent italic">Prove</span> Themselves.
+                    </h1>
+                    <p class="text-xl text-stone-500 mb-8 leading-relaxed font-medium">
+                        Developed specifically for <em>Learning Solutions'</em> multi-site operations. This isn't just a calendar; it's a constraint solver that mathematically guarantees your clinical priorities are met.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#demo" class="bg-brand-primary text-brand-sand px-8 py-4 rounded-xl font-bold hover:bg-brand-primaryDark transition text-center shadow-lg">
+                            See The Interface
+                        </a>
+                        <a href="index.html#contact" class="bg-white border border-brand-primary/20 text-brand-primary px-8 py-4 rounded-xl font-bold hover:bg-brand-sand transition text-center">
+                            Inquire About Licensing
+                        </a>
+                    </div>
+                </div>
+
+                <!-- MOCKUP A: SCHEDULE VIEWER -->
+                <div class="md:w-1/2 w-full perspective-1000">
+                    <div class="mac-window transform rotate-y-6 rotate-x-6 hover:rotate-0 transition duration-700 ease-out shadow-2xl">
+                        <!-- Header -->
+                        <div class="mac-header">
+                            <div class="mac-buttons">
+                                <div class="mac-dot dot-red"></div>
+                                <div class="mac-dot dot-yellow"></div>
+                                <div class="mac-dot dot-green"></div>
+                            </div>
+                            <div class="mac-title">Master Schedule</div>
+                        </div>
+                        
+                        <!-- App Content -->
+                        <div class="bg-slate-50 h-full flex flex-col">
+                            <!-- Toolbar -->
+                            <div class="viewer-toolbar">
+                                <button class="btn-save-disabled">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save Master Schedule
+                                </button>
+                            </div>
+
+                            <!-- Schedule Grid -->
+                            <div class="p-4 bg-slate-100">
+                                <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden viewer-grid-container">
+                                    <table class="viewer-grid">
+                                        <thead>
+                                            <!-- Top Header Row -->
+                                            <tr>
+                                                <th class="bg-slate-50 border-r border-slate-200"></th> <!-- Corner -->
+                                                <th colspan="5" class="th-group text-yellow-600 border-r border-slate-200">MORNING</th>
+                                                <th colspan="5" class="th-group text-orange-600 border-r border-slate-200">AFTERNOON</th>
+                                                <th colspan="5" class="th-group text-blue-600">EVENING</th>
+                                            </tr>
+                                            <!-- Sub Header Row (Days) -->
+                                            <tr>
+                                                <th class="border-r border-slate-200"></th>
+                                                <!-- Morning Days -->
+                                                <th class="th-day">Mon</th><th class="th-day">Tue</th><th class="th-day">Wed</th><th class="th-day">Thu</th><th class="th-day border-r border-slate-200">Fri</th>
+                                                <!-- Afternoon Days -->
+                                                <th class="th-day">Mon</th><th class="th-day">Tue</th><th class="th-day">Wed</th><th class="th-day">Thu</th><th class="th-day border-r border-slate-200">Fri</th>
+                                                <!-- Evening Days -->
+                                                <th class="th-day">Mon</th><th class="th-day">Tue</th><th class="th-day">Wed</th><th class="th-day">Thu</th><th class="th-day">Fri</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="viewer-row-header">AJ</td>
+                                                <!-- Morn -->
+                                                <td><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <td><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <td><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <td><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <td class="border-r border-slate-200"><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <!-- Aft -->
+                                                <td><div class="viewer-cell needs-2">IsDo</div></td>
+                                                <td><div class="viewer-cell needs-2">IsDo</div></td>
+                                                <td><div class="viewer-cell needs-2">IsDo</div></td>
+                                                <td><div class="viewer-cell needs-2">IsDo</div></td>
+                                                <td class="border-r border-slate-200"><div class="viewer-cell needs-2">IsDo</div></td>
+                                                <!-- Eve -->
+                                                <td></td><td></td><td></td><td></td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="viewer-row-header">Cat</td>
+                                                <!-- Morn -->
+                                                <td></td><td></td><td></td><td></td><td class="border-r border-slate-200"></td>
+                                                <!-- Aft (Sharing Client A for continuity/cover) -->
+                                                <td><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <td><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <td><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <td><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <td class="border-r border-slate-200"><div class="viewer-cell needs-3">OlDo</div></td>
+                                                <!-- Eve -->
+                                                <td><div class="viewer-cell needs-1">EmOs</div></td>
+                                                <td><div class="viewer-cell needs-1">EmOs</div></td>
+                                                <td><div class="viewer-cell needs-1">EmOs</div></td>
+                                                <td><div class="viewer-cell needs-1">EmOs</div></td>
+                                                <td><div class="viewer-cell needs-1">EmOs</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="viewer-row-header">Joe</td>
+                                                <!-- Morn -->
+                                                <td><div class="viewer-cell needs-2">AlSa</div></td>
+                                                <td><div class="viewer-cell needs-2">AlSa</div></td>
+                                                <td><div class="viewer-cell needs-2">AlSa</div></td>
+                                                <td><div class="viewer-cell needs-2">AlSa</div></td>
+                                                <td class="border-r border-slate-200"><div class="viewer-cell needs-2">AlSa</div></td>
+                                                <!-- Aft -->
+                                                <td></td><td></td><td></td><td></td><td class="border-r border-slate-200"></td>
+                                                <!-- Eve -->
+                                                <td><div class="viewer-cell needs-2">HaKi</div></td>
+                                                <td><div class="viewer-cell needs-2">HaKi</div></td>
+                                                <td><div class="viewer-cell needs-2">HaKi</div></td>
+                                                <td><div class="viewer-cell needs-2">HaKi</div></td>
+                                                <td><div class="viewer-cell needs-2">HaKi</div></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why It's Different Section (Unchanged) -->
+    <section class="py-24 bg-brand-surface relative border-t border-brand-sand">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-3xl md:text-5xl font-bold text-brand-primary mb-6 font-serif">Engineered for Learning Solutions</h2>
+                <p class="text-stone-500 text-lg leading-relaxed">
+                    Generic software failed to handle the complexity of Learning Solutions' multi-site operations. So we built a custom engine that handles 
+                    <span class="text-brand-accentDark font-bold">Hard Constraints</span> (non-negotiables) and <span class="text-brand-accentDark font-bold">Soft Objectives</span> (optimizations) simultaneously.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-brand-sand/50 border border-brand-sand rounded-3xl p-10 hover:bg-white hover:shadow-xl transition-all duration-300">
+                    <div class="w-14 h-14 bg-brand-cream border border-brand-accent/10 text-brand-accentDark rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-primary mb-3 font-serif">Burnout Patterns</h3>
+                    <p class="text-stone-500 text-sm leading-relaxed">
+                        The solver identifies specific sequences (e.g., High-High-High severity sessions) and mathematically prevents them from being assigned to staff.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-brand-sand/50 border border-brand-sand rounded-3xl p-10 hover:bg-white hover:shadow-xl transition-all duration-300">
+                    <div class="w-14 h-14 bg-white border border-stone-200 text-stone-700 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-primary mb-3 font-serif">Fairness & Equity</h3>
+                    <p class="text-stone-500 text-sm leading-relaxed">
+                        Powered by <strong>Google OR-Tools</strong>, our Leximin approach ensures no single technician carries an unfair burden. It mathematically smooths out the difficult sessions across your entire team.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-brand-sand/50 border border-brand-sand rounded-3xl p-10 hover:bg-white hover:shadow-xl transition-all duration-300">
+                    <div class="w-14 h-14 bg-brand-cream border border-brand-accent/10 text-brand-accentDark rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-list-ol"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-primary mb-3 font-serif">Tiered Priorities</h3>
+                    <p class="text-stone-500 text-sm leading-relaxed">
+                        It solves "Must-Haves" first, locks them in, then solves "Nice-to-Haves." This ensures compliance is never sacrificed for convenience.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Strategy Editor & Log (Detailed Demo Section) -->
+    <section id="demo" class="py-24 bg-brand-primary text-stone-300 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row gap-16 items-start">
+                
+                <div class="md:w-1/3 sticky top-32">
+                    <h2 class="text-3xl font-bold text-white mb-6 font-serif">Equitable Optimization</h2>
+                    <p class="text-stone-400 leading-relaxed mb-8">
+                        Built on the Google OR-Tools engine, the <strong>Strategy Editor</strong> allows you to define your center's logic.
+                    </p>
+                    <p class="text-stone-400 leading-relaxed mb-8 text-sm">
+                        It uses a technique called <em>Leximin Optimization</em> to guarantee equitable workloads—lifting the bottom to match the top—so everyone is treated fairly.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-accent flex items-center justify-center font-bold text-white shrink-0">1</div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Define Constraints</h4>
+                                <p class="text-stone-400 text-xs mt-1">Set "Hard" rules (Max Hours, Qualifications) that cannot be broken.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-accentLight text-brand-primary flex items-center justify-center font-bold shrink-0">2</div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Prioritize Goals</h4>
+                                <p class="text-stone-400 text-xs mt-1">Drag and drop objectives. Are assignments of hours or clients' needs levels more important? You decide.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-sand text-brand-primary flex items-center justify-center font-bold shrink-0">3</div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Verify Fairness</h4>
+                                <p class="text-stone-400 text-xs mt-1">The optimization log shows that the schedule isn't just valid—it's provably optimal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3 space-y-8">
+                    
+                    <!-- MOCKUP B: STRATEGY EDITOR -->
+                    <div class="mac-window shadow-2xl">
+                        <div class="mac-header">
+                            <div class="mac-buttons">
+                                <div class="mac-dot dot-red"></div><div class="mac-dot dot-yellow"></div><div class="mac-dot dot-green"></div>
+                            </div>
+                            <div class="mac-title">Strategy - Weekly Schedule.strategy</div>
+                        </div>
+                        
+                        <!-- Top Bar -->
+                        <div class="strat-top-bar">
+                            <div class="flex gap-4">
+                                <div class="strat-time-input">
+                                    <span class="strat-label">Optimal Search</span>
+                                    <span class="strat-val">1</span> <span class="text-[9px] text-slate-400 font-bold">m</span>
+                                    <span class="strat-val">0</span> <span class="text-[9px] text-slate-400 font-bold">s</span>
+                                </div>
+                                <div class="strat-time-input">
+                                    <span class="strat-label" style="color:#64748b">Feasible Retry</span>
+                                    <span class="strat-val" style="color:#334155">2</span> <span class="text-[9px] text-slate-400 font-bold">m</span>
+                                    <span class="strat-val" style="color:#334155">0</span> <span class="text-[9px] text-slate-400 font-bold">s</span>
+                                </div>
+                            </div>
+                            <!-- Disabled Save Button -->
+                            <button class="btn-save-disabled">
+                                <i class="fa-solid fa-floppy-disk"></i> Save Strategy
+                            </button>
+                        </div>
+
+                        <!-- Main Content -->
+                        <div class="bg-slate-50 p-6">
+                            <div class="strat-card">
+                                <div class="strat-card-header">
+                                    <h4 class="font-bold text-slate-700 text-xs">Optimization Priorities</h4>
+                                    <button class="text-[10px] bg-white border border-slate-300 hover:bg-slate-50 text-slate-600 font-bold px-2 py-1 rounded shadow-sm">+ Add Objective</button>
+                                </div>
+                                <div class="p-4 bg-slate-50 min-h-[160px]">
+                                    
+                                    <!-- List Item 1 -->
+                                    <div class="strat-item group">
+                                        <div class="text-slate-300 mr-3 cursor-grab text-xs">⋮⋮</div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center flex-wrap gap-2">
+                                                    <span class="font-bold text-xs text-slate-700">Daily Sequence:</span>
+                                                    <!-- Visual Badges -->
+                                                    <div class="flex items-center gap-1">
+                                                        <span class="pat-badge pat-high">High</span>
+                                                        <span class="pat-badge pat-high">High</span>
+                                                        <span class="pat-badge pat-high">High</span>
+                                                    </div>
+                                                </div>
+                                                <span class="text-[9px] uppercase font-bold tracking-wider text-red-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- List Item 2 -->
+                                    <div class="strat-item group">
+                                        <div class="text-slate-300 mr-3 cursor-grab text-xs">⋮⋮</div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="font-bold text-xs text-slate-700">Lead Hours</span>
+                                                </div>
+                                                <span class="text-[9px] uppercase font-bold tracking-wider text-red-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- List Item 3 -->
+                                    <div class="strat-item group">
+                                        <div class="text-slate-300 mr-3 cursor-grab text-xs">⋮⋮</div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <span class="font-bold text-xs text-slate-700">Unfamiliar Techs (Adept)</span>
+                                                </div>
+                                                <span class="text-[9px] uppercase font-bold tracking-wider text-red-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MOCKUP C: OPTIMIZATION LOG -->
+                    <div class="mac-window shadow-2xl">
+                        <div class="mac-header">
+                            <div class="mac-buttons">
+                                <div class="mac-dot dot-red"></div><div class="mac-dot dot-yellow"></div><div class="mac-dot dot-green"></div>
+                            </div>
+                            <div class="mac-title">Center 3 - weekly</div>
+                        </div>
+                        
+                        <!-- Log Toolbar with View Menu -->
+                        <div class="log-toolbar">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">View:</span>
+                                <div class="view-dropdown">
+                                    Optimization Log <i class="fa-solid fa-chevron-down text-[9px] ml-1 text-slate-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-0 overflow-hidden">
+                            <table class="log-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;">Tier</th>
+                                        <th style="width: 30%;">Objective</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="log-row-alt">
+                                        <td class="text-center font-bold text-slate-500">1</td>
+                                        <td class="font-bold text-slate-700">Minimize Changed Sessions</td>
+                                        <td class="text-slate-600">Locked 10 clients at 0 changes [Provably Optimal].</td>
+                                    </tr>
+                                    <tr class="log-row-alt">
+                                        <td class="text-center font-bold text-slate-500">2</td>
+                                        <td class="font-bold text-slate-700">Daily Sequence: High/High/High</td>
+                                        <td class="text-slate-600">Locked all 12 technicians at 0 high/high/high days [Provably Optimal].</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center font-bold text-slate-500">3</td>
+                                        <td class="font-bold text-slate-700">Minimize Lead Hours</td>
+                                        <td class="text-slate-600">Locked 1 lead tech at 4 hours [Provably Optimal].</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 bg-brand-cream text-center">
+        <div class="max-w-3xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-brand-primary mb-6 font-serif">Built for Learning Solutions. Available for You.</h2>
+            <p class="text-xl text-stone-500 mb-10 leading-relaxed">
+                We solve complex operational problems for our partners. If your agency is struggling with scheduling complexity, staff burnout, or continuity of care, let's talk.
+            </p>
+            <a href="index.html#contact" class="inline-block bg-brand-accent text-white font-bold py-4 px-10 rounded-xl transition hover:bg-brand-accentDark shadow-xl shadow-brand-accent/30">
+                Book a Consulting Call
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-brand-primaryDark text-stone-500 py-12 border-t border-stone-800 text-center text-sm">
+        &copy; 2026 Dibs ABA. All rights reserved.
+    </footer>
+    
+    <!-- Load Navbar Script -->
+    <script src="navbar.js"></script>
+    
+    <!-- Theme Switcher -->
+    <script src="theme-switcher.js"></script>
+</body>
+</html>

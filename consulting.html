@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dibs ABA: Expert insurance denial management, agency consulting, and clinical supervision.">
+    <title>Dibs ABA | Clinical Consulting</title>
+    
+    <!-- 1. Load Master Design File (Colors/Fonts) -->
+    <link rel="stylesheet" href="theme.css">
+    
+    <!-- 2. Load Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 3. Load Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 4. Load Bridge Script (Connects Theme.css to Tailwind) -->
+    <script src="tailwind-setup.js"></script>
+
+    <!-- Fade-in animation -->
+    <style>
+        body.opacity-0 { opacity: 0; }
+        body.opacity-100 { opacity: 1; transition: opacity 0.4s ease-in; }
+    </style>
+</head>
+<body class="font-sans text-stone-600 bg-brand-cream antialiased flex flex-col min-h-screen">
+
+    <!-- Navbar Placeholder -->
+	<nav id="navbar-placeholder" class="bg-white/90 backdrop-blur-md sticky top-0 w-full z-50 border-b border-stone-200 shadow-sm transition-all duration-300">
+    	<!-- Content will be loaded by JS -->
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-brand-primary py-20 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-orange-900/20 to-transparent"></div>
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <div class="inline-block bg-white/10 border border-white/20 text-orange-200 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide mb-6 uppercase">B2B & Agency Services</div>
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 font-serif">Organization Consultation</h1>
+            <p class="text-xl text-stone-300 leading-relaxed max-w-2xl mx-auto">Fractional clinical leadership to help your agency scale safely, maintain compliance, and train the next generation.</p>
+        </div>
+    </header>
+
+    <div class="max-w-5xl mx-auto px-4 py-20">
+        <!-- Fractional CD -->
+        <div class="flex flex-col md:flex-row gap-12 mb-20 items-start">
+            <div class="md:w-1/3 sticky top-32">
+                <div class="w-16 h-16 bg-stone-200 rounded-2xl flex items-center justify-center text-stone-700 text-3xl mb-6 shadow-sm">
+                    <i class="fa-solid fa-chess-queen"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-brand-primary mb-3 font-serif">Fractional Clinical Director</h3>
+                <p class="text-sm font-bold text-brand-accent uppercase tracking-wide">For agencies under $5M revenue</p>
+            </div>
+            <div class="md:w-2/3">
+                <p class="text-stone-600 text-lg leading-relaxed mb-8">
+                    Many small to mid-sized agencies cannot afford a full-time Clinical Director ($100k+ salary), yet they desperately need the oversight. Dibs ABA steps in to audit your programs, review difficult cases, ensure your clinical standards meet the BACB code, and increase revenue to the point that you are ready to take on a full-time clinical director.
+                </p>
+                <div class="bg-white p-8 rounded-3xl border border-stone-200 shadow-sm">
+                    <ul class="space-y-4">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-brand-accent mt-1 mr-4"></i> <span class="text-stone-700 font-medium">Periodic clinical file audits & compliance checks.</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-brand-accent mt-1 mr-4"></i> <span class="text-stone-700 font-medium">Dispute resolution with high-conflict parents.</span></li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-brand-accent mt-1 mr-4"></i> <span class="text-stone-700 font-medium">Policy creation (Crisis, Supervision, Ethics).</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <hr class="border-stone-200 my-16" />
+
+        <!-- RBT Training -->
+        <div class="flex flex-col md:flex-row gap-12 mb-20 items-start">
+            <div class="md:w-1/3">
+                <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-brand-accent text-3xl mb-6 shadow-sm">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-brand-primary mb-3 font-serif">RBT 40-Hour Training</h3>
+                <p class="text-sm font-bold text-brand-accent uppercase tracking-wide">Hybrid Model</p>
+            </div>
+            <div class="md:w-2/3">
+                <p class="text-stone-600 text-lg leading-relaxed mb-6">
+                    Stop paying for generic online videos that don't teach your staff how to actually <em>do</em> ABA. We offer a hybrid training model that meets the BACB 40-hour requirement but focuses on practical application and clinical soft skills.
+                </p>
+                <a href="mailto:dibs.aba@takedibsonlife.com" class="text-brand-accentDark font-bold hover:underline">Inquire about bulk pricing <i class="fa-solid fa-arrow-right ml-1"></i></a>
+            </div>
+        </div>
+
+        <hr class="border-stone-200 my-16" />
+
+        <!-- Supervision -->
+        <div class="flex flex-col md:flex-row gap-12 items-start">
+            <div class="md:w-1/3">
+                <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-700 text-3xl mb-6 shadow-sm">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-brand-primary mb-3 font-serif">Fieldwork Supervision</h3>
+                <p class="text-sm font-bold text-amber-700 uppercase tracking-wide">Remote Mentorship</p>
+            </div>
+            <div class="md:w-2/3">
+                <p class="text-stone-600 text-lg leading-relaxed mb-4">
+                    For BCBA candidates who are not getting quality unrestricted hours at their current job. Joshua Kingston provides rigorous mentorship focused on the "hard skills" of the job—assessment, report writing, and staff training.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="bg-brand-primary py-16">
+        <div class="max-w-3xl mx-auto px-4 text-center text-white">
+            <h3 class="text-3xl font-bold mb-6 font-serif">Partner with Dibs ABA</h3>
+            <p class="text-stone-300 mb-10 text-lg">Let's discuss how fractional leadership can fit your budget.</p>
+            <a href="index.html#contact" class="bg-brand-accent text-white font-bold py-4 px-10 rounded-xl transition hover:bg-brand-accentDark shadow-xl">Request a Proposal</a>
+        </div>
+    </div>
+    
+    <footer class="bg-brand-primaryDark text-stone-500 py-12 border-t border-stone-800 text-center text-sm">&copy; 2026 Dibs ABA. All rights reserved.</footer>
+    <script>document.getElementById('mobile-menu-btn').addEventListener('click', ()=>{document.getElementById('mobile-menu').classList.toggle('hidden');});</script>
+    
+    <!-- Load Navbar Script -->
+    <script src="navbar.js"></script>
+</body>
+</html>

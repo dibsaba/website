@@ -1,0 +1,52 @@
+/* --- START OF FILE theme.css --- */
+
+/* 1. IMPORT FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800&family=Quicksand:wght@500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+
+/* 2. DEFINE BRAND VARIABLES */
+:root {
+    /* TYPOGRAPHY: Professional & Clean */
+    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+
+    /* PALETTE: Original (Professional Earth) */
+    
+    /* Primary (Text, Headings) - Warm Charcoal */
+    --brand-primary: #292524;      
+    --brand-primary-dark: #1c1917;
+
+    /* Accent - Burnt Orange */
+    --brand-accent: #ea580c;       
+    --brand-accent-light: #fb923c;
+    --brand-accent-dark: #c2410c;  
+
+    /* Neutrals - Warm White & Stone */
+    --brand-cream: #fff7ed;        
+    --brand-sand: #f5f5f4;         
+    --brand-surface: #ffffff;      
+
+    /* Secondary/Support Colors */
+    --brand-danger: #ef4444;       
+    --text-body: #475569;          
+    --text-muted: #94a3b8;         
+}
+
+/* 3. SHARED UTILITY CLASSES */
+
+/* The abstract dot pattern used on the site */
+.bg-pattern-dots {
+    background-image: radial-gradient(var(--brand-accent) 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity: 0.1;
+}
+
+/* The warm gradient used on the Hero section */
+.bg-gradient-warm {
+    background: linear-gradient(to left, rgba(255, 237, 213, 0.4), rgba(245, 245, 244, 0.5), transparent);
+}
+
+/* Text Selection Color */
+::selection {
+    background: #ffedd5;
+    color: var(--brand-accent-dark);
+}

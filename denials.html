@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dibs ABA: Expert insurance denial management, agency consulting, and clinical supervision.">
+    <title>Dibs ABA | Clinical Consulting</title>
+    
+    <!-- 1. Load Master Design File (Colors/Fonts) -->
+    <link rel="stylesheet" href="theme.css">
+    
+    <!-- 2. Load Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 3. Load Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 4. Load Bridge Script (Connects Theme.css to Tailwind) -->
+    <script src="tailwind-setup.js"></script>
+
+    <!-- Fade-in animation -->
+    <style>
+        body.opacity-0 { opacity: 0; }
+        body.opacity-100 { opacity: 1; transition: opacity 0.4s ease-in; }
+    </style>
+</head>
+<body class="font-sans text-stone-600 bg-brand-cream antialiased flex flex-col min-h-screen">
+
+    <!-- Navbar Placeholder -->
+	<nav id="navbar-placeholder" class="bg-white/90 backdrop-blur-md sticky top-0 w-full z-50 border-b border-stone-200 shadow-sm transition-all duration-300">
+    	<!-- Content will be loaded by JS -->
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-brand-primary py-20 relative overflow-hidden">
+        <!-- Abstract Danger/Urgency Pattern -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ef4444 1px, transparent 1px); background-size: 32px 32px;"></div>
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <div class="inline-block bg-rose-500/10 border border-rose-500/20 text-rose-300 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide mb-6 uppercase">Revenue Recovery</div>
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 font-serif">Authorization Denial Assistance</h1>
+            <p class="text-xl text-stone-300 max-w-2xl mx-auto">Don't let insurance companies dictate your clinical judgment. We fight for the hours your clients need.</p>
+        </div>
+    </header>
+
+    <div class="max-w-5xl mx-auto px-4 py-20">
+        <div class="grid md:grid-cols-2 gap-16 mb-20 items-center">
+            <div>
+                <h3 class="text-3xl font-bold text-brand-primary mb-6 font-serif">The Problem</h3>
+                <p class="text-stone-600 text-lg leading-relaxed mb-6">
+                    Insurance funders are increasingly issuing partial or full denials for ABA services based on incorrect "Medical Necessity" criteria. For a small agency, a single denial can mean <strong>thousands of dollars in lost revenue</strong>.
+                </p>
+                <div class="p-5 bg-rose-50 rounded-xl border border-rose-100 text-brand-danger text-sm font-bold flex items-center">
+                    <i class="fa-solid fa-triangle-exclamation mr-3 text-lg"></i> Most agencies give up because they lack the time to fight back.
+                </div>
+            </div>
+            <div class="bg-brand-primary text-white p-10 rounded-3xl shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 text-9xl text-white opacity-5"><i class="fa-solid fa-gavel"></i></div>
+                <h3 class="text-2xl font-bold mb-8 font-serif">How We Help</h3>
+                <ul class="space-y-8 relative z-10">
+                    <li class="flex gap-5">
+                        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fa-solid fa-file-pen text-brand-accent"></i></div>
+                        <div>
+                            <h4 class="font-bold text-lg">Clinical Justification Letters</h4>
+                            <p class="text-stone-400 text-sm mt-1 leading-relaxed">We analyze your data to draft irrefutable addendums proving medical necessity.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-5">
+                        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fa-solid fa-users-viewfinder text-brand-accent"></i></div>
+                        <div>
+                            <h4 class="font-bold text-lg">Peer-to-Peer Review Prep</h4>
+                            <p class="text-stone-400 text-sm mt-1 leading-relaxed">We prepare your analysts for these high stakes reviews and take part ourselves if permitted.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 class="text-3xl font-bold text-brand-primary mb-10 text-center font-serif">The Recovery Process</h3>
+        <div class="grid md:grid-cols-4 gap-4 mb-16">
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 text-center shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-stone-800 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-lg">1</div>
+                <h4 class="font-bold text-stone-800 mb-2">Review</h4>
+                <p class="text-xs text-stone-500">Send us the treatment plan & denial letter.</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 text-center shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-stone-800 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-lg">2</div>
+                <h4 class="font-bold text-stone-800 mb-2">Strategy</h4>
+                <p class="text-xs text-stone-500">We identify the "weak points" flagged by the funder.</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 text-center shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-stone-800 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-lg">3</div>
+                <h4 class="font-bold text-stone-800 mb-2">Drafting</h4>
+                <p class="text-xs text-stone-500">We write the appeal or addendum for you.</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 text-center shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-brand-accent text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-lg">4</div>
+                <h4 class="font-bold text-stone-800 mb-2">Submission</h4>
+                <p class="text-xs text-stone-500">We guide your submission for best success.</p>
+            </div>
+        </div>
+
+        <div class="bg-stone-200 rounded-3xl p-10 md:p-14 text-center">
+            <h3 class="text-2xl font-bold text-brand-primary mb-4 font-serif">Have a current denial?</h3>
+            <p class="mb-8 text-stone-600">Time is a factor. Appeals typically have a 30-60 day window.</p>
+            <a href="index.html#contact" class="bg-brand-primary text-white font-bold py-4 px-10 rounded-xl transition hover:bg-stone-800 inline-flex items-center shadow-lg">
+                <i class="fa-solid fa-envelope mr-3"></i> Review My Denial
+            </a>
+        </div>
+    </div>
+    
+    <footer class="bg-brand-primaryDark text-stone-500 py-12 border-t border-stone-800 text-center text-sm">&copy; 2026 Dibs ABA. All rights reserved.</footer>
+    <script>document.getElementById('mobile-menu-btn').addEventListener('click', ()=>{document.getElementById('mobile-menu').classList.toggle('hidden');});</script>
+    
+    <!-- Load Navbar Script -->
+    <script src="navbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-24 items-center">
+        <!-- Logo (Links to Home) -->
+        <div class="flex items-center">
+            <a href="index.html" class="text-3xl font-extrabold text-brand-primary tracking-tight hover:opacity-80 transition group">
+                Dibs<span class="text-brand-accent group-hover:text-brand-accentDark transition-colors">ABA</span>
+            </a>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+            <!-- Explicit Home Link added for clarity -->
+            <a href="index.html" class="nav-link text-stone-600 hover:text-brand-accent font-medium text-sm transition tracking-wide">Home</a>
+            <a href="consulting.html" class="nav-link text-stone-600 hover:text-brand-accent font-medium text-sm transition tracking-wide">Agencies</a>
+            <a href="denials.html" class="nav-link text-stone-600 hover:text-brand-accent font-medium text-sm transition tracking-wide">Denials</a>
+            <a href="family.html" class="nav-link text-stone-600 hover:text-brand-accent font-medium text-sm transition tracking-wide">Families</a>
+            <a href="index.html#contact" class="ml-4 bg-brand-accent text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-brand-accentDark transition shadow-lg shadow-brand-accent/30 transform hover:-translate-y-0.5">Contact Us</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+		<div class="md:hidden flex items-center">
+    		<button id="mobile-menu-btn" class="text-stone-600 hover:text-brand-accent p-4 focus:outline-none transition-colors duration-200" aria-label="Open Menu">
+        		<i class="fa-solid fa-bars text-2xl"></i>
+    		</button>
+		</div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-24 left-0 w-full bg-brand-sand border-b border-stone-300 shadow-xl py-6 px-6 flex flex-col space-y-4 z-50">
+        <a href="index.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Home</a>
+        <a href="consulting.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Agencies</a>
+        <a href="denials.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Denials</a>
+        <a href="family.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Families</a>
+        <a href="index.html#contact" class="text-brand-accent font-bold block py-2 mt-2">Contact Us <i class="fa-solid fa-arrow-right ml-2 text-sm"></i></a>
+    </div>
+</div>
