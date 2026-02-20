@@ -108,9 +108,10 @@
 
         /* --- MOCKUP 2: STRATEGY EDITOR --- */
         .strat-top-bar {
-            background-color: #eff6ff; border-bottom: 1px solid #dbeafe;
-            padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;
-        }
+			background-color: #eff6ff; border-bottom: 1px solid #dbeafe;
+			padding: 10px 16px; display: flex; justify-content: space-between; 
+			align-items: center; flex-wrap: wrap; gap: 10px; /* Added wrap and gap */
+		}
         .strat-time-input {
             background: white; border: 1px solid #bfdbfe; border-radius: 6px; 
             padding: 4px 8px; display: flex; align-items: center; gap: 4px;
@@ -150,7 +151,18 @@
         .log-table th { background: #1e293b; color: white; padding: 6px 10px; text-align: left; font-weight: 500;}
         .log-table td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .log-row-alt { background-color: #f8fafc; }
-
+        
+        .perspective-1000 { perspective: 1000px; }
+		.rotate-y-6 { transform: rotateY(6deg); }
+		.rotate-x-6 { transform: rotateX(6deg); }
+		.hover\:rotate-0:hover { transform: rotateY(0) rotateX(0) !important; }
+		
+		@media (max-width: 640px) {
+			.log-table td, .log-table th {
+				padding: 4px 6px;
+				font-size: 9px;
+			}
+		}
     </style>
 </head>
 <body class="font-sans text-stone-600 bg-brand-cream antialiased flex flex-col min-h-screen opacity-0" onload="document.body.classList.remove('opacity-0'); document.body.classList.add('opacity-100');">
@@ -543,8 +555,5 @@
     
     <!-- Load Navbar Script -->
     <script src="navbar.js"></script>
-    
-    <!-- Theme Switcher -->
-    <script src="theme-switcher.js"></script>
 </body>
 </html>
