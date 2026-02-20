@@ -32,11 +32,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden absolute top-24 left-0 w-full bg-brand-sand border-b border-stone-300 shadow-xl py-6 px-6 flex flex-col space-y-4 z-50">
-            <a href="index.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Home</a>
-            <a href="software.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Software</a> <!-- NEW LINK -->
-            <a href="consulting.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Agencies</a>
+        	<a href="consulting.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Agencies</a>
             <a href="denials.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Denials</a>
             <a href="family.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Families</a>
+            <a href="software.html" class="mobile-link text-stone-700 hover:text-brand-accent font-bold block py-2 border-b border-stone-200/60 transition-colors">Software</a>
             <a href="index.html#contact" class="text-brand-accent font-bold block py-2 mt-2">Contact Us <i class="fa-solid fa-arrow-right ml-2 text-sm"></i></a>
         </div>
     </div>
