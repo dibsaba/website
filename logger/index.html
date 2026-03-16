@@ -165,9 +165,8 @@
             </footer>
         </div>
     </div>
-
-    <script type="module">
-        import NarrativeEngine from './NarrativeEngine.js';
+	<script type="module">
+        import NarrativeEngine from './narrative_engine.js'; 
 
         const APP_PASSWORD = "ABA2026";
         const STORAGE_KEY = "aba_timeline_v1";
@@ -176,9 +175,9 @@
         let schemaData = {};
         let synonymsData = {};
         let templatesData = {};
+        let guardrailsData = {}; // Added guardrails state
         let currentFormType = null;
 
-        /* --- THE UI BLUEPRINT --- */
         const UI_CONFIG = {
             Session_Start:[
                 { id: "Location", label: "Location of Service", type: "select" },
@@ -207,7 +206,6 @@
             ]
         };
 
-        /* --- AUTHENTICATION --- */
         document.getElementById('btn-login').addEventListener('click', attemptLogin);
         document.getElementById('password-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptLogin(); });
 
@@ -217,14 +215,16 @@
                 document.getElementById('dashboard-view').classList.add('active');
                 
                 try {
-                    const [schemaRes, synRes, tempRes] = await Promise.all([
-                        fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json')
+                    // Fetch all 4 configuration files
+                    const [schemaRes, synRes, tempRes, guardRes] = await Promise.all([
+                        fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')
                     ]);
                     
                     schemaData = await schemaRes.json();
+                    guardrailsData = await guardRes.json();
+                    
                     const synJson = await synRes.json();
                     const tempJson = await tempRes.json();
-                    
                     synonymsData = synJson.Synonyms || synJson;
                     templatesData = tempJson.Templates || tempJson;
                     
@@ -238,7 +238,6 @@
             }
         }
 
-        /* --- MODAL MANAGEMENT --- */
         const modalOverlay = document.getElementById('modal-overlay');
         function openModal(modalId) {
             document.getElementById('form-modal').style.display = 'none';
@@ -253,7 +252,6 @@
         }
         document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', closeModal));
 
-        /* --- BUTTON LOGIC --- */
         document.getElementById('btn-start-session').addEventListener('click', () => buildForm('Session_Start'));
         document.getElementById('btn-end-session').addEventListener('click', () => buildForm('Session_End'));
         document.getElementById('btn-add-skill').addEventListener('click', () => buildForm('Skill_Acquisition'));
@@ -281,15 +279,9 @@
             document.getElementById('btn-generate').disabled = timeline.length === 0;
         }
 
-        /* --- FORM BUILDER --- */
         function buildForm(type) {
             currentFormType = type;
-            const titles = {
-                'Session_Start': 'Start Session',
-                'Skill_Acquisition': 'Log Skill',
-                'Behavior_Reduction': 'Log Behavior',
-                'Session_End': 'End Session'
-            };
+            const titles = { 'Session_Start': 'Start Session', 'Skill_Acquisition': 'Log Skill', 'Behavior_Reduction': 'Log Behavior', 'Session_End': 'End Session' };
             document.getElementById('form-modal-title').textContent = titles[type];
             const container = document.getElementById('form-container');
             container.innerHTML = '';
@@ -298,8 +290,7 @@
                 const wrapper = document.createElement('div');
                 wrapper.className = 'form-field';
                 wrapper.innerHTML = `<label class="form-label">${field.label}</label>`;
-                
-                const optionsArray = schemaData[field.id] || ["Option 1", "Option 2"]; // Fallback if schema missing
+                const optionsArray = schemaData[field.id] ||[]; 
 
                 if (field.type === 'select') {
                     const select = document.createElement('select');
@@ -312,20 +303,85 @@
                     group.className = 'checkbox-group';
                     group.dataset.id = field.id;
                     optionsArray.forEach(opt => {
-                        group.innerHTML += `
-                            <label class="checkbox-pill">
-                                <input type="checkbox" value="${opt}">
-                                <span>${opt}</span>
-                            </label>`;
+                        group.innerHTML += `<label class="checkbox-pill"><input type="checkbox" value="${opt}"><span>${opt}</span></label>`;
                     });
                     wrapper.appendChild(group);
                 }
                 container.appendChild(wrapper);
             });
+
+            // --- APPLY DYNAMIC GUARDRAILS FOR BEHAVIORS ---
+            if (type === 'Behavior_Reduction') {
+                const behaviorSelect = container.querySelector('select[data-id="Target_Behaviors"]');
+                const antecedentSelect = container.querySelector('select[data-id="Antecedents"]');
+                const interventionsGroup = container.querySelector('.checkbox-group[data-id="Interventions"]');
+                
+                // Add the Whitelist Override Button
+                const overrideBtn = document.createElement('button');
+                overrideBtn.type = 'button';
+                overrideBtn.className = 'btn-secondary';
+                overrideBtn.style.marginTop = '12px';
+                overrideBtn.style.fontSize = '0.85rem';
+                overrideBtn.textContent = 'Show All Allowable (Override Whitelist)';
+                let isOverrideActive = false;
+                interventionsGroup.parentNode.appendChild(overrideBtn);
+
+                const applyInterventionGuardrails = () => {
+                    const selectedAnt = antecedentSelect.value;
+                    const rules = guardrailsData.Function_Based_Guardrails?.find(r => r.antecedent === selectedAnt);
+                    
+                    const pills = interventionsGroup.querySelectorAll('.checkbox-pill');
+                    pills.forEach(pill => {
+                        const input = pill.querySelector('input');
+                        const val = input.value;
+                        
+                        if (rules) {
+                            if (rules.blacklisted_interventions.includes(val)) {
+                                pill.style.display = 'none'; // NEVER show blacklisted
+                                input.checked = false; 
+                            } else if (rules.whitelisted_interventions.includes(val)) {
+                                pill.style.display = 'inline-block'; // ALWAYS show whitelisted
+                            } else {
+                                // NEUTRAL: Hide by default, show if override is active
+                                pill.style.display = isOverrideActive ? 'inline-block' : 'none';
+                                if (!isOverrideActive) input.checked = false;
+                            }
+                        }
+                    });
+                };
+
+                const handleBehaviorNone = () => {
+                    const isNone = behaviorSelect.value === "None";
+                    ['Intensity', 'Antecedents', 'Deescalation_Time'].forEach(id => {
+                        const el = container.querySelector(`select[data-id="${id}"]`);
+                        if(el) el.disabled = isNone;
+                    });
+                    interventionsGroup.style.display = isNone ? 'none' : 'flex';
+                    overrideBtn.style.display = isNone ? 'none' : 'block';
+                };
+
+                behaviorSelect.addEventListener('change', handleBehaviorNone);
+                
+                antecedentSelect.addEventListener('change', () => {
+                    isOverrideActive = false;
+                    overrideBtn.textContent = 'Show All Allowable (Override Whitelist)';
+                    applyInterventionGuardrails();
+                });
+
+                overrideBtn.addEventListener('click', () => {
+                    isOverrideActive = !isOverrideActive;
+                    overrideBtn.textContent = isOverrideActive ? 'Hide Non-Whitelisted' : 'Show All Allowable (Override Whitelist)';
+                    applyInterventionGuardrails();
+                });
+
+                // Initialize state
+                handleBehaviorNone();
+                applyInterventionGuardrails();
+            }
+
             openModal('form-modal');
         }
 
-        /* --- SAVE EVENT --- */
         document.getElementById('btn-save-event').addEventListener('click', () => {
             const eventData = {};
             const inputs = document.getElementById('form-container').querySelectorAll('[data-id]');
@@ -351,7 +407,6 @@
             closeModal();
         });
 
-        /* --- RENDER TIMELINE --- */
         function renderTimeline() {
             const feed = document.getElementById('timeline-feed');
             feed.innerHTML = '';
@@ -369,13 +424,7 @@
                 const card = document.createElement('div');
                 card.className = `timeline-card type-${ev.type}`;
                 const timeStr = new Date(ev.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                
-                const titles = {
-                    'Session_Start': 'Session Started',
-                    'Skill_Acquisition': 'Skill Acquisition',
-                    'Behavior_Reduction': 'Behavior Intervention',
-                    'Session_End': 'Session Ended'
-                };
+                const titles = { 'Session_Start': 'Session Started', 'Skill_Acquisition': 'Skill Acquisition', 'Behavior_Reduction': 'Behavior Intervention', 'Session_End': 'Session Ended' };
                 
                 let details = '';
                 UI_CONFIG[ev.type].forEach(field => {
@@ -387,25 +436,20 @@
                 });
 
                 card.innerHTML = `<div class="card-header"><span class="card-title">${titles[ev.type]}</span><span class="card-time">${timeStr}</span></div><div class="card-body">${details}</div>`;
-                // Prepend so newest is at the top of the visual feed
                 feed.prepend(card);
             });
         }
 
-        /* --- GENERATE ENGINE --- */
         document.getElementById('btn-generate').addEventListener('click', () => {
             openModal('generate-modal');
             const outputArea = document.getElementById('note-output');
-            
             document.getElementById('attest-checkbox').checked = false;
             document.getElementById('btn-copy').disabled = true;
 
-            // Make sure the timeline is sorted chronologically for the generator
             const chronologicalTimeline = [...timeline].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
             outputArea.value = NarrativeEngine.generate(synonymsData, templatesData, chronologicalTimeline);
         });
 
-        /* --- COPY LOGIC --- */
         document.getElementById('attest-checkbox').addEventListener('change', (e) => {
             document.getElementById('btn-copy').disabled = !e.target.checked;
         });
