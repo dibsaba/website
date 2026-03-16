@@ -1,0 +1,82 @@
+{
+  "intro_transitions":[
+    "To begin the session,",
+    "Initially,",
+    "At the start of the appointment,",
+    "Commencing the session,",
+    "During the initial phase of therapy,",
+    "First,",
+    "At the onset of the session,",
+    "To initiate treatment,",
+    "At the beginning of the scheduled time,",
+    "Starting the session,",
+    "Upon starting the appointment,",
+    "In the opening portion of the session,",
+    "Early in the session,",
+    "At the outset of the visit,",
+    "During the first portion of the session,"
+  ],
+  "mid_transitions":[
+    "Later in the session,",
+    "Subsequently,",
+    "As the session progressed,",
+    "Following this,",
+    "In the next phase of the appointment,",
+    "Moving forward,",
+    "Next,",
+    "During the middle portion of the session,",
+    "Afterward,",
+    "As therapy continued,",
+    "Proceeding with the treatment plan,",
+    "Continuing the session,",
+    "Then,",
+    "In the subsequent interval,",
+    "As the appointment advanced,"
+  ],
+  "end_transitions":[
+    "Towards the end of the appointment,",
+    "Finally,",
+    "In the final portion of the session,",
+    "As the session drew to a close,",
+    "Approaching the end of the scheduled time,",
+    "During the concluding phase of therapy,",
+    "To conclude the session,",
+    "In the latter part of the visit,",
+    "Wrapping up the session,",
+    "As therapy concluded,",
+    "In the remaining time,",
+    "Nearing the session's completion,",
+    "At the close of the appointment,",
+    "Ultimately,",
+    "During the last segment of the session,"
+  ],
+  "observed":[
+    "observed",
+    "noted",
+    "recorded data indicating",
+    "documented",
+    "witnessed",
+    "identified",
+    "tracked",
+    "measured",
+    "collected data demonstrating",
+    "detected"
+  ],
+  "implemented":[
+    "implemented",
+    "utilized",
+    "applied",
+    "executed",
+    "administered",
+    "employed",
+    "delivered",
+    "facilitated",
+    "provided",
+    "carried out"
+  ],
+  "client":[
+    "the client",
+    "the learner",
+    "this individual"
+  ]
+}

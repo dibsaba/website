@@ -1,0 +1,184 @@
+{
+  "Location":[
+    "Clinic",
+    "Home",
+    "School",
+    "Community",
+    "Telehealth"
+  ],
+  "Specific_Setting":[
+    "Therapy room",
+    "Living room",
+    "Bedroom",
+    "Kitchen",
+    "Dining room",
+    "Playground",
+    "Classroom",
+    "Sensory room",
+    "Outdoors",
+    "Store / Community setting"
+  ],
+  "Others_Present":[
+    "Caregiver",
+    "Mother",
+    "Father",
+    "Sibling(s)",
+    "Teacher",
+    "BCBA",
+    "Peer(s)",
+    "Grandparent",
+    "Other family member",
+    "None"
+  ],
+  "Initial_Presentation":[
+    "Calm",
+    "Happy / Engaged",
+    "Lethargic",
+    "Agitated",
+    "Anxious",
+    "Hyperactive",
+    "Withdrawn",
+    "Distracted"
+  ],
+  "Health_Variables":[
+    "None reported",
+    "Poor sleep",
+    "Medication change",
+    "Illness symptoms",
+    "Allergies",
+    "Missed meal",
+    "Constipation / GI issues",
+    "Pain / Discomfort"
+  ],
+  "Skill_Domains":[
+    "Expressive Communication",
+    "Receptive Language",
+    "Daily Living",
+    "Play/Leisure",
+    "Executive Functioning",
+    "Social Skills",
+    "Motor Skills",
+    "Academic Readiness",
+    "Coping / Tolerance",
+    "Self-Management"
+  ],
+  "Teaching_Formats":[
+    "DTT (Discrete Trial Training)",
+    "NET (Natural Environment Teaching)",
+    "Forward Chaining",
+    "Backward Chaining",
+    "Total Task Chaining",
+    "Shaping",
+    "Incidental Teaching",
+    "Fluency Based Instruction",
+    "Task Analysis"
+  ],
+  "Prompt_Levels":[
+    "Independent",
+    "Visual",
+    "Verbal",
+    "Gestural",
+    "Modeling",
+    "Partial Physical",
+    "Full Physical",
+    "Positional",
+    "Time Delay"
+  ],
+  "Reinforcement_Schedules":[
+    "Continuous",
+    "Fixed Ratio",
+    "Variable Ratio",
+    "Fixed Interval",
+    "Variable Interval",
+    "Token Economy",
+    "Differential Reinforcement"
+  ],
+  "Specific_Reinforcers":[
+    "Edibles",
+    "iPad / Tablet",
+    "Bubbles",
+    "Tickles",
+    "Praise",
+    "Toys / Action Figures",
+    "Cars / Trains",
+    "Books",
+    "Sensory Toys / Fidgets",
+    "Music / Videos",
+    "Stickers",
+    "Swinging",
+    "Drawing / Coloring",
+    "Access to Outdoors",
+    "Break / Escape",
+    "Tokens / Points"
+  ],
+  "Target_Behaviors":[
+    "None",
+    "Aggression",
+    "Elopement",
+    "Tantrum",
+    "SIB",
+    "Property Destruction",
+    "Non-compliance",
+    "Vocal Stereotypy",
+    "Motor Stereotypy",
+    "Inappropriate Language",
+    "Pica"
+  ],
+  "Intensity": [
+    "Mild",
+    "Moderate",
+    "Severe"
+  ],
+  "Antecedents":[
+    "Demand/Escape",
+    "Denied Access/Tangible",
+    "Attention Diverted",
+    "Unstructured Time/Automatic",
+    "Transition",
+    "Peer Interaction",
+    "Sensory Overload",
+    "Interruption of Preferred Activity",
+    "Change in Routine"
+  ],
+  "Interventions":[
+    "FCT (Functional Communication Training)",
+    "DRA (Differential Reinforcement of Alternative Behavior)",
+    "DRO (Differential Reinforcement of Other Behavior)",
+    "DRI (Differential Reinforcement of Incompatible Behavior)",
+    "Planned Ignoring",
+    "Escape Extinction",
+    "Blocking",
+    "Redirection",
+    "Tactical Break",
+    "Premack Principle (First/Then)",
+    "Behavior Momentum / High-P Sequence",
+    "NCR (Noncontingent Reinforcement)",
+    "Visual Schedule / Timer",
+    "Errorless Teaching",
+    "Stimulus Fading"
+  ],
+  "Deescalation_Time":[
+    "< 1 minute",
+    "1-5 minutes",
+    "5-15 minutes",
+    "15-30 minutes",
+    "> 30 minutes"
+  ],
+  "End_Demeanor":[
+    "Calm",
+    "Regulated",
+    "Engaged",
+    "Fatigued",
+    "Dysregulated",
+    "Agitated"
+  ],
+  "Caregiver_Handoff":[
+    "Discussed mastered skills",
+    "Reviewed behavior incidents",
+    "Modeled intervention",
+    "Discussed generalization strategies",
+    "Reviewed upcoming session schedule",
+    "Answered caregiver questions",
+    "Caregiver unavailable"
+  ]
+}

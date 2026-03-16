@@ -1,0 +1,195 @@
+{
+  "Function_Based_Guardrails":[
+    {
+      "antecedent": "Demand/Escape",
+      "whitelisted_interventions":[
+        "FCT (Functional Communication Training)",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
+        "Escape Extinction",
+        "Blocking",
+        "Premack Principle (First/Then)",
+        "Behavior Momentum / High-P Sequence",
+        "Visual Schedule / Timer",
+        "Errorless Teaching",
+        "Stimulus Fading"
+      ],
+      "blacklisted_interventions":[
+        "Tactical Break",
+        "Planned Ignoring",
+        "Redirection",
+        "NCR (Noncontingent Reinforcement)"
+      ]
+    },
+    {
+      "antecedent": "Denied Access/Tangible",
+      "whitelisted_interventions":[
+        "FCT (Functional Communication Training)",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
+        "Planned Ignoring",
+        "Premack Principle (First/Then)",
+        "Visual Schedule / Timer"
+      ],
+      "blacklisted_interventions":[
+        "Tactical Break",
+        "Redirection",
+        "Escape Extinction",
+        "Behavior Momentum / High-P Sequence"
+      ]
+    },
+    {
+      "antecedent": "Attention Diverted",
+      "whitelisted_interventions":[
+        "FCT (Functional Communication Training)",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
+        "Planned Ignoring",
+        "NCR (Noncontingent Reinforcement)"
+      ],
+      "blacklisted_interventions":[
+        "Redirection",
+        "Tactical Break",
+        "Blocking",
+        "Escape Extinction",
+        "Stimulus Fading"
+      ]
+    },
+    {
+      "antecedent": "Unstructured Time/Automatic",
+      "whitelisted_interventions":[
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
+        "Redirection",
+        "Blocking",
+        "NCR (Noncontingent Reinforcement)",
+        "Visual Schedule / Timer",
+        "Premack Principle (First/Then)"
+      ],
+      "blacklisted_interventions":[
+        "Planned Ignoring",
+        "Escape Extinction",
+        "Tactical Break"
+      ]
+    },
+    {
+      "antecedent": "Transition",
+      "whitelisted_interventions":[
+        "FCT (Functional Communication Training)",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "Escape Extinction",
+        "Premack Principle (First/Then)",
+        "Behavior Momentum / High-P Sequence",
+        "Visual Schedule / Timer",
+        "Errorless Teaching",
+        "Stimulus Fading"
+      ],
+      "blacklisted_interventions":[
+        "Tactical Break",
+        "Planned Ignoring",
+        "Redirection"
+      ]
+    },
+    {
+      "antecedent": "Peer Interaction",
+      "whitelisted_interventions":[
+        "FCT (Functional Communication Training)",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
+        "Redirection",
+        "Blocking"
+      ],
+      "blacklisted_interventions":[
+        "Planned Ignoring",
+        "Escape Extinction",
+        "Tactical Break"
+      ]
+    },
+    {
+      "antecedent": "Sensory Overload",
+      "whitelisted_interventions":[
+        "Tactical Break",
+        "FCT (Functional Communication Training)",
+        "Redirection",
+        "Stimulus Fading",
+        "Visual Schedule / Timer",
+        "NCR (Noncontingent Reinforcement)"
+      ],
+      "blacklisted_interventions":[
+        "Escape Extinction",
+        "Planned Ignoring",
+        "Blocking",
+        "Behavior Momentum / High-P Sequence",
+        "Errorless Teaching",
+        "Premack Principle (First/Then)"
+      ]
+    },
+    {
+      "antecedent": "Interruption of Preferred Activity",
+      "whitelisted_interventions":[
+        "FCT (Functional Communication Training)",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "Premack Principle (First/Then)",
+        "Behavior Momentum / High-P Sequence",
+        "Visual Schedule / Timer",
+        "Escape Extinction",
+        "Stimulus Fading"
+      ],
+      "blacklisted_interventions":[
+        "Tactical Break",
+        "Planned Ignoring",
+        "Redirection"
+      ]
+    },
+    {
+      "antecedent": "Change in Routine",
+      "whitelisted_interventions":[
+        "FCT (Functional Communication Training)",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "Visual Schedule / Timer",
+        "Premack Principle (First/Then)",
+        "Stimulus Fading",
+        "Behavior Momentum / High-P Sequence",
+        "Errorless Teaching"
+      ],
+      "blacklisted_interventions":[
+        "Tactical Break",
+        "Planned Ignoring",
+        "Escape Extinction"
+      ]
+    }
+  ],
+  "Contradiction_Guardrails":[
+    {
+      "trigger_category": "Target_Behaviors",
+      "trigger_value": "None",
+      "target_category": "Intensity",
+      "action": "disable_all"
+    },
+    {
+      "trigger_category": "Target_Behaviors",
+      "trigger_value": "None",
+      "target_category": "Antecedents",
+      "action": "disable_all"
+    },
+    {
+      "trigger_category": "Target_Behaviors",
+      "trigger_value": "None",
+      "target_category": "Interventions",
+      "action": "disable_all"
+    },
+    {
+      "trigger_category": "Target_Behaviors",
+      "trigger_value": "None",
+      "target_category": "Deescalation_Time",
+      "action": "disable_all"
+    }
+  ]
+}
