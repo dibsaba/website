@@ -92,11 +92,40 @@
         let currentType = null;
 
         const UI_CONFIG = {
-            Session_Start:[{id:"Location", label:"Location", type:"select"}, {id:"Specific_Setting", label:"Setting", type:"select"}, {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, {id:"Health_Variables", label:"Health", type:"multichoice"}],
-            Location_Transition:[{id:"Specific_Setting", label:"New Area", type:"select"}],
-            Skill_Acquisition:[{id:"Skill_Domains", label:"Domain", type:"select"}, {id:"Specific_Target", label:"Target (Optional)", type:"text"}, {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"}],
-            Behavior_Reduction:[{id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, {id:"Deescalation_Time", label:"Time", type:"select"}],
-            Session_End:[{id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"}]
+            Session_Start:[
+                { id: "Location", label: "Location of Service", type: "select" },
+                { id: "Specific_Setting", label: "Specific Setting", type: "select" },
+                { id: "Others_Present", label: "Others Present", type: "multichoice" },
+                { id: "Initial_Presentation", label: "Client's Initial Presentation", type: "multichoice" },
+                { id: "Health_Variables", label: "Health / Setting Variables", type: "multichoice" },
+                { id: "Custom_Narrative", label: "Additional Clinical Notes (Optional)", type: "textarea" }
+            ],
+            Location_Transition:[
+                { id: "Specific_Setting", label: "Transitioned To (New Area)", type: "select" },
+                { id: "Custom_Narrative", label: "Context for Transition (Optional)", type: "textarea" }
+            ],
+            Skill_Acquisition:[
+                { id: "Skill_Domains", label: "Skill Domain Addressed", type: "select" },
+                { id: "Specific_Target", label: "Specific Target / Program Name (Optional)", type: "text" },
+                { id: "Teaching_Formats", label: "Teaching Format", type: "select" },
+                { id: "Prompt_Levels", label: "Prompt Level Used", type: "select" },
+                { id: "Reinforcement_Schedules", label: "Reinforcement Schedule", type: "select" },
+                { id: "Specific_Reinforcers", label: "Specific Reinforcer", type: "multichoice" },
+                { id: "Custom_Narrative", label: "Client Response / Additional Details (Optional)", type: "textarea" }
+            ],
+            Behavior_Reduction:[
+                { id: "Target_Behaviors", label: "Target Behavior Observed", type: "select" },
+                { id: "Intensity", label: "Intensity", type: "select" },
+                { id: "Antecedents", label: "Presumed Antecedent", type: "select" },
+                { id: "Interventions", label: "Interventions Implemented", type: "multichoice" },
+                { id: "Deescalation_Time", label: "De-escalation Time", type: "select" },
+                { id: "Custom_Narrative", label: "Behavior Context / Narrative (Optional)", type: "textarea" }
+            ],
+            Session_End:[
+                { id: "End_Demeanor", label: "Client's Ending Demeanor", type: "select" },
+                { id: "Caregiver_Handoff", label: "Caregiver Handoff Details", type: "multichoice" },
+                { id: "Custom_Narrative", label: "Additional Handoff Notes (Optional)", type: "textarea" }
+            ]
         };
 
         async function hashPassword(p) {
@@ -149,12 +178,11 @@
             UI_CONFIG[type].forEach(f => {
                 const w = document.createElement('div'); w.className = 'form-field';
                 w.innerHTML = `<label class="form-label">${f.label}</label>`;
-                if(f.type === 'text') w.innerHTML += `<input type="text" data-id="${f.id}">`;
-                else if(f.type === 'select') {
-                    let sel = `<select data-id="${f.id}">`;
-                    (schemaData[f.id]||[]).forEach(o => sel += `<option value="${o}">${o}</option>`);
-                    w.innerHTML += sel + `</select>`;
-                } else {
+                if(f.type === 'text') {
+                    w.innerHTML += `<input type="text" data-id="${f.id}">`;
+                } else if(f.type === 'textarea') {
+                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Enter custom details here..."></textarea>`;
+                } else if(f.type === 'select') {
                     let grp = `<div class="checkbox-group" data-id="${f.id}">`;
                     (schemaData[f.id]||[]).forEach(o => grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}"><span>${o}</span></label>`);
                     w.innerHTML += grp + `</div>`;
@@ -195,16 +223,17 @@
         document.getElementById('btn-transition').onclick = () => openForm('Location_Transition');
         document.getElementById('btn-end').onclick = () => openForm('Session_End');
 
-        document.getElementById('btn-save').onclick = () => {
+		document.getElementById('btn-save').onclick = () => {
             const data = {};
             document.getElementById('form-container').querySelectorAll('[data-id]').forEach(el => {
-                if(el.tagName === 'SELECT' || el.tagName === 'INPUT') data[el.dataset.id] = el.value;
-                else { const c = Array.from(el.querySelectorAll('input:checked')).map(i=>i.value); data[el.dataset.id] = c.length?c:["None selected"]; }
+                if(el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    if (el.type !== 'checkbox') data[el.dataset.id] = el.value;
+                }
+                if (el.classList.contains('checkbox-group')) { 
+                    const c = Array.from(el.querySelectorAll('input:checked')).map(i=>i.value); 
+                    data[el.dataset.id] = c.length ? c : ["None selected"]; 
+                }
             });
-            timeline.push({ type: currentType, timestamp: new Date().toISOString(), data });
-            localStorage.setItem('aba_tl', JSON.stringify(timeline));
-            renderTimeline(); closeModals();
-        };
 
         function renderTimeline() {
             const f = document.getElementById('timeline-feed'); f.innerHTML = '';
