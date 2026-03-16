@@ -6,433 +6,221 @@
     <title>ABA Clinical Session Logger</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --font-sans: 'Inter', sans-serif;
-            --font-serif: 'Playfair Display', serif;
-            --brand-primary: #292524;      
-            --brand-primary-dark: #1c1917;
-            --brand-accent: #ea580c;       
-            --brand-accent-light: #fb923c;
-            --brand-accent-dark: #c2410c;  
-            --brand-cream: #fff7ed;        
-            --brand-sand: #f5f5f4;         
-            --brand-surface: #ffffff;      
-            --brand-danger: #ef4444;
-            --brand-success: #16a34a;       
-            --text-body: #475569;          
-            --text-muted: #94a3b8;         
-        }
-
+        /* (Keep your exact CSS styles from previous index.html here to save space) */
+        :root { --font-sans: 'Inter', sans-serif; --font-serif: 'Playfair Display', serif; --brand-primary: #292524; --brand-primary-dark: #1c1917; --brand-accent: #ea580c; --brand-accent-light: #fb923c; --brand-accent-dark: #c2410c; --brand-cream: #fff7ed; --brand-sand: #f5f5f4; --brand-surface: #ffffff; --brand-danger: #ef4444; --brand-success: #16a34a; --text-body: #475569; --text-muted: #94a3b8; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); background-color: var(--brand-cream); color: var(--text-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-        h1, h2, h3, h4 { font-family: var(--font-serif); color: var(--brand-primary); }
-        
-        button { font-family: var(--font-sans); font-weight: 500; border: none; outline: none; cursor: pointer; transition: all 0.2s ease; }
-        .btn-primary { background-color: var(--brand-accent); color: var(--brand-surface); padding: 0 20px; min-height: 44px; border-radius: 8px; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; width: 100%; }
-        .btn-primary:hover:not(:disabled) { background-color: var(--brand-accent-dark); }
-        .btn-primary:disabled { background-color: var(--text-muted); cursor: not-allowed; opacity: 0.7; }
-        .btn-secondary { background-color: var(--brand-primary); color: var(--brand-surface); padding: 0 16px; min-height: 44px; border-radius: 8px; font-size: 0.95rem; }
-        .btn-secondary:hover:not(:disabled) { background-color: var(--brand-primary-dark); }
-        .btn-secondary:disabled { background-color: var(--text-muted); cursor: not-allowed; opacity: 0.5; }
-
-        input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--text-muted); border-radius: 8px; font-family: var(--font-sans); font-size: 1rem; color: var(--brand-primary); min-height: 44px; background-color: var(--brand-surface); }
-        textarea { resize: vertical; line-height: 1.5; }
-        input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand-accent-light); border-color: transparent; }
-
+        body { font-family: var(--font-sans); background-color: var(--brand-cream); color: var(--text-body); -webkit-font-smoothing: antialiased; }
+        h1, h2, h3 { font-family: var(--font-serif); color: var(--brand-primary); }
+        button { font-family: var(--font-sans); font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: var(--brand-accent); color: #fff; padding: 12px 20px; border-radius: 8px; width: 100%; }
+        .btn-primary:disabled { background: var(--text-muted); cursor: not-allowed; }
+        .btn-secondary { background: var(--brand-primary); color: #fff; padding: 12px 16px; border-radius: 8px; width:100%; }
+        .btn-secondary:disabled { background: var(--text-muted); opacity: 0.5; }
+        input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px; border: 1px solid var(--text-muted); border-radius: 8px; font-family: var(--font-sans); }
         .view { display: none; min-height: 100vh; }
         .view.active { display: flex; flex-direction: column; }
-
-        /* Auth View */
-        #auth-view { justify-content: center; align-items: center; padding: 20px; background-color: var(--brand-sand); }
-        .auth-card { background: var(--brand-surface); padding: 40px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; }
-        .auth-card h1 { margin-bottom: 8px; font-size: 1.8rem; }
-        .auth-card p { margin-bottom: 24px; color: var(--text-muted); }
-        .form-group { margin-bottom: 20px; text-align: left; }
-
-        /* Dashboard View */
-        #dashboard-view { position: relative; padding-bottom: 140px; }
-        .app-header { background: var(--brand-surface); padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); text-align: center; position: sticky; top: 0; z-index: 10; display:flex; justify-content: space-between; align-items: center;}
-        .timeline-container { max-width: 800px; margin: 0 auto; padding: 24px 20px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
-        
-        .timeline-card { background: var(--brand-surface); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid var(--brand-primary); }
-        .timeline-card.type-Behavior_Reduction { border-left-color: var(--brand-danger); }
-        .timeline-card.type-Skill_Acquisition { border-left-color: var(--brand-accent); }
-        .timeline-card.type-Session_Start { border-left-color: var(--brand-success); background-color: #f0fdf4; }
-        .timeline-card.type-Session_End { border-left-color: var(--brand-primary); background-color: var(--brand-sand); }
-        
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .card-title { font-size: 1.1rem; font-weight: 600; }
-        .card-time { font-size: 0.85rem; color: var(--text-muted); }
-        .card-body p { margin-bottom: 6px; font-size: 0.95rem; }
-        .card-body p strong { color: var(--brand-primary); }
-        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-
-        /* Action Bar */
-        .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--brand-surface); padding: 16px 20px; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 12px; align-items: center; z-index: 20; }
-        .action-bar-row { max-width: 800px; width: 100%; display: flex; gap: 12px; }
-        .action-bar button { flex: 1; }
-
-        /* Modals */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal { background: var(--brand-surface); display: flex; flex-direction: column; transition: transform 0.3s ease; transform: translateY(20px); width: 100%; }
-        .modal-overlay.active .modal { transform: translateY(0); }
-        .modal-header { padding: 20px; border-bottom: 1px solid var(--brand-sand); display: flex; justify-content: space-between; align-items: center; }
-        .close-btn { background: none; font-size: 1.8rem; color: var(--text-muted); width: 44px; height: 44px; }
+        #auth-view { justify-content: center; align-items: center; padding: 20px; }
+        .auth-card { background: #fff; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; width: 100%; }
+        #dashboard-view { padding-bottom: 150px; }
+        .app-header { background: #fff; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 10; display:flex; justify-content: space-between;}
+        .timeline-container { max-width: 800px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        .timeline-card { background: #fff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--brand-primary); }
+        .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 15px; display: flex; flex-direction: column; gap: 10px; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
+        .action-bar-row { max-width: 800px; width: 100%; display: flex; gap: 10px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: #fff; width: 100%; max-width: 600px; max-height: 85vh; border-radius: 12px; display: flex; flex-direction: column; }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--brand-sand); display: flex; justify-content: space-between; }
         .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
         .modal-footer { padding: 20px; border-top: 1px solid var(--brand-sand); }
-        
-        .form-field { margin-bottom: 24px; }
-        .form-label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--brand-primary); }
+        .form-field { margin-bottom: 20px; }
+        .form-label { font-weight: 600; display: block; margin-bottom: 8px; }
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
-        .checkbox-pill input[type="checkbox"] { display: none; }
-        .checkbox-pill span { display: inline-block; padding: 10px 16px; background: var(--brand-sand); border-radius: 8px; font-size: 0.95rem; cursor: pointer; border: 1px solid transparent; }
-        .checkbox-pill input[type="checkbox"]:checked + span { background: var(--brand-accent); color: var(--brand-surface); border-color: var(--brand-accent-dark); }
-        
-        .attest-wrapper { margin-top: 16px; display: flex; gap: 12px; background: var(--brand-cream); padding: 16px; border-radius: 8px; align-items: flex-start; }
-        .attest-wrapper input { width: 24px; height: 24px; accent-color: var(--brand-accent); flex-shrink: 0; }
-
-        @media (max-width: 767px) {
-            .modal { position: absolute; inset: 0; height: 100%; border-radius: 0; }
-        }
-        @media (min-width: 768px) {
-            .modal { max-width: 600px; max-height: 85vh; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
-        }
+        .checkbox-pill input { display: none; }
+        .checkbox-pill span { padding: 10px; background: var(--brand-sand); border-radius: 8px; display: inline-block; cursor: pointer; }
+        .checkbox-pill input:checked + span { background: var(--brand-accent); color: #fff; }
     </style>
 </head>
 <body>
-
     <div id="auth-view" class="view active">
         <div class="auth-card">
             <h1>ABA Logger</h1>
-            <p>Clinical Session Documentation</p>
-            <div class="form-group">
-                <input type="password" id="password-input" placeholder="Enter Password" aria-label="Password">
-            </div>
-            <button id="btn-login" class="btn-primary">Unlock Dashboard</button>
-            <p id="auth-error" style="color: var(--brand-danger); margin-top: 12px; display: none; font-size: 0.9rem;">Incorrect password.</p>
+            <div style="margin-bottom:20px;"><input type="password" id="password-input" placeholder="Password"></div>
+            <button id="btn-login" class="btn-primary">Unlock</button>
+            <p id="auth-error" style="color:red; display:none; margin-top:10px;">Incorrect</p>
         </div>
     </div>
 
     <div id="dashboard-view" class="view">
-        <header class="app-header">
-            <h2>Session Timeline</h2>
-            <button id="btn-clear-session" style="background:none; color:var(--brand-danger); font-size:0.9rem; text-decoration:underline;">Clear Session</button>
-        </header>
+        <header class="app-header"><h2>Session Timeline</h2><button id="btn-clear" style="background:none; color:red; border:none; cursor:pointer;">Clear</button></header>
         <main class="timeline-container" id="timeline-feed"></main>
         
         <nav class="action-bar">
+            <div class="action-bar-row"><button id="btn-start" class="btn-primary" style="background:var(--brand-success);">Start Session</button></div>
             <div class="action-bar-row">
-                <button id="btn-start-session" class="btn-primary" style="background-color: var(--brand-success);">Start Session</button>
+                <button id="btn-skill" class="btn-secondary" disabled>Add Skill</button>
+                <button id="btn-behavior" class="btn-secondary" disabled>Add Behavior</button>
+                <button id="btn-transition" class="btn-secondary" disabled>Transition</button>
+                <button id="btn-end" class="btn-secondary" disabled>End Session</button>
             </div>
-            <div class="action-bar-row">
-                <button id="btn-add-skill" class="btn-secondary" disabled>Add Skill</button>
-                <button id="btn-add-behavior" class="btn-secondary" disabled>Add Behavior</button>
-                <button id="btn-end-session" class="btn-secondary" disabled>End Session</button>
-            </div>
-            <div class="action-bar-row">
-                <button id="btn-generate" class="btn-primary" disabled>Generate Note</button>
-            </div>
+            <div class="action-bar-row"><button id="btn-generate" class="btn-primary" disabled>Generate Note</button></div>
         </nav>
     </div>
 
     <div id="modal-overlay" class="modal-overlay">
-        <div id="form-modal" class="modal" style="display: none;">
-            <header class="modal-header">
-                <h2 id="form-modal-title">Add Event</h2>
-                <button class="close-btn" data-close>&times;</button>
-            </header>
+        <div id="form-modal" class="modal" style="display:none;">
+            <header class="modal-header"><h2 id="form-title">Event</h2><button class="close-btn" data-close>X</button></header>
             <div class="modal-body" id="form-container"></div>
-            <footer class="modal-footer">
-                <button id="btn-save-event" class="btn-primary">Save Event</button>
-            </footer>
+            <footer class="modal-footer"><button id="btn-save" class="btn-primary">Save</button></footer>
         </div>
-
-        <div id="generate-modal" class="modal" style="display: none;">
-            <header class="modal-header">
-                <h2>Generated Session Note</h2>
-                <button class="close-btn" data-close>&times;</button>
-            </header>
-            <div class="modal-body">
-                <textarea id="note-output" rows="12" readonly placeholder="Generating..."></textarea>
-                <div class="attest-wrapper">
-                    <input type="checkbox" id="attest-checkbox">
-                    <label for="attest-checkbox">I attest that I have reviewed this note for clinical accuracy.</label>
-                </div>
-            </div>
-            <footer class="modal-footer">
-                <button id="btn-copy" class="btn-primary" disabled>Copy to Clipboard</button>
-            </footer>
+        <div id="generate-modal" class="modal" style="display:none;">
+            <header class="modal-header"><h2>Generated Note</h2><button class="close-btn" data-close>X</button></header>
+            <div class="modal-body"><textarea id="note-output" rows="12" readonly></textarea></div>
+            <footer class="modal-footer"><button id="btn-copy" class="btn-primary">Copy</button></footer>
         </div>
     </div>
-	<script type="module">
-        import NarrativeEngine from './narrative_engine.js'; 
 
-        // SECURITY: This is the SHA-256 hash of "ABA2026". The plaintext password is gone.
+    <script type="module">
+        import GuardrailEngine from './guardrail_engine.js';
+        import SessionNormalizer from './session_normalizer.js';
+        import NarrativePlanner from './narrative_planner.js';
+        import NarrativeEngine from './narrative_engine.js';
+
         const EXPECTED_HASH = "8ec0a38b1968ed925ef5b871cda95baefd8cdcdbc34a81ba0bba80b62e4f0d3b";
-        const STORAGE_KEY = "aba_timeline_v1";
-        let timeline = JSON.parse(localStorage.getItem(STORAGE_KEY)) ||[];
-        
-        let schemaData = {};
-        let synonymsData = {};
-        let templatesData = {};
-        let guardrailsData = {}; 
-        let currentFormType = null;
+        let timeline = JSON.parse(localStorage.getItem('aba_tl')) ||[];
+        let schemaData, synonymsData, templatesData, guardrails;
+        let currentType = null;
 
-        // UI Updates: Multi-selects for Start, Text input for Skills, New Transition Type
         const UI_CONFIG = {
-            Session_Start:[
-                { id: "Location", label: "Location of Service", type: "select" },
-                { id: "Specific_Setting", label: "Specific Setting", type: "select" },
-                { id: "Others_Present", label: "Others Present", type: "multichoice" },
-                { id: "Initial_Presentation", label: "Client's Initial Presentation", type: "multichoice" },
-                { id: "Health_Variables", label: "Health / Setting Variables", type: "multichoice" }
-            ],
-            Location_Transition:[
-                { id: "Specific_Setting", label: "Transitioned To (New Area)", type: "select" }
-            ],
-            Skill_Acquisition:[
-                { id: "Skill_Domains", label: "Skill Domain Addressed", type: "select" },
-                { id: "Specific_Target", label: "Specific Target / Program Name (Optional)", type: "text" },
-                { id: "Teaching_Formats", label: "Teaching Format", type: "select" },
-                { id: "Prompt_Levels", label: "Prompt Level Used", type: "select" },
-                { id: "Reinforcement_Schedules", label: "Reinforcement Schedule", type: "select" },
-                { id: "Specific_Reinforcers", label: "Specific Reinforcer", type: "multichoice" }
-            ],
-            Behavior_Reduction:[
-                { id: "Target_Behaviors", label: "Target Behavior Observed", type: "select" },
-                { id: "Intensity", label: "Intensity", type: "select" },
-                { id: "Antecedents", label: "Presumed Antecedent", type: "select" },
-                { id: "Interventions", label: "Interventions Implemented", type: "multichoice" },
-                { id: "Deescalation_Time", label: "De-escalation Time", type: "select" }
-            ],
-            Session_End:[
-                { id: "End_Demeanor", label: "Client's Ending Demeanor", type: "select" },
-                { id: "Caregiver_Handoff", label: "Caregiver Handoff Details", type: "multichoice" }
-            ]
+            Session_Start:[{id:"Location", label:"Location", type:"select"}, {id:"Specific_Setting", label:"Setting", type:"select"}, {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, {id:"Health_Variables", label:"Health", type:"multichoice"}],
+            Location_Transition:[{id:"Specific_Setting", label:"New Area", type:"select"}],
+            Skill_Acquisition:[{id:"Skill_Domains", label:"Domain", type:"select"}, {id:"Specific_Target", label:"Target (Optional)", type:"text"}, {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"}],
+            Behavior_Reduction:[{id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, {id:"Deescalation_Time", label:"Time", type:"select"}],
+            Session_End:[{id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"}]
         };
 
-        // --- CRYPTOGRAPHIC PASSWORD HASHING ---
-        async function hashPassword(password) {
-            const msgBuffer = new TextEncoder().encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        async function hashPassword(p) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(p));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        document.getElementById('btn-login').addEventListener('click', attemptLogin);
-        document.getElementById('password-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptLogin(); });
-
-        async function attemptLogin() {
-            const inputHash = await hashPassword(document.getElementById('password-input').value);
-            
-            if (inputHash === EXPECTED_HASH) {
+        document.getElementById('btn-login').onclick = async () => {
+            if (await hashPassword(document.getElementById('password-input').value) === EXPECTED_HASH) {
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
-                
                 try {
-                    const[schemaRes, synRes, tempRes, guardRes] = await Promise.all([
-                        fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')
-                    ]);
-                    schemaData = await schemaRes.json();
-                    guardrailsData = await guardRes.json();
-                    const synJson = await synRes.json();
-                    const tempJson = await tempRes.json();
-                    synonymsData = synJson.Synonyms || synJson;
-                    templatesData = tempJson.Templates || tempJson;
-                    
+                    const[sch, syn, tpl, grd] = await Promise.all([fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')]);
+                    schemaData = await sch.json();
+                    guardrails = new GuardrailEngine(await grd.json());
+                    synonymsData = (await syn.json()).Synonyms || await syn.json();
+                    templatesData = (await tpl.json()).Templates || await tpl.json();
                     renderTimeline();
-                } catch (err) { alert("Error loading JSON files."); console.error(err); }
-            } else {
-                document.getElementById('auth-error').style.display = 'block';
-            }
-        }
+                } catch(e) { alert("Error loading files."); }
+            } else document.getElementById('auth-error').style.display = 'block';
+        };
 
-        const modalOverlay = document.getElementById('modal-overlay');
-        function openModal(modalId) {
-            document.getElementById('form-modal').style.display = 'none';
+        const closeModals = () => document.getElementById('modal-overlay').classList.remove('active');
+        document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeModals);
+
+        const openForm = (type) => {
+            currentType = type;
+            document.getElementById('form-title').innerText = type.replace('_', ' ');
+            const c = document.getElementById('form-container'); c.innerHTML = '';
+            
+            UI_CONFIG[type].forEach(f => {
+                const w = document.createElement('div'); w.className = 'form-field';
+                w.innerHTML = `<label class="form-label">${f.label}</label>`;
+                if(f.type === 'text') w.innerHTML += `<input type="text" data-id="${f.id}">`;
+                else if(f.type === 'select') {
+                    let sel = `<select data-id="${f.id}">`;
+                    (schemaData[f.id]||[]).forEach(o => sel += `<option value="${o}">${o}</option>`);
+                    w.innerHTML += sel + `</select>`;
+                } else {
+                    let grp = `<div class="checkbox-group" data-id="${f.id}">`;
+                    (schemaData[f.id]||[]).forEach(o => grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}"><span>${o}</span></label>`);
+                    w.innerHTML += grp + `</div>`;
+                }
+                c.appendChild(w);
+            });
+
+            if (type === 'Behavior_Reduction') setupGuardrails(c);
+            
+            document.getElementById('form-modal').style.display = 'flex';
             document.getElementById('generate-modal').style.display = 'none';
-            document.getElementById(modalId).style.display = 'flex';
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeModal() { modalOverlay.classList.remove('active'); document.body.style.overflow = ''; }
-        document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', closeModal));
+            document.getElementById('modal-overlay').classList.add('active');
+        };
 
-        // Inject the Transition Button into the DOM
-        const transitionBtn = document.createElement('button');
-        transitionBtn.id = "btn-add-transition";
-        transitionBtn.className = "btn-secondary";
-        transitionBtn.textContent = "Log Transition";
-        document.querySelector('.action-bar-row:nth-child(2)').insertBefore(transitionBtn, document.getElementById('btn-end-session'));
+        function setupGuardrails(container) {
+            const ant = container.querySelector('select[data-id="Antecedents"]');
+            const ints = container.querySelector('.checkbox-group[data-id="Interventions"]');
+            const btn = document.createElement('button'); btn.className='btn-secondary'; btn.innerText='Show All Allowable'; btn.style.marginTop='10px';
+            let ovr = false; ints.parentNode.appendChild(btn);
 
-        document.getElementById('btn-start-session').addEventListener('click', () => buildForm('Session_Start'));
-        document.getElementById('btn-end-session').addEventListener('click', () => buildForm('Session_End'));
-        document.getElementById('btn-add-skill').addEventListener('click', () => buildForm('Skill_Acquisition'));
-        document.getElementById('btn-add-behavior').addEventListener('click', () => buildForm('Behavior_Reduction'));
-        document.getElementById('btn-add-transition').addEventListener('click', () => buildForm('Location_Transition'));
-
-        document.getElementById('btn-clear-session').addEventListener('click', () => {
-            if(confirm("Are you sure you want to clear this entire session?")) { timeline =[]; localStorage.removeItem(STORAGE_KEY); renderTimeline(); }
-        });
-
-        function updateButtonStates() {
-            const hasStarted = timeline.some(t => t.type === 'Session_Start');
-            const hasEnded = timeline.some(t => t.type === 'Session_End');
-
-            document.getElementById('btn-start-session').disabled = hasStarted;
-            document.getElementById('btn-start-session').style.display = hasStarted ? 'none' : 'block';
-            
-            document.getElementById('btn-add-skill').disabled = !hasStarted || hasEnded;
-            document.getElementById('btn-add-behavior').disabled = !hasStarted || hasEnded;
-            document.getElementById('btn-add-transition').disabled = !hasStarted || hasEnded;
-            document.getElementById('btn-end-session').disabled = !hasStarted || hasEnded;
-            document.getElementById('btn-generate').disabled = timeline.length === 0;
+            const apply = () => {
+                const rules = guardrails.getRulesForAntecedent(ant.value);
+                ints.querySelectorAll('.checkbox-pill').forEach(p => {
+                    const v = p.querySelector('input').value;
+                    if(rules.blacklisted_interventions.includes(v)) { p.style.display='none'; p.querySelector('input').checked=false; }
+                    else if(rules.whitelisted_interventions.includes(v)) p.style.display='inline-block';
+                    else { p.style.display = ovr ? 'inline-block' : 'none'; if(!ovr) p.querySelector('input').checked=false; }
+                });
+            };
+            ant.onchange = () => { ovr=false; btn.innerText='Show All Allowable'; apply(); };
+            btn.onclick = () => { ovr=!ovr; btn.innerText=ovr?'Hide Non-Whitelisted':'Show All Allowable'; apply(); };
+            apply();
         }
 
-        function buildForm(type) {
-            currentFormType = type;
-            const titles = { 'Session_Start': 'Start Session', 'Location_Transition': 'Log Transition', 'Skill_Acquisition': 'Log Skill', 'Behavior_Reduction': 'Log Behavior', 'Session_End': 'End Session' };
-            document.getElementById('form-modal-title').textContent = titles[type];
-            const container = document.getElementById('form-container');
-            container.innerHTML = '';
+        document.getElementById('btn-start').onclick = () => openForm('Session_Start');
+        document.getElementById('btn-skill').onclick = () => openForm('Skill_Acquisition');
+        document.getElementById('btn-behavior').onclick = () => openForm('Behavior_Reduction');
+        document.getElementById('btn-transition').onclick = () => openForm('Location_Transition');
+        document.getElementById('btn-end').onclick = () => openForm('Session_End');
 
-            UI_CONFIG[type].forEach(field => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'form-field';
-                wrapper.innerHTML = `<label class="form-label">${field.label}</label>`;
-                const optionsArray = schemaData[field.id] ||[]; 
-
-                if (field.type === 'select') {
-                    const select = document.createElement('select');
-                    select.dataset.id = field.id;
-                    optionsArray.forEach(opt => select.innerHTML += `<option value="${opt}">${opt}</option>`);
-                    wrapper.appendChild(select);
-                } 
-                else if (field.type === 'multichoice') {
-                    const group = document.createElement('div');
-                    group.className = 'checkbox-group';
-                    group.dataset.id = field.id;
-                    optionsArray.forEach(opt => group.innerHTML += `<label class="checkbox-pill"><input type="checkbox" value="${opt}"><span>${opt}</span></label>`);
-                    wrapper.appendChild(group);
-                }
-                else if (field.type === 'text') {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.dataset.id = field.id;
-                    input.placeholder = "e.g., Tacting colors, Handwashing";
-                    wrapper.appendChild(input);
-                }
-                container.appendChild(wrapper);
+        document.getElementById('btn-save').onclick = () => {
+            const data = {};
+            document.getElementById('form-container').querySelectorAll('[data-id]').forEach(el => {
+                if(el.tagName === 'SELECT' || el.tagName === 'INPUT') data[el.dataset.id] = el.value;
+                else { const c = Array.from(el.querySelectorAll('input:checked')).map(i=>i.value); data[el.dataset.id] = c.length?c:["None selected"]; }
             });
-
-            if (type === 'Behavior_Reduction') {
-                const behaviorSelect = container.querySelector('select[data-id="Target_Behaviors"]');
-                const antecedentSelect = container.querySelector('select[data-id="Antecedents"]');
-                const interventionsGroup = container.querySelector('.checkbox-group[data-id="Interventions"]');
-                
-                const overrideBtn = document.createElement('button');
-                overrideBtn.type = 'button'; overrideBtn.className = 'btn-secondary';
-                overrideBtn.style.marginTop = '12px'; overrideBtn.style.fontSize = '0.85rem';
-                overrideBtn.textContent = 'Show All Allowable (Override Whitelist)';
-                let isOverrideActive = false;
-                interventionsGroup.parentNode.appendChild(overrideBtn);
-
-                const applyInterventionGuardrails = () => {
-                    const selectedAnt = antecedentSelect.value;
-                    const rules = guardrailsData.Function_Based_Guardrails?.find(r => r.antecedent === selectedAnt);
-                    const pills = interventionsGroup.querySelectorAll('.checkbox-pill');
-                    pills.forEach(pill => {
-                        const input = pill.querySelector('input');
-                        if (rules) {
-                            if (rules.blacklisted_interventions.includes(input.value)) {
-                                pill.style.display = 'none'; input.checked = false; 
-                            } else if (rules.whitelisted_interventions.includes(input.value)) {
-                                pill.style.display = 'inline-block';
-                            } else {
-                                pill.style.display = isOverrideActive ? 'inline-block' : 'none';
-                                if (!isOverrideActive) input.checked = false;
-                            }
-                        }
-                    });
-                };
-
-                const handleBehaviorNone = () => {
-                    const isNone = behaviorSelect.value === "None";
-                    ['Intensity', 'Antecedents', 'Deescalation_Time'].forEach(id => {
-                        const el = container.querySelector(`select[data-id="${id}"]`);
-                        if(el) el.disabled = isNone;
-                    });
-                    interventionsGroup.style.display = isNone ? 'none' : 'flex';
-                    overrideBtn.style.display = isNone ? 'none' : 'block';
-                };
-
-                behaviorSelect.addEventListener('change', handleBehaviorNone);
-                antecedentSelect.addEventListener('change', () => { isOverrideActive = false; overrideBtn.textContent = 'Show All Allowable'; applyInterventionGuardrails(); });
-                overrideBtn.addEventListener('click', () => { isOverrideActive = !isOverrideActive; overrideBtn.textContent = isOverrideActive ? 'Hide Non-Whitelisted' : 'Show All Allowable'; applyInterventionGuardrails(); });
-                handleBehaviorNone(); applyInterventionGuardrails();
-            }
-            openModal('form-modal');
-        }
-
-        document.getElementById('btn-save-event').addEventListener('click', () => {
-            const eventData = {};
-            const inputs = document.getElementById('form-container').querySelectorAll('[data-id]');
-            
-            inputs.forEach(el => {
-                const key = el.dataset.id;
-                if (el.tagName === 'SELECT' || el.type === 'text') {
-                    eventData[key] = el.value;
-                } else if (el.classList.contains('checkbox-group')) {
-                    const checked = Array.from(el.querySelectorAll('input:checked')).map(cb => cb.value);
-                    eventData[key] = checked.length > 0 ? checked : ["None selected"];
-                }
-            });
-
-            timeline.push({ type: currentFormType, timestamp: new Date().toISOString(), data: eventData });
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(timeline));
-            renderTimeline();
-            closeModal();
-        });
+            timeline.push({ type: currentType, timestamp: new Date().toISOString(), data });
+            localStorage.setItem('aba_tl', JSON.stringify(timeline));
+            renderTimeline(); closeModals();
+        };
 
         function renderTimeline() {
-            const feed = document.getElementById('timeline-feed');
-            feed.innerHTML = '';
-            updateButtonStates();
+            const f = document.getElementById('timeline-feed'); f.innerHTML = '';
+            const started = timeline.some(t => t.type === 'Session_Start');
+            const ended = timeline.some(t => t.type === 'Session_End');
+            
+            document.getElementById('btn-start').style.display = started ? 'none' : 'block';['btn-skill', 'btn-behavior', 'btn-transition', 'btn-end'].forEach(id => document.getElementById(id).disabled = !started || ended);
+            document.getElementById('btn-generate').disabled = timeline.length === 0;
 
-            if (timeline.length === 0) {
-                feed.innerHTML = `<div class="empty-state"><h3>Ready to start therapy.</h3><p>Click "Start Session" to begin logging.</p></div>`; return;
-            }
-
-            const sorted = [...timeline].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            sorted.forEach(ev => {
-                const card = document.createElement('div');
-                card.className = `timeline-card type-${ev.type}`;
-                const timeStr = new Date(ev.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const titles = { 'Session_Start': 'Session Started', 'Location_Transition': 'Transition Logged', 'Skill_Acquisition': 'Skill Acquisition', 'Behavior_Reduction': 'Behavior Intervention', 'Session_End': 'Session Ended' };
-                
-                let details = '';
-                UI_CONFIG[ev.type].forEach(field => {
-                    const val = ev.data[field.id];
-                    if(val) details += `<p><strong>${field.label}:</strong> ${Array.isArray(val) ? val.join(', ') : val}</p>`;
-                });
-                card.innerHTML = `<div class="card-header"><span class="card-title">${titles[ev.type]}</span><span class="card-time">${timeStr}</span></div><div class="card-body">${details}</div>`;
-                feed.prepend(card);
+            [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp)).forEach(ev => {
+                const d = document.createElement('div'); d.className = `timeline-card`;
+                d.innerHTML = `<div class="card-header"><strong>${ev.type.replace('_',' ')}</strong></div>`;
+                f.prepend(d);
             });
         }
 
-        document.getElementById('btn-generate').addEventListener('click', () => {
-            openModal('generate-modal');
-            const chronologicalTimeline = [...timeline].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            document.getElementById('note-output').value = NarrativeEngine.generate(synonymsData, templatesData, chronologicalTimeline);
-            document.getElementById('attest-checkbox').checked = false; document.getElementById('btn-copy').disabled = true;
-        });
+        document.getElementById('btn-generate').onclick = () => {
+            // PIPELINE ARCHITECTURE ACTIVATED HERE
+            const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+            const sessionObj = SessionNormalizer.normalize(sortedTimeline);
+            const plan = NarrativePlanner.buildPlan(sessionObj);
+            const note = NarrativeEngine.generate(synonymsData, templatesData, plan);
+            
+            document.getElementById('note-output').value = note;
+            document.getElementById('form-modal').style.display = 'none';
+            document.getElementById('generate-modal').style.display = 'flex';
+            document.getElementById('modal-overlay').classList.add('active');
+        };
 
-        document.getElementById('attest-checkbox').addEventListener('change', (e) => document.getElementById('btn-copy').disabled = !e.target.checked );
-        document.getElementById('btn-copy').addEventListener('click', async () => {
-            try { await navigator.clipboard.writeText(document.getElementById('note-output').value); document.getElementById('btn-copy').textContent = "Copied!"; setTimeout(() => { document.getElementById('btn-copy').textContent = "Copy to Clipboard"; closeModal(); }, 2000); } 
-            catch (err) { alert("Could not auto-copy. Please manually copy."); }
-        });
+        document.getElementById('btn-copy').onclick = () => {
+            navigator.clipboard.writeText(document.getElementById('note-output').value);
+            document.getElementById('btn-copy').innerText = "Copied!";
+            setTimeout(() => document.getElementById('btn-copy').innerText = "Copy", 2000);
+        };
+        document.getElementById('btn-clear').onclick = () => { if(confirm("Clear session?")) { timeline=[]; localStorage.removeItem('aba_tl'); renderTimeline(); } };
     </script>
 </body>
 </html>

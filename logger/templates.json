@@ -1,4 +1,8 @@
 {
+  "Skills_Summary":[
+    "{mid_transitions} skill acquisition focused on the following domains: [All_Domains]. Specific targets included [All_Targets]. Teaching procedures utilized were[All_Formats] supported by [All_Prompts] prompting. Progress was reinforced with [All_Reinforcers].",
+    "{mid_transitions} I targeted [All_Targets] across [All_Domains]. Using [All_Formats], {client} was guided with [All_Prompts] prompts. Successful responses were reinforced using [All_Reinforcers]."
+  ],
   "Location_Transition":[
     "{mid_transitions} {client} transitioned to the [Specific_Setting].",
     "{mid_transitions} we moved to the [Specific_Setting] to continue therapy.",
