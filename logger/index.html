@@ -105,18 +105,37 @@
         }
 
         document.getElementById('btn-login').onclick = async () => {
-            if (await hashPassword(document.getElementById('password-input').value) === EXPECTED_HASH) {
+            const inputHash = await hashPassword(document.getElementById('password-input').value);
+            
+            if (inputHash === EXPECTED_HASH) {
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
-                    const[sch, syn, tpl, grd] = await Promise.all([fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')]);
+                    const[sch, syn, tpl, grd] = await Promise.all([
+                        fetch('schema.json'), 
+                        fetch('synonyms.json'), 
+                        fetch('templates.json'), 
+                        fetch('guardrails.json')
+                    ]);
+                    
                     schemaData = await sch.json();
                     guardrails = new GuardrailEngine(await grd.json());
-                    synonymsData = (await syn.json()).Synonyms || await syn.json();
-                    templatesData = (await tpl.json()).Templates || await tpl.json();
+                    
+                    // FIX: Read the streams exactly once!
+                    const synJson = await syn.json();
+                    synonymsData = synJson.Synonyms || synJson;
+                    
+                    const tplJson = await tpl.json();
+                    templatesData = tplJson.Templates || tplJson;
+                    
                     renderTimeline();
-                } catch(e) { alert("Error loading files."); }
-            } else document.getElementById('auth-error').style.display = 'block';
+                } catch(e) { 
+                    alert("Error loading files. Check the console."); 
+                    console.error(e);
+                }
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
+            }
         };
 
         const closeModals = () => document.getElementById('modal-overlay').classList.remove('active');
