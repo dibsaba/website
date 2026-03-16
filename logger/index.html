@@ -168,26 +168,32 @@
 	<script type="module">
         import NarrativeEngine from './narrative_engine.js'; 
 
-        const APP_PASSWORD = "ABA2026";
+        // SECURITY: This is the SHA-256 hash of "ABA2026". The plaintext password is gone.
+        const EXPECTED_HASH = "8ec0a38b1968ed925ef5b871cda95baefd8cdcdbc34a81ba0bba80b62e4f0d3b";
         const STORAGE_KEY = "aba_timeline_v1";
         let timeline = JSON.parse(localStorage.getItem(STORAGE_KEY)) ||[];
         
         let schemaData = {};
         let synonymsData = {};
         let templatesData = {};
-        let guardrailsData = {}; // Added guardrails state
+        let guardrailsData = {}; 
         let currentFormType = null;
 
+        // UI Updates: Multi-selects for Start, Text input for Skills, New Transition Type
         const UI_CONFIG = {
             Session_Start:[
                 { id: "Location", label: "Location of Service", type: "select" },
                 { id: "Specific_Setting", label: "Specific Setting", type: "select" },
                 { id: "Others_Present", label: "Others Present", type: "multichoice" },
-                { id: "Initial_Presentation", label: "Client's Initial Presentation", type: "select" },
-                { id: "Health_Variables", label: "Health / Setting Variables", type: "select" }
+                { id: "Initial_Presentation", label: "Client's Initial Presentation", type: "multichoice" },
+                { id: "Health_Variables", label: "Health / Setting Variables", type: "multichoice" }
+            ],
+            Location_Transition:[
+                { id: "Specific_Setting", label: "Transitioned To (New Area)", type: "select" }
             ],
             Skill_Acquisition:[
                 { id: "Skill_Domains", label: "Skill Domain Addressed", type: "select" },
+                { id: "Specific_Target", label: "Specific Target / Program Name (Optional)", type: "text" },
                 { id: "Teaching_Formats", label: "Teaching Format", type: "select" },
                 { id: "Prompt_Levels", label: "Prompt Level Used", type: "select" },
                 { id: "Reinforcement_Schedules", label: "Reinforcement Schedule", type: "select" },
@@ -206,33 +212,37 @@
             ]
         };
 
+        // --- CRYPTOGRAPHIC PASSWORD HASHING ---
+        async function hashPassword(password) {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
         document.getElementById('btn-login').addEventListener('click', attemptLogin);
         document.getElementById('password-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') attemptLogin(); });
 
         async function attemptLogin() {
-            if (document.getElementById('password-input').value === APP_PASSWORD) {
+            const inputHash = await hashPassword(document.getElementById('password-input').value);
+            
+            if (inputHash === EXPECTED_HASH) {
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 
                 try {
-                    // Fetch all 4 configuration files
-                    const [schemaRes, synRes, tempRes, guardRes] = await Promise.all([
+                    const[schemaRes, synRes, tempRes, guardRes] = await Promise.all([
                         fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')
                     ]);
-                    
                     schemaData = await schemaRes.json();
                     guardrailsData = await guardRes.json();
-                    
                     const synJson = await synRes.json();
                     const tempJson = await tempRes.json();
                     synonymsData = synJson.Synonyms || synJson;
                     templatesData = tempJson.Templates || tempJson;
                     
                     renderTimeline();
-                } catch (err) {
-                    alert("Error loading JSON files.");
-                    console.error(err);
-                }
+                } catch (err) { alert("Error loading JSON files."); console.error(err); }
             } else {
                 document.getElementById('auth-error').style.display = 'block';
             }
@@ -246,23 +256,24 @@
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
+        function closeModal() { modalOverlay.classList.remove('active'); document.body.style.overflow = ''; }
         document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', closeModal));
+
+        // Inject the Transition Button into the DOM
+        const transitionBtn = document.createElement('button');
+        transitionBtn.id = "btn-add-transition";
+        transitionBtn.className = "btn-secondary";
+        transitionBtn.textContent = "Log Transition";
+        document.querySelector('.action-bar-row:nth-child(2)').insertBefore(transitionBtn, document.getElementById('btn-end-session'));
 
         document.getElementById('btn-start-session').addEventListener('click', () => buildForm('Session_Start'));
         document.getElementById('btn-end-session').addEventListener('click', () => buildForm('Session_End'));
         document.getElementById('btn-add-skill').addEventListener('click', () => buildForm('Skill_Acquisition'));
         document.getElementById('btn-add-behavior').addEventListener('click', () => buildForm('Behavior_Reduction'));
+        document.getElementById('btn-add-transition').addEventListener('click', () => buildForm('Location_Transition'));
 
         document.getElementById('btn-clear-session').addEventListener('click', () => {
-            if(confirm("Are you sure you want to clear this entire session? This cannot be undone.")) {
-                timeline =[];
-                localStorage.removeItem(STORAGE_KEY);
-                renderTimeline();
-            }
+            if(confirm("Are you sure you want to clear this entire session?")) { timeline =[]; localStorage.removeItem(STORAGE_KEY); renderTimeline(); }
         });
 
         function updateButtonStates() {
@@ -274,14 +285,14 @@
             
             document.getElementById('btn-add-skill').disabled = !hasStarted || hasEnded;
             document.getElementById('btn-add-behavior').disabled = !hasStarted || hasEnded;
+            document.getElementById('btn-add-transition').disabled = !hasStarted || hasEnded;
             document.getElementById('btn-end-session').disabled = !hasStarted || hasEnded;
-            
             document.getElementById('btn-generate').disabled = timeline.length === 0;
         }
 
         function buildForm(type) {
             currentFormType = type;
-            const titles = { 'Session_Start': 'Start Session', 'Skill_Acquisition': 'Log Skill', 'Behavior_Reduction': 'Log Behavior', 'Session_End': 'End Session' };
+            const titles = { 'Session_Start': 'Start Session', 'Location_Transition': 'Log Transition', 'Skill_Acquisition': 'Log Skill', 'Behavior_Reduction': 'Log Behavior', 'Session_End': 'End Session' };
             document.getElementById('form-modal-title').textContent = titles[type];
             const container = document.getElementById('form-container');
             container.innerHTML = '';
@@ -302,26 +313,27 @@
                     const group = document.createElement('div');
                     group.className = 'checkbox-group';
                     group.dataset.id = field.id;
-                    optionsArray.forEach(opt => {
-                        group.innerHTML += `<label class="checkbox-pill"><input type="checkbox" value="${opt}"><span>${opt}</span></label>`;
-                    });
+                    optionsArray.forEach(opt => group.innerHTML += `<label class="checkbox-pill"><input type="checkbox" value="${opt}"><span>${opt}</span></label>`);
                     wrapper.appendChild(group);
+                }
+                else if (field.type === 'text') {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.dataset.id = field.id;
+                    input.placeholder = "e.g., Tacting colors, Handwashing";
+                    wrapper.appendChild(input);
                 }
                 container.appendChild(wrapper);
             });
 
-            // --- APPLY DYNAMIC GUARDRAILS FOR BEHAVIORS ---
             if (type === 'Behavior_Reduction') {
                 const behaviorSelect = container.querySelector('select[data-id="Target_Behaviors"]');
                 const antecedentSelect = container.querySelector('select[data-id="Antecedents"]');
                 const interventionsGroup = container.querySelector('.checkbox-group[data-id="Interventions"]');
                 
-                // Add the Whitelist Override Button
                 const overrideBtn = document.createElement('button');
-                overrideBtn.type = 'button';
-                overrideBtn.className = 'btn-secondary';
-                overrideBtn.style.marginTop = '12px';
-                overrideBtn.style.fontSize = '0.85rem';
+                overrideBtn.type = 'button'; overrideBtn.className = 'btn-secondary';
+                overrideBtn.style.marginTop = '12px'; overrideBtn.style.fontSize = '0.85rem';
                 overrideBtn.textContent = 'Show All Allowable (Override Whitelist)';
                 let isOverrideActive = false;
                 interventionsGroup.parentNode.appendChild(overrideBtn);
@@ -329,20 +341,15 @@
                 const applyInterventionGuardrails = () => {
                     const selectedAnt = antecedentSelect.value;
                     const rules = guardrailsData.Function_Based_Guardrails?.find(r => r.antecedent === selectedAnt);
-                    
                     const pills = interventionsGroup.querySelectorAll('.checkbox-pill');
                     pills.forEach(pill => {
                         const input = pill.querySelector('input');
-                        const val = input.value;
-                        
                         if (rules) {
-                            if (rules.blacklisted_interventions.includes(val)) {
-                                pill.style.display = 'none'; // NEVER show blacklisted
-                                input.checked = false; 
-                            } else if (rules.whitelisted_interventions.includes(val)) {
-                                pill.style.display = 'inline-block'; // ALWAYS show whitelisted
+                            if (rules.blacklisted_interventions.includes(input.value)) {
+                                pill.style.display = 'none'; input.checked = false; 
+                            } else if (rules.whitelisted_interventions.includes(input.value)) {
+                                pill.style.display = 'inline-block';
                             } else {
-                                // NEUTRAL: Hide by default, show if override is active
                                 pill.style.display = isOverrideActive ? 'inline-block' : 'none';
                                 if (!isOverrideActive) input.checked = false;
                             }
@@ -361,24 +368,10 @@
                 };
 
                 behaviorSelect.addEventListener('change', handleBehaviorNone);
-                
-                antecedentSelect.addEventListener('change', () => {
-                    isOverrideActive = false;
-                    overrideBtn.textContent = 'Show All Allowable (Override Whitelist)';
-                    applyInterventionGuardrails();
-                });
-
-                overrideBtn.addEventListener('click', () => {
-                    isOverrideActive = !isOverrideActive;
-                    overrideBtn.textContent = isOverrideActive ? 'Hide Non-Whitelisted' : 'Show All Allowable (Override Whitelist)';
-                    applyInterventionGuardrails();
-                });
-
-                // Initialize state
-                handleBehaviorNone();
-                applyInterventionGuardrails();
+                antecedentSelect.addEventListener('change', () => { isOverrideActive = false; overrideBtn.textContent = 'Show All Allowable'; applyInterventionGuardrails(); });
+                overrideBtn.addEventListener('click', () => { isOverrideActive = !isOverrideActive; overrideBtn.textContent = isOverrideActive ? 'Hide Non-Whitelisted' : 'Show All Allowable'; applyInterventionGuardrails(); });
+                handleBehaviorNone(); applyInterventionGuardrails();
             }
-
             openModal('form-modal');
         }
 
@@ -388,7 +381,7 @@
             
             inputs.forEach(el => {
                 const key = el.dataset.id;
-                if (el.tagName === 'SELECT') {
+                if (el.tagName === 'SELECT' || el.type === 'text') {
                     eventData[key] = el.value;
                 } else if (el.classList.contains('checkbox-group')) {
                     const checked = Array.from(el.querySelectorAll('input:checked')).map(cb => cb.value);
@@ -396,12 +389,7 @@
                 }
             });
 
-            timeline.push({
-                type: currentFormType,
-                timestamp: new Date().toISOString(),
-                data: eventData
-            });
-
+            timeline.push({ type: currentFormType, timestamp: new Date().toISOString(), data: eventData });
             localStorage.setItem(STORAGE_KEY, JSON.stringify(timeline));
             renderTimeline();
             closeModal();
@@ -410,31 +398,24 @@
         function renderTimeline() {
             const feed = document.getElementById('timeline-feed');
             feed.innerHTML = '';
-            
             updateButtonStates();
 
             if (timeline.length === 0) {
-                feed.innerHTML = `<div class="empty-state"><h3>Ready to start therapy.</h3><p>Click "Start Session" to begin logging.</p></div>`;
-                return;
+                feed.innerHTML = `<div class="empty-state"><h3>Ready to start therapy.</h3><p>Click "Start Session" to begin logging.</p></div>`; return;
             }
 
             const sorted = [...timeline].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-
             sorted.forEach(ev => {
                 const card = document.createElement('div');
                 card.className = `timeline-card type-${ev.type}`;
                 const timeStr = new Date(ev.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const titles = { 'Session_Start': 'Session Started', 'Skill_Acquisition': 'Skill Acquisition', 'Behavior_Reduction': 'Behavior Intervention', 'Session_End': 'Session Ended' };
+                const titles = { 'Session_Start': 'Session Started', 'Location_Transition': 'Transition Logged', 'Skill_Acquisition': 'Skill Acquisition', 'Behavior_Reduction': 'Behavior Intervention', 'Session_End': 'Session Ended' };
                 
                 let details = '';
                 UI_CONFIG[ev.type].forEach(field => {
                     const val = ev.data[field.id];
-                    if(val) {
-                        const displayVal = Array.isArray(val) ? val.join(', ') : val;
-                        details += `<p><strong>${field.label}:</strong> ${displayVal}</p>`;
-                    }
+                    if(val) details += `<p><strong>${field.label}:</strong> ${Array.isArray(val) ? val.join(', ') : val}</p>`;
                 });
-
                 card.innerHTML = `<div class="card-header"><span class="card-title">${titles[ev.type]}</span><span class="card-time">${timeStr}</span></div><div class="card-body">${details}</div>`;
                 feed.prepend(card);
             });
@@ -442,26 +423,15 @@
 
         document.getElementById('btn-generate').addEventListener('click', () => {
             openModal('generate-modal');
-            const outputArea = document.getElementById('note-output');
-            document.getElementById('attest-checkbox').checked = false;
-            document.getElementById('btn-copy').disabled = true;
-
             const chronologicalTimeline = [...timeline].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-            outputArea.value = NarrativeEngine.generate(synonymsData, templatesData, chronologicalTimeline);
+            document.getElementById('note-output').value = NarrativeEngine.generate(synonymsData, templatesData, chronologicalTimeline);
+            document.getElementById('attest-checkbox').checked = false; document.getElementById('btn-copy').disabled = true;
         });
 
-        document.getElementById('attest-checkbox').addEventListener('change', (e) => {
-            document.getElementById('btn-copy').disabled = !e.target.checked;
-        });
-
+        document.getElementById('attest-checkbox').addEventListener('change', (e) => document.getElementById('btn-copy').disabled = !e.target.checked );
         document.getElementById('btn-copy').addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(document.getElementById('note-output').value);
-                document.getElementById('btn-copy').textContent = "Copied!";
-                setTimeout(() => { document.getElementById('btn-copy').textContent = "Copy to Clipboard"; closeModal(); }, 2000);
-            } catch (err) {
-                alert("Could not auto-copy. Please highlight and copy manually.");
-            }
+            try { await navigator.clipboard.writeText(document.getElementById('note-output').value); document.getElementById('btn-copy').textContent = "Copied!"; setTimeout(() => { document.getElementById('btn-copy').textContent = "Copy to Clipboard"; closeModal(); }, 2000); } 
+            catch (err) { alert("Could not auto-copy. Please manually copy."); }
         });
     </script>
 </body>

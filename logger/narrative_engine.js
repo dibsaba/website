@@ -4,7 +4,7 @@ export default class NarrativeEngine {
     if (dataVal.length === 0) return "";
     if (dataVal.length === 1) return String(dataVal[0]);
     if (dataVal.length === 2) return `${dataVal[0]} and ${dataVal[1]}`;
-    const items = [...dataVal];
+    const items =[...dataVal];
     const lastItem = items.pop();
     return `${items.join(", ")}, and ${lastItem}`;
   }
@@ -27,12 +27,9 @@ export default class NarrativeEngine {
 
       let sentence = this.getRandomElement(availableTemplates);
 
-      // --- THE SPACING FIX ---
-      // This automatically adds a space before a[ or { if it's missing, 
-      // and a space after a ] or } if it's not punctuation.
-      sentence = sentence.replace(/([^\s])(\{|\[)/g, '$1 $2').replace(/(\}|\])([^\s.,!?;:])/g, '$1 $2');
+      // FIX: Better spacing regex that ignores apostrophes (')
+      sentence = sentence.replace(/([^\s])(\{|\[)/g, '$1 $2').replace(/(\}|\])([^\s.,!?;:'])/g, '$1 $2');
 
-      // Process Synonyms ({curly_brackets})
       sentence = sentence.replace(/\{([^}]+)\}/g, (match, key) => {
         if (key.includes("transitions")) {
           if (i === 0) key = "intro_transitions";
@@ -43,18 +40,20 @@ export default class NarrativeEngine {
         return (Array.isArray(options) && options.length > 0) ? this.getRandomElement(options) : ""; 
       });
 
-      // Process Data ([square_brackets])
       const eventData = data || {};
       sentence = sentence.replace(/\[([^\]]+)\]/g, (match, key) => {
         const val = eventData[key];
-        // If empty, return nothing. Otherwise, format the list.
-        return (val === undefined || val === null || val === "" || val === "None selected") ? "none" : this.formatList(val);
+        return (val === undefined || val === null || val === "" || val === "None selected") ? "" : this.formatList(val);
       });
 
-      // Clean up whitespace and punctuation
-      sentence = sentence.replace(/\s{2,}/g, " ").replace(/\s+([.,!?])/g, "$1").trim();
+      // FIX: Clean up extra spaces, including empty parenthesis from missing specific targets
+      sentence = sentence.replace(/\(\s*\)/g, "").replace(/\s{2,}/g, " ").replace(/\s+([.,!?])/g, "$1").trim();
       
-      if (sentence) paragraphParts.push(sentence);
+      // FIX: Auto-capitalize the very first letter of the generated sentence
+      if (sentence) {
+        sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+        paragraphParts.push(sentence);
+      }
     }
 
     return paragraphParts.join(" ");

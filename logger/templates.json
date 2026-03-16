@@ -1,6 +1,11 @@
 {
+  "Location_Transition":[
+    "{mid_transitions} {client} transitioned to the [Specific_Setting].",
+    "{mid_transitions} we moved to the [Specific_Setting] to continue therapy.",
+    "{mid_transitions} the session relocated to the [Specific_Setting]."
+  ],
   "Session_Start": [
-    "Therapy commenced at the[Location], specifically in the [Specific_Setting]. Present for the session were [Others_Present]. Upon arrival, {client} presented as [Initial_Presentation], with [Health_Variables] noted regarding health variables. I spent the initial portion of the session building rapport and pairing with reinforcement before placing demands.",
+    "Therapy commenced at the [Location], specifically in the [Specific_Setting]. Present for the session were [Others_Present]. Upon arrival, {client} presented as [Initial_Presentation], with [Health_Variables] noted regarding health variables. I spent the initial portion of the session building rapport and pairing with reinforcement before placing demands.",
     "The session began in the [Location] setting ([Specific_Setting]). [Others_Present] were present. {client} initially presented as [Initial_Presentation]. Regarding health or setting events, [Health_Variables] were noted. Initial time was dedicated to pairing and establishing instructional control.",
     "I initiated the session at the [Location] within the [Specific_Setting]. [Others_Present] were on-site. {client}'s initial presentation was [Initial_Presentation], and health variables were noted as [Health_Variables]. Rapport building and pairing activities were conducted first."
   ],
