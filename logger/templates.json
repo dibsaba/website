@@ -1,4 +1,14 @@
 {
+  "Session_Start": [
+    "Therapy commenced at the[Location], specifically in the [Specific_Setting]. Present for the session were [Others_Present]. Upon arrival, {client} presented as [Initial_Presentation], with [Health_Variables] noted regarding health variables. I spent the initial portion of the session building rapport and pairing with reinforcement before placing demands.",
+    "The session began in the [Location] setting ([Specific_Setting]). [Others_Present] were present. {client} initially presented as [Initial_Presentation]. Regarding health or setting events, [Health_Variables] were noted. Initial time was dedicated to pairing and establishing instructional control.",
+    "I initiated the session at the [Location] within the [Specific_Setting]. [Others_Present] were on-site. {client}'s initial presentation was [Initial_Presentation], and health variables were noted as [Health_Variables]. Rapport building and pairing activities were conducted first."
+  ],
+  "Session_End":[
+    "Towards the end of the appointment, {client} presented as [End_Demeanor]. I concluded the session by conducting a caregiver handoff, during which I [Caregiver_Handoff].",
+    "As the session concluded, {client}'s demeanor was [End_Demeanor]. A caregiver handoff was completed, where I [Caregiver_Handoff].",
+    "At the close of the appointment, {client} was [End_Demeanor]. I transitioned {client} and completed a handoff, ensuring I [Caregiver_Handoff]."
+  ],
   "Skill_Acquisition":[
     "{intro_transitions} I {implemented} [Teaching_Formats] to target [Skill_Domains]. {client} responded to [Prompt_Levels] and received [Specific_Reinforcers] on a [Reinforcement_Schedules] schedule.",
     "{intro_transitions} [Skill_Domains] was addressed via [Teaching_Formats]. I {observed} {client} utilizing[Prompt_Levels], earning [Specific_Reinforcers] through [Reinforcement_Schedules].",
