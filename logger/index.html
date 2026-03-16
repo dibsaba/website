@@ -86,7 +86,7 @@
         import NarrativePlanner from './narrative_planner.js';
         import NarrativeEngine from './narrative_engine.js';
 
-        const EXPECTED_HASH = "8ec0a38b1968ed925ef5b871cda95baefd8cdcdbc34a81ba0bba80b62e4f0d3b";
+        const EXPECTED_HASH = "24a4cf6660edcd7bba5139a1cbbc4586344f33e85e4c47a7596bbdb18329bd08";
         let timeline = JSON.parse(localStorage.getItem('aba_tl')) ||[];
         let schemaData, synonymsData, templatesData, guardrails;
         let currentType = null;
@@ -105,8 +105,7 @@
         }
 
         document.getElementById('btn-login').onclick = async () => {
-            // if (await hashPassword(document.getElementById('password-input').value) === EXPECTED_HASH) {
-            if (true) {
+            if (await hashPassword(document.getElementById('password-input').value) === EXPECTED_HASH) {
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
