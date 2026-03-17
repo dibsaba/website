@@ -397,8 +397,9 @@
                 
                 // Add click listener to open edit form
                 card.onclick = () => openForm(ev.type, ev);
-                f.prepend(card);
+                f.appendChild(card);
             });
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
         document.getElementById('btn-generate').onclick = () => {
