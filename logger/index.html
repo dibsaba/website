@@ -86,7 +86,7 @@
         import NarrativePlanner from './narrative_planner.js';
         import NarrativeEngine from './narrative_engine.js';
 
-        const EXPECTED_HASH = "24a4cf6660edcd7bba5139a1cbbc4586344f33e85e4c47a7596bbdb18329bd08";
+        const EXPECTED_HASH = "8ec0a38b1968ed925ef5b871cda95baefd8cdcdbc34a81ba0bba80b62e4f0d3b";
         let timeline = JSON.parse(localStorage.getItem('aba_tl')) ||[];
         let schemaData, synonymsData, templatesData, guardrails;
         let currentType = null;
@@ -135,22 +135,16 @@
 
         document.getElementById('btn-login').onclick = async () => {
             const inputHash = await hashPassword(document.getElementById('password-input').value);
-            
             if (inputHash === EXPECTED_HASH) {
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
                     const[sch, syn, tpl, grd] = await Promise.all([
-                        fetch('schema.json'), 
-                        fetch('synonyms.json'), 
-                        fetch('templates.json'), 
-                        fetch('guardrails.json')
+                        fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')
                     ]);
-                    
                     schemaData = await sch.json();
                     guardrails = new GuardrailEngine(await grd.json());
                     
-                    // FIX: Read the streams exactly once!
                     const synJson = await syn.json();
                     synonymsData = synJson.Synonyms || synJson;
                     
@@ -158,10 +152,7 @@
                     templatesData = tplJson.Templates || tplJson;
                     
                     renderTimeline();
-                } catch(e) { 
-                    alert("Error loading files. Check the console."); 
-                    console.error(e);
-                }
+                } catch(e) { alert("Error loading files. Check console."); console.error(e); }
             } else {
                 document.getElementById('auth-error').style.display = 'block';
             }
@@ -173,19 +164,27 @@
         const openForm = (type) => {
             currentType = type;
             document.getElementById('form-title').innerText = type.replace('_', ' ');
-            const c = document.getElementById('form-container'); c.innerHTML = '';
+            const c = document.getElementById('form-container'); 
+            c.innerHTML = '';
             
             UI_CONFIG[type].forEach(f => {
                 const w = document.createElement('div'); w.className = 'form-field';
                 w.innerHTML = `<label class="form-label">${f.label}</label>`;
-                if(f.type === 'text') {
+                
+                if (f.type === 'text') {
                     w.innerHTML += `<input type="text" data-id="${f.id}">`;
-                } else if(f.type === 'textarea') {
+                } else if (f.type === 'textarea') {
                     w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Enter custom details here..."></textarea>`;
-                } else if(f.type === 'select') {
+                } else if (f.type === 'select') {
+                    let sel = `<select data-id="${f.id}">`;
+                    (schemaData[f.id] ||[]).forEach(o => sel += `<option value="${o}">${o}</option>`);
+                    sel += `</select>`;
+                    w.innerHTML += sel;
+                } else {
                     let grp = `<div class="checkbox-group" data-id="${f.id}">`;
-                    (schemaData[f.id]||[]).forEach(o => grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}"><span>${o}</span></label>`);
-                    w.innerHTML += grp + `</div>`;
+                    (schemaData[f.id] ||[]).forEach(o => grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}"><span>${o}</span></label>`);
+                    grp += `</div>`;
+                    w.innerHTML += grp;
                 }
                 c.appendChild(w);
             });
@@ -223,7 +222,7 @@
         document.getElementById('btn-transition').onclick = () => openForm('Location_Transition');
         document.getElementById('btn-end').onclick = () => openForm('Session_End');
 
-		document.getElementById('btn-save').onclick = () => {
+        document.getElementById('btn-save').onclick = () => {
             const data = {};
             document.getElementById('form-container').querySelectorAll('[data-id]').forEach(el => {
                 if(el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
@@ -231,9 +230,13 @@
                 }
                 if (el.classList.contains('checkbox-group')) { 
                     const c = Array.from(el.querySelectorAll('input:checked')).map(i=>i.value); 
-                    data[el.dataset.id] = c.length ? c : ["None selected"]; 
+                    data[el.dataset.id] = c.length ? c :["None selected"]; 
                 }
             });
+            timeline.push({ type: currentType, timestamp: new Date().toISOString(), data });
+            localStorage.setItem('aba_tl', JSON.stringify(timeline));
+            renderTimeline(); closeModals();
+        };
 
         function renderTimeline() {
             const f = document.getElementById('timeline-feed'); f.innerHTML = '';
@@ -251,7 +254,6 @@
         }
 
         document.getElementById('btn-generate').onclick = () => {
-            // PIPELINE ARCHITECTURE ACTIVATED HERE
             const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
             const sessionObj = SessionNormalizer.normalize(sortedTimeline);
             const plan = NarrativePlanner.buildPlan(sessionObj);
@@ -268,7 +270,9 @@
             document.getElementById('btn-copy').innerText = "Copied!";
             setTimeout(() => document.getElementById('btn-copy').innerText = "Copy", 2000);
         };
-        document.getElementById('btn-clear').onclick = () => { if(confirm("Clear session?")) { timeline=[]; localStorage.removeItem('aba_tl'); renderTimeline(); } };
+        
+        document.getElementById('btn-clear').onclick = () => { 
+            if(confirm("Clear session?")) { timeline=[]; localStorage.removeItem('aba_tl'); renderTimeline(); } };
     </script>
 </body>
 </html>
