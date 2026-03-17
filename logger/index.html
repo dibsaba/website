@@ -6,77 +6,148 @@
     <title>ABA Clinical Session Logger</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        /* (Keep your exact CSS styles from previous index.html here to save space) */
-        :root { --font-sans: 'Inter', sans-serif; --font-serif: 'Playfair Display', serif; --brand-primary: #292524; --brand-primary-dark: #1c1917; --brand-accent: #ea580c; --brand-accent-light: #fb923c; --brand-accent-dark: #c2410c; --brand-cream: #fff7ed; --brand-sand: #f5f5f4; --brand-surface: #ffffff; --brand-danger: #ef4444; --brand-success: #16a34a; --text-body: #475569; --text-muted: #94a3b8; }
+        :root { 
+            --font-sans: 'Inter', sans-serif; 
+            --font-serif: 'Playfair Display', serif; 
+            --brand-primary: #292524; 
+            --brand-primary-dark: #1c1917; 
+            --brand-accent: #ea580c; 
+            --brand-accent-light: #fb923c; 
+            --brand-accent-dark: #c2410c; 
+            --brand-cream: #fff7ed; 
+            --brand-sand: #f5f5f4; 
+            --brand-surface: #ffffff; 
+            --brand-danger: #ef4444; 
+            --brand-success: #16a34a; 
+            --text-body: #475569; 
+            --text-muted: #94a3b8; 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-sans); background-color: var(--brand-cream); color: var(--text-body); -webkit-font-smoothing: antialiased; }
         h1, h2, h3 { font-family: var(--font-serif); color: var(--brand-primary); }
         button { font-family: var(--font-sans); font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
-        .btn-primary { background: var(--brand-accent); color: #fff; padding: 12px 20px; border-radius: 8px; width: 100%; }
+        
+        .btn-primary { background: var(--brand-accent); color: #fff; padding: 12px 20px; border-radius: 8px; width: 100%; font-weight: 600; }
         .btn-primary:disabled { background: var(--text-muted); cursor: not-allowed; }
         .btn-secondary { background: var(--brand-primary); color: #fff; padding: 12px 16px; border-radius: 8px; width:100%; }
         .btn-secondary:disabled { background: var(--text-muted); opacity: 0.5; }
-        input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px; border: 1px solid var(--text-muted); border-radius: 8px; font-family: var(--font-sans); }
+        
+        input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-family: var(--font-sans); background: var(--brand-surface); color: var(--brand-primary); }
+        input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand-accent-light); border-color: transparent; }
+
         .view { display: none; min-height: 100vh; }
         .view.active { display: flex; flex-direction: column; }
-        #auth-view { justify-content: center; align-items: center; padding: 20px; }
-        .auth-card { background: #fff; padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; width: 100%; }
+        
+        /* --- PROFESSIONAL LOGIN SCREEN STYLING --- */
+        #auth-view { justify-content: center; align-items: center; padding: 20px; background-color: var(--brand-sand); }
+        .auth-card { background: #fff; padding: 40px 32px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; max-width: 420px; width: 100%; }
+        .auth-card img { max-width: 180px; margin-bottom: 24px; }
+        .auth-card h2 { margin-bottom: 24px; font-family: var(--font-sans); font-size: 1.25rem; font-weight: 600; color: var(--brand-primary); }
+        .auth-card .form-group { margin-bottom: 20px; text-align: left; }
+        .auth-card .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-body); margin-bottom: 6px; }
+
+        /* --- DASHBOARD STYLING --- */
         #dashboard-view { padding-bottom: 150px; }
-        .app-header { background: #fff; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 10; display:flex; justify-content: space-between;}
+        .app-header { background: #fff; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 10; display:flex; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.03);}
         .timeline-container { max-width: 800px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-        .timeline-card { background: #fff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--brand-primary); }
+        .timeline-card { background: #fff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--brand-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 15px; display: flex; flex-direction: column; gap: 10px; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
         .action-bar-row { max-width: 800px; width: 100%; display: flex; gap: 10px; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; }
+        
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 100; }
         .modal-overlay.active { display: flex; }
         .modal { background: #fff; width: 100%; max-width: 600px; max-height: 85vh; border-radius: 12px; display: flex; flex-direction: column; }
-        .modal-header { padding: 20px; border-bottom: 1px solid var(--brand-sand); display: flex; justify-content: space-between; }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--brand-sand); display: flex; justify-content: space-between; align-items: center; }
+        .close-btn { background: none; font-size: 1.5rem; color: var(--text-muted); padding: 0 10px; line-height: 1; }
         .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
         .modal-footer { padding: 20px; border-top: 1px solid var(--brand-sand); }
+        
         .form-field { margin-bottom: 20px; }
-        .form-label { font-weight: 600; display: block; margin-bottom: 8px; }
+        .form-label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--brand-primary); }
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
         .checkbox-pill input { display: none; }
-        .checkbox-pill span { padding: 10px; background: var(--brand-sand); border-radius: 8px; display: inline-block; cursor: pointer; }
-        .checkbox-pill input:checked + span { background: var(--brand-accent); color: #fff; }
+        .checkbox-pill span { padding: 10px 14px; background: var(--brand-sand); border-radius: 8px; display: inline-block; cursor: pointer; font-size: 0.95rem; border: 1px solid transparent; }
+        .checkbox-pill input:checked + span { background: var(--brand-accent); color: #fff; border-color: var(--brand-accent-dark); }
+        
+        @media (max-width: 767px) {
+            .modal { position: absolute; inset: 0; height: 100%; border-radius: 0; max-height: 100vh; }
+        }
     </style>
 </head>
 <body>
+    
+    <!-- PROFESSIONAL LOGIN VIEW -->
     <div id="auth-view" class="view active">
         <div class="auth-card">
-            <h1>ABA Logger</h1>
-            <div style="margin-bottom:20px;"><input type="password" id="password-input" placeholder="Password"></div>
-            <button id="btn-login" class="btn-primary">Unlock</button>
-            <p id="auth-error" style="color:red; display:none; margin-top:10px;">Incorrect</p>
+            <img src="dibs-logo-login.png" alt="Dibs ABA Logo" onerror="this.style.display='none'">
+            <h2>Sign in to your account</h2>
+            
+            <div class="form-group">
+                <label for="login-input">Login ID</label>
+                <input type="text" id="login-input" placeholder="Enter your login ID">
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 30px;">
+                <label for="password-input">Password</label>
+                <input type="password" id="password-input" placeholder="Enter password">
+            </div>
+            
+            <button id="btn-login" class="btn-primary">Sign In</button>
+            <p id="auth-error" style="color: var(--brand-danger); display: none; margin-top: 16px; font-size: 0.9rem;">Invalid login or password.</p>
         </div>
     </div>
 
+    <!-- DASHBOARD VIEW -->
     <div id="dashboard-view" class="view">
-        <header class="app-header"><h2>Session Timeline</h2><button id="btn-clear" style="background:none; color:red; border:none; cursor:pointer;">Clear</button></header>
+        <header class="app-header">
+            <h2>Session Timeline</h2>
+            <button id="btn-clear" style="background:none; color:var(--brand-danger); border:none; cursor:pointer; font-weight:600; text-decoration:underline;">Clear</button>
+        </header>
+        
         <main class="timeline-container" id="timeline-feed"></main>
         
         <nav class="action-bar">
-            <div class="action-bar-row"><button id="btn-start" class="btn-primary" style="background:var(--brand-success);">Start Session</button></div>
+            <div class="action-bar-row">
+                <button id="btn-start" class="btn-primary" style="background:var(--brand-success);">Start Session</button>
+            </div>
             <div class="action-bar-row">
                 <button id="btn-skill" class="btn-secondary" disabled>Add Skill</button>
                 <button id="btn-behavior" class="btn-secondary" disabled>Add Behavior</button>
                 <button id="btn-transition" class="btn-secondary" disabled>Transition</button>
                 <button id="btn-end" class="btn-secondary" disabled>End Session</button>
             </div>
-            <div class="action-bar-row"><button id="btn-generate" class="btn-primary" disabled>Generate Note</button></div>
+            <div class="action-bar-row">
+                <button id="btn-generate" class="btn-primary" disabled>Generate Note</button>
+            </div>
         </nav>
     </div>
 
+    <!-- MODALS -->
     <div id="modal-overlay" class="modal-overlay">
+        <!-- Input Form Modal -->
         <div id="form-modal" class="modal" style="display:none;">
-            <header class="modal-header"><h2 id="form-title">Event</h2><button class="close-btn" data-close>X</button></header>
+            <header class="modal-header">
+                <h2 id="form-title">Event</h2>
+                <button class="close-btn" data-close>&times;</button>
+            </header>
             <div class="modal-body" id="form-container"></div>
-            <footer class="modal-footer"><button id="btn-save" class="btn-primary">Save</button></footer>
+            <footer class="modal-footer">
+                <button id="btn-save" class="btn-primary">Save Data</button>
+            </footer>
         </div>
+        
+        <!-- Output Note Modal -->
         <div id="generate-modal" class="modal" style="display:none;">
-            <header class="modal-header"><h2>Generated Note</h2><button class="close-btn" data-close>X</button></header>
-            <div class="modal-body"><textarea id="note-output" rows="12" readonly></textarea></div>
-            <footer class="modal-footer"><button id="btn-copy" class="btn-primary">Copy</button></footer>
+            <header class="modal-header">
+                <h2>Generated Note</h2>
+                <button class="close-btn" data-close>&times;</button>
+            </header>
+            <div class="modal-body">
+                <textarea id="note-output" rows="14" readonly style="line-height: 1.5; font-size: 0.95rem;"></textarea>
+            </div>
+            <footer class="modal-footer">
+                <button id="btn-copy" class="btn-primary">Copy to Clipboard</button>
+            </footer>
         </div>
     </div>
 
@@ -86,62 +157,80 @@
         import NarrativePlanner from './narrative_planner.js';
         import NarrativeEngine from './narrative_engine.js';
 
-        const EXPECTED_HASH = "8ec0a38b1968ed925ef5b871cda95baefd8cdcdbc34a81ba0bba80b62e4f0d3b";
+        // Cryptographic hashes provided by user
+        const EXPECTED_LOGIN_HASH = "fc94da1f7e92bdba9c38e8164daea483f0304f6951a56919fa24076d0f237a70";
+        const EXPECTED_PASS_HASH = "24a4cf6660edcd7bba5139a1cbbc4586344f33e85e4c47a7596bbdb18329bd08";
+        
         let timeline = JSON.parse(localStorage.getItem('aba_tl')) ||[];
         let schemaData, synonymsData, templatesData, guardrails;
         let currentType = null;
 
         const UI_CONFIG = {
             Session_Start:[
-                { id: "Location", label: "Location of Service", type: "select" },
-                { id: "Specific_Setting", label: "Specific Setting", type: "select" },
-                { id: "Others_Present", label: "Others Present", type: "multichoice" },
-                { id: "Initial_Presentation", label: "Client's Initial Presentation", type: "multichoice" },
-                { id: "Health_Variables", label: "Health / Setting Variables", type: "multichoice" },
-                { id: "Custom_Narrative", label: "Additional Clinical Notes (Optional)", type: "textarea" }
+                {id:"Location", label:"Location", type:"select"}, 
+                {id:"Specific_Setting", label:"Setting", type:"select"}, 
+                {id:"Others_Present", label:"Others", type:"multichoice"}, 
+                {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
+                {id:"Health_Variables", label:"Health", type:"multichoice"},
+                {id:"Custom_Narrative", label:"Additional Notes (Optional)", type:"textarea"}
             ],
             Location_Transition:[
-                { id: "Specific_Setting", label: "Transitioned To (New Area)", type: "select" },
-                { id: "Custom_Narrative", label: "Context for Transition (Optional)", type: "textarea" }
+                {id:"Specific_Setting", label:"New Area", type:"select"},
+                {id:"Custom_Narrative", label:"Transition Notes (Optional)", type:"textarea"}
             ],
             Skill_Acquisition:[
-                { id: "Skill_Domains", label: "Skill Domain Addressed", type: "select" },
-                { id: "Specific_Target", label: "Specific Target / Program Name (Optional)", type: "text" },
-                { id: "Teaching_Formats", label: "Teaching Format", type: "select" },
-                { id: "Prompt_Levels", label: "Prompt Level Used", type: "select" },
-                { id: "Reinforcement_Schedules", label: "Reinforcement Schedule", type: "select" },
-                { id: "Specific_Reinforcers", label: "Specific Reinforcer", type: "multichoice" },
-                { id: "Custom_Narrative", label: "Client Response / Additional Details (Optional)", type: "textarea" }
+                {id:"Skill_Domains", label:"Domain", type:"select"}, 
+                {id:"Specific_Target", label:"Target (Optional)", type:"text"}, 
+                {id:"Teaching_Formats", label:"Format", type:"select"}, 
+                {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
+                {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
+                {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
+                {id:"Custom_Narrative", label:"Client Response (Optional)", type:"textarea"}
             ],
             Behavior_Reduction:[
-                { id: "Target_Behaviors", label: "Target Behavior Observed", type: "select" },
-                { id: "Intensity", label: "Intensity", type: "select" },
-                { id: "Antecedents", label: "Presumed Antecedent", type: "select" },
-                { id: "Interventions", label: "Interventions Implemented", type: "multichoice" },
-                { id: "Deescalation_Time", label: "De-escalation Time", type: "select" },
-                { id: "Custom_Narrative", label: "Behavior Context / Narrative (Optional)", type: "textarea" }
+                {id:"Target_Behaviors", label:"Behavior", type:"select"}, 
+                {id:"Intensity", label:"Intensity", type:"select"}, 
+                {id:"Antecedents", label:"Antecedent", type:"select"}, 
+                {id:"Interventions", label:"Interventions", type:"multichoice"}, 
+                {id:"Deescalation_Time", label:"Time", type:"select"},
+                {id:"Custom_Narrative", label:"Behavior Context (Optional)", type:"textarea"}
             ],
             Session_End:[
-                { id: "End_Demeanor", label: "Client's Ending Demeanor", type: "select" },
-                { id: "Caregiver_Handoff", label: "Caregiver Handoff Details", type: "multichoice" },
-                { id: "Custom_Narrative", label: "Additional Handoff Notes (Optional)", type: "textarea" }
+                {id:"End_Demeanor", label:"Demeanor", type:"select"}, 
+                {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
+                {id:"Custom_Narrative", label:"Handoff Notes (Optional)", type:"textarea"}
             ]
         };
 
-        async function hashPassword(p) {
-            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(p));
+        // SHA-256 Hashing function
+        async function hashString(str) {
+            if (!crypto.subtle) return null; // Failsafe for non-HTTPS connections
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
             return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         document.getElementById('btn-login').onclick = async () => {
-            const inputHash = await hashPassword(document.getElementById('password-input').value);
-            if (inputHash === EXPECTED_HASH) {
+            if (!crypto.subtle) {
+                alert("Security Error: App must be hosted on HTTPS (like GitHub Pages) to verify secure logins.");
+                return;
+            }
+
+            // `.trim()` automatically removes accidental copy-pasted spaces!
+            const loginInput = document.getElementById('login-input').value.trim();
+            const passInput = document.getElementById('password-input').value.trim();
+            
+            const loginHash = await hashString(loginInput);
+            const passHash = await hashString(passInput);
+
+            if (loginHash === EXPECTED_LOGIN_HASH && passHash === EXPECTED_PASS_HASH) {
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
                     const[sch, syn, tpl, grd] = await Promise.all([
-                        fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')
+                        fetch('schema.json'), fetch('synonyms.json'), 
+                        fetch('templates.json'), fetch('guardrails.json')
                     ]);
+                    
                     schemaData = await sch.json();
                     guardrails = new GuardrailEngine(await grd.json());
                     
@@ -152,11 +241,19 @@
                     templatesData = tplJson.Templates || tplJson;
                     
                     renderTimeline();
-                } catch(e) { alert("Error loading files. Check console."); console.error(e); }
+                } catch(e) { 
+                    alert("Error loading JSON files. Ensure they are in the repository."); 
+                    console.error(e); 
+                }
             } else {
                 document.getElementById('auth-error').style.display = 'block';
             }
         };
+
+        // Enable "Enter" key submission for both inputs
+        const handleEnter = (e) => { if (e.key === 'Enter') document.getElementById('btn-login').click(); };
+        document.getElementById('login-input').addEventListener('keypress', handleEnter);
+        document.getElementById('password-input').addEventListener('keypress', handleEnter);
 
         const closeModals = () => document.getElementById('modal-overlay').classList.remove('active');
         document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeModals);
@@ -172,19 +269,17 @@
                 w.innerHTML = `<label class="form-label">${f.label}</label>`;
                 
                 if (f.type === 'text') {
-                    w.innerHTML += `<input type="text" data-id="${f.id}">`;
+                    w.innerHTML += `<input type="text" data-id="${f.id}" placeholder="Enter specific details...">`;
                 } else if (f.type === 'textarea') {
-                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Enter custom details here..."></textarea>`;
+                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Type clinical notes here..."></textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
-                    (schemaData[f.id] ||[]).forEach(o => sel += `<option value="${o}">${o}</option>`);
-                    sel += `</select>`;
-                    w.innerHTML += sel;
+                    (schemaData[f.id]||[]).forEach(o => sel += `<option value="${o}">${o}</option>`);
+                    w.innerHTML += sel + `</select>`;
                 } else {
                     let grp = `<div class="checkbox-group" data-id="${f.id}">`;
-                    (schemaData[f.id] ||[]).forEach(o => grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}"><span>${o}</span></label>`);
-                    grp += `</div>`;
-                    w.innerHTML += grp;
+                    (schemaData[f.id]||[]).forEach(o => grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}"><span>${o}</span></label>`);
+                    w.innerHTML += grp + `</div>`;
                 }
                 c.appendChild(w);
             });
@@ -230,7 +325,7 @@
                 }
                 if (el.classList.contains('checkbox-group')) { 
                     const c = Array.from(el.querySelectorAll('input:checked')).map(i=>i.value); 
-                    data[el.dataset.id] = c.length ? c :["None selected"]; 
+                    data[el.dataset.id] = c.length ? c : ["None selected"]; 
                 }
             });
             timeline.push({ type: currentType, timestamp: new Date().toISOString(), data });
@@ -248,7 +343,8 @@
 
             [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp)).forEach(ev => {
                 const d = document.createElement('div'); d.className = `timeline-card`;
-                d.innerHTML = `<div class="card-header"><strong>${ev.type.replace('_',' ')}</strong></div>`;
+                const label = ev.type.replace('_',' ');
+                d.innerHTML = `<div class="card-header"><strong style="color:var(--brand-primary);">${label}</strong></div>`;
                 f.prepend(d);
             });
         }
@@ -267,12 +363,15 @@
 
         document.getElementById('btn-copy').onclick = () => {
             navigator.clipboard.writeText(document.getElementById('note-output').value);
-            document.getElementById('btn-copy').innerText = "Copied!";
-            setTimeout(() => document.getElementById('btn-copy').innerText = "Copy", 2000);
+            document.getElementById('btn-copy').innerText = "Copied to Clipboard!";
+            setTimeout(() => {
+                document.getElementById('btn-copy').innerText = "Copy to Clipboard";
+                closeModals();
+            }, 2000);
         };
         
         document.getElementById('btn-clear').onclick = () => { 
-            if(confirm("Clear session?")) { timeline=[]; localStorage.removeItem('aba_tl'); renderTimeline(); } };
+            if(confirm("Clear current session data?")) { timeline=[]; localStorage.removeItem('aba_tl'); renderTimeline(); } };
     </script>
 </body>
 </html>
