@@ -31,14 +31,14 @@
     "None"
   ],
   "Initial_Presentation":[
-    "Calm",
-    "Happy / Engaged",
-    "Lethargic",
-    "Agitated",
-    "Anxious",
-    "Hyperactive",
-    "Withdrawn",
-    "Distracted"
+    "Absence of maladaptive behavior",
+    "Readily responding to instructions",
+    "Slowed response time / yawning",
+    "Pacing / vocal stereotypy",
+    "High rate of movement",
+    "Avoiding eye contact / turning away",
+    "Orienting away from speaker",
+    "Crying / vocal protests"
   ],
   "Health_Variables":[
     "None reported",
@@ -165,12 +165,12 @@
     "> 30 minutes"
   ],
   "End_Demeanor":[
-    "Calm",
-    "Regulated",
-    "Engaged",
-    "Fatigued",
-    "Dysregulated",
-    "Agitated"
+    "Absence of maladaptive behavior",
+    "Readily responding to instructions",
+    "Fatigued / slowed responses",
+    "Engaged in preferred activities",
+    "Displaying precursor behaviors",
+    "Crying / vocal protests"
   ],
   "Caregiver_Handoff":[
     "Discussed mastered skills",

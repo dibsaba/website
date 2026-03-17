@@ -71,11 +71,16 @@ export default class NarrativeEngine {
                 // Add the Custom Technician Narrative if they typed one
                 if (eventData.Custom_Narrative && eventData.Custom_Narrative.trim() !== "") {
                     let customTxt = eventData.Custom_Narrative.trim();
+                    
+                    // Auto-capitalize their text
+                    customTxt = customTxt.charAt(0).toUpperCase() + customTxt.slice(1);
                     if (!customTxt.match(/[.!?]$/)) customTxt += ".";
-                    sentence += " " + customTxt;
+                    
+                    // Prefix it so it acts as an addendum, not a chronological misstep
+                    sentence += " Clinical observation: " + customTxt;
                 }
 
-                // CAPTIALIZATION FIX: Capitalize the first letter of EVERY sentence inside the block
+                // CAPITALIZATION FIX: Capitalize the first letter of EVERY sentence inside the block
                 sentence = sentence.replace(/(?:^|[.!?]\s+)([a-z])/g, match => match.toUpperCase());
 
                 paragraphParts.push(sentence);

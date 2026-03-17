@@ -282,7 +282,7 @@
                 if (f.type === 'text') {
                     w.innerHTML += `<input type="text" data-id="${f.id}" placeholder="Enter specific details..." value="${existingVal || ''}">`;
                 } else if (f.type === 'textarea') {
-                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Type clinical notes here...">${existingVal || ''}</textarea>`;
+                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Type objective, observable details (e.g., 'Client turned away', NOT 'Client was angry')...">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
                     optionsArray.forEach(o => {
