@@ -38,13 +38,19 @@
         .view { display: none; min-height: 100vh; }
         .view.active { display: flex; flex-direction: column; }
         
-        /* --- PROFESSIONAL LOGIN SCREEN STYLING --- */
+        /* --- PROFESSIONAL DESKTOP-STYLE LOGIN --- */
         #auth-view { justify-content: center; align-items: center; padding: 20px; background-color: var(--brand-sand); }
-        .auth-card { background: #fff; padding: 40px 32px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; max-width: 420px; width: 100%; }
-        .auth-card img { max-width: 180px; margin-bottom: 24px; }
-        .auth-card h2 { margin-bottom: 24px; font-family: var(--font-sans); font-size: 1.25rem; font-weight: 600; color: var(--brand-primary); }
-        .auth-card .form-group { margin-bottom: 20px; text-align: left; }
-        .auth-card .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-body); margin-bottom: 6px; }
+        .auth-card { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); text-align: center; max-width: 400px; width: 100%; }
+        .auth-card img { max-width: 300px; margin: 0 auto 10px auto; display: block; }
+        .auth-card h2 { margin-bottom: 24px; font-family: var(--font-sans); font-size: 14px; font-weight: normal; color: #64748B; }
+        .auth-card .form-group { margin-bottom: 20px; text-align: left; position: relative; }
+        .auth-card input { height: 40px; padding-left: 10px; }
+        .auth-card input::placeholder { color: #94a3b8; }
+        
+        /* Password Toggle Icon */
+        .pwd-toggle { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748B; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; }
+        .pwd-toggle:hover { color: var(--brand-primary); }
+        .pwd-toggle svg { width: 20px; height: 20px; }
 
         /* --- DASHBOARD STYLING --- */
         #dashboard-view { padding-bottom: 150px; }
@@ -76,24 +82,29 @@
 </head>
 <body>
     
-    <!-- PROFESSIONAL LOGIN VIEW -->
+    <!-- DESKTOP APP STYLE LOGIN VIEW -->
     <div id="auth-view" class="view active">
         <div class="auth-card">
             <img src="dibs-logo-login.png" alt="Dibs ABA Logo" onerror="this.style.display='none'">
-            <h2>Sign in to your account</h2>
+            <h2>Sign into your account:</h2>
             
             <div class="form-group">
-                <label for="login-input">Login ID</label>
-                <input type="text" id="login-input" placeholder="Enter your login ID">
+                <input type="text" id="login-input" placeholder="Username">
             </div>
             
-            <div class="form-group" style="margin-bottom: 30px;">
-                <label for="password-input">Password</label>
-                <input type="password" id="password-input" placeholder="Enter password">
+            <div class="form-group">
+                <input type="password" id="password-input" placeholder="Password" style="padding-right: 40px;">
+                <button type="button" class="pwd-toggle" id="btn-toggle-pwd" title="Toggle Password Visibility">
+                    <!-- Default: Eye icon (Show) -->
+                    <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
             </div>
             
-            <button id="btn-login" class="btn-primary">Sign In</button>
-            <p id="auth-error" style="color: var(--brand-danger); display: none; margin-top: 16px; font-size: 0.9rem;">Invalid login or password.</p>
+            <button id="btn-login" class="btn-primary" style="min-height: 45px; margin-top: 10px;">Continue</button>
+            <p id="auth-error" style="color: #EF4444; display: none; margin-top: 12px; font-size: 12px; font-weight: bold;">Please enter both username and password.</p>
         </div>
     </div>
 
@@ -202,6 +213,23 @@
             ]
         };
 
+        // --- PASSWORD VISIBILITY TOGGLE ---
+        const btnTogglePwd = document.getElementById('btn-toggle-pwd');
+        const passwordInput = document.getElementById('password-input');
+        const eyeIcon = document.getElementById('eye-icon');
+
+        btnTogglePwd.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                // Switch to "Eye Off" SVG
+                eyeIcon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+            } else {
+                passwordInput.type = 'password';
+                // Switch back to "Eye" SVG
+                eyeIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+            }
+        });
+
         // SHA-256 Hashing function
         async function hashString(str) {
             if (!crypto.subtle) return null; // Failsafe for non-HTTPS connections
@@ -215,12 +243,22 @@
                 return;
             }
 
-            // `.trim()` automatically removes accidental copy-pasted spaces!
-            const loginInput = document.getElementById('login-input').value.trim();
-            const passInput = document.getElementById('password-input').value.trim();
+            const errorLabel = document.getElementById('auth-error');
+            const loginInputVal = document.getElementById('login-input').value.trim();
+            const passInputVal = document.getElementById('password-input').value.trim();
             
-            const loginHash = await hashString(loginInput);
-            const passHash = await hashString(passInput);
+            if (!loginInputVal || !passInputVal) {
+                errorLabel.textContent = "Please enter both username and password.";
+                errorLabel.style.display = 'block';
+                return;
+            }
+
+            const btn = document.getElementById('btn-login');
+            btn.textContent = "Verifying...";
+            btn.disabled = true;
+
+            const loginHash = await hashString(loginInputVal);
+            const passHash = await hashString(passInputVal);
 
             if (loginHash === EXPECTED_LOGIN_HASH && passHash === EXPECTED_PASS_HASH) {
                 document.getElementById('auth-view').classList.remove('active');
@@ -246,11 +284,13 @@
                     console.error(e); 
                 }
             } else {
-                document.getElementById('auth-error').style.display = 'block';
+                errorLabel.textContent = "Invalid login or password.";
+                errorLabel.style.display = 'block';
+                btn.textContent = "Continue";
+                btn.disabled = false;
             }
         };
 
-        // Enable "Enter" key submission for both inputs
         const handleEnter = (e) => { if (e.key === 'Enter') document.getElementById('btn-login').click(); };
         document.getElementById('login-input').addEventListener('keypress', handleEnter);
         document.getElementById('password-input').addEventListener('keypress', handleEnter);
