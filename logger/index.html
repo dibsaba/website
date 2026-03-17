@@ -168,52 +168,40 @@
         import NarrativePlanner from './narrative_planner.js';
         import NarrativeEngine from './narrative_engine.js';
 
-        // Cryptographic hashes provided by user
         const EXPECTED_LOGIN_HASH = "fc94da1f7e92bdba9c38e8164daea483f0304f6951a56919fa24076d0f237a70";
         const EXPECTED_PASS_HASH = "24a4cf6660edcd7bba5139a1cbbc4586344f33e85e4c47a7596bbdb18329bd08";
         
         let timeline = JSON.parse(localStorage.getItem('aba_tl')) ||[];
         let schemaData, synonymsData, templatesData, guardrails;
         let currentType = null;
+        let currentEditingId = null; // Tracks if we are editing an existing event
 
         const UI_CONFIG = {
             Session_Start:[
-                {id:"Location", label:"Location", type:"select"}, 
-                {id:"Specific_Setting", label:"Setting", type:"select"}, 
-                {id:"Others_Present", label:"Others", type:"multichoice"}, 
-                {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
-                {id:"Health_Variables", label:"Health", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Additional Notes (Optional)", type:"textarea"}
+                {id:"Location", label:"Location", type:"select"}, {id:"Specific_Setting", label:"Setting", type:"select"}, 
+                {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
+                {id:"Health_Variables", label:"Health", type:"multichoice"}, {id:"Custom_Narrative", label:"Additional Notes", type:"textarea"}
             ],
             Location_Transition:[
-                {id:"Specific_Setting", label:"New Area", type:"select"},
-                {id:"Custom_Narrative", label:"Transition Notes (Optional)", type:"textarea"}
+                {id:"Specific_Setting", label:"New Area", type:"select"}, {id:"Custom_Narrative", label:"Transition Notes", type:"textarea"}
             ],
             Skill_Acquisition:[
-                {id:"Skill_Domains", label:"Domain", type:"select"}, 
-                {id:"Specific_Target", label:"Target (Optional)", type:"text"}, 
-                {id:"Teaching_Formats", label:"Format", type:"select"}, 
-                {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
-                {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
-                {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Client Response (Optional)", type:"textarea"}
+                {id:"Skill_Domains", label:"Domain", type:"select"}, {id:"Specific_Target", label:"Target (Optional)", type:"text"}, 
+                {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
+                {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
+                {id:"Custom_Narrative", label:"Client Response", type:"textarea"}
             ],
             Behavior_Reduction:[
-                {id:"Target_Behaviors", label:"Behavior", type:"select"}, 
-                {id:"Intensity", label:"Intensity", type:"select"}, 
-                {id:"Antecedents", label:"Antecedent", type:"select"}, 
-                {id:"Interventions", label:"Interventions", type:"multichoice"}, 
-                {id:"Deescalation_Time", label:"Time", type:"select"},
-                {id:"Custom_Narrative", label:"Behavior Context (Optional)", type:"textarea"}
+                {id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, 
+                {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, 
+                {id:"Deescalation_Time", label:"Time", type:"select"}, {id:"Custom_Narrative", label:"Behavior Context", type:"textarea"}
             ],
             Session_End:[
-                {id:"End_Demeanor", label:"Demeanor", type:"select"}, 
-                {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Handoff Notes (Optional)", type:"textarea"}
+                {id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
+                {id:"Custom_Narrative", label:"Handoff Notes", type:"textarea"}
             ]
         };
 
-        // --- PASSWORD VISIBILITY TOGGLE ---
         const btnTogglePwd = document.getElementById('btn-toggle-pwd');
         const passwordInput = document.getElementById('password-input');
         const eyeIcon = document.getElementById('eye-icon');
@@ -221,41 +209,29 @@
         btnTogglePwd.addEventListener('click', () => {
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                // Switch to "Eye Off" SVG
                 eyeIcon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
             } else {
                 passwordInput.type = 'password';
-                // Switch back to "Eye" SVG
                 eyeIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
             }
         });
 
-        // SHA-256 Hashing function
         async function hashString(str) {
-            if (!crypto.subtle) return null; // Failsafe for non-HTTPS connections
+            if (!crypto.subtle) return null;
             const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
             return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         document.getElementById('btn-login').onclick = async () => {
-            if (!crypto.subtle) {
-                alert("Security Error: App must be hosted on HTTPS (like GitHub Pages) to verify secure logins.");
-                return;
-            }
-
+            if (!crypto.subtle) { alert("Security Error: Must be hosted on HTTPS to verify secure logins."); return; }
             const errorLabel = document.getElementById('auth-error');
             const loginInputVal = document.getElementById('login-input').value.trim();
             const passInputVal = document.getElementById('password-input').value.trim();
             
-            if (!loginInputVal || !passInputVal) {
-                errorLabel.textContent = "Please enter both username and password.";
-                errorLabel.style.display = 'block';
-                return;
-            }
+            if (!loginInputVal || !passInputVal) { errorLabel.textContent = "Please enter both username and password."; errorLabel.style.display = 'block'; return; }
 
             const btn = document.getElementById('btn-login');
-            btn.textContent = "Verifying...";
-            btn.disabled = true;
+            btn.textContent = "Verifying..."; btn.disabled = true;
 
             const loginHash = await hashString(loginInputVal);
             const passHash = await hashString(passInputVal);
@@ -264,30 +240,16 @@
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
-                    const[sch, syn, tpl, grd] = await Promise.all([
-                        fetch('schema.json'), fetch('synonyms.json'), 
-                        fetch('templates.json'), fetch('guardrails.json')
-                    ]);
-                    
+                    const[sch, syn, tpl, grd] = await Promise.all([fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')]);
                     schemaData = await sch.json();
                     guardrails = new GuardrailEngine(await grd.json());
-                    
-                    const synJson = await syn.json();
-                    synonymsData = synJson.Synonyms || synJson;
-                    
-                    const tplJson = await tpl.json();
-                    templatesData = tplJson.Templates || tplJson;
-                    
+                    const synJson = await syn.json(); synonymsData = synJson.Synonyms || synJson;
+                    const tplJson = await tpl.json(); templatesData = tplJson.Templates || tplJson;
                     renderTimeline();
-                } catch(e) { 
-                    alert("Error loading JSON files. Ensure they are in the repository."); 
-                    console.error(e); 
-                }
+                } catch(e) { alert("Error loading JSON files."); console.error(e); }
             } else {
-                errorLabel.textContent = "Invalid login or password.";
-                errorLabel.style.display = 'block';
-                btn.textContent = "Continue";
-                btn.disabled = false;
+                errorLabel.textContent = "Invalid login or password."; errorLabel.style.display = 'block';
+                btn.textContent = "Continue"; btn.disabled = false;
             }
         };
 
@@ -295,12 +257,15 @@
         document.getElementById('login-input').addEventListener('keypress', handleEnter);
         document.getElementById('password-input').addEventListener('keypress', handleEnter);
 
-        const closeModals = () => document.getElementById('modal-overlay').classList.remove('active');
+        const closeModals = () => { document.getElementById('modal-overlay').classList.remove('active'); currentEditingId = null; };
         document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeModals);
 
-        const openForm = (type) => {
+        // UPDATE: Added existingEvent parameter for Editing
+        const openForm = (type, existingEvent = null) => {
             currentType = type;
-            document.getElementById('form-title').innerText = type.replace('_', ' ');
+            currentEditingId = existingEvent ? existingEvent.id : null;
+            document.getElementById('form-title').innerText = existingEvent ? `Edit ${type.replace('_', ' ')}` : type.replace('_', ' ');
+            
             const c = document.getElementById('form-container'); 
             c.innerHTML = '';
             
@@ -308,18 +273,32 @@
                 const w = document.createElement('div'); w.className = 'form-field';
                 w.innerHTML = `<label class="form-label">${f.label}</label>`;
                 
+                let optionsArray = schemaData[f.id] ||[];
+                // FIX: Remove "None" from Behavior Dropdown
+                if (f.id === 'Target_Behaviors') optionsArray = optionsArray.filter(o => o !== "None");
+
+                const existingVal = existingEvent ? existingEvent.data[f.id] : null;
+
                 if (f.type === 'text') {
-                    w.innerHTML += `<input type="text" data-id="${f.id}" placeholder="Enter specific details...">`;
+                    w.innerHTML += `<input type="text" data-id="${f.id}" placeholder="Enter specific details..." value="${existingVal || ''}">`;
                 } else if (f.type === 'textarea') {
-                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Type clinical notes here..."></textarea>`;
+                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Type clinical notes here...">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
-                    (schemaData[f.id]||[]).forEach(o => sel += `<option value="${o}">${o}</option>`);
-                    w.innerHTML += sel + `</select>`;
+                    optionsArray.forEach(o => {
+                        const isSelected = existingVal === o ? 'selected' : '';
+                        sel += `<option value="${o}" ${isSelected}>${o}</option>`;
+                    });
+                    sel += `</select>`;
+                    w.innerHTML += sel;
                 } else {
                     let grp = `<div class="checkbox-group" data-id="${f.id}">`;
-                    (schemaData[f.id]||[]).forEach(o => grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}"><span>${o}</span></label>`);
-                    w.innerHTML += grp + `</div>`;
+                    optionsArray.forEach(o => {
+                        const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
+                        grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}" ${isChecked}><span>${o}</span></label>`;
+                    });
+                    grp += `</div>`;
+                    w.innerHTML += grp;
                 }
                 c.appendChild(w);
             });
@@ -340,10 +319,10 @@
             const apply = () => {
                 const rules = guardrails.getRulesForAntecedent(ant.value);
                 ints.querySelectorAll('.checkbox-pill').forEach(p => {
-                    const v = p.querySelector('input').value;
-                    if(rules.blacklisted_interventions.includes(v)) { p.style.display='none'; p.querySelector('input').checked=false; }
-                    else if(rules.whitelisted_interventions.includes(v)) p.style.display='inline-block';
-                    else { p.style.display = ovr ? 'inline-block' : 'none'; if(!ovr) p.querySelector('input').checked=false; }
+                    const input = p.querySelector('input');
+                    if(rules.blacklisted_interventions.includes(input.value)) { p.style.display='none'; input.checked=false; }
+                    else if(rules.whitelisted_interventions.includes(input.value)) p.style.display='inline-block';
+                    else { p.style.display = ovr ? 'inline-block' : 'none'; if(!ovr) input.checked=false; }
                 });
             };
             ant.onchange = () => { ovr=false; btn.innerText='Show All Allowable'; apply(); };
@@ -368,7 +347,16 @@
                     data[el.dataset.id] = c.length ? c : ["None selected"]; 
                 }
             });
-            timeline.push({ type: currentType, timestamp: new Date().toISOString(), data });
+
+            if (currentEditingId) {
+                // Update existing event
+                const idx = timeline.findIndex(t => t.id === currentEditingId);
+                if (idx > -1) timeline[idx].data = data;
+            } else {
+                // Create new event
+                timeline.push({ id: Date.now().toString(), type: currentType, timestamp: new Date().toISOString(), data });
+            }
+            
             localStorage.setItem('aba_tl', JSON.stringify(timeline));
             renderTimeline(); closeModals();
         };
@@ -381,11 +369,35 @@
             document.getElementById('btn-start').style.display = started ? 'none' : 'block';['btn-skill', 'btn-behavior', 'btn-transition', 'btn-end'].forEach(id => document.getElementById(id).disabled = !started || ended);
             document.getElementById('btn-generate').disabled = timeline.length === 0;
 
-            [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp)).forEach(ev => {
-                const d = document.createElement('div'); d.className = `timeline-card`;
+            const sorted = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+            sorted.forEach(ev => {
+                const card = document.createElement('div'); 
+                card.className = `timeline-card type-${ev.type}`;
+                card.style.cursor = 'pointer'; // Make it look clickable
+                
                 const label = ev.type.replace('_',' ');
-                d.innerHTML = `<div class="card-header"><strong style="color:var(--brand-primary);">${label}</strong></div>`;
-                f.prepend(d);
+                let detailsHtml = '';
+                
+                // Construct the details display
+                UI_CONFIG[ev.type].forEach(field => {
+                    const val = ev.data[field.id];
+                    if (val && val !== "None selected" && val.length > 0) {
+                        const displayVal = Array.isArray(val) ? val.join(', ') : val;
+                        detailsHtml += `<p style="margin-top:4px; font-size:0.9rem; color:var(--text-body);"><strong>${field.label}:</strong> ${displayVal}</p>`;
+                    }
+                });
+
+                card.innerHTML = `
+                    <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--brand-sand); padding-bottom:8px; margin-bottom:8px;">
+                        <strong style="color:var(--brand-primary); font-size:1.05rem;">${label}</strong>
+                        <span style="font-size:0.8rem; color:var(--text-muted);">✎ Edit</span>
+                    </div>
+                    <div class="card-body">${detailsHtml}</div>
+                `;
+                
+                // Add click listener to open edit form
+                card.onclick = () => openForm(ev.type, ev);
+                f.prepend(card);
             });
         }
 
@@ -411,7 +423,12 @@
         };
         
         document.getElementById('btn-clear').onclick = () => { 
-            if(confirm("Clear current session data?")) { timeline=[]; localStorage.removeItem('aba_tl'); renderTimeline(); } };
+            if(confirm("Clear current session data?")) { 
+                timeline =[]; 
+                localStorage.removeItem('aba_tl'); 
+                renderTimeline(); 
+            } 
+        };
     </script>
 </body>
 </html>

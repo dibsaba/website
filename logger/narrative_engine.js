@@ -7,18 +7,16 @@ export default class NarrativeEngine {
     static cleanText(val) {
         if (typeof val !== 'string') return val;
         return val.split(' ').map(word => {
-            // Strip punctuation for the check
             const cleanWord = word.replace(/[(),.]/g, '');
-            // If the word is strictly uppercase letters (like DTT, DRA), keep it uppercase
             if (/^[A-Z/-]+$/.test(cleanWord) && cleanWord.length > 0) return word;
-            // Otherwise, lowercase it so it flows naturally mid-sentence
             return word.toLowerCase();
         }).join(' ');
     }
 
     static formatList(dataVal) {
-        if (!Array.isArray(dataVal)) return dataVal == null ? "" : this.cleanText(String(dataVal));
-        const clean = dataVal.filter(v => v && v !== "None selected").map(v => this.cleanText(v));
+        // Strip trailing periods from individual data points so they don't break mid-sentence flow
+        if (!Array.isArray(dataVal)) return dataVal == null ? "" : this.cleanText(String(dataVal)).replace(/[.!?]+$/, '');
+        const clean = dataVal.filter(v => v && v !== "None selected").map(v => this.cleanText(v).replace(/[.!?]+$/, ''));
         if (clean.length === 0) return "";
         if (clean.length === 1) return clean[0];
         if (clean.length === 2) return `${clean[0]} and ${clean[1]}`;
@@ -63,30 +61,22 @@ export default class NarrativeEngine {
             });
 
             // --- ADVANCED GRAMMAR SCRUBBING ---
-            // 1. Remove empty parenthesis () or ( ) resulting from missing data
-            sentence = sentence.replace(/\(\s*\)/g, "");
-            // 2. Fix spacing inside parenthesis e.g., ( Living room ) -> (living room)
-            sentence = sentence.replace(/\(\s+/g, "(").replace(/\s+\)/g, ")");
-            // 3. Fix double punctuation e.g., target.. -> target.
-            sentence = sentence.replace(/\.+/g, ".");
-            // 4. Fix spaces before punctuation e.g., target , -> target,
-            sentence = sentence.replace(/\s+([.,!?])/g, "$1");
-            // 5. Clean up extra spaces
-            sentence = sentence.replace(/\s{2,}/g, " ").trim();
+            sentence = sentence.replace(/\(\s*\)/g, ""); // Remove empty parenthesis
+            sentence = sentence.replace(/\(\s+/g, "(").replace(/\s+\)/g, ")"); // Fix spacing inside parenthesis
+            sentence = sentence.replace(/\.+/g, "."); // Fix double punctuation
+            sentence = sentence.replace(/\s+([.,!?])/g, "$1"); // Fix spaces before punctuation
+            sentence = sentence.replace(/\s{2,}/g, " ").trim(); // Clean up extra spaces
             
-            // Auto-capitalize the very first letter of the generated sentence
             if (sentence) {
-                sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
-                
                 // Add the Custom Technician Narrative if they typed one
                 if (eventData.Custom_Narrative && eventData.Custom_Narrative.trim() !== "") {
                     let customTxt = eventData.Custom_Narrative.trim();
-                    // Ensure the technician's custom text ends with a period
                     if (!customTxt.match(/[.!?]$/)) customTxt += ".";
-                    // Capitalize the first letter of their custom text
-                    customTxt = customTxt.charAt(0).toUpperCase() + customTxt.slice(1);
                     sentence += " " + customTxt;
                 }
+
+                // CAPTIALIZATION FIX: Capitalize the first letter of EVERY sentence inside the block
+                sentence = sentence.replace(/(?:^|[.!?]\s+)([a-z])/g, match => match.toUpperCase());
 
                 paragraphParts.push(sentence);
             }
