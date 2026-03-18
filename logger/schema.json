@@ -180,5 +180,28 @@
     "Reviewed upcoming session schedule",
     "Answered caregiver questions",
     "Caregiver unavailable"
+  ],
+  "Transition_Context":[
+    "Transitioned smoothly and independently",
+    "Required verbal prompts to transition",
+    "Required visual schedule to transition",
+    "Engaged in precursor behaviors during transition",
+    "Transitioned with minor resistance",
+    "Required physical guidance to transition"
+  ],
+  "Chips_Session_Start":[
+    "Paired w/ Toys", "Highly Motivated", "Quick Control", "Extended Pairing"
+  ],
+  "Chips_Location_Transition": [
+    "Smooth", "Verbal Prompts", "Precursors Noted"
+  ],
+  "Chips_Skill_Acquisition":[
+    "Mastered", "Max Prompting", "Independent", "Field Reduced", "Fluency", "Redirection Needed"
+  ],
+  "Chips_Behavior_Reduction":[
+    "Threw Items", "Dropped to Floor", "Physical Block", "Vocal Protests", "Property Destruction", "Safely De-escalated", "Attempted Biting"
+  ],
+  "Chips_Session_End":[
+    "Happy Transition", "Caregiver Engaged", "Schedule Discussed", "Parent Asked Questions"
   ]
 }

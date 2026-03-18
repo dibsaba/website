@@ -6,6 +6,7 @@
     <title>ABA Clinical Session Logger</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
+    	.chip-toggle input:checked + span { background: var(--brand-accent) !important; color: #fff !important; border-color: var(--brand-accent-dark) !important; }
         :root { 
             --font-sans: 'Inter', sans-serif; 
             --font-serif: 'Playfair Display', serif; 
@@ -169,41 +170,71 @@
         const EXPECTED_LOGIN_HASH = "fc94da1f7e92bdba9c38e8164daea483f0304f6951a56919fa24076d0f237a70";
         const EXPECTED_PASS_HASH = "24a4cf6660edcd7bba5139a1cbbc4586344f33e85e4c47a7596bbdb18329bd08";
         
-        let timeline = JSON.parse(localStorage.getItem('aba_tl')) ||[];
+        let timeline = JSON.parse(localStorage.getItem('aba_tl')) || [];
+        let savedTargets = JSON.parse(localStorage.getItem('aba_targets')) ||[];
+        
         let schemaData, synonymsData, templatesData, guardrails;
         let currentType = null;
         let currentEditingId = null;
 
-        // UI_CONFIG updated with explicit placeholders directing the RBT
         const UI_CONFIG = {
             Session_Start:[
                 {id:"Location", label:"Location", type:"select"}, {id:"Specific_Setting", label:"Setting", type:"select"}, 
                 {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
                 {id:"Health_Variables", label:"Health", type:"multichoice"}, 
-                {id:"Custom_Narrative", label:"Additional Notes", type:"textarea", placeholder:"Write a complete sentence detailing initial rapport building (e.g., 'The therapist paired with the client using puzzles.')."}
+                {id:"Smart_Chips", schema_ref:"Chips_Session_Start", label:"Quick Notes", type:"smart_chips"},
+                {id:"Custom_Narrative", label:"Additional Notes", type:"textarea"}
             ],
             Location_Transition:[
                 {id:"Specific_Setting", label:"New Area", type:"select"}, 
-                {id:"Custom_Narrative", label:"Transition Notes", type:"textarea", placeholder:"Write a complete sentence describing the transition (e.g., 'The client walked calmly to the kitchen.')."}
+                {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"},
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
             ],
             Skill_Acquisition:[
-                {id:"Skill_Domains", label:"Domain", type:"select"}, 
-                {id:"Specific_Target", label:"Specific Target / Program Name", type:"text", placeholder:"Enter the protocol name (e.g., 'Tacting Colors')."}, 
+                {id:"Skill_Domains", label:"Domain", type:"select"}, {id:"Specific_Target", label:"Specific Target / Program Name", type:"text"}, 
                 {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
                 {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Client Response", type:"textarea", placeholder:"Write a complete sentence describing the response (e.g., 'The client independently sorted 4 items.')."}
+                {id:"Smart_Chips", schema_ref:"Chips_Skill_Acquisition", label:"Quick Notes", type:"smart_chips"},
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
             ],
             Behavior_Reduction:[
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, 
                 {id:"Deescalation_Time", label:"Time", type:"select"}, 
-                {id:"Custom_Narrative", label:"Behavior Context", type:"textarea", placeholder:"Write a complete sentence detailing the context (e.g., 'The client threw the blue block after being denied access.')."}
+                {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"},
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
             ],
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Handoff Notes", type:"textarea", placeholder:"Write a complete sentence summarizing the handoff (e.g., 'Caregiver was informed of new mastered skills.')."}
+                {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"},
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
             ]
         };
+
+        // EXHAUSTIVE SMART CHIPS DICTIONARY
+        const SMART_CHIPS = {
+            Session_Start:["Paired using puzzles", "Engaged with preferred toys", "Client was highly motivated", "Required heavy pairing"],
+            Skill_Acquisition:["Mastered today", "Required max prompting", "Field reduced to 2", "Independently completed", "Required redirection to task", "Fluency achieved"],
+            Behavior_Reduction:["Threw items", "Dropped to floor", "Required physical block", "Vocal protests continued", "Property destruction noted", "Safely de-escalated"],
+            Session_End:["Client left happily", "Caregiver engaged", "Discussed schedule changes", "Parent asked questions regarding targets"]
+        };
+
+        // Make functions globally available for inline HTML onclick handlers
+        window.appendChipText = function(fieldId, text) {
+            const textarea = document.querySelector(`textarea[data-id="${fieldId}"]`);
+            if (textarea) {
+                textarea.value += (textarea.value.trim() ? " " : "") + text;
+                textarea.focus();
+            }
+        };
+
+        // Initialize Datalist for Auto-Complete
+        document.body.insertAdjacentHTML('beforeend', '<datalist id="target-list"></datalist>');
+        const updateDatalist = () => {
+            const dl = document.getElementById('target-list');
+            if (dl) dl.innerHTML = savedTargets.map(t => `<option value="${t}">`).join('');
+        };
+        updateDatalist();
 
         const btnTogglePwd = document.getElementById('btn-toggle-pwd');
         const passwordInput = document.getElementById('password-input');
@@ -279,8 +310,30 @@
                 const existingVal = existingEvent ? existingEvent.data[f.id] : null;
 
                 if (f.type === 'text') {
-                    w.innerHTML += `<input type="text" data-id="${f.id}" placeholder="${f.placeholder}" value="${existingVal || ''}">`;
+                    // Datalist attached for auto-complete memory
+                    w.innerHTML += `<input type="text" data-id="${f.id}" list="target-list" placeholder="${f.placeholder}" value="${existingVal || ''}">`;
+                } else if (f.type === 'smart_chips') {
+                    let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none;">`;
+                    let optionsArray = schemaData[f.schema_ref] ||[];
+                    optionsArray.forEach(o => {
+                        const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
+                        chipsHtml += `<label class="chip-toggle">
+                            <input type="checkbox" style="display:none;" value="${o}" ${isChecked}>
+                            <span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 14px; font-size:0.85rem; white-space:nowrap; cursor:pointer; display:inline-block; transition:all 0.2s;">${o}</span>
+                        </label>`;
+                    });
+                    chipsHtml += `</div>`;
+                    w.innerHTML += chipsHtml;
                 } else if (f.type === 'textarea') {
+                    // Smart Chips Row
+                    if (SMART_CHIPS[type] && SMART_CHIPS[type].length > 0) {
+                        let chipsHtml = `<div style="display:flex; overflow-x:auto; gap:8px; margin-bottom:8px; padding-bottom:4px; scrollbar-width:none;">`;
+                        SMART_CHIPS[type].forEach(chip => {
+                            chipsHtml += `<span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 12px; font-size:0.8rem; white-space:nowrap; cursor:pointer;" onclick="window.appendChipText('${f.id}', '${chip}')">${chip}</span>`;
+                        });
+                        chipsHtml += `</div>`;
+                        w.innerHTML += chipsHtml;
+                    }
                     w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${f.placeholder}">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
@@ -345,7 +398,7 @@
                 }
             }
 
-            // --- MINIMAL CUTSET CHECKBOX LOGIC ---
+            // --- DOUBLE GUARDRAILS: CUTSETS + HARD LIMITS ---
             c.querySelectorAll('.checkbox-group').forEach(group => {
                 const fieldId = group.dataset.id;
                 const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
@@ -355,7 +408,6 @@
                         if (!e.target.checked) return;
                         const val = e.target.value;
 
-                        // 1. None Exclusivity
                         if (guardrails.isExclusiveChoice(val)) {
                             checkboxes.forEach(otherCb => { if (otherCb !== e.target) otherCb.checked = false; });
                             return; 
@@ -363,13 +415,21 @@
                             checkboxes.forEach(otherCb => { if (guardrails.isExclusiveChoice(otherCb.value)) otherCb.checked = false; });
                         }
 
-                        // 2. Validate against Mathematical Cutsets
                         const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
-                        const cutsetValidation = guardrails.validateSubset(fieldId, currentlyChecked);
                         
+                        // Check 1: Minimal Cutsets (Mathematical Logic)
+                        const cutsetValidation = guardrails.validateSubset(fieldId, currentlyChecked);
                         if (!cutsetValidation.valid) {
                             e.target.checked = false;
                             alert(`Clinical Guardrail: You cannot simultaneously select these options:\n- ${cutsetValidation.cutset.join('\n- ')}`);
+                            return;
+                        }
+
+                        // Check 2: Hard Limits (Checkbox Inflation)
+                        const maxAllowed = guardrails.getMaxSelections(fieldId);
+                        if (currentlyChecked.length > maxAllowed) {
+                            e.target.checked = false;
+                            alert(`Clinical Guardrail: Maximum of ${maxAllowed} items allowed to prevent audit flags for checkbox inflation.`);
                         }
                     });
                 });
@@ -456,14 +516,19 @@
             const data = {};
             const inputs = document.getElementById('form-container').querySelectorAll('[data-id]');
             
-            // Validate all text/textarea fields are filled out
             inputs.forEach(el => {
-                if (el.tagName === 'INPUT' && el.type === 'text' || el.tagName === 'TEXTAREA') {
+                if (el.tagName === 'INPUT' && el.type === 'text') {
                     if (el.value.trim() === '') {
                         isValid = false;
-                        el.style.borderColor = 'red'; // Highlight missing fields
+                        el.style.borderColor = 'red'; 
                     } else {
                         el.style.borderColor = '';
+                        // Auto-Complete Save Logic
+                        if (el.dataset.id === 'Specific_Target' && !savedTargets.includes(el.value.trim())) {
+                            savedTargets.push(el.value.trim());
+                            localStorage.setItem('aba_targets', JSON.stringify(savedTargets));
+                            updateDatalist();
+                        }
                     }
                 }
             });
@@ -473,7 +538,6 @@
                 return;
             }
 
-            // If valid, capture data
             inputs.forEach(el => {
                 if(el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                     if (el.type !== 'checkbox') data[el.dataset.id] = el.value;
@@ -503,7 +567,7 @@
             document.getElementById('btn-start').style.display = started ? 'none' : 'block';['btn-skill', 'btn-behavior', 'btn-transition', 'btn-end'].forEach(id => document.getElementById(id).disabled = !started || ended);
             document.getElementById('btn-generate').disabled = timeline.length === 0;
 
-            const sorted = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+            const sorted =[...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
             sorted.forEach(ev => {
                 const card = document.createElement('div'); 
                 card.className = `timeline-card type-${ev.type}`;
@@ -531,18 +595,16 @@
                 card.onclick = () => openForm(ev.type, ev);
                 f.appendChild(card);
             });
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
         document.getElementById('btn-generate').onclick = () => {
-            // RUN SESSION AUDITOR BEFORE GENERATION
             const sessionWarnings = guardrails.auditSession(timeline);
             if (sessionWarnings.length > 0) {
                 const proceed = confirm(`Clinical Warning:\n\n${sessionWarnings.join('\n\n')}\n\nDo you wish to proceed?`);
                 if (!proceed) return;
             }
 
-            const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+            const sortedTimeline =[...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
             const sessionObj = SessionNormalizer.normalize(sortedTimeline);
             const plan = NarrativePlanner.buildPlan(sessionObj);
             const note = NarrativeEngine.generate(synonymsData, templatesData, plan);

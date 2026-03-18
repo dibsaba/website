@@ -43,8 +43,7 @@ export default class NarrativeEngine {
 
         const getElement = (arr) => {
             if (!Array.isArray(arr) || arr.length === 0) return "";
-            const index = Math.floor(this.seededRandom(currentSeed++) * arr.length);
-            return arr[index];
+            return arr[Math.floor(this.seededRandom(currentSeed++) * arr.length)];
         };
 
         const getUniqueSynonym = (options) => {
@@ -68,18 +67,13 @@ export default class NarrativeEngine {
 
             sentence = sentence.replace(/([^\s])(\{|\[)/g, '$1 $2').replace(/(\}|\])([^\s.,!?;:'])/g, '$1 $2');
 
-            // Replace Synonyms (and cleverly lowercase transitions that accidentally land mid-sentence)
             sentence = sentence.replace(/\{([^}]+)\}/g, (match, key, offset) => {
                 if (key.includes("transitions")) {
                     if (i === 0) key = "intro_transitions";
                     else if (i === plan.length - 1) key = "end_transitions";
                     else key = "mid_transitions";
-                    
                     let syn = getUniqueSynonym(synonyms[key]);
-                    // If the template poorly placed this transition mid-sentence, lower-case the first letter so it flows
-                    if (offset > 0 && syn.length > 0) {
-                        syn = syn.charAt(0).toLowerCase() + syn.slice(1);
-                    }
+                    if (offset > 0 && syn.length > 0) syn = syn.charAt(0).toLowerCase() + syn.slice(1);
                     return syn;
                 }
                 return getUniqueSynonym(synonyms[key]);
@@ -91,22 +85,31 @@ export default class NarrativeEngine {
                 return (val === undefined || val === null || val === "" || val.length === 0) ? "" : this.formatList(val);
             });
 
-            // --- DEEP GRAMMAR SCRUBBER ---
-            sentence = sentence.replace(/\(\s*\)/g, ""); // Clean empty ()
-            sentence = sentence.replace(/\(\s+/g, "(").replace(/\s+\)/g, ")"); // Clean inner () spacing
-            sentence = sentence.replace(/,\s*\./g, "."); // FIX: If a transition brought a trailing comma right before a period, delete the comma
-            sentence = sentence.replace(/,\s*,/g, ","); // FIX: Clean up double commas
-            sentence = sentence.replace(/\.+/g, "."); // Fix double periods
-            sentence = sentence.replace(/\s+([.,!?])/g, "$1"); // Fix space before punctuation
-            sentence = sentence.replace(/\s{2,}/g, " ").trim(); 
-            
+            sentence = sentence.replace(/\(\s*\)/g, "").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")");
+            sentence = sentence.replace(/,\s*\./g, ".").replace(/,\s*,/g, ",").replace(/\.+/g, ".");
+            sentence = sentence.replace(/\s+([.,!?])/g, "$1").replace(/\s{2,}/g, " ").trim(); 
+            sentence = sentence.replace(/([Tt])he\s+the\s+/g, "$1he ");
+
             if (sentence) {
+                // --- THE NEW SEMANTIC EXPANSION ENGINE ---
+                if (eventData.Smart_Chips && Array.isArray(eventData.Smart_Chips)) {
+                    eventData.Smart_Chips.forEach(chip => {
+                        if (chip !== "None selected" && templates.Chip_Expansions && templates.Chip_Expansions[chip]) {
+                            const chipOptions = templates.Chip_Expansions[chip];
+                            let chipSentence = getElement(chipOptions);
+                            sentence += " " + chipSentence;
+                        }
+                    });
+                }
+
+                // If they still typed custom text, append it as well (without the colon prefix)
                 if (eventData.Custom_Narrative && eventData.Custom_Narrative.trim() !== "") {
                     let customTxt = eventData.Custom_Narrative.trim();
                     customTxt = customTxt.charAt(0).toUpperCase() + customTxt.slice(1);
                     if (!customTxt.match(/[.!?]$/)) customTxt += ".";
-                    sentence += " Clinical observation: " + customTxt;
+                    sentence += " " + customTxt;
                 }
+                
                 sentence = sentence.replace(/(?:^|[.!?]\s+)([a-z])/g, match => match.toUpperCase());
                 paragraphParts.push(sentence);
             }

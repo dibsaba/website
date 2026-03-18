@@ -226,6 +226,13 @@
       "warning_message": "Over 50% of the recorded skills were marked 'Independent'. A strict Medicaid auditor may flag this session for lacking active intervention. Are you sure you wish to proceed?"
     }
   ],
+  "Field_Limits": {
+    "default_max": 4,
+    "Others_Present": 3,
+    "Health_Variables": 2,
+    "Specific_Reinforcers": 3,
+    "Interventions": 4
+  },
   "Location_Settings": {
     "Clinic":["Therapy room", "Sensory room", "Playground", "Outdoors", "Kitchen", "Dining room"],
     "Home":["Living room", "Bedroom", "Kitchen", "Dining room", "Outdoors", "Sensory room", "Playground", "Therapy room"],

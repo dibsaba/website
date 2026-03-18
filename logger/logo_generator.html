@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dibs Logo Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+            color: #292524;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #ea580c; }
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            text-align: left;
+            margin-bottom: 30px;
+            background: #fff7ed;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #fb923c;
+        }
+        .control-group { display: flex; flex-direction: column; }
+        label { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+        input[type="range"], input[type="text"], input[type="file"], input[type="color"] {
+            width: 100%; padding: 8px;
+        }
+        canvas {
+            border: 1px dashed #94a3b8;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGEsHwxg3DTEQGAQjBoAAwwjDDAwMBDBsHkwAACT2QMFEb2xHQAAAABJRU5ErkJggg==');
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+        button {
+            background-color: #ea580c; color: white; border: none; padding: 12px 24px;
+            font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer;
+        }
+        button:hover { background-color: #c2410c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Appointment Note Logo Generator</h1>
+    <p style="margin-bottom:20px; color:#64748b;">Upload the original logo. The app will automatically erase the area around your new text. Use the "Erase Area Height" slider to make the eraser box taller or shorter to fully cover the old text.</p>
+
+    <div class="controls">
+        <div class="control-group" style="grid-column: span 2;">
+            <label>1. Upload Original Logo</label>
+            <input type="file" id="imageLoader" accept="image/png, image/jpeg"/>
+        </div>
+        
+        <div class="control-group">
+            <label>2. New Text Vertical Position</label>
+            <input type="range" id="textY" min="0" max="1000" value="0">
+        </div>
+
+        <div class="control-group">
+            <label>3. Erase Area Height (Follows the text)</label>
+            <input type="range" id="eraseHeight" min="0" max="400" value="80">
+        </div>
+
+        <div class="control-group">
+            <label>Font Size</label>
+            <input type="range" id="fontSize" min="10" max="150" value="24">
+        </div>
+
+        <div class="control-group">
+            <label>Letter Spacing</label>
+            <input type="range" id="letterSpacing" min="0" max="40" value="6">
+        </div>
+
+        <div class="control-group">
+            <label>Text Content</label>
+            <input type="text" id="textContent" value="APPOINTMENT NOTE GENERATOR">
+        </div>
+
+        <div class="control-group">
+            <label>Text Color</label>
+            <input type="color" id="textColor" value="#64748B">
+        </div>
+    </div>
+
+    <canvas id="logoCanvas"></canvas>
+    <br>
+    <button id="downloadBtn">Download New Logo</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('logoCanvas');
+    const ctx = canvas.getContext('2d');
+    let img = new Image();
+
+    // DOM Elements
+    const imageLoader = document.getElementById('imageLoader');
+    const eraseHeight = document.getElementById('eraseHeight');
+    const textY = document.getElementById('textY');
+    const fontSize = document.getElementById('fontSize');
+    const letterSpacing = document.getElementById('letterSpacing');
+    const textContent = document.getElementById('textContent');
+    const textColor = document.getElementById('textColor');
+
+    // Handle Image Upload
+    imageLoader.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                // Set initial text Y position near the bottom
+                textY.max = img.height;
+                textY.value = img.height - 30; 
+                draw();
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+    });
+
+    // Add listeners to redraw on any slider change
+    const inputElements =[eraseHeight, textY, fontSize, letterSpacing, textContent, textColor];
+    inputElements.forEach(input => {
+        input.addEventListener('input', draw);
+    });
+
+    function draw() {
+        if (!img.src) return;
+
+        // Clear canvas and draw original image
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+
+        const tY = parseInt(textY.value);
+        const eHeight = parseInt(eraseHeight.value);
+
+        // Erase the old text using a box perfectly centered on the new text's Y position
+        // Because the height can now be much larger, it easily swallows old text.
+        ctx.clearRect(0, tY - (eHeight / 2), canvas.width, eHeight);
+
+        // Draw the new text
+        const txt = textContent.value;
+        const size = fontSize.value;
+        
+        ctx.font = `bold ${size}px 'Inter', sans-serif`;
+        ctx.fillStyle = textColor.value;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle"; // Ensures text is drawn centered vertically on tY
+        
+        // Apply letter spacing (supported in modern browsers)
+        if ('letterSpacing' in ctx) {
+            ctx.letterSpacing = `${letterSpacing.value}px`;
+        } else {
+            canvas.style.letterSpacing = `${letterSpacing.value}px`;
+        }
+
+        // Draw exactly in the horizontal center
+        ctx.fillText(txt, canvas.width / 2, tY);
+    }
+
+    // Handle Download
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+        if (!img.src) {
+            alert("Please upload an image first!");
+            return;
+        }
+        const link = document.createElement('a');
+        link.download = 'dibs-logo-login.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+</script>
+
+</body>
+</html>
