@@ -1,9 +1,24 @@
 /**
- * @fileoverview NarrativeEngine - Generates and sanitizes clinical text.
+ * @fileoverview NarrativeEngine - Generates and sanitizes clinical text deterministically.
  */
 export default class NarrativeEngine {
     
-    // Smart text cleaner: Lowercases text mid-sentence but preserves acronyms (e.g., FCT, DRA)
+    // Seeded Random Number Generator (Deterministic)
+    static seededRandom(seed) {
+        const x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
+
+    // Creates a unique integer seed based on the raw session data
+    static generateSeed(planStr) {
+        let hash = 0;
+        for (let i = 0; i < planStr.length; i++) {
+            hash = ((hash << 5) - hash) + planStr.charCodeAt(i);
+            hash = hash & hash;
+        }
+        return Math.abs(hash);
+    }
+
     static cleanText(val) {
         if (typeof val !== 'string') return val;
         return val.split(' ').map(word => {
@@ -14,7 +29,6 @@ export default class NarrativeEngine {
     }
 
     static formatList(dataVal) {
-        // Strip trailing periods from individual data points so they don't break mid-sentence flow
         if (!Array.isArray(dataVal)) return dataVal == null ? "" : this.cleanText(String(dataVal)).replace(/[.!?]+$/, '');
         const clean = dataVal.filter(v => v && v !== "None selected").map(v => this.cleanText(v).replace(/[.!?]+$/, ''));
         if (clean.length === 0) return "";
@@ -24,69 +38,69 @@ export default class NarrativeEngine {
         return `${clean.join(", ")}, and ${last}`;
     }
 
-    static getRandomElement(arr) {
-        return (!Array.isArray(arr) || arr.length === 0) ? "" : arr[Math.floor(Math.random() * arr.length)];
-    }
-
     static generate(synonyms, templates, plan) {
         const paragraphParts =[];
+        let currentSeed = this.generateSeed(JSON.stringify(plan)); 
+        
+        // FIX: Track used synonyms to prevent saying "Next," twice in a row
+        const usedSynonyms = new Set();
+
+        const getElement = (arr) => {
+            if (!Array.isArray(arr) || arr.length === 0) return "";
+            const index = Math.floor(this.seededRandom(currentSeed++) * arr.length);
+            return arr[index];
+        };
+
+        const getUniqueSynonym = (options) => {
+            if (!Array.isArray(options) || options.length === 0) return "";
+            // Try to find an unused synonym up to 10 times
+            for (let j = 0; j < 10; j++) {
+                const candidate = getElement(options);
+                if (!usedSynonyms.has(candidate)) {
+                    usedSynonyms.add(candidate);
+                    return candidate;
+                }
+            }
+            return getElement(options); // Fallback
+        };
 
         for (let i = 0; i < plan.length; i++) {
             const { section, data } = plan[i];
             const availableTemplates = templates[section];
-
             if (!Array.isArray(availableTemplates) || availableTemplates.length === 0) continue;
 
-            let sentence = this.getRandomElement(availableTemplates);
+            let sentence = getElement(availableTemplates);
 
-            // Protect brackets from spacing issues
             sentence = sentence.replace(/([^\s])(\{|\[)/g, '$1 $2').replace(/(\}|\])([^\s.,!?;:'])/g, '$1 $2');
 
-            // Synonyms
             sentence = sentence.replace(/\{([^}]+)\}/g, (match, key) => {
                 if (key.includes("transitions")) {
                     if (i === 0) key = "intro_transitions";
                     else if (i === plan.length - 1) key = "end_transitions";
                     else key = "mid_transitions";
                 }
-                const options = synonyms[key];
-                return (Array.isArray(options) && options.length > 0) ? this.getRandomElement(options) : "";
+                return getUniqueSynonym(synonyms[key]);
             });
 
-            // Data Insertion
             const eventData = data || {};
             sentence = sentence.replace(/\[([^\]]+)\]/g, (match, key) => {
                 const val = eventData[key];
                 return (val === undefined || val === null || val === "" || val.length === 0) ? "" : this.formatList(val);
             });
 
-            // --- ADVANCED GRAMMAR SCRUBBING ---
-            sentence = sentence.replace(/\(\s*\)/g, ""); // Remove empty parenthesis
-            sentence = sentence.replace(/\(\s+/g, "(").replace(/\s+\)/g, ")"); // Fix spacing inside parenthesis
-            sentence = sentence.replace(/\.+/g, "."); // Fix double punctuation
-            sentence = sentence.replace(/\s+([.,!?])/g, "$1"); // Fix spaces before punctuation
-            sentence = sentence.replace(/\s{2,}/g, " ").trim(); // Clean up extra spaces
+            sentence = sentence.replace(/\(\s*\)/g, "").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").replace(/\.+/g, ".").replace(/\s+([.,!?])/g, "$1").replace(/\s{2,}/g, " ").trim();
             
             if (sentence) {
-                // Add the Custom Technician Narrative if they typed one
                 if (eventData.Custom_Narrative && eventData.Custom_Narrative.trim() !== "") {
                     let customTxt = eventData.Custom_Narrative.trim();
-                    
-                    // Auto-capitalize their text
                     customTxt = customTxt.charAt(0).toUpperCase() + customTxt.slice(1);
                     if (!customTxt.match(/[.!?]$/)) customTxt += ".";
-                    
-                    // Prefix it so it acts as an addendum, not a chronological misstep
                     sentence += " Clinical observation: " + customTxt;
                 }
-
-                // CAPITALIZATION FIX: Capitalize the first letter of EVERY sentence inside the block
                 sentence = sentence.replace(/(?:^|[.!?]\s+)([a-z])/g, match => match.toUpperCase());
-
                 paragraphParts.push(sentence);
             }
         }
-
         return paragraphParts.join(" ");
     }
 }
