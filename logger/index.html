@@ -403,36 +403,57 @@
                 const fieldId = group.dataset.id;
                 const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
                 
-                checkboxes.forEach(cb => {
-                    cb.addEventListener('change', (e) => {
-                        if (!e.target.checked) return;
-                        const val = e.target.value;
+                const updateProactiveGuardrails = () => {
+                    const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
+                    const maxAllowed = guardrails.getMaxSelections(fieldId);
+                    const isAtMax = currentlyChecked.length >= maxAllowed;
 
-                        if (guardrails.isExclusiveChoice(val)) {
-                            checkboxes.forEach(otherCb => { if (otherCb !== e.target) otherCb.checked = false; });
-                            return; 
-                        } else {
-                            checkboxes.forEach(otherCb => { if (guardrails.isExclusiveChoice(otherCb.value)) otherCb.checked = false; });
-                        }
+                    // Check if an exclusive option (like "Caregiver unavailable") is selected
+                    const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
 
-                        const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
+                    checkboxes.forEach(cb => {
+                        const pillSpan = cb.nextElementSibling;
                         
-                        // Check 1: Minimal Cutsets (Mathematical Logic)
-                        const cutsetValidation = guardrails.validateSubset(fieldId, currentlyChecked);
-                        if (!cutsetValidation.valid) {
-                            e.target.checked = false;
-                            alert(`Clinical Guardrail: You cannot simultaneously select these options:\n- ${cutsetValidation.cutset.join('\n- ')}`);
+                        // If it's already checked, leave it enabled so they can uncheck it
+                        if (cb.checked) {
+                            cb.disabled = false;
+                            pillSpan.style.opacity = '1';
+                            pillSpan.style.cursor = 'pointer';
                             return;
                         }
 
-                        // Check 2: Hard Limits (Checkbox Inflation)
-                        const maxAllowed = guardrails.getMaxSelections(fieldId);
-                        if (currentlyChecked.length > maxAllowed) {
-                            e.target.checked = false;
-                            alert(`Clinical Guardrail: Maximum of ${maxAllowed} items allowed to prevent audit flags for checkbox inflation.`);
+                        let shouldDisable = false;
+
+                        // Rule 1: If an exclusive option is checked, disable all other empty boxes
+                        if (hasExclusive) shouldDisable = true;
+                        
+                        // Rule 2: If a normal option is checked, disable all exclusive options
+                        else if (currentlyChecked.length > 0 && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
+
+                        // Rule 3: Hard Limits (Max Checkboxes)
+                        else if (isAtMax) shouldDisable = true;
+
+                        // Rule 4: Mathematical Cutsets (Would checking this box complete an invalid subset?)
+                        else {
+                            const hypotheticalSelection = [...currentlyChecked, cb.value];
+                            const validation = guardrails.validateSubset(fieldId, hypotheticalSelection);
+                            if (!validation.valid) shouldDisable = true;
                         }
+
+                        // Apply the visual state (Grey-out and disable without layout shift)
+                        cb.disabled = shouldDisable;
+                        pillSpan.style.opacity = shouldDisable ? '0.4' : '1';
+                        pillSpan.style.cursor = shouldDisable ? 'not-allowed' : 'pointer';
                     });
+                };
+
+                // Attach listener to evaluate rules on every tap
+                checkboxes.forEach(cb => {
+                    cb.addEventListener('change', updateProactiveGuardrails);
                 });
+
+                // Run once on load to establish baseline state
+                updateProactiveGuardrails();
             });
 
             if (type === 'Behavior_Reduction') setupBehaviorGuardrails(c);
