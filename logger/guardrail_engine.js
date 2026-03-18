@@ -9,6 +9,7 @@ export default class GuardrailEngine {
         this.invalidCombinations = rulesData.Invalid_Combinations || {};
         this.sessionLimits = rulesData.Session_Limits ||[];
         this.locationSettings = rulesData.Location_Settings || null;
+        this.fieldLimits = rulesData.Field_Limits || { default_max: 4 }; 
     }
 
     getRulesForAntecedent(antecedent) {
@@ -26,6 +27,14 @@ export default class GuardrailEngine {
     getAllowedSettings(location) {
         if (!this.locationSettings || !this.locationSettings[location]) return null;
         return this.locationSettings[location];
+    }
+    
+    getMaxSelections(fieldId) {
+        // If a specific limit exists for this field, return it. Otherwise, return the default.
+        if (this.fieldLimits[fieldId] !== undefined) {
+            return this.fieldLimits[fieldId];
+        }
+        return this.fieldLimits.default_max || 4;
     }
 
     // --- MATHEMATICAL CUTSET VALIDATION ---
