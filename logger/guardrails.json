@@ -208,5 +208,12 @@
     "default_max": 4,
     "Others_Present": 5,
     "Health_Variables": 3
+  },
+  "Location_Settings": {
+    "Clinic":["Therapy room", "Sensory room", "Playground", "Outdoors", "Kitchen", "Dining room"],
+    "Home":["Living room", "Bedroom", "Kitchen", "Dining room", "Outdoors", "Sensory room", "Playground", "Therapy room"],
+    "School":["Classroom", "Playground", "Sensory room", "Outdoors", "Dining room"],
+    "Community":["Store / Community setting", "Outdoors", "Playground"],
+    "Telehealth":["Living room", "Bedroom", "Kitchen", "Dining room", "Therapy room"]
   }
 }
