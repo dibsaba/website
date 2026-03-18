@@ -178,31 +178,27 @@
             Session_Start:[
                 {id:"Location", label:"Location", type:"select"}, {id:"Specific_Setting", label:"Setting", type:"select"}, 
                 {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
-                {id:"Health_Variables", label:"Health", type:"multichoice"}, {id:"Custom_Narrative", label:"Additional Notes (Optional)", type:"textarea"}
+                {id:"Health_Variables", label:"Health", type:"multichoice"}, {id:"Custom_Narrative", label:"Additional Notes", type:"textarea"}
             ],
             Location_Transition:[
-                {id:"Specific_Setting", label:"New Area", type:"select"}, {id:"Custom_Narrative", label:"Transition Notes (Optional)", type:"textarea"}
+                {id:"Specific_Setting", label:"New Area", type:"select"}, {id:"Custom_Narrative", label:"Transition Notes", type:"textarea"}
             ],
             Skill_Acquisition:[
                 {id:"Skill_Domains", label:"Domain", type:"select"}, {id:"Specific_Target", label:"Target (Optional)", type:"text"}, 
                 {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
                 {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Client Response (Optional)", type:"textarea"}
+                {id:"Custom_Narrative", label:"Client Response", type:"textarea"}
             ],
             Behavior_Reduction:[
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, 
-                {id:"Deescalation_Time", label:"Time", type:"select"}, {id:"Custom_Narrative", label:"Behavior Context (Optional)", type:"textarea"}
+                {id:"Deescalation_Time", label:"Time", type:"select"}, {id:"Custom_Narrative", label:"Behavior Context", type:"textarea"}
             ],
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Handoff Notes (Optional)", type:"textarea"}
+                {id:"Custom_Narrative", label:"Handoff Notes", type:"textarea"}
             ]
         };
-
-        // --- EXCLUSIVE OPTIONS GUARDRAIL ---
-        // If any of these are checked, all other boxes are unchecked.
-        const EXCLUSIVE_OPTIONS =["None", "None reported", "Absence of maladaptive behavior", "Caregiver unavailable", "None selected"];
 
         const btnTogglePwd = document.getElementById('btn-toggle-pwd');
         const passwordInput = document.getElementById('password-input');
@@ -242,7 +238,7 @@
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
-                    const[sch, syn, tpl, grd] = await Promise.all([fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')]);
+                    const [sch, syn, tpl, grd] = await Promise.all([fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')]);
                     schemaData = await sch.json();
                     guardrails = new GuardrailEngine(await grd.json());
                     const synJson = await syn.json(); synonymsData = synJson.Synonyms || synJson;
@@ -275,8 +271,6 @@
                 w.innerHTML = `<label class="form-label">${f.label}</label>`;
                 
                 let optionsArray = schemaData[f.id] ||[];
-                if (f.id === 'Target_Behaviors') optionsArray = optionsArray.filter(o => o !== "None");
-
                 const existingVal = existingEvent ? existingEvent.data[f.id] : null;
 
                 if (f.type === 'text') {
@@ -303,50 +297,113 @@
                 c.appendChild(w);
             });
 
-            // ADD THE EXCLUSIVE CHECKBOX LOGIC LISTENER
+            // --- PURE JSON-DRIVEN CHECKBOX GUARDRAILS ---
             c.querySelectorAll('.checkbox-group').forEach(group => {
+                const fieldId = group.dataset.id;
                 const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
+                
                 checkboxes.forEach(cb => {
                     cb.addEventListener('change', (e) => {
                         if (!e.target.checked) return;
-                        
-                        const isExclusive = EXCLUSIVE_OPTIONS.includes(e.target.value);
-                        if (isExclusive) {
-                            // If they clicked "None", uncheck everything else
+                        const val = e.target.value;
+
+                        // 1. "None" Exclusivity
+                        if (guardrails.isExclusiveChoice(val)) {
                             checkboxes.forEach(otherCb => { if (otherCb !== e.target) otherCb.checked = false; });
+                            return; 
                         } else {
-                            // If they clicked something else, uncheck "None"
-                            checkboxes.forEach(otherCb => { if (EXCLUSIVE_OPTIONS.includes(otherCb.value)) otherCb.checked = false; });
+                            checkboxes.forEach(otherCb => { if (guardrails.isExclusiveChoice(otherCb.value)) otherCb.checked = false; });
+                        }
+
+                        // 2. Mutually Exclusive Peers (e.g., DRA vs DRO)
+                        const peers = guardrails.getMutuallyExclusivePeers(val);
+                        if (peers.length > 0) {
+                            checkboxes.forEach(otherCb => { if (peers.includes(otherCb.value)) otherCb.checked = false; });
+                        }
+
+                        // 3. Dynamic Field Limits
+                        const maxAllowed = guardrails.getMaxSelections(fieldId);
+                        const currentlyChecked = checkboxes.filter(chk => chk.checked);
+                        if (currentlyChecked.length > maxAllowed) {
+                            e.target.checked = false;
+                            alert(`Clinical Guardrail: Please select a maximum of ${maxAllowed} items for this field.`);
                         }
                     });
                 });
             });
 
-            if (type === 'Behavior_Reduction') setupGuardrails(c);
+            if (type === 'Behavior_Reduction') setupBehaviorGuardrails(c);
             
             document.getElementById('form-modal').style.display = 'flex';
             document.getElementById('generate-modal').style.display = 'none';
             document.getElementById('modal-overlay').classList.add('active');
         };
 
-        function setupGuardrails(container) {
-            const ant = container.querySelector('select[data-id="Antecedents"]');
-            const ints = container.querySelector('.checkbox-group[data-id="Interventions"]');
-            const btn = document.createElement('button'); btn.className='btn-secondary'; btn.innerText='Show All Allowable'; btn.style.marginTop='10px';
-            let ovr = false; ints.parentNode.appendChild(btn);
+        function setupBehaviorGuardrails(container) {
+            const behaviorSelect = container.querySelector('select[data-id="Target_Behaviors"]');
+            const antSelect = container.querySelector('select[data-id="Antecedents"]');
+            const intsGroup = container.querySelector('.checkbox-group[data-id="Interventions"]');
+            
+            // 1. Dynamic Contradiction Logic (Behavior: None)
+            const handleContradictions = () => {
+                const val = behaviorSelect.value;
+                const actions = guardrails.getContradictionActions('Target_Behaviors', val);
+                
+                // Reset to enabled first
+                container.querySelectorAll('select').forEach(el => el.disabled = false);
+                if (intsGroup) intsGroup.style.display = 'flex';
+                const overrideBtn = container.querySelector('#btn-override-whitelist');
+                if (overrideBtn) overrideBtn.style.display = 'block';
 
-            const apply = () => {
-                const rules = guardrails.getRulesForAntecedent(ant.value);
-                ints.querySelectorAll('.checkbox-pill').forEach(p => {
-                    const input = p.querySelector('input');
-                    if(rules.blacklisted_interventions.includes(input.value)) { p.style.display='none'; input.checked=false; }
-                    else if(rules.whitelisted_interventions.includes(input.value)) p.style.display='inline-block';
-                    else { p.style.display = ovr ? 'inline-block' : 'none'; if(!ovr) input.checked=false; }
+                // Apply JSON-driven actions
+                actions.forEach(rule => {
+                    if (rule.action === 'disable_all') {
+                        const targetEl = container.querySelector(`[data-id="${rule.target_category}"]`);
+                        if (targetEl) {
+                            if (targetEl.tagName === 'SELECT') targetEl.disabled = true;
+                            if (targetEl.classList.contains('checkbox-group')) {
+                                targetEl.style.display = 'none';
+                                if (overrideBtn) overrideBtn.style.display = 'none';
+                            }
+                        }
+                    }
                 });
             };
-            ant.onchange = () => { ovr=false; btn.innerText='Show All Allowable'; apply(); };
-            btn.onclick = () => { ovr=!ovr; btn.innerText=ovr?'Hide Non-Whitelisted':'Show All Allowable'; apply(); };
-            apply();
+            behaviorSelect.addEventListener('change', handleContradictions);
+
+            // 2. Whitelist / Blacklist Enforcement
+            const overrideBtn = document.createElement('button'); 
+            overrideBtn.id = 'btn-override-whitelist';
+            overrideBtn.type = 'button';
+            overrideBtn.className = 'btn-secondary'; 
+            overrideBtn.innerText = 'Show All Allowable'; 
+            overrideBtn.style.marginTop = '10px';
+            let ovr = false; 
+            intsGroup.parentNode.appendChild(overrideBtn);
+
+            const applyWhitelist = () => {
+                const rules = guardrails.getRulesForAntecedent(antSelect.value);
+                intsGroup.querySelectorAll('.checkbox-pill').forEach(p => {
+                    const input = p.querySelector('input');
+                    if(rules.blacklisted_interventions.includes(input.value)) { 
+                        p.style.display = 'none'; input.checked = false; 
+                    }
+                    else if(rules.whitelisted_interventions.includes(input.value)) {
+                        p.style.display = 'inline-block';
+                    }
+                    else { 
+                        p.style.display = ovr ? 'inline-block' : 'none'; 
+                        if(!ovr) input.checked = false; 
+                    }
+                });
+            };
+
+            antSelect.addEventListener('change', () => { ovr=false; overrideBtn.innerText='Show All Allowable'; applyWhitelist(); });
+            overrideBtn.addEventListener('click', () => { ovr=!ovr; overrideBtn.innerText=ovr?'Hide Non-Whitelisted':'Show All Allowable'; applyWhitelist(); });
+            
+            // Initialize states
+            handleContradictions();
+            applyWhitelist();
         }
 
         document.getElementById('btn-start').onclick = () => openForm('Session_Start');
@@ -363,7 +420,7 @@
                 }
                 if (el.classList.contains('checkbox-group')) { 
                     const c = Array.from(el.querySelectorAll('input:checked')).map(i=>i.value); 
-                    data[el.dataset.id] = c.length ? c : ["None selected"]; 
+                    data[el.dataset.id] = c.length ? c :["None selected"]; 
                 }
             });
 
@@ -418,7 +475,7 @@
         }
 
         document.getElementById('btn-generate').onclick = () => {
-            const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+            const sortedTimeline =[...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
             const sessionObj = SessionNormalizer.normalize(sortedTimeline);
             const plan = NarrativePlanner.buildPlan(sessionObj);
             const note = NarrativeEngine.generate(synonymsData, templatesData, plan);
@@ -440,7 +497,7 @@
         
         document.getElementById('btn-clear').onclick = () => { 
             if(confirm("Clear current session data?")) { 
-                timeline =[]; 
+                timeline = []; 
                 localStorage.removeItem('aba_tl'); 
                 renderTimeline(); 
             } 

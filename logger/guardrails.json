@@ -191,5 +191,22 @@
       "target_category": "Deescalation_Time",
       "action": "disable_all"
     }
-  ]
+  ],
+  "Exclusive_Choices":[
+    "None",
+    "None reported",
+    "Absence of maladaptive behavior",
+    "Caregiver unavailable"
+  ],
+  "Mutually_Exclusive_Groups": [[
+      "DRA (Differential Reinforcement of Alternative Behavior)",
+      "DRO (Differential Reinforcement of Other Behavior)",
+      "DRI (Differential Reinforcement of Incompatible Behavior)"
+    ]
+  ],
+  "Field_Limits": {
+    "default_max": 4,
+    "Others_Present": 5,
+    "Health_Variables": 3
+  }
 }
