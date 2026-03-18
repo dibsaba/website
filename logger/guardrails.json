@@ -70,7 +70,7 @@
         "Visual Schedule / Timer",
         "Premack Principle (First/Then)"
       ],
-      "blacklisted_interventions":[
+      "blacklisted_interventions": [
         "Planned Ignoring",
         "Escape Extinction",
         "Tactical Break"
@@ -198,22 +198,39 @@
     "Absence of maladaptive behavior",
     "Caregiver unavailable"
   ],
-  "Mutually_Exclusive_Groups": [[
-      "DRA (Differential Reinforcement of Alternative Behavior)",
-      "DRO (Differential Reinforcement of Other Behavior)",
-      "DRI (Differential Reinforcement of Incompatible Behavior)"
+  "Invalid_Combinations": {
+    "Initial_Presentation": [
+      ["Readily responding to instructions", "Crying / vocal protests"],["Readily responding to instructions", "Avoiding eye contact / turning away"]
+    ],
+    "Health_Variables": [["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"]
+    ],
+    "Interventions":[
+      ["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],
+      ["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
+      ["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
+      ["Escape Extinction", "Tactical Break"],
+      ["Planned Ignoring", "Redirection"]
+    ],
+    "Others_Present": [
+      ["Mother", "Father", "Sibling(s)", "Teacher", "BCBA"]
+    ],
+    "Specific_Reinforcers": [["Break / Escape", "Access to Outdoors", "iPad / Tablet", "Edibles", "Swinging"]
     ]
-  ],
-  "Field_Limits": {
-    "default_max": 4,
-    "Others_Present": 5,
-    "Health_Variables": 3
   },
+  "Session_Limits":[
+    {
+      "event_type": "Skill_Acquisition",
+      "field": "Prompt_Levels",
+      "value": "Independent",
+      "max_ratio": 0.5,
+      "warning_message": "Over 50% of the recorded skills were marked 'Independent'. A strict Medicaid auditor may flag this session for lacking active intervention. Are you sure you wish to proceed?"
+    }
+  ],
   "Location_Settings": {
     "Clinic":["Therapy room", "Sensory room", "Playground", "Outdoors", "Kitchen", "Dining room"],
     "Home":["Living room", "Bedroom", "Kitchen", "Dining room", "Outdoors", "Sensory room", "Playground", "Therapy room"],
-    "School":["Classroom", "Playground", "Sensory room", "Outdoors", "Dining room"],
-    "Community":["Store / Community setting", "Outdoors", "Playground"],
-    "Telehealth":["Living room", "Bedroom", "Kitchen", "Dining room", "Therapy room"]
+    "School": ["Classroom", "Playground", "Sensory room", "Outdoors", "Dining room"],
+    "Community": ["Store / Community setting", "Outdoors", "Playground"],
+    "Telehealth": ["Living room", "Bedroom", "Kitchen", "Dining room", "Therapy room"]
   }
 }

@@ -174,29 +174,34 @@
         let currentType = null;
         let currentEditingId = null;
 
+        // UI_CONFIG updated with explicit placeholders directing the RBT
         const UI_CONFIG = {
             Session_Start:[
                 {id:"Location", label:"Location", type:"select"}, {id:"Specific_Setting", label:"Setting", type:"select"}, 
                 {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
-                {id:"Health_Variables", label:"Health", type:"multichoice"}, {id:"Custom_Narrative", label:"Additional Notes (Optional)", type:"textarea"}
+                {id:"Health_Variables", label:"Health", type:"multichoice"}, 
+                {id:"Custom_Narrative", label:"Additional Notes", type:"textarea", placeholder:"Write a complete sentence detailing initial rapport building (e.g., 'The therapist paired with the client using puzzles.')."}
             ],
             Location_Transition:[
-                {id:"Specific_Setting", label:"New Area", type:"select"}, {id:"Custom_Narrative", label:"Transition Notes (Optional)", type:"textarea"}
+                {id:"Specific_Setting", label:"New Area", type:"select"}, 
+                {id:"Custom_Narrative", label:"Transition Notes", type:"textarea", placeholder:"Write a complete sentence describing the transition (e.g., 'The client walked calmly to the kitchen.')."}
             ],
             Skill_Acquisition:[
-                {id:"Skill_Domains", label:"Domain", type:"select"}, {id:"Specific_Target", label:"Target (Optional)", type:"text"}, 
+                {id:"Skill_Domains", label:"Domain", type:"select"}, 
+                {id:"Specific_Target", label:"Specific Target / Program Name", type:"text", placeholder:"Enter the protocol name (e.g., 'Tacting Colors')."}, 
                 {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
                 {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Client Response (Optional)", type:"textarea"}
+                {id:"Custom_Narrative", label:"Client Response", type:"textarea", placeholder:"Write a complete sentence describing the response (e.g., 'The client independently sorted 4 items.')."}
             ],
             Behavior_Reduction:[
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, 
-                {id:"Deescalation_Time", label:"Time", type:"select"}, {id:"Custom_Narrative", label:"Behavior Context (Optional)", type:"textarea"}
+                {id:"Deescalation_Time", label:"Time", type:"select"}, 
+                {id:"Custom_Narrative", label:"Behavior Context", type:"textarea", placeholder:"Write a complete sentence detailing the context (e.g., 'The client threw the blue block after being denied access.')."}
             ],
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Handoff Notes (Optional)", type:"textarea"}
+                {id:"Custom_Narrative", label:"Handoff Notes", type:"textarea", placeholder:"Write a complete sentence summarizing the handoff (e.g., 'Caregiver was informed of new mastered skills.')."}
             ]
         };
 
@@ -238,7 +243,7 @@
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
-                    const [sch, syn, tpl, grd] = await Promise.all([fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')]);
+                    const[sch, syn, tpl, grd] = await Promise.all([fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')]);
                     schemaData = await sch.json();
                     guardrails = new GuardrailEngine(await grd.json());
                     const synJson = await syn.json(); synonymsData = synJson.Synonyms || synJson;
@@ -270,13 +275,13 @@
                 const w = document.createElement('div'); w.className = 'form-field';
                 w.innerHTML = `<label class="form-label">${f.label}</label>`;
                 
-                let optionsArray = schemaData[f.id] ||[];
+                let optionsArray = schemaData[f.id] || [];
                 const existingVal = existingEvent ? existingEvent.data[f.id] : null;
 
                 if (f.type === 'text') {
-                    w.innerHTML += `<input type="text" data-id="${f.id}" placeholder="Enter specific details..." value="${existingVal || ''}">`;
+                    w.innerHTML += `<input type="text" data-id="${f.id}" placeholder="${f.placeholder}" value="${existingVal || ''}">`;
                 } else if (f.type === 'textarea') {
-                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Type objective, observable details...">${existingVal || ''}</textarea>`;
+                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${f.placeholder}">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
                     optionsArray.forEach(o => {
@@ -297,7 +302,6 @@
                 c.appendChild(w);
             });
 
-            // --- LOCATION TO SETTING DEPENDENCY GUARDRAILS ---
             if (type === 'Session_Start') {
                 const locSelect = c.querySelector('select[data-id="Location"]');
                 const setSelect = c.querySelector('select[data-id="Specific_Setting"]');
@@ -308,7 +312,6 @@
                         setSelect.innerHTML = '';
                         let options = schemaData['Specific_Setting'] ||[];
                         if (allowed) options = options.filter(o => allowed.includes(o));
-                        
                         options.forEach(o => {
                             const isSelected = currentVal === o ? 'selected' : '';
                             setSelect.innerHTML += `<option value="${o}" ${isSelected}>${o}</option>`;
@@ -322,13 +325,11 @@
             if (type === 'Location_Transition') {
                 let currentLocation = null;
                 let lastSetting = null;
-                
                 const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
                 sortedTimeline.forEach(t => {
                     if (t.data && t.data.Location) currentLocation = t.data.Location;
                     if (t.data && t.data.Specific_Setting) lastSetting = t.data.Specific_Setting;
                 });
-
                 const setSelect = c.querySelector('select[data-id="Specific_Setting"]');
                 if (setSelect) {
                     const allowed = guardrails.getAllowedSettings(currentLocation);
@@ -336,9 +337,7 @@
                     setSelect.innerHTML = '';
                     let options = schemaData['Specific_Setting'] ||[];
                     if (allowed) options = options.filter(o => allowed.includes(o));
-                    
                     options.forEach(o => {
-                        // Prevent transitioning to the exact same room (unless we are just editing this specific transition)
                         if (o === lastSetting && o !== currentVal) return; 
                         const isSelected = currentVal === o ? 'selected' : '';
                         setSelect.innerHTML += `<option value="${o}" ${isSelected}>${o}</option>`;
@@ -346,7 +345,7 @@
                 }
             }
 
-            // --- JSON-DRIVEN CHECKBOX GUARDRAILS ---
+            // --- MINIMAL CUTSET CHECKBOX LOGIC ---
             c.querySelectorAll('.checkbox-group').forEach(group => {
                 const fieldId = group.dataset.id;
                 const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
@@ -356,6 +355,7 @@
                         if (!e.target.checked) return;
                         const val = e.target.value;
 
+                        // 1. None Exclusivity
                         if (guardrails.isExclusiveChoice(val)) {
                             checkboxes.forEach(otherCb => { if (otherCb !== e.target) otherCb.checked = false; });
                             return; 
@@ -363,16 +363,13 @@
                             checkboxes.forEach(otherCb => { if (guardrails.isExclusiveChoice(otherCb.value)) otherCb.checked = false; });
                         }
 
-                        const peers = guardrails.getMutuallyExclusivePeers(val);
-                        if (peers.length > 0) {
-                            checkboxes.forEach(otherCb => { if (peers.includes(otherCb.value)) otherCb.checked = false; });
-                        }
-
-                        const maxAllowed = guardrails.getMaxSelections(fieldId);
-                        const currentlyChecked = checkboxes.filter(chk => chk.checked);
-                        if (currentlyChecked.length > maxAllowed) {
+                        // 2. Validate against Mathematical Cutsets
+                        const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
+                        const cutsetValidation = guardrails.validateSubset(fieldId, currentlyChecked);
+                        
+                        if (!cutsetValidation.valid) {
                             e.target.checked = false;
-                            alert(`Clinical Guardrail: Please select a maximum of ${maxAllowed} items to avoid audit flags for checkbox inflation.`);
+                            alert(`Clinical Guardrail: You cannot simultaneously select these options:\n- ${cutsetValidation.cutset.join('\n- ')}`);
                         }
                     });
                 });
@@ -455,8 +452,29 @@
         document.getElementById('btn-end').onclick = () => openForm('Session_End');
 
         document.getElementById('btn-save').onclick = () => {
+            let isValid = true;
             const data = {};
-            document.getElementById('form-container').querySelectorAll('[data-id]').forEach(el => {
+            const inputs = document.getElementById('form-container').querySelectorAll('[data-id]');
+            
+            // Validate all text/textarea fields are filled out
+            inputs.forEach(el => {
+                if (el.tagName === 'INPUT' && el.type === 'text' || el.tagName === 'TEXTAREA') {
+                    if (el.value.trim() === '') {
+                        isValid = false;
+                        el.style.borderColor = 'red'; // Highlight missing fields
+                    } else {
+                        el.style.borderColor = '';
+                    }
+                }
+            });
+
+            if (!isValid) {
+                alert("Please fill out all required text fields before saving.");
+                return;
+            }
+
+            // If valid, capture data
+            inputs.forEach(el => {
                 if(el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                     if (el.type !== 'checkbox') data[el.dataset.id] = el.value;
                 }
@@ -482,8 +500,7 @@
             const started = timeline.some(t => t.type === 'Session_Start');
             const ended = timeline.some(t => t.type === 'Session_End');
             
-            document.getElementById('btn-start').style.display = started ? 'none' : 'block';
-            ['btn-skill', 'btn-behavior', 'btn-transition', 'btn-end'].forEach(id => document.getElementById(id).disabled = !started || ended);
+            document.getElementById('btn-start').style.display = started ? 'none' : 'block';['btn-skill', 'btn-behavior', 'btn-transition', 'btn-end'].forEach(id => document.getElementById(id).disabled = !started || ended);
             document.getElementById('btn-generate').disabled = timeline.length === 0;
 
             const sorted = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
@@ -518,7 +535,14 @@
         }
 
         document.getElementById('btn-generate').onclick = () => {
-            const sortedTimeline =[...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+            // RUN SESSION AUDITOR BEFORE GENERATION
+            const sessionWarnings = guardrails.auditSession(timeline);
+            if (sessionWarnings.length > 0) {
+                const proceed = confirm(`Clinical Warning:\n\n${sessionWarnings.join('\n\n')}\n\nDo you wish to proceed?`);
+                if (!proceed) return;
+            }
+
+            const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
             const sessionObj = SessionNormalizer.normalize(sortedTimeline);
             const plan = NarrativePlanner.buildPlan(sessionObj);
             const note = NarrativeEngine.generate(synonymsData, templatesData, plan);
