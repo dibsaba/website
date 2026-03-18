@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ABA Clinical Session Logger</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -23,7 +23,7 @@
             --text-muted: #94a3b8; 
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); background-color: var(--brand-cream); color: var(--text-body); -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-sans); background-color: var(--brand-cream); color: var(--text-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         h1, h2, h3 { font-family: var(--font-serif); color: var(--brand-primary); }
         button { font-family: var(--font-sans); font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
         
@@ -38,31 +38,30 @@
         .view { display: none; min-height: 100vh; }
         .view.active { display: flex; flex-direction: column; }
         
-        /* --- PROFESSIONAL DESKTOP-STYLE LOGIN --- */
         #auth-view { justify-content: center; align-items: center; padding: 20px; background-color: var(--brand-sand); }
         .auth-card { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); text-align: center; max-width: 400px; width: 100%; }
-        .auth-card img { max-width: 300px; margin: 0 auto 10px auto; display: block; }
+        .auth-card img { max-width: 100%; height: auto; margin: 0 auto 10px auto; display: block; }
         .auth-card h2 { margin-bottom: 24px; font-family: var(--font-sans); font-size: 14px; font-weight: normal; color: #64748B; }
         .auth-card .form-group { margin-bottom: 20px; text-align: left; position: relative; }
         .auth-card input { height: 40px; padding-left: 10px; }
         .auth-card input::placeholder { color: #94a3b8; }
         
-        /* Password Toggle Icon */
         .pwd-toggle { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748B; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; }
         .pwd-toggle:hover { color: var(--brand-primary); }
         .pwd-toggle svg { width: 20px; height: 20px; }
 
-        /* --- DASHBOARD STYLING --- */
-        #dashboard-view { padding-bottom: 150px; }
+        #dashboard-view { padding-bottom: 180px; }
         .app-header { background: #fff; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 10; display:flex; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.03);}
-        .timeline-container { max-width: 800px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        .timeline-container { max-width: 800px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; width: 100%; }
         .timeline-card { background: #fff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--brand-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        
         .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 15px; display: flex; flex-direction: column; gap: 10px; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
-        .action-bar-row { max-width: 800px; width: 100%; display: flex; gap: 10px; }
+        .action-bar-row { max-width: 800px; width: 100%; display: flex; gap: 10px; justify-content: center; }
+        .action-bar button { flex: 1; }
         
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 100; }
         .modal-overlay.active { display: flex; }
-        .modal { background: #fff; width: 100%; max-width: 600px; max-height: 85vh; border-radius: 12px; display: flex; flex-direction: column; }
+        .modal { background: #fff; width: 100%; max-width: 600px; max-height: 90vh; border-radius: 12px; display: flex; flex-direction: column; }
         .modal-header { padding: 20px; border-bottom: 1px solid var(--brand-sand); display: flex; justify-content: space-between; align-items: center; }
         .close-btn { background: none; font-size: 1.5rem; color: var(--text-muted); padding: 0 10px; line-height: 1; }
         .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
@@ -70,45 +69,47 @@
         
         .form-field { margin-bottom: 20px; }
         .form-label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--brand-primary); }
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
         .checkbox-pill input { display: none; }
-        .checkbox-pill span { padding: 10px 14px; background: var(--brand-sand); border-radius: 8px; display: inline-block; cursor: pointer; font-size: 0.95rem; border: 1px solid transparent; }
+        .checkbox-pill span { padding: 8px 12px; background: var(--brand-sand); border-radius: 8px; display: inline-block; cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; }
         .checkbox-pill input:checked + span { background: var(--brand-accent); color: #fff; border-color: var(--brand-accent-dark); }
         
-        @media (max-width: 767px) {
+        /* --- MOBILE RESPONSIVENESS FIXES (iPhone SE) --- */
+        @media (max-width: 480px) {
+            body { font-size: 14px; }
+            .auth-card { padding: 30px 20px; }
+            .action-bar { padding: 10px; }
+            
+            /* Forces the 4 center buttons into a 2x2 grid on small screens */
+            .action-bar-row:nth-child(2) { flex-wrap: wrap; }
+            .action-bar-row:nth-child(2) button { flex: 1 1 45%; font-size: 0.85rem; padding: 10px; min-height: 40px; }
+            
             .modal { position: absolute; inset: 0; height: 100%; border-radius: 0; max-height: 100vh; }
+            .modal-body { padding: 15px; }
+            .checkbox-pill span { font-size: 0.85rem; padding: 8px 10px; }
         }
     </style>
 </head>
 <body>
     
-    <!-- DESKTOP APP STYLE LOGIN VIEW -->
     <div id="auth-view" class="view active">
         <div class="auth-card">
             <img src="dibs-logo-login.png" alt="Dibs ABA Logo" onerror="this.style.display='none'">
             <h2>Sign into your account:</h2>
-            
-            <div class="form-group">
-                <input type="text" id="login-input" placeholder="Username">
-            </div>
-            
+            <div class="form-group"><input type="text" id="login-input" placeholder="Username"></div>
             <div class="form-group">
                 <input type="password" id="password-input" placeholder="Password" style="padding-right: 40px;">
                 <button type="button" class="pwd-toggle" id="btn-toggle-pwd" title="Toggle Password Visibility">
-                    <!-- Default: Eye icon (Show) -->
                     <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>
                     </svg>
                 </button>
             </div>
-            
             <button id="btn-login" class="btn-primary" style="min-height: 45px; margin-top: 10px;">Continue</button>
-            <p id="auth-error" style="color: #EF4444; display: none; margin-top: 12px; font-size: 12px; font-weight: bold;">Please enter both username and password.</p>
+            <p id="auth-error" style="color: #EF4444; display: none; margin-top: 12px; font-size: 12px; font-weight: bold;">Invalid login or password.</p>
         </div>
     </div>
 
-    <!-- DASHBOARD VIEW -->
     <div id="dashboard-view" class="view">
         <header class="app-header">
             <h2>Session Timeline</h2>
@@ -133,9 +134,7 @@
         </nav>
     </div>
 
-    <!-- MODALS -->
     <div id="modal-overlay" class="modal-overlay">
-        <!-- Input Form Modal -->
         <div id="form-modal" class="modal" style="display:none;">
             <header class="modal-header">
                 <h2 id="form-title">Event</h2>
@@ -147,7 +146,6 @@
             </footer>
         </div>
         
-        <!-- Output Note Modal -->
         <div id="generate-modal" class="modal" style="display:none;">
             <header class="modal-header">
                 <h2>Generated Note</h2>
@@ -174,33 +172,37 @@
         let timeline = JSON.parse(localStorage.getItem('aba_tl')) ||[];
         let schemaData, synonymsData, templatesData, guardrails;
         let currentType = null;
-        let currentEditingId = null; // Tracks if we are editing an existing event
+        let currentEditingId = null;
 
         const UI_CONFIG = {
             Session_Start:[
                 {id:"Location", label:"Location", type:"select"}, {id:"Specific_Setting", label:"Setting", type:"select"}, 
                 {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
-                {id:"Health_Variables", label:"Health", type:"multichoice"}, {id:"Custom_Narrative", label:"Additional Notes", type:"textarea"}
+                {id:"Health_Variables", label:"Health", type:"multichoice"}, {id:"Custom_Narrative", label:"Additional Notes (Optional)", type:"textarea"}
             ],
             Location_Transition:[
-                {id:"Specific_Setting", label:"New Area", type:"select"}, {id:"Custom_Narrative", label:"Transition Notes", type:"textarea"}
+                {id:"Specific_Setting", label:"New Area", type:"select"}, {id:"Custom_Narrative", label:"Transition Notes (Optional)", type:"textarea"}
             ],
             Skill_Acquisition:[
                 {id:"Skill_Domains", label:"Domain", type:"select"}, {id:"Specific_Target", label:"Target (Optional)", type:"text"}, 
                 {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
                 {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Client Response", type:"textarea"}
+                {id:"Custom_Narrative", label:"Client Response (Optional)", type:"textarea"}
             ],
             Behavior_Reduction:[
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, 
-                {id:"Deescalation_Time", label:"Time", type:"select"}, {id:"Custom_Narrative", label:"Behavior Context", type:"textarea"}
+                {id:"Deescalation_Time", label:"Time", type:"select"}, {id:"Custom_Narrative", label:"Behavior Context (Optional)", type:"textarea"}
             ],
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
-                {id:"Custom_Narrative", label:"Handoff Notes", type:"textarea"}
+                {id:"Custom_Narrative", label:"Handoff Notes (Optional)", type:"textarea"}
             ]
         };
+
+        // --- EXCLUSIVE OPTIONS GUARDRAIL ---
+        // If any of these are checked, all other boxes are unchecked.
+        const EXCLUSIVE_OPTIONS =["None", "None reported", "Absence of maladaptive behavior", "Caregiver unavailable", "None selected"];
 
         const btnTogglePwd = document.getElementById('btn-toggle-pwd');
         const passwordInput = document.getElementById('password-input');
@@ -260,7 +262,6 @@
         const closeModals = () => { document.getElementById('modal-overlay').classList.remove('active'); currentEditingId = null; };
         document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeModals);
 
-        // UPDATE: Added existingEvent parameter for Editing
         const openForm = (type, existingEvent = null) => {
             currentType = type;
             currentEditingId = existingEvent ? existingEvent.id : null;
@@ -274,7 +275,6 @@
                 w.innerHTML = `<label class="form-label">${f.label}</label>`;
                 
                 let optionsArray = schemaData[f.id] ||[];
-                // FIX: Remove "None" from Behavior Dropdown
                 if (f.id === 'Target_Behaviors') optionsArray = optionsArray.filter(o => o !== "None");
 
                 const existingVal = existingEvent ? existingEvent.data[f.id] : null;
@@ -282,7 +282,7 @@
                 if (f.type === 'text') {
                     w.innerHTML += `<input type="text" data-id="${f.id}" placeholder="Enter specific details..." value="${existingVal || ''}">`;
                 } else if (f.type === 'textarea') {
-                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Type objective, observable details (e.g., 'Client turned away', NOT 'Client was angry')...">${existingVal || ''}</textarea>`;
+                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="Type objective, observable details...">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
                     optionsArray.forEach(o => {
@@ -301,6 +301,25 @@
                     w.innerHTML += grp;
                 }
                 c.appendChild(w);
+            });
+
+            // ADD THE EXCLUSIVE CHECKBOX LOGIC LISTENER
+            c.querySelectorAll('.checkbox-group').forEach(group => {
+                const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
+                checkboxes.forEach(cb => {
+                    cb.addEventListener('change', (e) => {
+                        if (!e.target.checked) return;
+                        
+                        const isExclusive = EXCLUSIVE_OPTIONS.includes(e.target.value);
+                        if (isExclusive) {
+                            // If they clicked "None", uncheck everything else
+                            checkboxes.forEach(otherCb => { if (otherCb !== e.target) otherCb.checked = false; });
+                        } else {
+                            // If they clicked something else, uncheck "None"
+                            checkboxes.forEach(otherCb => { if (EXCLUSIVE_OPTIONS.includes(otherCb.value)) otherCb.checked = false; });
+                        }
+                    });
+                });
             });
 
             if (type === 'Behavior_Reduction') setupGuardrails(c);
@@ -349,11 +368,9 @@
             });
 
             if (currentEditingId) {
-                // Update existing event
                 const idx = timeline.findIndex(t => t.id === currentEditingId);
                 if (idx > -1) timeline[idx].data = data;
             } else {
-                // Create new event
                 timeline.push({ id: Date.now().toString(), type: currentType, timestamp: new Date().toISOString(), data });
             }
             
@@ -373,12 +390,11 @@
             sorted.forEach(ev => {
                 const card = document.createElement('div'); 
                 card.className = `timeline-card type-${ev.type}`;
-                card.style.cursor = 'pointer'; // Make it look clickable
+                card.style.cursor = 'pointer'; 
                 
                 const label = ev.type.replace('_',' ');
                 let detailsHtml = '';
                 
-                // Construct the details display
                 UI_CONFIG[ev.type].forEach(field => {
                     const val = ev.data[field.id];
                     if (val && val !== "None selected" && val.length > 0) {
@@ -395,7 +411,6 @@
                     <div class="card-body">${detailsHtml}</div>
                 `;
                 
-                // Add click listener to open edit form
                 card.onclick = () => openForm(ev.type, ev);
                 f.appendChild(card);
             });

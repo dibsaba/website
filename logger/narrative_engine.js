@@ -3,13 +3,11 @@
  */
 export default class NarrativeEngine {
     
-    // Seeded Random Number Generator (Deterministic)
     static seededRandom(seed) {
         const x = Math.sin(seed++) * 10000;
         return x - Math.floor(x);
     }
 
-    // Creates a unique integer seed based on the raw session data
     static generateSeed(planStr) {
         let hash = 0;
         for (let i = 0; i < planStr.length; i++) {
@@ -41,8 +39,6 @@ export default class NarrativeEngine {
     static generate(synonyms, templates, plan) {
         const paragraphParts =[];
         let currentSeed = this.generateSeed(JSON.stringify(plan)); 
-        
-        // FIX: Track used synonyms to prevent saying "Next," twice in a row
         const usedSynonyms = new Set();
 
         const getElement = (arr) => {
@@ -53,7 +49,6 @@ export default class NarrativeEngine {
 
         const getUniqueSynonym = (options) => {
             if (!Array.isArray(options) || options.length === 0) return "";
-            // Try to find an unused synonym up to 10 times
             for (let j = 0; j < 10; j++) {
                 const candidate = getElement(options);
                 if (!usedSynonyms.has(candidate)) {
@@ -61,7 +56,7 @@ export default class NarrativeEngine {
                     return candidate;
                 }
             }
-            return getElement(options); // Fallback
+            return getElement(options); 
         };
 
         for (let i = 0; i < plan.length; i++) {
@@ -73,11 +68,19 @@ export default class NarrativeEngine {
 
             sentence = sentence.replace(/([^\s])(\{|\[)/g, '$1 $2').replace(/(\}|\])([^\s.,!?;:'])/g, '$1 $2');
 
-            sentence = sentence.replace(/\{([^}]+)\}/g, (match, key) => {
+            // Replace Synonyms (and cleverly lowercase transitions that accidentally land mid-sentence)
+            sentence = sentence.replace(/\{([^}]+)\}/g, (match, key, offset) => {
                 if (key.includes("transitions")) {
                     if (i === 0) key = "intro_transitions";
                     else if (i === plan.length - 1) key = "end_transitions";
                     else key = "mid_transitions";
+                    
+                    let syn = getUniqueSynonym(synonyms[key]);
+                    // If the template poorly placed this transition mid-sentence, lower-case the first letter so it flows
+                    if (offset > 0 && syn.length > 0) {
+                        syn = syn.charAt(0).toLowerCase() + syn.slice(1);
+                    }
+                    return syn;
                 }
                 return getUniqueSynonym(synonyms[key]);
             });
@@ -88,7 +91,14 @@ export default class NarrativeEngine {
                 return (val === undefined || val === null || val === "" || val.length === 0) ? "" : this.formatList(val);
             });
 
-            sentence = sentence.replace(/\(\s*\)/g, "").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").replace(/\.+/g, ".").replace(/\s+([.,!?])/g, "$1").replace(/\s{2,}/g, " ").trim();
+            // --- DEEP GRAMMAR SCRUBBER ---
+            sentence = sentence.replace(/\(\s*\)/g, ""); // Clean empty ()
+            sentence = sentence.replace(/\(\s+/g, "(").replace(/\s+\)/g, ")"); // Clean inner () spacing
+            sentence = sentence.replace(/,\s*\./g, "."); // FIX: If a transition brought a trailing comma right before a period, delete the comma
+            sentence = sentence.replace(/,\s*,/g, ","); // FIX: Clean up double commas
+            sentence = sentence.replace(/\.+/g, "."); // Fix double periods
+            sentence = sentence.replace(/\s+([.,!?])/g, "$1"); // Fix space before punctuation
+            sentence = sentence.replace(/\s{2,}/g, " ").trim(); 
             
             if (sentence) {
                 if (eventData.Custom_Narrative && eventData.Custom_Narrative.trim() !== "") {
