@@ -102,7 +102,7 @@
     "{mid_transitions} {client} was guided to the [Specific_Setting]; the process involved [Transition_Context].",
     "In moving to the[Specific_Setting] {mid_transitions}, {client}'s transition context was noted as [Transition_Context].",
     "{mid_transitions} an environmental change brought {client} to the [Specific_Setting]. During this,[Transition_Context]."
-  ]
+  ],
   "Session_Start": [
 		"I arrived at the [Location]. Walking into the [Specific_Setting], I observed the client [Initial_Presentation]. Present were [Others_Present]. Health variables included [Health_Variables].",
 		"Health variables included [Health_Variables]. At the [Location], the client began the session[Initial_Presentation] in the [Specific_Setting] while present were [Others_Present].",
