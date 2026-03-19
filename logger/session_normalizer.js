@@ -80,9 +80,10 @@ export default class SessionNormalizer {
         });
 
         // Convert the groups back into an array with computed "Frequency"
-        return Object.values(grouped).map(g => ({
+         return Object.values(grouped).map(g => ({
             Target_Behaviors: g.Target_Behaviors,
             Antecedents: g.Antecedents,
+            Raw_Count: g.count, // <-- NEW: Explicit integer for Behavior Weighting
             Frequency: g.count === 1 ? "an episode of" : "multiple instances of",
             Intensity: Array.from(g.Intensity),
             Interventions: Array.from(g.Interventions),

@@ -53,6 +53,16 @@ export default class NarrativePlanner {
             return intervention; 
         };
 
+        // 3. NEW: CLINICAL EFFECTIVENESS SCORING
+        const getEffectiveness = (timeArray) => {
+            if (!timeArray || timeArray.length === 0) return "resulting in safe de-escalation";
+            const times = Array.isArray(timeArray) ? timeArray : [timeArray];
+            if (times.includes("> 30 minutes")) return "yielding limited initial success before achieving de-escalation";
+            if (times.includes("15-30 minutes")) return "yielding partial effectiveness in reaching de-escalation";
+            if (times.includes("5-15 minutes")) return "effectively achieving stabilization";
+            return "proving highly effective in reaching rapid de-escalation";
+        };
+
         // --- BUILD THE NARRATIVE PLAN ---
         if (normalizedSession.context) plan.push({ section: 'Session_Start', data: normalizedSession.context });
         
@@ -65,40 +75,48 @@ export default class NarrativePlanner {
             plan.push({ section: 'Skills_Summary', data: normalizedSession.aggregatedSkills });
         }
 
-        // --- STRATEGIC BEHAVIOR ROUTING ---
+        // --- STRATEGIC BEHAVIOR ROUTING WITH WEIGHTING ---
         if (strategy.behaviorCount > 0) {
             
-            // Process all behaviors to inject clinical intent
             const processedBehaviors = normalizedSession.aggregatedBehaviors.map(b => {
                 b.Purpose = ANTECEDENT_PURPOSE[b.Antecedents] || "for its presumed function";
                 b.Contextual_Interventions = Array.isArray(b.Interventions) ? b.Interventions.map(i => getClinicalAction(i, b.Antecedents)) :[];
+                b.Effectiveness = getEffectiveness(b.Deescalation_Time); // Add effectiveness to single behaviors
                 return b;
             });
 
             if (strategy.condenseBehaviors) {
-                // CONDENSED MODE: Merge multiple behaviors into a single master summary
-                const allBehaviors = processedBehaviors.map(b => {
-                    const intensity = b.Intensity && b.Intensity.length > 0 ? b.Intensity.join('/') : '';
-                    return `${intensity} ${b.Target_Behaviors}`.trim();
-                });
+                // NEW: BEHAVIOR WEIGHTING (Sort by Raw_Count highest to lowest)
+                const sorted = [...processedBehaviors].sort((a, b) => b.Raw_Count - a.Raw_Count);
                 
-                const allFunctions = [...new Set(processedBehaviors.map(b => b.Purpose))];
-                const allInterventions = [...new Set(processedBehaviors.flatMap(b => b.Contextual_Interventions))];
+                // Identify the Primary Behavior
+                const primary = sorted[0];
+                const primaryIntensity = primary.Intensity && primary.Intensity.length > 0 ? primary.Intensity[0] : '';
+                const primaryString = `${primary.Frequency} ${primaryIntensity} ${primary.Target_Behaviors}`.trim();
+                
+                // Group the rest as Secondary Behaviors
+                const secondaryBehaviors = sorted.slice(1).map(b => b.Target_Behaviors);
+                const secondaryString = secondaryBehaviors.length > 0 ? `with secondary occurrences of ${secondaryBehaviors.join(' and ')}` : '';
+                
+                const allFunctions =[...new Set(processedBehaviors.map(b => b.Purpose))];
+                const allInterventions =[...new Set(processedBehaviors.flatMap(b => b.Contextual_Interventions))];
                 const allTimes =[...new Set(processedBehaviors.flatMap(b => b.Deescalation_Time))];
+                const overallEffectiveness = getEffectiveness(allTimes);
                 const combinedNotes = processedBehaviors.map(b => b.Custom_Narrative).filter(n => n && n.trim() !== "").join(" ");
 
                 plan.push({
                     section: 'Behaviors_Condensed',
                     data: {
-                        All_Behaviors: allBehaviors,
+                        Primary_Behavior: primaryString,
+                        Secondary_Behaviors: secondaryString, // New variable
                         All_Functions: allFunctions,
                         All_Interventions: allInterventions,
                         All_Times: allTimes,
+                        Effectiveness: overallEffectiveness, // New variable
                         Custom_Narrative: combinedNotes
                     }
                 });
             } else {
-                // DETAILED MODE: Only one behavior type occurred, give it a dedicated sentence
                 plan.push({ section: 'Behavior_Reduction', data: processedBehaviors[0] });
             }
         }
