@@ -199,6 +199,10 @@
     "Caregiver unavailable"
   ],
   "Invalid_Combinations": {
+		"Global":[
+			["engaging in crying / vocal protests", "Highly Motivated"],
+			["engaging in crying / vocal protests", "Quick Control"],["avoiding eye contact / turning away", "Highly Motivated"],["displaying an absence of maladaptive behavior", "Required heavy pairing"]
+		],
     "Initial_Presentation": [
       ["Readily responding to instructions", "Crying / vocal protests"],
       ["Readily responding to instructions", "Avoiding eye contact / turning away"],["Readily responding to instructions", "Pacing / vocal stereotypy"],["Readily responding to instructions", "Slowed response time / yawning"],
