@@ -29,6 +29,14 @@ export default class GuardrailEngine {
         return this.locationSettings[location];
     }
     
+    getAvailableTransitions(currentLocation, currentSetting) {
+        const allowed = this.getAllowedSettings(currentLocation);
+        if (!allowed) return[]; // Fallback if location isn't set yet
+        
+        // The Guardrail: Return all allowed settings EXCEPT the one they are currently in
+        return allowed.filter(setting => setting !== currentSetting);
+    }
+    
     getMaxSelections(fieldId) {
         // If a specific limit exists for this field, return it. Otherwise, return the default.
         if (this.fieldLimits[fieldId] !== undefined) {

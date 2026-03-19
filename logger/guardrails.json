@@ -211,7 +211,15 @@
     ],
     "Interventions":[["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
       ["Escape Extinction", "Tactical Break"],["Planned Ignoring", "Redirection"],["FCT (Functional Communication Training)", "Escape Extinction", "Blocking", "DRA (Differential Reinforcement of Alternative Behavior)"]
+    ],
+    "Smart_Chips": [
+      ["Quick Control", "Extended Pairing"],
+      ["Highly Motivated", "Extended Pairing"],
+      ["Independent", "Max Prompting"]
     ]
+  },
+  "Time_Intervention_Ratios": {
+      "< 1 minute": 2 
   },
   "Field_Limits": {
     "default_max": 4,

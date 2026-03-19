@@ -192,9 +192,12 @@
                 {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
             ],
             Skill_Acquisition:[
-                {id:"Skill_Domains", label:"Domain", type:"select"}, {id:"Specific_Target", label:"Specific Target / Program Name", type:"text"}, 
-                {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
-                {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
+                {id:"Skill_Domains", label:"Domain", type:"select"}, 
+                {id:"Specific_Target", label:"Specific Target / Program Name", type:"text", placeholder:"e.g., Tying shoes, Manding for items"}, 
+                {id:"Teaching_Formats", label:"Format", type:"select"}, 
+                {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
+                {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
+                {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
                 {id:"Smart_Chips", schema_ref:"Chips_Skill_Acquisition", label:"Quick Notes", type:"smart_chips"},
                 {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
             ],
@@ -325,8 +328,9 @@
                 const existingVal = existingEvent ? existingEvent.data[f.id] : null;
 
                 if (f.type === 'text') {
-                    // Datalist attached for auto-complete memory
-                    w.innerHTML += `<input type="text" data-id="${f.id}" list="target-list" placeholder="${f.placeholder}" value="${existingVal || ''}">`;
+                    // Provide a safe fallback for the placeholder
+                    const safePlaceholder = f.placeholder ? f.placeholder : '';
+                    w.innerHTML += `<input type="text" data-id="${f.id}" list="target-list" placeholder="${safePlaceholder}" value="${existingVal || ''}">`;
                 } else if (f.type === 'smart_chips') {
                     let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none;">`;
                     let optionsArray = schemaData[f.schema_ref] ||[];
@@ -340,17 +344,6 @@
                     chipsHtml += `</div>`;
                     w.innerHTML += chipsHtml;
                 } else if (f.type === 'textarea') {
-                    // Smart Chips Row
-                    if (SMART_CHIPS[type] && SMART_CHIPS[type].length > 0) {
-                        // Changed flex-wrap to wrap so it doesn't hide on mobile phones
-                        let chipsHtml = `<div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; padding-bottom:4px;">`;
-                        SMART_CHIPS[type].forEach(chip => {
-                            // Added 'this' to the onclick handler
-                            chipsHtml += `<span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 12px; font-size:0.8rem; cursor:pointer; transition: background 0.2s;" onclick="window.appendChipText('${f.id}', '${chip}', this)">${chip}</span>`;
-                        });
-                        chipsHtml += `</div>`;
-                        w.innerHTML += chipsHtml;
-                    }
                     w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${f.placeholder}">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
@@ -394,24 +387,33 @@
 
             if (type === 'Location_Transition') {
                 let currentLocation = null;
-                let lastSetting = null;
+                let currentSetting = null;
+                
+                // Track the location history UP TO this point in time
                 const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
                 sortedTimeline.forEach(t => {
-                    if (t.data && t.data.Location) currentLocation = t.data.Location;
-                    if (t.data && t.data.Specific_Setting) lastSetting = t.data.Specific_Setting;
+                    // If editing, ignore events that happened after this one
+                    if (!existingEvent || new Date(t.timestamp) < new Date(existingEvent.timestamp)) {
+                        if (t.data && t.data.Location) currentLocation = t.data.Location;
+                        if (t.data && t.data.Specific_Setting) currentSetting = t.data.Specific_Setting;
+                    }
                 });
+
                 const setSelect = c.querySelector('select[data-id="Specific_Setting"]');
                 if (setSelect) {
-                    const allowed = guardrails.getAllowedSettings(currentLocation);
-                    const currentVal = setSelect.value;
+                    // ASK THE ENGINE FOR THE GUARDRAILED LIST
+                    const validOptions = guardrails.getAvailableTransitions(currentLocation, currentSetting);
+                    
                     setSelect.innerHTML = '';
-                    let options = schemaData['Specific_Setting'] ||[];
-                    if (allowed) options = options.filter(o => allowed.includes(o));
-                    options.forEach(o => {
-                        if (o === lastSetting && o !== currentVal) return; 
-                        const isSelected = currentVal === o ? 'selected' : '';
-                        setSelect.innerHTML += `<option value="${o}" ${isSelected}>${o}</option>`;
-                    });
+                    if (validOptions.length === 0) {
+                        setSelect.innerHTML = `<option value="">No valid transition areas</option>`;
+                        setSelect.disabled = true;
+                    } else {
+                        validOptions.forEach(o => {
+                            const isSelected = existingEvent && existingEvent.data.Specific_Setting === o ? 'selected' : '';
+                            setSelect.innerHTML += `<option value="${o}" ${isSelected}>${o}</option>`;
+                        });
+                    }
                 }
             }
 
@@ -556,7 +558,9 @@
             
             inputs.forEach(el => {
                 if (el.tagName === 'INPUT' && el.type === 'text') {
-                    if (el.value.trim() === '') {
+                    const val = el.value.trim().toLowerCase();
+                    // Block empty fields AND clinically vague garbage
+                    if (val === '' || val === 'undefined' || val === 'n/a' || val === 'various' || val.length < 3) {
                         isValid = false;
                         el.style.borderColor = 'red'; 
                     } else {

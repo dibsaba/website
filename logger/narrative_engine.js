@@ -80,10 +80,17 @@ export default class NarrativeEngine {
             });
 
             const eventData = data || {};
+            let isValidSentence = true;
             sentence = sentence.replace(/\[([^\]]+)\]/g, (match, key) => {
                 const val = eventData[key];
-                return (val === undefined || val === null || val === "" || val.length === 0) ? "" : this.formatList(val);
+                if (val === undefined || val === null || val === "" || val.length === 0 || val === "None selected") {
+                    isValidSentence = false; // Mark this sentence for deletion
+                    return "";
+                }
+                return this.formatList(val);
             });
+
+            if (!isValidSentence) continue; // Skip to the next template if data was missing
 
             sentence = sentence.replace(/\(\s*\)/g, "").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")");
             sentence = sentence.replace(/,\s*\./g, ".").replace(/,\s*,/g, ",").replace(/\.+/g, ".");
