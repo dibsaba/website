@@ -183,13 +183,13 @@
                 {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
                 {id:"Health_Variables", label:"Health", type:"multichoice"}, 
                 {id:"Smart_Chips", schema_ref:"Chips_Session_Start", label:"Quick Notes", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Additional Notes", type:"textarea"}
+                {id:"Custom_Narrative", label:"Additional Notes", type:"textarea", placeholder:"e.g., Describe any specific setting variables, unusual affect, or parent concerns at arrival..."}
             ],
             Location_Transition:[
                 {id:"Specific_Setting", label:"New Area", type:"select"}, 
                 {id:"Transition_Context", label:"Transition Behavior", type:"select"}, // ADDED THIS
                 {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"e.g., Describe specific behaviors during the transition or how the environment was modified..."}
             ],
             Skill_Acquisition:[
                 {id:"Skill_Domains", label:"Domain", type:"select"}, 
@@ -199,19 +199,19 @@
                 {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
                 {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
                 {id:"Smart_Chips", schema_ref:"Chips_Skill_Acquisition", label:"Quick Notes", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"e.g., Describe specific prompts used, client barriers, or novel modifications made to the trial..."}
             ],
             Behavior_Reduction:[
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, 
                 {id:"Deescalation_Time", label:"Time", type:"select"}, 
                 {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"e.g., Describe the specific topography of the behavior, triggering events, or how safety was maintained..."}
             ],
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
                 {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"e.g., Describe caregiver remarks, schedule changes, or follow-up needs discussed..."}
             ]
         };
 
@@ -233,6 +233,9 @@
                     current += ".";
                 }
                 textarea.value = current + (current.length > 0 ? " " : "") + text + ".";
+                
+                // NEW: Tell the form that the value changed so the Save button updates
+                textarea.dispatchEvent(new Event('input', { bubbles: true }));
                 
                 // Visual feedback for the RBT (flash green)
                 const origBg = element.style.background;
@@ -344,7 +347,8 @@
                     chipsHtml += `</div>`;
                     w.innerHTML += chipsHtml;
                 } else if (f.type === 'textarea') {
-                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${f.placeholder}">${existingVal || ''}</textarea>`;
+                    const safePlaceholder = f.placeholder ? f.placeholder : '';
+                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${safePlaceholder}">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
                     optionsArray.forEach(o => {
@@ -424,10 +428,18 @@
                 
                 const updateProactiveGuardrails = () => {
                     const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
-                    const maxAllowed = guardrails.getMaxSelections(fieldId);
-                    const isAtMax = currentlyChecked.length >= maxAllowed;
+                    let maxAllowed = guardrails.getMaxSelections(fieldId);
+                    
+                    // --- DYNAMIC GUARDRAIL: Time vs. Interventions ---
+                    // If this is the Interventions field, look at what the Time dropdown says
+                    if (fieldId === 'Interventions') {
+                        const timeSelect = document.querySelector('select[data-id="Deescalation_Time"]');
+                        if (timeSelect && timeSelect.value === '< 1 minute') {
+                            maxAllowed = 2; // Hard cap of 2 interventions for 60 seconds
+                        }
+                    }
 
-                    // Check if an exclusive option (like "Caregiver unavailable") is selected
+                    const isAtMax = currentlyChecked.length >= maxAllowed;
                     const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
 
                     checkboxes.forEach(cb => {
@@ -476,6 +488,33 @@
             });
 
             if (type === 'Behavior_Reduction') setupBehaviorGuardrails(c);
+            
+            // --- REAL-TIME SAVE BUTTON VALIDATION ---
+            const btnSave = document.getElementById('btn-save');
+            const validateFormInputs = () => {
+                let formIsValid = true;
+                c.querySelectorAll('input[type="text"], textarea').forEach(el => {
+                    const val = el.value.trim().toLowerCase();
+                    const isGarbage = (val === 'undefined' || val === 'n/a' || val === 'none' || val === 'various' || val.length < 3);
+                    
+                    if (el.tagName === 'INPUT' && el.type === 'text') {
+                        // Required field: Must have text and must not be garbage
+                        if (val === '' || isGarbage) formIsValid = false;
+                    } else if (el.tagName === 'TEXTAREA') {
+                        // Optional field: Can be empty, but if it has text, it must not be garbage
+                        if (val !== '' && isGarbage) formIsValid = false;
+                    }
+                });
+                btnSave.disabled = !formIsValid;
+            };
+
+            // Listen for keystrokes in inputs and textareas
+            c.querySelectorAll('input[type="text"], textarea').forEach(el => {
+                el.addEventListener('input', validateFormInputs);
+            });
+            
+            // Run it once immediately when the form opens
+            validateFormInputs();
             
             document.getElementById('form-modal').style.display = 'flex';
             document.getElementById('generate-modal').style.display = 'none';
@@ -543,6 +582,17 @@
             
             handleContradictions();
             applyWhitelist();
+            
+            const timeSelect = container.querySelector('select[data-id="Deescalation_Time"]');
+            if (timeSelect && intsGroup) {
+                timeSelect.addEventListener('change', () => {
+                    // Force the Proactive Guardrails to recalculate when Time changes
+                    const firstCb = intsGroup.querySelector('input[type="checkbox"]');
+                    if (firstCb) {
+                        firstCb.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+            }
         }
 
         document.getElementById('btn-start').onclick = () => openForm('Session_Start');
@@ -552,33 +602,36 @@
         document.getElementById('btn-end').onclick = () => openForm('Session_End');
 
         document.getElementById('btn-save').onclick = () => {
-            let isValid = true;
             const data = {};
             const inputs = document.getElementById('form-container').querySelectorAll('[data-id]');
             
             inputs.forEach(el => {
-                if (el.tagName === 'INPUT' && el.type === 'text') {
+                // Apply validation to BOTH text inputs and textareas
+                if ((el.tagName === 'INPUT' && el.type === 'text') || el.tagName === 'TEXTAREA') {
                     const val = el.value.trim().toLowerCase();
-                    // Block empty fields AND clinically vague garbage
-                    if (val === '' || val === 'undefined' || val === 'n/a' || val === 'various' || val.length < 3) {
-                        isValid = false;
-                        el.style.borderColor = 'red'; 
-                    } else {
-                        el.style.borderColor = '';
-                        // Auto-Complete Save Logic
-                        if (el.dataset.id === 'Specific_Target' && !savedTargets.includes(el.value.trim())) {
-                            savedTargets.push(el.value.trim());
-                            localStorage.setItem('aba_targets', JSON.stringify(savedTargets));
-                            updateDatalist();
+                    
+                    // Textareas can be completely empty, but IF they have text, it cannot be garbage.
+                    // Text inputs (Specific Target) CANNOT be empty.
+                    if (val !== '') {
+                        if (val === 'undefined' || val === 'n/a' || val === 'none' || val === 'various' || val.length < 3) {
+                            isValid = false;
+                            el.style.borderColor = 'red'; 
+                        } else {
+                            el.style.borderColor = '';
+                            // Auto-Complete Save Logic (only for Specific Target)
+                            if (el.dataset.id === 'Specific_Target' && !savedTargets.includes(el.value.trim())) {
+                                savedTargets.push(el.value.trim());
+                                localStorage.setItem('aba_targets', JSON.stringify(savedTargets));
+                                updateDatalist();
+                            }
                         }
+                    } else if (el.tagName === 'INPUT' && el.type === 'text') {
+                        // The Specific Target field is mandatory
+                        isValid = false;
+                        el.style.borderColor = 'red';
                     }
                 }
             });
-
-            if (!isValid) {
-                alert("Please fill out all required text fields before saving.");
-                return;
-            }
 
             inputs.forEach(el => {
                 if(el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
