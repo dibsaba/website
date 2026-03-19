@@ -199,22 +199,32 @@
     "Caregiver unavailable"
   ],
   "Invalid_Combinations": {
-		"Global":[
-			["engaging in crying / vocal protests", "Highly Motivated"],
-			["engaging in crying / vocal protests", "Quick Control"],["avoiding eye contact / turning away", "Highly Motivated"],["displaying an absence of maladaptive behavior", "Required heavy pairing"]
-		],
-    "Initial_Presentation": [
-      ["Readily responding to instructions", "Crying / vocal protests"],
-      ["Readily responding to instructions", "Avoiding eye contact / turning away"],["Readily responding to instructions", "Pacing / vocal stereotypy"],["Readily responding to instructions", "Slowed response time / yawning"],
-      ["Slowed response time / yawning", "High rate of movement"]
+    "Global": [["engaging in crying / vocal protests", "Highly Motivated"],
+      ["engaging in crying / vocal protests", "Quick Control"],
+      ["avoiding eye contact / turning away", "Highly Motivated"],["displaying an absence of maladaptive behavior", "Required heavy pairing"]
     ],
-    "Health_Variables": [
-      ["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"],
-      ["None reported", "Poor sleep"],
-      ["None reported", "Illness symptoms"]
+    "Initial_Presentation": [["readily responding to instructions", "engaging in crying / vocal protests"],["readily responding to instructions", "avoiding eye contact / turning away"],["readily responding to instructions", "engaging in pacing / vocal stereotypy"],
+      ["readily responding to instructions", "exhibiting a slowed response time / yawning"],
+      ["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]
     ],
-    "Interventions":[["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
-      ["Escape Extinction", "Tactical Break"],["Planned Ignoring", "Redirection"],["FCT (Functional Communication Training)", "Escape Extinction", "Blocking", "DRA (Differential Reinforcement of Alternative Behavior)"]
+    "Health_Variables": [["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"],
+      ["None reported", "Poor sleep"],["None reported", "Illness symptoms"],
+      ["None reported", "Medication change"],["None reported", "Allergies"],
+      ["None reported", "Missed meal"],["None reported", "Constipation / GI issues"],
+      ["None reported", "Pain / Discomfort"]
+    ],
+    "Interventions": [["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["Escape Extinction", "Tactical Break"],
+      ["Planned Ignoring", "Redirection"],["FCT (Functional Communication Training)", "Escape Extinction", "Blocking", "DRA (Differential Reinforcement of Alternative Behavior)"]
+    ],
+    "Others_Present": [
+      ["Caregiver unavailable", "Caregiver"],["Caregiver unavailable", "Mother"],
+      ["Caregiver unavailable", "Father"],
+      ["None", "Caregiver"],
+      ["None", "Mother"],
+      ["None", "Father"],["None", "Sibling(s)"],
+      ["None", "Teacher"],
+      ["None", "BCBA"],["None", "Peer(s)"],
+      ["None", "Grandparent"],["None", "Other family member"]
     ],
     "Smart_Chips": [
       ["Quick Control", "Extended Pairing"],
@@ -223,7 +233,7 @@
     ]
   },
   "Time_Intervention_Ratios": {
-      "< 1 minute": 2 
+    "< 1 minute": 2 
   },
   "Field_Limits": {
     "default_max": 4,
