@@ -183,35 +183,33 @@
                 {id:"Others_Present", label:"Others", type:"multichoice"}, {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
                 {id:"Health_Variables", label:"Health", type:"multichoice"}, 
                 {id:"Smart_Chips", schema_ref:"Chips_Session_Start", label:"Quick Notes", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Additional Notes", type:"textarea", placeholder:"e.g., Describe any specific setting variables, unusual affect, or parent concerns at arrival..."}
+                {id:"Custom_Narrative", label:"Additional Notes", type:"textarea", placeholder:"Instructions: Provide context for the session start. Examples: Client appeared lethargic; Parent reported a med change; Client engaged with toys."}
             ],
             Location_Transition:[
                 {id:"Specific_Setting", label:"New Area", type:"select"}, 
-                {id:"Transition_Context", label:"Transition Behavior", type:"select"}, // ADDED THIS
+                {id:"Transition_Context", label:"Transition Behavior", type:"select"},
                 {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"e.g., Describe specific behaviors during the transition or how the environment was modified..."}
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"Instructions: Detail the environment shift. Examples: Transitioned smoothly; Required physical guidance; Precursor behaviors noted."}
             ],
             Skill_Acquisition:[
                 {id:"Skill_Domains", label:"Domain", type:"select"}, 
-                {id:"Specific_Target", label:"Specific Target / Program Name", type:"text", placeholder:"e.g., Tying shoes, Manding for items"}, 
-                {id:"Teaching_Formats", label:"Format", type:"select"}, 
-                {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
-                {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
-                {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
+                {id:"Specific_Target", label:"Specific Target / Program Name", type:"text", placeholder:"Instructions: Enter the exact clinical program. Examples: Tying shoes, Manding for items, Tacting colors."}, 
+                {id:"Teaching_Formats", label:"Format", type:"select"}, {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
+                {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
                 {id:"Smart_Chips", schema_ref:"Chips_Skill_Acquisition", label:"Quick Notes", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"e.g., Describe specific prompts used, client barriers, or novel modifications made to the trial..."}
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"Instructions: Detail the teaching procedure. Examples: Required max prompting; Field size reduced to 2; Mastered the target today."}
             ],
             Behavior_Reduction:[
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, {id:"Interventions", label:"Interventions", type:"multichoice"}, 
                 {id:"Deescalation_Time", label:"Time", type:"select"}, 
                 {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"e.g., Describe the specific topography of the behavior, triggering events, or how safety was maintained..."}
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"Instructions: Describe the topography and safety. Examples: Threw blocks; Safety blocks were utilized; Returned to baseline safely."}
             ],
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
                 {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"},
-                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"e.g., Describe caregiver remarks, schedule changes, or follow-up needs discussed..."}
+                {id:"Custom_Narrative", label:"Other Notes", type:"textarea", placeholder:"Instructions: Note final remarks or scheduling. Examples: Parent asked about generalizing mands; Confirmed Thursday session; Client left happily."}
             ]
         };
 
@@ -331,8 +329,7 @@
                 const existingVal = existingEvent ? existingEvent.data[f.id] : null;
 
                 if (f.type === 'text') {
-                    // Provide a safe fallback for the placeholder
-                    const safePlaceholder = f.placeholder ? f.placeholder : '';
+                    const safePlaceholder = f.placeholder || '';
                     w.innerHTML += `<input type="text" data-id="${f.id}" list="target-list" placeholder="${safePlaceholder}" value="${existingVal || ''}">`;
                 } else if (f.type === 'smart_chips') {
                     let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none;">`;
@@ -347,7 +344,7 @@
                     chipsHtml += `</div>`;
                     w.innerHTML += chipsHtml;
                 } else if (f.type === 'textarea') {
-                    const safePlaceholder = f.placeholder ? f.placeholder : '';
+                    const safePlaceholder = f.placeholder || '';
                     w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${safePlaceholder}">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
                     let sel = `<select data-id="${f.id}">`;
@@ -358,7 +355,8 @@
                     sel += `</select>`;
                     w.innerHTML += sel;
                 } else {
-                    let grp = `<div class="checkbox-group" data-id="${f.id}">`;
+                    // Added 'required-choice' class to force multichoice validation ---
+                    let grp = `<div class="checkbox-group required-choice" data-id="${f.id}">`;
                     optionsArray.forEach(o => {
                         const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
                         grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}" ${isChecked}><span>${o}</span></label>`;
@@ -493,27 +491,41 @@
             const btnSave = document.getElementById('btn-save');
             const validateFormInputs = () => {
                 let formIsValid = true;
+                
+                // 1. Validate text boxes
                 c.querySelectorAll('input[type="text"], textarea').forEach(el => {
                     const val = el.value.trim().toLowerCase();
                     const isGarbage = (val === 'undefined' || val === 'n/a' || val === 'none' || val === 'various' || val.length < 3);
                     
                     if (el.tagName === 'INPUT' && el.type === 'text') {
-                        // Required field: Must have text and must not be garbage
                         if (val === '' || isGarbage) formIsValid = false;
                     } else if (el.tagName === 'TEXTAREA') {
-                        // Optional field: Can be empty, but if it has text, it must not be garbage
                         if (val !== '' && isGarbage) formIsValid = false;
                     }
                 });
+
+                // 2. NEW: Force at least one selection for all Clinical Checkbox Arrays
+                c.querySelectorAll('.required-choice').forEach(group => {
+                    const checkedCount = group.querySelectorAll('input[type="checkbox"]:checked').length;
+                    if (checkedCount === 0) {
+                        formIsValid = false;
+                    }
+                });
+
                 btnSave.disabled = !formIsValid;
             };
 
-            // Listen for keystrokes in inputs and textareas
+            // Add listeners to re-evaluate when typing
             c.querySelectorAll('input[type="text"], textarea').forEach(el => {
                 el.addEventListener('input', validateFormInputs);
             });
             
-            // Run it once immediately when the form opens
+            // Add listeners to re-evaluate when clicking checkboxes
+            c.querySelectorAll('input[type="checkbox"]').forEach(el => {
+                el.addEventListener('change', validateFormInputs);
+            });
+            
+            // Run it once immediately
             validateFormInputs();
             
             document.getElementById('form-modal').style.display = 'flex';
