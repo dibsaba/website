@@ -209,7 +209,7 @@
                     id:"Specific_Target", 
                     label:"Specific Target / Program Name", 
                     type:"text", 
-                    placeholder:"Instructions: Enter program. Examples: Tying shoes, Manding, Sorting, Waiting, Greetings."
+                    placeholder:"Instructions: Enter program. Examples: Tying shoes, Manding, Sorting, Waiting."
                 }, 
                 {id:"Teaching_Formats", label:"Format", type:"select"}, 
                 {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
@@ -369,17 +369,62 @@
                     const safePlaceholder = f.placeholder || '';
                     w.innerHTML += `<input type="text" data-id="${f.id}" list="target-list" placeholder="${safePlaceholder}" value="${existingVal || ''}">`;
                 } else if (f.type === 'smart_chips') {
-                    let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none;">`;
-                    let optionsArray = schemaData[f.schema_ref] ||[];
-                    optionsArray.forEach(o => {
-                        const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
-                        chipsHtml += `<label class="chip-toggle">
-                            <input type="checkbox" style="display:none;" value="${o}" ${isChecked}>
-                            <span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 14px; font-size:0.85rem; white-space:nowrap; cursor:pointer; display:inline-block; transition:all 0.2s;">${o}</span>
-                        </label>`;
-                    });
-                    chipsHtml += `</div>`;
-                    w.innerHTML += chipsHtml;
+                    // Create a container for the dynamic chips
+                    const chipContainer = document.createElement('div');
+                    chipContainer.className = 'dynamic-chip-container';
+                    chipContainer.dataset.schemaRef = f.schema_ref;
+                    chipContainer.dataset.fieldId = f.id;
+                    w.appendChild(chipContainer);
+
+                    // A function to render chips based on a contextual key (e.g., Location or Behavior)
+                    const renderChips = (contextKey = null) => {
+                        let optionsArray = schemaData[f.schema_ref];
+                        
+                        // If the schema is an object (relational), look up the context key
+                        if (!Array.isArray(optionsArray) && typeof optionsArray === 'object') {
+                            optionsArray = optionsArray[contextKey] || optionsArray["Home"] || Object.values(optionsArray)[0]; // Fallback
+                        }
+
+                        let chipsHtml = `<div class="checkbox-group required-choice" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none;">`;
+                        (optionsArray ||[]).forEach(o => {
+                            const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
+                            chipsHtml += `<label class="chip-toggle">
+                                <input type="checkbox" style="display:none;" value="${o}" ${isChecked}>
+                                <span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 14px; font-size:0.85rem; white-space:nowrap; cursor:pointer; display:inline-block; transition:all 0.2s;">${o}</span>
+                            </label>`;
+                        });
+                        chipsHtml += `</div>`;
+                        chipContainer.innerHTML = chipsHtml;
+                        
+                        // Re-attach the validator to the new checkboxes
+                        chipContainer.querySelectorAll('input[type="checkbox"]').forEach(el => {
+                            el.addEventListener('change', validateFormInputs);
+                        });
+                    };
+
+                    // Initial render (will just pick the first available context)
+                    renderChips();
+
+                    // --- THE MAGIC: Hooking up the Dropdowns ---
+                    // If this is the End Session modal, listen to the Location we saved earlier
+                    if (type === 'Session_End') {
+                        let savedLocation = "Home";
+                        const started = timeline.find(t => t.type === 'Session_Start');
+                        if (started && started.data.Location) savedLocation = started.data.Location;
+                        renderChips(savedLocation);
+                    }
+                    
+                    // If this is Behavior, listen to the Behavior dropdown
+                    if (type === 'Behavior_Reduction') {
+                        // Wait a millisecond for the select to be attached to the DOM
+                        setTimeout(() => {
+                            const behaviorSelect = c.querySelector('select[data-id="Target_Behaviors"]');
+                            if (behaviorSelect) {
+                                renderChips(behaviorSelect.value); // Render initial
+                                behaviorSelect.addEventListener('change', (e) => renderChips(e.target.value)); // Render on change
+                            }
+                        }, 0);
+                    }
                 } else if (f.type === 'textarea') {
                     const safePlaceholder = (f.placeholder || '').replace(/\n/g, '&#10;');
 										w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${safePlaceholder}">${existingVal || ''}</textarea>`;
@@ -483,35 +528,32 @@
 
                     checkboxes.forEach(cb => {
                         const pillSpan = cb.nextElementSibling;
-                        
-                        // If it's already checked, leave it enabled so they can uncheck it
-                        if (cb.checked) {
-                            cb.disabled = false;
-                            pillSpan.style.opacity = '1';
-                            pillSpan.style.cursor = 'pointer';
-                            return;
-                        }
-
                         let shouldDisable = false;
 
-                        // Rule 1: If an exclusive option is checked, disable all other empty boxes
-                        if (hasExclusive) shouldDisable = true;
-                        
-                        // Rule 2: If a normal option is checked, disable all exclusive options
-                        else if (currentlyChecked.length > 0 && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
-
-                        // Rule 3: Hard Limits (Max Checkboxes)
-                        else if (isAtMax) shouldDisable = true;
-
-                        // Rule 4: Mathematical Cutsets (Would checking this box complete an invalid subset?)
+                        if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
+                        else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else {
-                        	const hypotheticalField =[...currentlyChecked, cb.value];
-													const hypotheticalGlobal = [...allFormChecked, cb.value];
-													
-													const fieldValidation = guardrails.validateSubset(fieldId, hypotheticalField);
-													const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal); // Cross-field check
-													
-													if (!fieldValidation.valid || !globalValidation.valid) shouldDisable = true;
+                            // Test against both local and global restrictions
+                            // If this box IS checked, we test if removing it makes the set valid (it shouldn't be checked if the set is invalid)
+                            // If it IS NOT checked, we test if adding it makes the set invalid
+                            const hypotheticalField = cb.checked ? currentlyChecked :[...currentlyChecked, cb.value];
+                            const hypotheticalGlobal = cb.checked ? allFormChecked : [...allFormChecked, cb.value];
+                            
+                            const fieldValidation = guardrails.validateSubset(fieldId, hypotheticalField);
+                            const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+                            
+                            if (!fieldValidation.valid || !globalValidation.valid) {
+                                shouldDisable = true;
+                                // NEW: If it became invalid because they clicked something else, UNCHECK IT instantly!
+                                if (cb.checked) {
+                                    cb.checked = false; 
+                                }
+                            }
+                        }
+
+                        // Hard limit check (only disable UNCHECKED boxes if we are at the max)
+                        if (!cb.checked && !shouldDisable && currentlyChecked.length >= maxAllowed) {
+                            shouldDisable = true;
                         }
 
                         cb.disabled = shouldDisable;

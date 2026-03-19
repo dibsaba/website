@@ -197,10 +197,15 @@
   "Chips_Skill_Acquisition":[
     "Mastered", "Max Prompting", "Independent", "Field Reduced", "Fluency", "Redirection Needed"
   ],
-  "Chips_Behavior_Reduction":[
-    "Threw Items", "Dropped to Floor", "Physical Block", "Vocal Protests", "Property Destruction", "Safely De-escalated", "Attempted Biting"
-  ],
-  "Chips_Session_End":[
-    "Happy Transition", "Caregiver Engaged", "Schedule Discussed", "Parent Asked Questions"
-  ]
+  "Chips_Session_End": {
+    "Home": ["Happy Transition", "Caregiver Engaged", "Parent Asked Questions", "Sibling Joined Play"],
+    "Clinic":["Happy Transition", "Caregiver Engaged", "Parent Asked Questions", "Transitioned to Waiting Room"],
+    "School":["Transitioned to Teacher", "Teacher Asked Questions", "Returned to Class Routine", "Provided Paraprofessional Feedback"],
+    "Community": ["Transitioned to Caregiver safely", "Parent Asked Questions", "Navigated Parking Lot Safely"]
+  },
+  "Chips_Behavior_Reduction": {
+    "Aggression":["Swiped at therapist", "Attempted to bite", "Threw materials", "Required safety distance"],
+    "Elopement":["Bolted towards door", "Left instructional area", "Required physical block to prevent exit"],
+    "Property Destruction":["Ripped data sheets", "Swept items off desk", "Broke instructional materials"]
+  }
 }
