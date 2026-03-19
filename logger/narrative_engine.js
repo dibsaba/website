@@ -111,6 +111,9 @@ export default class NarrativeEngine {
                 }
                 
                 sentence = sentence.replace(/(?:^|[.!?]\s+)([a-z])/g, match => match.toUpperCase());
+                sentence = sentence.replace(/independent guidance/gi, "independent responding");
+                sentence = sentence.replace(/independent prompting/gi, "independent responding");
+                sentence = sentence.replace(/using independent/gi, "observing independent");
                 paragraphParts.push(sentence);
             }
         }

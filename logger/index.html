@@ -187,6 +187,7 @@
             ],
             Location_Transition:[
                 {id:"Specific_Setting", label:"New Area", type:"select"}, 
+                {id:"Transition_Context", label:"Transition Behavior", type:"select"}, // ADDED THIS
                 {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"},
                 {id:"Custom_Narrative", label:"Other Notes", type:"textarea"}
             ],
@@ -220,11 +221,25 @@
         };
 
         // Make functions globally available for inline HTML onclick handlers
-        window.appendChipText = function(fieldId, text) {
+        window.appendChipText = function(fieldId, text, element) {
             const textarea = document.querySelector(`textarea[data-id="${fieldId}"]`);
             if (textarea) {
-                textarea.value += (textarea.value.trim() ? " " : "") + text;
-                textarea.focus();
+                let current = textarea.value.trim();
+                // Ensure the previous sentence has a period before appending new text
+                if (current.length > 0 && !current.match(/[.!?]$/)) {
+                    current += ".";
+                }
+                textarea.value = current + (current.length > 0 ? " " : "") + text + ".";
+                
+                // Visual feedback for the RBT (flash green)
+                const origBg = element.style.background;
+                const origColor = element.style.color;
+                element.style.background = 'var(--brand-success)';
+                element.style.color = '#fff';
+                setTimeout(() => {
+                    element.style.background = origBg;
+                    element.style.color = origColor;
+                }, 400);
             }
         };
 
@@ -327,9 +342,11 @@
                 } else if (f.type === 'textarea') {
                     // Smart Chips Row
                     if (SMART_CHIPS[type] && SMART_CHIPS[type].length > 0) {
-                        let chipsHtml = `<div style="display:flex; overflow-x:auto; gap:8px; margin-bottom:8px; padding-bottom:4px; scrollbar-width:none;">`;
+                        // Changed flex-wrap to wrap so it doesn't hide on mobile phones
+                        let chipsHtml = `<div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; padding-bottom:4px;">`;
                         SMART_CHIPS[type].forEach(chip => {
-                            chipsHtml += `<span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 12px; font-size:0.8rem; white-space:nowrap; cursor:pointer;" onclick="window.appendChipText('${f.id}', '${chip}')">${chip}</span>`;
+                            // Added 'this' to the onclick handler
+                            chipsHtml += `<span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 12px; font-size:0.8rem; cursor:pointer; transition: background 0.2s;" onclick="window.appendChipText('${f.id}', '${chip}', this)">${chip}</span>`;
                         });
                         chipsHtml += `</div>`;
                         w.innerHTML += chipsHtml;
@@ -621,8 +638,9 @@
         document.getElementById('btn-generate').onclick = () => {
             const sessionWarnings = guardrails.auditSession(timeline);
             if (sessionWarnings.length > 0) {
-                const proceed = confirm(`Clinical Warning:\n\n${sessionWarnings.join('\n\n')}\n\nDo you wish to proceed?`);
-                if (!proceed) return;
+                // CHANGED FROM confirm() to alert() - Hard Stop.
+                alert(`CLINICAL AUDIT FAILURE:\n\n${sessionWarnings.join('\n\n')}\n\nYou must edit your session data to resolve these issues before generating a note.`);
+                return;
             }
 
             const sortedTimeline =[...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));

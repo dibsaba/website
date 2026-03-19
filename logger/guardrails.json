@@ -200,32 +200,19 @@
   ],
   "Invalid_Combinations": {
     "Initial_Presentation": [
-      ["Readily responding to instructions", "Crying / vocal protests"],["Readily responding to instructions", "Avoiding eye contact / turning away"]
+      ["Readily responding to instructions", "Crying / vocal protests"],
+      ["Readily responding to instructions", "Avoiding eye contact / turning away"],["Readily responding to instructions", "Pacing / vocal stereotypy"],["Readily responding to instructions", "Slowed response time / yawning"],
+      ["Slowed response time / yawning", "High rate of movement"]
     ],
-    "Health_Variables": [["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"]
+    "Health_Variables": [
+      ["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"],
+      ["None reported", "Poor sleep"],
+      ["None reported", "Illness symptoms"]
     ],
-    "Interventions":[
-      ["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],
-      ["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
-      ["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
-      ["Escape Extinction", "Tactical Break"],
-      ["Planned Ignoring", "Redirection"]
-    ],
-    "Others_Present": [
-      ["Mother", "Father", "Sibling(s)", "Teacher", "BCBA"]
-    ],
-    "Specific_Reinforcers": [["Break / Escape", "Access to Outdoors", "iPad / Tablet", "Edibles", "Swinging"]
+    "Interventions":[["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
+      ["Escape Extinction", "Tactical Break"],["Planned Ignoring", "Redirection"],["FCT (Functional Communication Training)", "Escape Extinction", "Blocking", "DRA (Differential Reinforcement of Alternative Behavior)"]
     ]
   },
-  "Session_Limits":[
-    {
-      "event_type": "Skill_Acquisition",
-      "field": "Prompt_Levels",
-      "value": "Independent",
-      "max_ratio": 0.5,
-      "warning_message": "Over 50% of the recorded skills were marked 'Independent'. A strict Medicaid auditor may flag this session for lacking active intervention. Are you sure you wish to proceed?"
-    }
-  ],
   "Field_Limits": {
     "default_max": 4,
     "Others_Present": 3,
