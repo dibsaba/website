@@ -196,8 +196,7 @@
                 {
                     id:"Specific_Target", 
                     label:"Specific Target / Program Name", 
-                    type:"text", 
-                    placeholder:"Instructions: Enter program. Examples: Tying shoes, Manding, Sorting, Waiting."
+                    type:"dynamic_dropdown"
                 }, 
                 {id:"Teaching_Formats", label:"Format", type:"select"}, 
                 {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
@@ -219,18 +218,6 @@
                 {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"}
             ]
         };
-
-        // Initialize Datalist for Auto-Complete
-        document.body.insertAdjacentHTML('beforeend', '<datalist id="target-list"></datalist>');
-        const updateDatalist = () => {
-            // Clean up any garbage data saved in localStorage during early testing
-            savedTargets = savedTargets.filter(t => t && t.toLowerCase() !== 'undefined' && t.toLowerCase() !== 'n/a' && t.length > 2);
-            localStorage.setItem('aba_targets', JSON.stringify(savedTargets)); // Overwrite memory with clean array
-            
-            const dl = document.getElementById('target-list');
-            if (dl) dl.innerHTML = savedTargets.map(t => `<option value="${t}">`).join('');
-        };
-        updateDatalist();
 
         const btnTogglePwd = document.getElementById('btn-toggle-pwd');
         const passwordInput = document.getElementById('password-input');
@@ -302,18 +289,16 @@
             // --- 1. HOISTED VALIDATOR ---
             function validateFormInputs() {
                 let formIsValid = true;
-                c.querySelectorAll('input[type="text"], textarea').forEach(el => {
-                    const val = el.value.trim().toLowerCase();
-                    const isGarbage = (val === 'undefined' || val === 'n/a' || val === 'none' || val === 'various' || val.length < 3);
-                    if (el.tagName === 'INPUT' && el.type === 'text') {
-                        if (val === '' || isGarbage) formIsValid = false;
-                    } else if (el.tagName === 'TEXTAREA') {
-                        if (val !== '' && isGarbage) formIsValid = false;
+                
+                // Force at least one selection for all Clinical Checkbox Arrays AND our new Target Dropdown
+                c.querySelectorAll('.required-choice').forEach(el => {
+                    if (el.tagName === 'SELECT') {
+                        if (el.value === '') formIsValid = false; // Fails if "-- Select a Target --" is active
+                    } else if (el.classList.contains('checkbox-group')) {
+                        if (el.querySelectorAll('input[type="checkbox"]:checked').length === 0) formIsValid = false;
                     }
                 });
-                c.querySelectorAll('.required-choice').forEach(group => {
-                    if (group.querySelectorAll('input[type="checkbox"]:checked').length === 0) formIsValid = false;
-                });
+
                 btnSave.disabled = !formIsValid;
             }
 
@@ -407,9 +392,61 @@
                 let optionsArray = schemaData[f.id] || [];
                 let existingVal = existingEvent ? existingEvent.data[f.id] : null; // Changed to 'let'
 
-                if (f.type === 'text') {
-                    const safePlaceholder = f.placeholder || '';
-                    w.innerHTML += `<input type="text" data-id="${f.id}" list="target-list" placeholder="${safePlaceholder}" value="${existingVal || ''}">`;
+                if (f.type === 'dynamic_dropdown') {
+                    const ddContainer = document.createElement('div');
+                    w.appendChild(ddContainer);
+
+                    const renderDropdown = () => {
+                        // Load saved targets or provide clinical defaults
+                        let savedTargets = JSON.parse(localStorage.getItem('aba_targets')) ||["Tying shoes", "Manding", "Sorting", "Waiting", "Transitions"];
+                        savedTargets = savedTargets.filter(t => t && t.toLowerCase() !== 'undefined' && t.length > 2);
+                        
+                        let html = `<div style="display:flex; gap:10px;">
+                            <select data-id="${f.id}" class="required-choice" style="flex:1;">
+                                <option value="">-- Select a Target --</option>`;
+                        
+                        savedTargets.forEach(t => {
+                            const isSelected = existingVal === t ? 'selected' : '';
+                            html += `<option value="${t}" ${isSelected}>${t}</option>`;
+                        });
+                        
+                        html += `</select>
+                            <button type="button" class="btn-add-target btn-secondary" style="width:auto; padding:0 15px;">➕ Add</button>
+                        </div>`;
+                        
+                        ddContainer.innerHTML = html;
+
+                        // Re-evaluate form validity when selection changes
+                        ddContainer.querySelector('select').addEventListener('change', (e) => {
+                            existingVal = e.target.value;
+                            validateFormInputs();
+                        });
+
+                        // The strict gatekeeper for new targets
+                        ddContainer.querySelector('.btn-add-target').addEventListener('click', () => {
+                            const newTarget = prompt("Enter a specific clinical program to add permanently:\n(e.g., 'Tying shoes', 'Intraverbals')");
+                            if (newTarget) {
+                                const val = newTarget.trim();
+                                const wordCount = val.split(/\s+/).length;
+                                
+                                // STRICT VALIDATION: Max 5 words, no garbage
+                                if (val.length < 3 || wordCount > 5 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'undefined') {
+                                    alert("Invalid target. Must be 1-5 words and clinically specific.");
+                                    return;
+                                }
+                                
+                                if (!savedTargets.includes(val)) {
+                                    savedTargets.push(val);
+                                    localStorage.setItem('aba_targets', JSON.stringify(savedTargets));
+                                }
+                                
+                                existingVal = val; // Auto-select the new target
+                                renderDropdown();
+                                validateFormInputs();
+                            }
+                        });
+                    };
+                    renderDropdown();
                 } else if (f.type === 'smart_chips') {
                     const chipContainer = document.createElement('div');
                     chipContainer.className = 'dynamic-chip-container';
@@ -665,44 +702,16 @@
         document.getElementById('btn-save').onclick = () => {
             const data = {};
             const inputs = document.getElementById('form-container').querySelectorAll('[data-id]');
-            
-            let isValid = true;
-            
-            inputs.forEach(el => {
-                // Apply validation to BOTH text inputs and textareas
-                if ((el.tagName === 'INPUT' && el.type === 'text') || el.tagName === 'TEXTAREA') {
-                    const val = el.value.trim().toLowerCase();
-                    
-                    // Textareas can be completely empty, but IF they have text, it cannot be garbage.
-                    // Text inputs (Specific Target) CANNOT be empty.
-                    if (val !== '') {
-                        if (val === 'undefined' || val === 'n/a' || val === 'none' || val === 'various' || val.length < 3) {
-                            isValid = false;
-                            el.style.borderColor = 'red'; 
-                        } else {
-                            el.style.borderColor = '';
-                            // Auto-Complete Save Logic (only for Specific Target)
-                            if (el.dataset.id === 'Specific_Target' && !savedTargets.includes(el.value.trim())) {
-                                savedTargets.push(el.value.trim());
-                                localStorage.setItem('aba_targets', JSON.stringify(savedTargets));
-                                updateDatalist();
-                            }
-                        }
-                    } else if (el.tagName === 'INPUT' && el.type === 'text') {
-                        // The Specific Target field is mandatory
-                        isValid = false;
-                        el.style.borderColor = 'red';
-                    }
-                }
-            });
 
             inputs.forEach(el => {
-                if(el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                    if (el.type !== 'checkbox') data[el.dataset.id] = el.value;
+                if (el.tagName === 'SELECT') {
+                    // Captures all dropdowns, including the new Specific_Target dropdown
+                    data[el.dataset.id] = el.value;
                 }
                 if (el.classList.contains('checkbox-group')) { 
-                    const c = Array.from(el.querySelectorAll('input:checked')).map(i=>i.value); 
-                    data[el.dataset.id] = c.length ? c : ["None selected"]; 
+                    // Captures all Smart Chips and multichoice arrays
+                    const c = Array.from(el.querySelectorAll('input:checked')).map(i => i.value); 
+                    data[el.dataset.id] = c.length ? c :["None selected"]; 
                 }
             });
 
@@ -714,7 +723,8 @@
             }
             
             localStorage.setItem('aba_tl', JSON.stringify(timeline));
-            renderTimeline(); closeModals();
+            renderTimeline(); 
+            closeModals();
         };
 
         function renderTimeline() {
