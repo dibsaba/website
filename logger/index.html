@@ -223,6 +223,10 @@
         // Initialize Datalist for Auto-Complete
         document.body.insertAdjacentHTML('beforeend', '<datalist id="target-list"></datalist>');
         const updateDatalist = () => {
+            // Clean up any garbage data saved in localStorage during early testing
+            savedTargets = savedTargets.filter(t => t && t.toLowerCase() !== 'undefined' && t.toLowerCase() !== 'n/a' && t.length > 2);
+            localStorage.setItem('aba_targets', JSON.stringify(savedTargets)); // Overwrite memory with clean array
+            
             const dl = document.getElementById('target-list');
             if (dl) dl.innerHTML = savedTargets.map(t => `<option value="${t}">`).join('');
         };
