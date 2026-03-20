@@ -199,9 +199,7 @@
     "Caregiver unavailable"
   ],
   "Invalid_Combinations": {
-    "Global": [["engaging in crying / vocal protests", "Highly Motivated"],
-      ["engaging in crying / vocal protests", "Quick Control"],
-      ["avoiding eye contact / turning away", "Highly Motivated"],["displaying an absence of maladaptive behavior", "Required heavy pairing"]
+    "Global": [["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "SCHEMA:Chips_Session_Start"],["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"]
     ],
     "Initial_Presentation": [["readily responding to instructions", "engaging in crying / vocal protests"],["readily responding to instructions", "avoiding eye contact / turning away"],["readily responding to instructions", "engaging in pacing / vocal stereotypy"],
       ["readily responding to instructions", "exhibiting a slowed response time / yawning"],

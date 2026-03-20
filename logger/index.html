@@ -369,44 +369,90 @@
                     const safePlaceholder = f.placeholder || '';
                     w.innerHTML += `<input type="text" data-id="${f.id}" list="target-list" placeholder="${safePlaceholder}" value="${existingVal || ''}">`;
                 } else if (f.type === 'smart_chips') {
-                    // Create a container for the dynamic chips
                     const chipContainer = document.createElement('div');
                     chipContainer.className = 'dynamic-chip-container';
                     chipContainer.dataset.schemaRef = f.schema_ref;
                     chipContainer.dataset.fieldId = f.id;
                     w.appendChild(chipContainer);
 
-                    // A function to render chips based on a contextual key (e.g., Location or Behavior)
+                    // Load custom chips from memory
+                    let customChips = JSON.parse(localStorage.getItem('aba_custom_chips')) || {};
+
                     const renderChips = (contextKey = null) => {
                         let optionsArray = schemaData[f.schema_ref];
+                        let storageKey = f.schema_ref;
                         
-                        // If the schema is an object (relational), look up the context key
                         if (!Array.isArray(optionsArray) && typeof optionsArray === 'object') {
-                            optionsArray = optionsArray[contextKey] || optionsArray["Home"] || Object.values(optionsArray)[0]; // Fallback
+                            optionsArray = optionsArray[contextKey] || optionsArray["Home"] || Object.values(optionsArray)[0];
+                            storageKey = `${f.schema_ref}_${contextKey}`; // e.g., Chips_Behavior_Reduction_Aggression
                         }
 
-                        let chipsHtml = `<div class="checkbox-group required-choice" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none;">`;
-                        (optionsArray ||[]).forEach(o => {
+                        // Combine default schema chips with any custom saved chips for this context
+                        const savedCustom = customChips[storageKey] || [];
+                        const combinedOptions = [...new Set([...optionsArray, ...savedCustom])];
+
+                        let chipsHtml = `<div class="checkbox-group required-choice" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none; align-items:center;">`;
+                        
+                        // Render all chips
+                        combinedOptions.forEach(o => {
                             const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
                             chipsHtml += `<label class="chip-toggle">
                                 <input type="checkbox" style="display:none;" value="${o}" ${isChecked}>
                                 <span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 14px; font-size:0.85rem; white-space:nowrap; cursor:pointer; display:inline-block; transition:all 0.2s;">${o}</span>
                             </label>`;
                         });
-                        chipsHtml += `</div>`;
+
+                        // Add the "+ Add Custom" Button
+                        chipsHtml += `
+                            <button type="button" class="btn-add-custom" data-storage-key="${storageKey}" style="background:none; border:1px dashed var(--brand-accent); color:var(--brand-accent); border-radius:16px; padding:5px 12px; font-size:0.85rem; cursor:pointer; white-space:nowrap;">
+                                ➕ Add
+                            </button>
+                        </div>`;
+                        
                         chipContainer.innerHTML = chipsHtml;
                         
-                        // Re-attach the validator to the new checkboxes
+                        // Re-attach validation to checkboxes
                         chipContainer.querySelectorAll('input[type="checkbox"]').forEach(el => {
                             el.addEventListener('change', validateFormInputs);
                         });
-                    };
 
-                    // Initial render (will just pick the first available context)
+                        // Attach logic to the "+ Add Custom" button
+                        const addBtn = chipContainer.querySelector('.btn-add-custom');
+                        if (addBtn) {
+                            addBtn.addEventListener('click', () => {
+                                const newChip = prompt("Enter a specific, clinical detail to add as a permanent button:\n(e.g., 'Pinched therapist forearm')");
+                                
+                                if (newChip) {
+                                    const val = newChip.trim();
+                                    const isGarbage = (val.toLowerCase() === 'undefined' || val.toLowerCase() === 'n/a' || val.length < 4);
+                                    
+                                    if (isGarbage) {
+                                        alert("Invalid entry. Please enter a specific clinical detail.");
+                                        return;
+                                    }
+
+                                    // Save to localStorage
+                                    if (!customChips[storageKey]) customChips[storageKey] = [];
+                                    if (!customChips[storageKey].includes(val)) {
+                                        customChips[storageKey].push(val);
+                                        localStorage.setItem('aba_custom_chips', JSON.stringify(customChips));
+                                        
+                                        // If this is the first time they added it, automatically select it for them!
+                                        if (!existingVal) existingVal =[];
+                                        if (!existingVal.includes(val)) existingVal.push(val);
+                                        
+                                        // Re-render to show the new button
+                                        renderChips(contextKey);
+                                        validateFormInputs(); // Re-validate the form
+                                    }
+                                }
+                            });
+                        }
+                    };
+                    
+                    // Initial render
                     renderChips();
 
-                    // --- THE MAGIC: Hooking up the Dropdowns ---
-                    // If this is the End Session modal, listen to the Location we saved earlier
                     if (type === 'Session_End') {
                         let savedLocation = "Home";
                         const started = timeline.find(t => t.type === 'Session_Start');
@@ -414,14 +460,12 @@
                         renderChips(savedLocation);
                     }
                     
-                    // If this is Behavior, listen to the Behavior dropdown
                     if (type === 'Behavior_Reduction') {
-                        // Wait a millisecond for the select to be attached to the DOM
                         setTimeout(() => {
                             const behaviorSelect = c.querySelector('select[data-id="Target_Behaviors"]');
                             if (behaviorSelect) {
-                                renderChips(behaviorSelect.value); // Render initial
-                                behaviorSelect.addEventListener('change', (e) => renderChips(e.target.value)); // Render on change
+                                renderChips(behaviorSelect.value);
+                                behaviorSelect.addEventListener('change', (e) => renderChips(e.target.value));
                             }
                         }, 0);
                     }
@@ -508,24 +552,28 @@
                 
                 const updateProactiveGuardrails = () => {
                     const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
-                    
-                    // Capture EVERY checked box in the entire modal
                     const allFormChecked = Array.from(c.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
+                    const allSelectValues = Array.from(c.querySelectorAll('select')).map(sel => sel.value).filter(v => v && v !== "None selected");
                     
+                    // --- SCHEMA-LEVEL GUARDRAIL TRACKING ---
+                    // Identify any dynamic chip containers that have at least one box checked (default OR custom)
+                    const activeSchemas = Array.from(c.querySelectorAll('.dynamic-chip-container'))
+                        .filter(container => container.querySelectorAll('input[type="checkbox"]:checked').length > 0)
+                        .map(container => `SCHEMA:${container.dataset.schemaRef}`);
+                    
+                    // The ultimate array includes exact text matches AND Schema categories!
+                    const globalState =[...allFormChecked, ...allSelectValues, ...activeSchemas];
+
                     let maxAllowed = guardrails.getMaxSelections(fieldId);
-                    
-                    // --- DYNAMIC GUARDRAIL: Time vs. Interventions ---
-                    // If this is the Interventions field, look at what the Time dropdown says
                     if (fieldId === 'Interventions') {
                         const timeSelect = document.querySelector('select[data-id="Deescalation_Time"]');
-                        if (timeSelect && timeSelect.value === '< 1 minute') {
-                            maxAllowed = 2; // Hard cap of 2 interventions for 60 seconds
-                        }
+                        if (timeSelect && timeSelect.value === '< 1 minute') maxAllowed = 2; 
                     }
 
                     const isAtMax = currentlyChecked.length >= maxAllowed;
                     const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
 
+                    // --- EVALUATE CHECKBOXES ---
                     checkboxes.forEach(cb => {
                         const pillSpan = cb.nextElementSibling;
                         let shouldDisable = false;
@@ -533,25 +581,16 @@
                         if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else {
-                            // Test against both local and global restrictions
-                            // If this box IS checked, we test if removing it makes the set valid (it shouldn't be checked if the set is invalid)
-                            // If it IS NOT checked, we test if adding it makes the set invalid
-                            const hypotheticalField = cb.checked ? currentlyChecked :[...currentlyChecked, cb.value];
-                            const hypotheticalGlobal = cb.checked ? allFormChecked : [...allFormChecked, cb.value];
-                            
-                            const fieldValidation = guardrails.validateSubset(fieldId, hypotheticalField);
+                            const hypotheticalGlobal = cb.checked ? globalState : [...globalState, cb.value];
                             const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                             
-                            if (!fieldValidation.valid || !globalValidation.valid) {
+                            if (!globalValidation.valid) {
                                 shouldDisable = true;
-                                // NEW: If it became invalid because they clicked something else, UNCHECK IT instantly!
-                                if (cb.checked) {
-                                    cb.checked = false; 
-                                }
+                                if (cb.checked) cb.checked = false; // Uncheck if it became invalid
                             }
                         }
 
-                        // Hard limit check (only disable UNCHECKED boxes if we are at the max)
+                        // Hard limit check
                         if (!cb.checked && !shouldDisable && currentlyChecked.length >= maxAllowed) {
                             shouldDisable = true;
                         }
@@ -559,6 +598,25 @@
                         cb.disabled = shouldDisable;
                         pillSpan.style.opacity = shouldDisable ? '0.4' : '1';
                         pillSpan.style.cursor = shouldDisable ? 'not-allowed' : 'pointer';
+                    });
+
+                    // --- BIDIRECTIONAL EVALUATION OF DROPDOWNS ---
+                    c.querySelectorAll('select').forEach(selectEl => {
+                        Array.from(selectEl.options).forEach(opt => {
+                            if (!opt.value || opt.value === "None selected") return;
+                            
+                            const hypotheticalGlobal = selectEl.value === opt.value ? globalState : [...globalState, opt.value];
+                            const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+                            
+                            if (!globalValidation.valid) {
+                                opt.disabled = true; 
+                                if (selectEl.value === opt.value) {
+                                    selectEl.value = ""; 
+                                }
+                            } else {
+                                opt.disabled = false;
+                            }
+                        });
                     });
                 };
 
@@ -570,8 +628,6 @@
                 // Run once on load to establish baseline state
                 updateProactiveGuardrails();
             });
-
-            if (type === 'Behavior_Reduction') setupBehaviorGuardrails(c);
             
             // --- REAL-TIME SAVE BUTTON VALIDATION ---
             const btnSave = document.getElementById('btn-save');
@@ -702,6 +758,8 @@
         document.getElementById('btn-save').onclick = () => {
             const data = {};
             const inputs = document.getElementById('form-container').querySelectorAll('[data-id]');
+            
+            let isValid = true;
             
             inputs.forEach(el => {
                 // Apply validation to BOTH text inputs and textareas
