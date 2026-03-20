@@ -184,24 +184,12 @@
                 {id:"Others_Present", label:"Others", type:"multichoice"}, 
                 {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
                 {id:"Health_Variables", label:"Health", type:"multichoice"}, 
-                {id:"Smart_Chips", schema_ref:"Chips_Session_Start", label:"Quick Notes", type:"smart_chips"},
-                {
-                    id:"Custom_Narrative", 
-                    label:"Additional Notes <span style='color:var(--brand-danger); font-size:0.8rem; font-weight:normal;'>(Ensure typed notes do not contradict selected checkboxes)</span>", 
-                    type:"textarea", 
-                    placeholder: "Instructions: Provide context for the session start. Describe any specific setting variables, unusual affect, or parent concerns upon arrival.\n\nExamples:\n1. Client appeared lethargic and required extra time to transition from the car.\n2. Parent reported a change in the client's allergy medication this morning.\n3. Client immediately engaged with the train set upon entering the clinic.\n4. Mom noted that the client woke up twice during the night.\n5. Sibling was playing loudly in the same room, serving as a distraction.\n6. Client presented with a runny nose but no fever.\n7. Caregiver expressed concerns regarding an increase in elopement at the grocery store.\n8. Client independently greeted the therapist with a wave and a smile.\n9. Session started 10 minutes late due to the family's traffic delay.\n10. Client avoided eye contact and hid behind the caregiver upon my arrival."
-                }
+                {id:"Smart_Chips", schema_ref:"Chips_Session_Start", label:"Quick Notes", type:"smart_chips"}
             ],
             Location_Transition:[
                 {id:"Specific_Setting", label:"New Area", type:"select"}, 
                 {id:"Transition_Context", label:"Transition Behavior", type:"select"},
-                {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"},
-                {
-                    id:"Custom_Narrative", 
-                    label:"Other Notes <span style='color:var(--brand-danger); font-size:0.8rem; font-weight:normal;'>(Ensure typed notes do not contradict selected checkboxes)</span>", 
-                    type:"textarea", 
-                    placeholder: "Instructions: Detail the environment shift. Describe specific behaviors during the transition or how the environment was modified.\n\nExamples:\n1. Transitioned smoothly after a 2-minute warning.\n2. Required gentle physical guidance to leave the playground.\n3. Precursor behaviors (whining) noted when the tablet was restricted.\n4. Client independently carried their token board to the next room.\n5. Transition was delayed due to the client attempting to access the kitchen.\n6. Utilized a visual schedule to signal the move to the sensory room.\n7. Client skipped cheerfully down the hallway.\n8. Required three verbal prompts to stand up from the rug.\n9. Engaged in vocal protests but complied with the transition.\n10. Therapist sang a transition song to maintain engagement during the walk."
-                }
+                {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"}
             ],
             Skill_Acquisition:[
                 {id:"Skill_Domains", label:"Domain", type:"select"}, 
@@ -215,13 +203,7 @@
                 {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
                 {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
                 {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
-                {id:"Smart_Chips", schema_ref:"Chips_Skill_Acquisition", label:"Quick Notes", type:"smart_chips"},
-                {
-                    id:"Custom_Narrative", 
-                    label:"Other Notes <span style='color:var(--brand-danger); font-size:0.8rem; font-weight:normal;'>(Ensure typed notes do not contradict selected checkboxes)</span>", 
-                    type:"textarea", 
-                    placeholder: "Instructions: Detail the teaching procedure. Describe specific prompts used, client barriers, or novel modifications made to the trial.\n\nExamples:\n1. Required maximum physical prompting to complete the shoe-tying chain.\n2. Field size was reduced to 2 to minimize scrolling.\n3. Mastered the target today after three consecutive sessions at 100%.\n4. Novel distractors were introduced to promote generalization.\n5. Client required frequent redirection back to the array.\n6. Token economy was thinned to a VR-3 schedule.\n7. Responded with 2-second latency during fluency checks.\n8. Errorless teaching utilized to prevent frustration.\n9. Positional prompts were faded completely by the end of the block.\n10. Sibling joined the activity to assist with natural environment training."
-                }
+                {id:"Smart_Chips", schema_ref:"Chips_Skill_Acquisition", label:"Quick Notes", type:"smart_chips"}
             ],
             Behavior_Reduction:[
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, 
@@ -229,59 +211,13 @@
                 {id:"Antecedents", label:"Antecedent", type:"select"}, 
                 {id:"Interventions", label:"Interventions", type:"multichoice"}, 
                 {id:"Deescalation_Time", label:"Time", type:"select"}, 
-                {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"},
-                {
-                    id:"Custom_Narrative", 
-                    label:"Other Notes <span style='color:var(--brand-danger); font-size:0.8rem; font-weight:normal;'>(Ensure typed notes do not contradict selected checkboxes)</span>", 
-                    type:"textarea", 
-                    placeholder: "Instructions: Describe the exact topography of the behavior, triggering events, or how safety was maintained.\n\nExamples:\n1. Client threw three wooden blocks at the wall after being denied the iPad.\n2. Safety blocks were successfully utilized to prevent self-injurious head-hitting.\n3. Client dropped to the floor and cried for 4 minutes during the math demand.\n4. Returned to baseline safely after a 2-minute tactical break.\n5. Aggression consisted of open-handed swiping at the therapist's arms.\n6. Redirection to a sensory toy effectively de-escalated the precursor pacing.\n7. Property destruction included ripping two data sheets.\n8. Elopement attempt was safely blocked at the therapy room door.\n9. FCT was prompted immediately upon the first vocal protest.\n10. No physical contact was made during the aggressive episode due to spatial distancing."
-                }
+                {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"}
             ],
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, 
                 {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
-                {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"},
-                {
-                    id:"Custom_Narrative", 
-                    label:"Other Notes <span style='color:var(--brand-danger); font-size:0.8rem; font-weight:normal;'>(Ensure typed notes do not contradict selected checkboxes)</span>", 
-                    type:"textarea", 
-                    placeholder: "Instructions: Note final remarks, scheduling adjustments, or follow-up needs discussed with the caregiver.\n\nExamples:\n1. Parent asked for tips on generalizing mands during dinnertime.\n2. Confirmed Thursday's session will start 30 minutes earlier.\n3. Client left happily while holding their preferred sticker.\n4. Caregiver expressed satisfaction with today's reduction in tantrum duration.\n5. Modeled the token board system for the mother to use this weekend.\n6. Discussed the newly mastered receptive identification targets.\n7. Reminded the family of the upcoming clinic closure next Monday.\n8. Parent stepped away for a work call, so handoff was kept brief.\n9. Client waved goodbye and independently put on their backpack.\n10. Reviewed the data showing a steady decrease in stereotypy over the week."
-                }
+                {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"}
             ]
-        };
-
-        // EXHAUSTIVE SMART CHIPS DICTIONARY
-        const SMART_CHIPS = {
-            Session_Start:["Paired using puzzles", "Engaged with preferred toys", "Client was highly motivated", "Required heavy pairing"],
-            Skill_Acquisition:["Mastered today", "Required max prompting", "Field reduced to 2", "Independently completed", "Required redirection to task", "Fluency achieved"],
-            Behavior_Reduction:["Threw items", "Dropped to floor", "Required physical block", "Vocal protests continued", "Property destruction noted", "Safely de-escalated"],
-            Session_End:["Client left happily", "Caregiver engaged", "Discussed schedule changes", "Parent asked questions regarding targets"]
-        };
-
-        // Make functions globally available for inline HTML onclick handlers
-        window.appendChipText = function(fieldId, text, element) {
-            const textarea = document.querySelector(`textarea[data-id="${fieldId}"]`);
-            if (textarea) {
-                let current = textarea.value.trim();
-                // Ensure the previous sentence has a period before appending new text
-                if (current.length > 0 && !current.match(/[.!?]$/)) {
-                    current += ".";
-                }
-                textarea.value = current + (current.length > 0 ? " " : "") + text + ".";
-                
-                // NEW: Tell the form that the value changed so the Save button updates
-                textarea.dispatchEvent(new Event('input', { bubbles: true }));
-                
-                // Visual feedback for the RBT (flash green)
-                const origBg = element.style.background;
-                const origColor = element.style.color;
-                element.style.background = 'var(--brand-success)';
-                element.style.color = '#fff';
-                setTimeout(() => {
-                    element.style.background = origBg;
-                    element.style.color = origColor;
-                }, 400);
-            }
         };
 
         // Initialize Datalist for Auto-Complete
@@ -425,9 +361,15 @@
                         if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else {
-                            const hypotheticalGlobal = cb.checked ? globalState : [...globalState, cb.value];
+                            // Test local field constraints (e.g., Initial_Presentation rules)
+                            const hypotheticalLocal = cb.checked ? currentlyChecked :[...currentlyChecked, cb.value];
+                            const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
+                            
+                            // Test global cross-field constraints
+                            const hypotheticalGlobal = cb.checked ? globalState :[...globalState, cb.value];
                             const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
-                            if (!globalValidation.valid) {
+                            
+                            if (!localValidation.valid || !globalValidation.valid) {
                                 shouldDisable = true;
                                 if (cb.checked) cb.checked = false; // Uncheck safely
                             }
