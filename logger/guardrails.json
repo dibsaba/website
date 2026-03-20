@@ -195,15 +195,15 @@
   "Exclusive_Choices":[
     "None",
     "None reported",
-    "Absence of maladaptive behavior",
+    "displaying an absence of maladaptive behavior",
     "Caregiver unavailable"
   ],
   "Invalid_Combinations": {
     "Global": [["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "SCHEMA:Chips_Session_Start"],["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"]
     ],
-    "Initial_Presentation": [["readily responding to instructions", "engaging in crying / vocal protests"],["readily responding to instructions", "avoiding eye contact / turning away"],["readily responding to instructions", "engaging in pacing / vocal stereotypy"],
-      ["readily responding to instructions", "exhibiting a slowed response time / yawning"],
-      ["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]
+    "Initial_Presentation":[
+      ["readily responding to instructions", "engaging in crying / vocal protests"],["readily responding to instructions", "avoiding eye contact / turning away"],["readily responding to instructions", "engaging in pacing / vocal stereotypy"],["readily responding to instructions", "exhibiting a slowed response time / yawning"],
+      ["readily responding to instructions", "orienting away from speaker"],["readily responding to instructions", "demonstrating a high rate of movement"],["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]
     ],
     "Health_Variables": [["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"],
       ["None reported", "Poor sleep"],["None reported", "Illness symptoms"],
