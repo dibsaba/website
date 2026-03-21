@@ -71,8 +71,11 @@ export default class NarrativePlanner {
             plan.push({ section: 'Location_Transition', data: { Specific_Setting: allSettings } });
         }
 
-        if (normalizedSession.aggregatedSkills) {
-            plan.push({ section: 'Skills_Summary', data: normalizedSession.aggregatedSkills });
+        // Render a highly specific, individualized sentence for every skill taught
+        if (normalizedSession.skills && normalizedSession.skills.length > 0) {
+            normalizedSession.skills.forEach(skill => {
+                plan.push({ section: 'Skill_Acquisition', data: skill });
+            });
         }
 
         // --- STRATEGIC BEHAVIOR ROUTING WITH WEIGHTING ---
