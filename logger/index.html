@@ -183,21 +183,36 @@
                 {id:"Specific_Setting", label:"Setting", type:"select"}, 
                 {id:"Others_Present", label:"Others", type:"multichoice"}, 
                 {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
-                {id:"Health_Variables", label:"Health", type:"multichoice"}, 
+                {id:"Health_Variables", label:"Health", type:"multichoice"},
+                {
+                    id:"Client_Affect", label:"Specific Affect / Context", type:"dynamic_dropdown", 
+                    prompt_msg: "Enter a specific context (e.g., 'smiling and energetic', 'lethargic due to poor sleep'):",
+                    default_options:["calm and cooperative", "smiling and energetic", "withdrawn and avoiding interaction", "agitated and crying"]
+                },
                 {id:"Smart_Chips", schema_ref:"Chips_Session_Start", label:"Quick Notes", type:"smart_chips"}
             ],
             Location_Transition:[
                 {id:"Specific_Setting", label:"New Area", type:"select"}, 
                 {id:"Transition_Context", label:"Transition Behavior", type:"select"},
+                {
+                    id:"Transition_Detail", label:"Specific Transition Detail", type:"dynamic_dropdown",
+                    prompt_msg: "Enter a specific detail (e.g., 'holding therapist hand', 'required 3 verbal prompts'):",
+                    default_options:["independently walking", "holding the therapist's hand", "requiring multiple verbal prompts", "dropping to the floor midway"]
+                },
                 {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"}
             ],
             Skill_Acquisition:[
                 {id:"Skill_Domains", label:"Domain", type:"select"}, 
                 {
-                    id:"Specific_Target", 
-                    label:"Specific Target / Program Name", 
-                    type:"dynamic_dropdown"
+                    id:"Specific_Target", label:"Specific Target / Program", type:"dynamic_dropdown", 
+                    prompt_msg: "Enter program name (e.g., 'Tying shoes', 'Manding'):",
+                    default_options:["Tying shoes", "Manding", "Sorting", "Waiting", "Transitions"]
                 }, 
+                {
+                    id:"Teaching_Materials", label:"Specific Materials Used", type:"dynamic_dropdown",
+                    prompt_msg: "Enter specific materials (e.g., 'animal flashcards', 'wooden blocks'):",
+                    default_options:["2D picture cards", "wooden blocks", "preferred toys", "a tablet app", "natural environment items"]
+                },
                 {id:"Teaching_Formats", label:"Format", type:"select"}, 
                 {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
                 {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
@@ -208,6 +223,11 @@
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, 
                 {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, 
+                {
+                    id:"Specific_Topography", label:"Specific Topography", type:"dynamic_dropdown",
+                    prompt_msg: "Enter exact topography (e.g., 'open-handed hitting', 'throwing toys'):",
+                    default_options:["open-handed hitting", "kicking the furniture", "throwing instructional materials", "dropping to the floor", "biting own hand"]
+                },
                 {id:"Interventions", label:"Interventions", type:"multichoice"}, 
                 {id:"Deescalation_Time", label:"Time", type:"select"}, 
                 {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"}
@@ -215,6 +235,11 @@
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, 
                 {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
+                {
+                    id:"Caregiver_Response", label:"Caregiver Response / Follow-up", type:"dynamic_dropdown",
+                    prompt_msg: "Enter a specific caregiver response (e.g., 'asked about BIP', 'confirmed tomorrow schedule'):",
+                    default_options:["expressed satisfaction with progress", "asked questions about the behavior plan", "confirmed the next scheduled session", "reported no new concerns"]
+                },
                 {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"}
             ]
         };
@@ -396,16 +421,19 @@
                     const ddContainer = document.createElement('div');
                     w.appendChild(ddContainer);
 
+                    // Dynamic storage key so each field has its own memory bank
+                    const storageKey = `aba_dict_${f.id}`; 
+                    const defaultOptions = f.default_options || ["Option 1", "Option 2"];
+
                     const renderDropdown = () => {
-                        // Load saved targets or provide clinical defaults
-                        let savedTargets = JSON.parse(localStorage.getItem('aba_targets')) ||["Tying shoes", "Manding", "Sorting", "Waiting", "Transitions"];
-                        savedTargets = savedTargets.filter(t => t && t.toLowerCase() !== 'undefined' && t.length > 2);
+                        let savedItems = JSON.parse(localStorage.getItem(storageKey)) || defaultOptions;
+                        savedItems = savedItems.filter(t => t && t.toLowerCase() !== 'undefined' && t.toLowerCase() !== 'n/a' && t.length > 2);
                         
                         let html = `<div style="display:flex; gap:10px;">
                             <select data-id="${f.id}" class="required-choice" style="flex:1;">
-                                <option value="">-- Select a Target --</option>`;
+                                <option value="">-- Select ${f.label} --</option>`;
                         
-                        savedTargets.forEach(t => {
+                        savedItems.forEach(t => {
                             const isSelected = existingVal === t ? 'selected' : '';
                             html += `<option value="${t}" ${isSelected}>${t}</option>`;
                         });
@@ -416,33 +444,34 @@
                         
                         ddContainer.innerHTML = html;
 
-                        // Re-evaluate form validity when selection changes
                         ddContainer.querySelector('select').addEventListener('change', (e) => {
                             existingVal = e.target.value;
                             validateFormInputs();
+                            runAllGuardrails();
                         });
 
-                        // The strict gatekeeper for new targets
                         ddContainer.querySelector('.btn-add-target').addEventListener('click', () => {
-                            const newTarget = prompt("Enter a specific clinical program to add permanently:\n(e.g., 'Tying shoes', 'Intraverbals')");
-                            if (newTarget) {
-                                const val = newTarget.trim();
+                            const promptMsg = f.prompt_msg || "Enter a specific clinical detail to add permanently:";
+                            const newItem = prompt(promptMsg);
+                            if (newItem) {
+                                const val = newItem.trim();
                                 const wordCount = val.split(/\s+/).length;
                                 
-                                // STRICT VALIDATION: Max 5 words, no garbage
-                                if (val.length < 3 || wordCount > 5 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'undefined') {
-                                    alert("Invalid target. Must be 1-5 words and clinically specific.");
+                                // STRICT VALIDATION: Max 8 words, no garbage
+                                if (val.length < 3 || wordCount > 8 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'undefined') {
+                                    alert("Invalid entry. Must be 1-8 words and clinically specific.");
                                     return;
                                 }
                                 
-                                if (!savedTargets.includes(val)) {
-                                    savedTargets.push(val);
-                                    localStorage.setItem('aba_targets', JSON.stringify(savedTargets));
+                                if (!savedItems.includes(val)) {
+                                    savedItems.push(val);
+                                    localStorage.setItem(storageKey, JSON.stringify(savedItems));
                                 }
                                 
-                                existingVal = val; // Auto-select the new target
+                                existingVal = val; 
                                 renderDropdown();
                                 validateFormInputs();
+                                runAllGuardrails();
                             }
                         });
                     };
@@ -468,7 +497,7 @@
                         const savedCustom = customChips[storageKey] || [];
                         const combinedOptions = [...new Set([...(currentOptions || []), ...savedCustom])];
 
-                        let chipsHtml = `<div class="checkbox-group required-choice" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none; align-items:center;">`;
+                        let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none; align-items:center;">`;
                         
                         combinedOptions.forEach(o => {
                             const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
