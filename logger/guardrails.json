@@ -199,13 +199,21 @@
     "Caregiver unavailable"
   ],
   "Invalid_Combinations": {
-    "Global": [
-      ["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "SCHEMA:Chips_Session_Start"],["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"],
-      ["engaging in crying / vocal protests", "Highly Motivated"],["engaging in crying / vocal protests", "Quick Control"],["avoiding eye contact / turning away", "Highly Motivated"],
-      ["avoiding eye contact / turning away", "Quick Control"],["exhibiting a slowed response time / yawning", "Highly Motivated"],
+    Global": [
+    	["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],
+      ["engaging in crying / vocal protests", "SCHEMA:Chips_Session_Start"],
+      ["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "Highly Motivated"],
+      ["engaging in crying / vocal protests", "Quick Control"],
+      ["avoiding eye contact / turning away", "Highly Motivated"],["avoiding eye contact / turning away", "Quick Control"],
+      ["exhibiting a slowed response time / yawning", "Highly Motivated"],
       ["exhibiting a slowed response time / yawning", "Quick Control"],["orienting away from speaker", "Highly Motivated"],
-      ["orienting away from speaker", "Quick Control"],
-      ["displaying an absence of maladaptive behavior", "Required heavy pairing"]
+      ["orienting away from speaker", "Quick Control"],["displaying an absence of maladaptive behavior", "Required heavy pairing"],["smiling and energetic", "exhibiting a slowed response time / yawning"],
+      ["smiling and energetic", "engaging in crying / vocal protests"],["smiling and energetic", "avoiding eye contact / turning away"],
+      ["smiling and energetic", "orienting away from speaker"],
+      ["withdrawn and avoiding interaction", "readily responding to instructions"],["agitated and crying", "displaying an absence of maladaptive behavior"],["agitated and crying", "readily responding to instructions"],
+      ["calm and cooperative", "engaging in crying / vocal protests"],["Independent", "Field reduced to 2"],
+      ["Independent", "Required max prompting"],
+      ["Independent", "Required redirection to task"]
     ],
     "Initial_Presentation":[
       ["readily responding to instructions", "engaging in crying / vocal protests"],["readily responding to instructions", "avoiding eye contact / turning away"],["readily responding to instructions", "engaging in pacing / vocal stereotypy"],["readily responding to instructions", "exhibiting a slowed response time / yawning"],

@@ -195,13 +195,13 @@
     "Smooth", "Verbal Prompts", "Precursors Noted"
   ],
   "Chips_Skill_Acquisition":[
-    "Mastered", "Max Prompting", "Independent", "Field Reduced", "Fluency", "Redirection Needed"
+    "Mastered", "Max Prompting", "Independent", "Field Reduced", "Fluency", "Required redirection to task", "Generalized to new environment", "Maintained across therapists"
   ],
   "Chips_Session_End": {
-    "Home": ["Happy Transition", "Caregiver Engaged", "Parent Asked Questions", "Sibling Joined Play"],
-    "Clinic":["Happy Transition", "Caregiver Engaged", "Parent Asked Questions", "Transitioned to Waiting Room"],
-    "School":["Transitioned to Teacher", "Teacher Asked Questions", "Returned to Class Routine", "Provided Paraprofessional Feedback"],
-    "Community": ["Transitioned to Caregiver safely", "Parent Asked Questions", "Navigated Parking Lot Safely"]
+    "Home": ["Happy Transition", "Sibling Joined Play", "Provided parent coaching", "Reviewed data graphs with family"],
+    "Clinic":["Happy Transition", "Transitioned to Waiting Room", "Discussed upcoming schedule change", "Client requested to stay longer"],
+    "School":["Transitioned to Teacher", "Returned to Class Routine", "Provided Paraprofessional Feedback", "Reviewed IEP goals"],
+    "Community":["Transitioned to Caregiver safely", "Navigated Parking Lot Safely", "Tolerated loud environment", "Practiced safety crossing"]
   },
   "Chips_Behavior_Reduction": {
     "Aggression":["Swiped at therapist", "Attempted to bite", "Threw materials", "Required safety distance"],
