@@ -258,7 +258,13 @@
                 document.getElementById('auth-view').classList.remove('active');
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
-                    const[sch, syn, tpl, grd] = await Promise.all([fetch('schema.json'), fetch('synonyms.json'), fetch('templates.json'), fetch('guardrails.json')]);
+                    const cb = "?v=" + new Date().getTime();
+										const[sch, syn, tpl, grd] = await Promise.all([
+												fetch('schema.json' + cb), 
+												fetch('synonyms.json' + cb), 
+												fetch('templates.json' + cb), 
+												fetch('guardrails.json' + cb)
+										]);
                     schemaData = await sch.json();
                     guardrails = new GuardrailEngine(await grd.json());
                     const synJson = await syn.json(); synonymsData = synJson.Synonyms || synJson;
@@ -313,6 +319,10 @@
                 
                 const globalState =[...allFormChecked, ...allSelectValues, ...activeSchemas];
 
+                // SAFETY NET: If the form is already in an invalid state (e.g. loading an old, bad session),
+                // we suspend aggressive lock-outs so the user can uncheck the conflicting boxes.
+                const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
+
                 // Evaluate Dropdowns (Bidirectional)
                 c.querySelectorAll('select').forEach(selectEl => {
                     Array.from(selectEl.options).forEach(opt => {
@@ -320,7 +330,7 @@
                         const hypotheticalGlobal = selectEl.value === opt.value ? globalState :[...globalState, opt.value];
                         const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                         
-                        if (!globalValidation.valid) {
+                        if (!globalValidation.valid && !isDeadlocked) {
                             opt.disabled = true; 
                             if (selectEl.value === opt.value) selectEl.value = ""; 
                         } else {
@@ -351,15 +361,24 @@
                         if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else {
-                            // Test local field constraints (e.g., Initial_Presentation rules)
-                            const hypotheticalLocal = cb.checked ? currentlyChecked :[...currentlyChecked, cb.value];
+                            const hypotheticalLocal = cb.checked ? currentlyChecked : [...currentlyChecked, cb.value];
                             const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                             
-                            // Test global cross-field constraints
                             const hypotheticalGlobal = cb.checked ? globalState :[...globalState, cb.value];
+                            
+                            // FIX: Inject the SCHEMA tag into the hypothetical state BEFORE they click it!
+                            const container = cb.closest('.dynamic-chip-container');
+                            if (container && !cb.checked) {
+                                const schemaTag = `SCHEMA:${container.dataset.schemaRef}`;
+                                if (!hypotheticalGlobal.includes(schemaTag)) {
+                                    hypotheticalGlobal.push(schemaTag);
+                                }
+                            }
+
                             const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                             
-                            if (!localValidation.valid || !globalValidation.valid) {
+                            // Only disable if invalid AND we aren't in a deadlock
+                            if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
                                 shouldDisable = true;
                                 if (cb.checked) cb.checked = false; // Uncheck safely
                             }
@@ -375,7 +394,7 @@
                     });
                 });
             }
-
+            
             // --- 3. EVENT DELEGATION (Catches dynamically rendered DOM elements) ---
             c.onchange = () => {
                 runAllGuardrails();
