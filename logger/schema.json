@@ -207,5 +207,170 @@
     "Aggression":["Swiped at therapist", "Attempted to bite", "Threw materials", "Required safety distance"],
     "Elopement":["Bolted towards door", "Left instructional area", "Required physical block to prevent exit"],
     "Property Destruction":["Ripped data sheets", "Swept items off desk", "Broke instructional materials"]
+  },
+  "Client_Affect": {
+    "Positive / Regulated":[
+      "calm and cooperative",
+      "smiling and energetic",
+      "relaxed and engaged",
+      "happily initiating interaction",
+      "demonstrating a neutral affect"
+    ],
+    "Dysregulated / Escalated":[
+      "agitated and crying",
+      "exhibiting visible frustration",
+      "highly distracted and hyperactive",
+      "displaying precursor behaviors",
+      "pacing the room rapidly"
+    ],
+    "Fatigued / Withdrawn":[
+      "lethargic due to poor sleep",
+      "withdrawn and avoiding interaction",
+      "exhibiting a sluggish response time",
+      "appearing physically fatigued",
+      "reluctant to separate from caregiver"
+    ]
+  },
+  "Transition_Detail": {
+    "Independent":[
+      "walking independently",
+      "transitioning smoothly without resistance",
+      "independently carrying their schedule",
+      "happily running to the next area"
+    ],
+    "Prompted":[
+      "holding the therapist's hand",
+      "requiring multiple verbal prompts",
+      "requiring gentle physical guidance",
+      "utilizing a transition object",
+      "following a visual schedule"
+    ],
+    "Resistant":[
+      "dropping to the floor midway",
+      "whining and vocally protesting",
+      "attempting to elope back to the previous area",
+      "requiring a prolonged tactical break"
+    ]
+  },
+  "Specific_Target": {
+    "Communication":[
+      "Manding for desired items",
+      "Tacting 2D/3D objects",
+      "Intraverbal fill-ins",
+      "Echoic imitation",
+      "Answering WH- questions",
+      "Peer greetings"
+    ],
+    "Daily Living (ADLs)":[
+      "Tying shoes",
+      "Washing hands",
+      "Brushing teeth",
+      "Using utensils properly",
+      "Packing a backpack"
+    ],
+    "Academic Readiness":[
+      "Sorting by category",
+      "Matching non-identical items",
+      "Identifying colors and shapes",
+      "Tracing letters",
+      "Counting 1-10"
+    ],
+    "Social / Play Skills":[
+      "Turn-taking with a peer",
+      "Parallel play",
+      "Sharing preferred items",
+      "Functional pretend play",
+      "Losing a game appropriately"
+    ],
+    "Executive Functioning":[
+      "Waiting for 1 minute",
+      "Following 2-step instructions",
+      "Visual schedule adherence",
+      "Transitioning away from a preferred item",
+      "Accepting 'No'"
+    ],
+    "Motor Skills":[
+      "Pincer grasp exercises",
+      "Gross motor imitation",
+      "Stringing beads",
+      "Catching a ball"
+    ]
+  },
+  "Teaching_Materials": {
+    "Visual & Academic":[
+      "2D picture cards",
+      "worksheets and crayons",
+      "animal flashcards",
+      "a token board"
+    ],
+    "Tangible & 3D":[
+      "wooden blocks",
+      "shape sorters",
+      "puzzles",
+      "Lego bricks",
+      "cause-and-effect toys"
+    ],
+    "Natural Environment":[
+      "preferred natural toys",
+      "snack and food items",
+      "playground equipment",
+      "items found in the kitchen"
+    ],
+    "Technology":[
+      "a tablet app",
+      "an AAC device",
+      "a visual timer",
+      "interactive videos"
+    ]
+  },
+  "Specific_Topography": {
+    "Aggression":[
+      "open-handed hitting",
+      "kicking the furniture or staff",
+      "biting directed at the therapist",
+      "scratching arms and hands",
+      "hair-pulling"
+    ],
+    "Property Destruction":[
+      "sweeping items off the desk",
+      "throwing instructional materials",
+      "ripping paper and data sheets",
+      "slamming doors",
+      "breaking toys"
+    ],
+    "Elopement":[
+      "bolting towards the exit door",
+      "leaving the instructional area",
+      "running into the street/parking lot",
+      "hiding under furniture"
+    ],
+    "Self-Injurious Behavior (SIB)":[
+      "biting own hand or arm",
+      "hitting head with an open hand",
+      "banging head against the wall/floor",
+      "skin picking"
+    ],
+    "Tantrum / Stereotypy":[
+      "dropping to the floor and crying",
+      "loud, sustained vocal protests",
+      "intense hand-flapping",
+      "repetitive vocal scripting"
+    ]
+  },
+  "Caregiver_Response": {
+    "Engaged & Positive":[
+      "expressed satisfaction with progress",
+      "confirmed the next scheduled session",
+      "reported no new concerns",
+      "demonstrated the strategy back to the therapist",
+      "thanked the clinical team"
+    ],
+    "Inquiring & Concerned":[
+      "asked questions about the behavior plan",
+      "reported an increase in behaviors at home",
+      "expressed frustration with the current routine",
+      "asked for tips on community generalization",
+      "mentioned sleep or diet issues"
+    ]
   }
 }

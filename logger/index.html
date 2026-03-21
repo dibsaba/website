@@ -184,35 +184,19 @@
                 {id:"Others_Present", label:"Others", type:"multichoice"}, 
                 {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
                 {id:"Health_Variables", label:"Health", type:"multichoice"},
-                {
-                    id:"Client_Affect", label:"Specific Affect / Context", type:"dynamic_dropdown", 
-                    prompt_msg: "Enter a specific context (e.g., 'smiling and energetic', 'lethargic due to poor sleep'):",
-                    default_options:["calm and cooperative", "smiling and energetic", "withdrawn and avoiding interaction", "agitated and crying"]
-                },
+                {id:"Client_Affect", label:"Specific Affect / Context", type:"dynamic_dropdown", prompt_msg: "Enter a specific context (e.g., 'smiling and energetic'):"},
                 {id:"Smart_Chips", schema_ref:"Chips_Session_Start", label:"Quick Notes", type:"smart_chips"}
             ],
             Location_Transition:[
                 {id:"Specific_Setting", label:"New Area", type:"select"}, 
                 {id:"Transition_Context", label:"Transition Behavior", type:"select"},
-                {
-                    id:"Transition_Detail", label:"Specific Transition Detail", type:"dynamic_dropdown",
-                    prompt_msg: "Enter a specific detail (e.g., 'holding therapist hand', 'required 3 verbal prompts'):",
-                    default_options:["independently walking", "holding the therapist's hand", "requiring multiple verbal prompts", "dropping to the floor midway"]
-                },
+                {id:"Transition_Detail", label:"Specific Transition Detail", type:"dynamic_dropdown", prompt_msg: "Enter a specific detail (e.g., 'holding therapist hand'):"},
                 {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"}
             ],
             Skill_Acquisition:[
                 {id:"Skill_Domains", label:"Domain", type:"select"}, 
-                {
-                    id:"Specific_Target", label:"Specific Target / Program", type:"dynamic_dropdown", 
-                    prompt_msg: "Enter program name (e.g., 'Tying shoes', 'Manding'):",
-                    default_options:["Tying shoes", "Manding", "Sorting", "Waiting", "Transitions"]
-                }, 
-                {
-                    id:"Teaching_Materials", label:"Specific Materials Used", type:"dynamic_dropdown",
-                    prompt_msg: "Enter specific materials (e.g., 'animal flashcards', 'wooden blocks'):",
-                    default_options:["2D picture cards", "wooden blocks", "preferred toys", "a tablet app", "natural environment items"]
-                },
+                {id:"Specific_Target", label:"Specific Target / Program", type:"dynamic_dropdown", prompt_msg: "Enter program name (e.g., 'Tying shoes', 'Manding'):"}, 
+                {id:"Teaching_Materials", label:"Specific Materials Used", type:"dynamic_dropdown", prompt_msg: "Enter specific materials (e.g., 'animal flashcards'):"},
                 {id:"Teaching_Formats", label:"Format", type:"select"}, 
                 {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
                 {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
@@ -223,11 +207,7 @@
                 {id:"Target_Behaviors", label:"Behavior", type:"select"}, 
                 {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, 
-                {
-                    id:"Specific_Topography", label:"Specific Topography", type:"dynamic_dropdown",
-                    prompt_msg: "Enter exact topography (e.g., 'open-handed hitting', 'throwing toys'):",
-                    default_options:["open-handed hitting", "kicking the furniture", "throwing instructional materials", "dropping to the floor", "biting own hand"]
-                },
+                {id:"Specific_Topography", label:"Specific Topography", type:"dynamic_dropdown", prompt_msg: "Enter exact topography (e.g., 'open-handed hitting'):"},
                 {id:"Interventions", label:"Interventions", type:"multichoice"}, 
                 {id:"Deescalation_Time", label:"Time", type:"select"}, 
                 {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"}
@@ -235,11 +215,7 @@
             Session_End:[
                 {id:"End_Demeanor", label:"Demeanor", type:"select"}, 
                 {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
-                {
-                    id:"Caregiver_Response", label:"Caregiver Response / Follow-up", type:"dynamic_dropdown",
-                    prompt_msg: "Enter a specific caregiver response (e.g., 'asked about BIP', 'confirmed tomorrow schedule'):",
-                    default_options:["expressed satisfaction with progress", "asked questions about the behavior plan", "confirmed the next scheduled session", "reported no new concerns"]
-                },
+                {id:"Caregiver_Response", label:"Caregiver Response / Follow-up", type:"dynamic_dropdown", prompt_msg: "Enter a specific caregiver response (e.g., 'asked about BIP'):"},
                 {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"}
             ]
         };
@@ -421,22 +397,42 @@
                     const ddContainer = document.createElement('div');
                     w.appendChild(ddContainer);
 
-                    // Dynamic storage key so each field has its own memory bank
                     const storageKey = `aba_dict_${f.id}`; 
-                    const defaultOptions = f.default_options || ["Option 1", "Option 2"];
 
                     const renderDropdown = () => {
-                        let savedItems = JSON.parse(localStorage.getItem(storageKey)) || defaultOptions;
-                        savedItems = savedItems.filter(t => t && t.toLowerCase() !== 'undefined' && t.toLowerCase() !== 'n/a' && t.length > 2);
+                        // 1. Load custom items from memory (these will go in a "Custom Added" group)
+                        let customSaved = JSON.parse(localStorage.getItem(storageKey)) ||[];
+                        customSaved = customSaved.filter(t => t && t.toLowerCase() !== 'undefined' && t.toLowerCase() !== 'n/a' && t.length > 2);
                         
+                        // 2. Load the exhaustive base options from schema.json
+                        let baseOptions = schemaData[f.id] ||[];
+
                         let html = `<div style="display:flex; gap:10px;">
                             <select data-id="${f.id}" class="required-choice" style="flex:1;">
-                                <option value="">-- Select ${f.label} --</option>`;
+                                <option value="">-- Select --</option>`;
                         
-                        savedItems.forEach(t => {
-                            const isSelected = existingVal === t ? 'selected' : '';
-                            html += `<option value="${t}" ${isSelected}>${t}</option>`;
-                        });
+                        const renderOpt = (val) => {
+                            const isSelected = existingVal === val ? 'selected' : '';
+                            return `<option value="${val}" ${isSelected}>${val}</option>`;
+                        };
+
+                        // 3. THE MAGIC: Check if the schema is grouped (Object) or flat (Array)
+                        if (!Array.isArray(baseOptions) && typeof baseOptions === 'object') {
+                            for (const[groupName, items] of Object.entries(baseOptions)) {
+                                html += `<optgroup label="— ${groupName} —">`;
+                                items.forEach(t => html += renderOpt(t));
+                                html += `</optgroup>`;
+                            }
+                        } else {
+                            baseOptions.forEach(t => html += renderOpt(t));
+                        }
+
+                        // 4. Render the permanent custom options at the bottom
+                        if (customSaved.length > 0) {
+                            html += `<optgroup label="— Custom Added —">`;
+                            customSaved.forEach(t => html += renderOpt(t));
+                            html += `</optgroup>`;
+                        }
                         
                         html += `</select>
                             <button type="button" class="btn-add-target btn-secondary" style="width:auto; padding:0 15px;">➕ Add</button>
@@ -444,12 +440,14 @@
                         
                         ddContainer.innerHTML = html;
 
+                        // Re-evaluate form validity and guardrails when selection changes
                         ddContainer.querySelector('select').addEventListener('change', (e) => {
                             existingVal = e.target.value;
                             validateFormInputs();
                             runAllGuardrails();
                         });
 
+                        // The strict gatekeeper for new Custom targets
                         ddContainer.querySelector('.btn-add-target').addEventListener('click', () => {
                             const promptMsg = f.prompt_msg || "Enter a specific clinical detail to add permanently:";
                             const newItem = prompt(promptMsg);
@@ -457,18 +455,26 @@
                                 const val = newItem.trim();
                                 const wordCount = val.split(/\s+/).length;
                                 
-                                // STRICT VALIDATION: Max 8 words, no garbage
+                                // STRICT VALIDATION
                                 if (val.length < 3 || wordCount > 8 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'undefined') {
                                     alert("Invalid entry. Must be 1-8 words and clinically specific.");
                                     return;
                                 }
                                 
-                                if (!savedItems.includes(val)) {
-                                    savedItems.push(val);
-                                    localStorage.setItem(storageKey, JSON.stringify(savedItems));
+                                // Prevent duplicates
+                                let existsInBase = false;
+                                if (!Array.isArray(baseOptions)) {
+                                    existsInBase = Object.values(baseOptions).flat().map(v=>v.toLowerCase()).includes(val.toLowerCase());
+                                } else {
+                                    existsInBase = baseOptions.map(v=>v.toLowerCase()).includes(val.toLowerCase());
+                                }
+
+                                if (!existsInBase && !customSaved.map(v=>v.toLowerCase()).includes(val.toLowerCase())) {
+                                    customSaved.push(val);
+                                    localStorage.setItem(storageKey, JSON.stringify(customSaved));
                                 }
                                 
-                                existingVal = val; 
+                                existingVal = val; // Auto-select the new target
                                 renderDropdown();
                                 validateFormInputs();
                                 runAllGuardrails();
@@ -497,7 +503,7 @@
                         const savedCustom = customChips[storageKey] || [];
                         const combinedOptions = [...new Set([...(currentOptions || []), ...savedCustom])];
 
-                        let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; overflow-x:auto; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:nowrap; scrollbar-width:none; align-items:center;">`;
+                        let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:wrap; align-items:center;">`;
                         
                         combinedOptions.forEach(o => {
                             const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
