@@ -216,7 +216,19 @@
       ["Independent", "Required redirection to task"],
       ["calm and cooperative", "avoiding eye contact / turning away"],
       ["calm and cooperative", "orienting away from speaker"],
-      ["calm and cooperative", "engaging in pacing / vocal stereotypy"],["calm and cooperative", "demonstrating a high rate of movement"]
+      ["calm and cooperative", "engaging in pacing / vocal stereotypy"],["calm and cooperative", "demonstrating a high rate of movement"],
+      ["lethargic due to poor sleep", "Highly Motivated"],
+      ["lethargic due to poor sleep", "Quick Control"],["withdrawn and avoiding interaction", "Highly Motivated"],
+      ["withdrawn and avoiding interaction", "Quick Control"],["exhibiting a sluggish response time", "Highly Motivated"],["exhibiting a sluggish response time", "Quick Control"],
+      ["Mastered", "Max Prompting"],
+      ["Mastered", "Modeling"],
+      ["Mastered", "Partial Physical"],
+      ["Mastered", "Full Physical"],["Mastered", "Gestural"],
+      ["Fluency", "Max Prompting"],
+      ["Fluency", "Modeling"],
+      ["Fluency", "Partial Physical"],
+      ["Fluency", "Full Physical"],["Fluency", "Required redirection to task"],
+      ["Independent", "Max Prompting"],["Independent", "Required redirection to task"]
     ],
     "Initial_Presentation":[
       ["readily responding to instructions", "engaging in crying / vocal protests"],["readily responding to instructions", "avoiding eye contact / turning away"],["readily responding to instructions", "engaging in pacing / vocal stereotypy"],["readily responding to instructions", "exhibiting a slowed response time / yawning"],
