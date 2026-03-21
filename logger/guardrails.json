@@ -199,7 +199,7 @@
     "Caregiver unavailable"
   ],
   "Invalid_Combinations": {
-    Global": [
+    "Global": [
     	["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],
       ["engaging in crying / vocal protests", "SCHEMA:Chips_Session_Start"],
       ["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "Highly Motivated"],
