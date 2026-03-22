@@ -246,8 +246,49 @@
       ["Max Prompting", "Visual"],["Max Prompting", "Verbal"],
       ["Max Prompting", "Gestural"],["Max Prompting", "Positional"],
       ["Max Prompting", "Time Delay"],
-      ["Max Prompting", "Modeling"]
+      ["Max Prompting", "Modeling"],
+      ["Lethargy / Fatigue", "demonstrating a high rate of movement"],["Lethargy / Fatigue", "smiling and energetic"],
+      ["Failed to generalize", "Generalized to new environment"],
+      ["Inconsistent responding", "Fluency"],
+      ["Inconsistent responding", "Mastered"]
     ],
+    "Clinical_Impossibilities": [["Blocking", "Vocal Stereotypy"],
+			["Blocking", "Inappropriate Language"],["Blocking", "repetitive vocal scripting"],
+			["Blocking", "screaming at a high pitch"],["Blocking", "loud, sustained vocal protests"],
+			["Errorless Teaching", "Independent"],["Errorless Teaching", "Spontaneous demonstration"],
+			["Errorless Teaching", "Mastered"],["Errorless Teaching", "Time Delay"],
+			["Blocked using safety pads", "Planned Ignoring"],["Required a tactical break", "Escape Extinction"],
+			["Returned independently", "Required physical block to prevent exit"],["Easily redirected", "Required physical blocking"]
+		],
+		"Caregiver_Handoff_Constraints": [["Caregiver unavailable", "Discussed mastered skills"],
+			["Caregiver unavailable", "Reviewed behavior incidents"],
+			["Caregiver unavailable", "Modeled intervention"],
+			["Caregiver unavailable", "Discussed generalization strategies"],
+			["Caregiver unavailable", "Reviewed upcoming session schedule"],["Caregiver unavailable", "Answered caregiver questions"],
+			["Caregiver unavailable", "Provided parent coaching"],["Caregiver unavailable", "Reviewed data graphs with family"]
+		],
+		"Telehealth_Constraints": [["Telehealth", "Full Physical"],
+			["Telehealth", "Partial Physical"],["Telehealth", "Navigated Parking Lot Safely"],
+			["Telehealth", "Practiced safety crossing"]
+		],
+		"Prompting_and_Acquisition": [
+			["Independent", "Prompt dependent"],
+			["Independent", "Required prompt fading"],
+			["Mastered", "Prompt dependent"],
+			["Mastered", "Required prompt fading"],["Fluency", "Prompt dependent"],
+			["Fluency", "Required prompt fading"],["Spontaneous demonstration", "Full Physical"],
+			["Spontaneous demonstration", "Partial Physical"],["Spontaneous demonstration", "Modeling"],
+			["Spontaneous demonstration", "Verbal"],
+			["Spontaneous demonstration", "Visual"],
+			["Spontaneous demonstration", "Gestural"]
+		],
+		"State_and_Transition_Contradictions": [
+			["exhibiting a sluggish response time", "smiling and energetic"],["exhibiting a sluggish response time", "demonstrating a high rate of movement"],["displaying an absence of maladaptive behavior", "displaying precursor behaviors"],["displaying an absence of maladaptive behavior", "engaging in crying / vocal protests"],
+			["transitioning smoothly without resistance", "Required physical guidance to transition"],
+			["transitioning smoothly without resistance", "requiring gentle physical guidance"],["transitioning smoothly without resistance", "dropping to the floor midway"],["transitioning smoothly without resistance", "whining and vocally protesting"],
+			["happily running to the next area", "Required physical guidance to transition"],["happily running to the next area", "requiring gentle physical guidance"],["happily running to the next area", "dropping to the floor midway"],["happily running to the next area", "whining and vocally protesting"],
+			["Smooth", "Required physical guidance to transition"],["Smooth", "dropping to the floor midway"]
+		],
     "Initial_Presentation": [["readily responding to instructions", "engaging in crying / vocal protests"],
       ["readily responding to instructions", "avoiding eye contact / turning away"],
       ["readily responding to instructions", "engaging in pacing / vocal stereotypy"],["readily responding to instructions", "exhibiting a slowed response time / yawning"],["readily responding to instructions", "orienting away from speaker"],["readily responding to instructions", "demonstrating a high rate of movement"],["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]

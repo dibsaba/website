@@ -51,12 +51,25 @@
         .pwd-toggle:hover { color: var(--brand-primary); }
         .pwd-toggle svg { width: 20px; height: 20px; }
 
-        #dashboard-view { padding-bottom: 180px; }
+        #dashboard-view { 
+						/* Prevent the timeline from hiding behind the taller action bar */
+						padding-bottom: calc(200px + env(safe-area-inset-bottom)); 
+				}
         .app-header { background: #fff; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 10; display:flex; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.03);}
         .timeline-container { max-width: 800px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; width: 100%; }
         .timeline-card { background: #fff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--brand-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         
-        .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 15px; display: flex; flex-direction: column; gap: 10px; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
+        .action-bar { 
+						position: fixed; 
+						bottom: 0; left: 0; right: 0; 
+						background: #fff; 
+						/* Add safe-area padding for modern iPhones */
+						padding: 15px 15px calc(15px + env(safe-area-inset-bottom)) 15px; 
+						display: flex; flex-direction: column; gap: 10px; 
+						align-items: center; 
+						box-shadow: 0 -4px 20px rgba(0,0,0,0.08); 
+						z-index: 50;
+				}
         .action-bar-row { max-width: 800px; width: 100%; display: flex; gap: 10px; justify-content: center; }
         .action-bar button { flex: 1; }
         
@@ -72,23 +85,69 @@
         .form-label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--brand-primary); }
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
         .checkbox-pill input { display: none; }
-        .checkbox-pill span { padding: 8px 12px; background: var(--brand-sand); border-radius: 8px; display: inline-block; cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; }
+        .checkbox-pill span { 
+						padding: 10px 16px; 
+						min-height: 44px;
+						display: inline-flex;
+						align-items: center;
+						background: var(--brand-sand); 
+						border-radius: 8px; 
+						cursor: pointer; 
+						font-size: 0.95rem; /* slightly larger for readability */
+						border: 1px solid transparent; 
+				}
         .checkbox-pill input:checked + span { background: var(--brand-accent); color: #fff; border-color: var(--brand-accent-dark); }
+        
+        /* Make required dropdowns that are empty stand out slightly */
+				select.required-choice:has(option[value=""]:checked) {
+						border-left: 4px solid var(--brand-accent-light);
+						background-color: var(--brand-cream);
+				}
+				
+				/* Make the disabled save button look intentional, not broken */
+				#btn-save:disabled {
+						background: var(--brand-sand);
+						color: var(--text-muted);
+						border: 2px dashed #cbd5e1;
+						opacity: 1; /* override previous opacity */
+				}
+				#btn-save:disabled::after {
+						content: " (Incomplete)";
+						font-size: 0.85rem;
+						font-weight: 400;
+				}
+				
+				.timeline-card {
+						transition: transform 0.1s;
+				}
+				.timeline-card:active {
+						transform: scale(0.98); /* Tactile feedback when tapping to edit */
+				}
+				.type-Session_Start { border-left-color: var(--brand-success); }
+				.type-Skill_Acquisition { border-left-color: #3b82f6; /* Blue for skill */ }
+				.type-Behavior_Reduction { border-left-color: var(--brand-danger); /* Red for behavior */ }
+				.type-Location_Transition { border-left-color: #8b5cf6; /* Purple for transition */ }
+				.type-Session_End { border-left-color: var(--brand-primary); }
         
         /* --- MOBILE RESPONSIVENESS FIXES (iPhone SE) --- */
         @media (max-width: 480px) {
-            body { font-size: 14px; }
-            .auth-card { padding: 30px 20px; }
-            .action-bar { padding: 10px; }
-            
-            /* Forces the 4 center buttons into a 2x2 grid on small screens */
-            .action-bar-row:nth-child(2) { flex-wrap: wrap; }
-            .action-bar-row:nth-child(2) button { flex: 1 1 45%; font-size: 0.85rem; padding: 10px; min-height: 40px; }
-            
-            .modal { position: absolute; inset: 0; height: 100%; border-radius: 0; max-height: 100vh; }
-            .modal-body { padding: 15px; }
-            .checkbox-pill span { font-size: 0.85rem; padding: 8px 10px; }
-        }
+        		/* Ensure action buttons are tall enough on small screens */
+						.action-bar-row:nth-child(2) button { 
+								flex: 1 1 45%; 
+								font-size: 0.9rem; 
+								padding: 10px; 
+								min-height: 48px; /* Bumped from 40px */
+						}
+						
+						.modal { 
+								position: absolute; 
+								inset: 0; 
+								border-radius: 0; 
+								/* Use dynamic viewport height so the keyboard doesn't hide the Save button */
+								height: 100dvh; 
+								max-height: 100dvh; 
+						}
+				}
     </style>
 </head>
 <body>
@@ -120,19 +179,20 @@
         <main class="timeline-container" id="timeline-feed"></main>
         
         <nav class="action-bar">
-            <div class="action-bar-row">
-                <button id="btn-start" class="btn-primary" style="background:var(--brand-success);">Start Session</button>
-            </div>
-            <div class="action-bar-row">
-                <button id="btn-skill" class="btn-secondary" disabled>Add Skill</button>
-                <button id="btn-behavior" class="btn-secondary" disabled>Add Behavior</button>
-                <button id="btn-transition" class="btn-secondary" disabled>Transition</button>
-                <button id="btn-end" class="btn-secondary" disabled>End Session</button>
-            </div>
-            <div class="action-bar-row">
-                <button id="btn-generate" class="btn-primary" disabled>Generate Note</button>
-            </div>
-        </nav>
+						<div class="action-bar-row">
+								<button id="btn-start" class="btn-primary" style="background:var(--brand-success);">🟢 Start Session</button>
+						</div>
+						<div class="action-bar-row">
+								<button id="btn-skill" class="btn-secondary" disabled>🧩 Skill</button>
+								<!-- Give behavior a distinct, urgent border/icon so it's quickly found -->
+								<button id="btn-behavior" class="btn-secondary" style="border: 1px solid #ef4444;" disabled>📉 Behavior</button>
+								<button id="btn-transition" class="btn-secondary" disabled>🚶 Transition</button>
+								<button id="btn-end" class="btn-secondary" disabled>🛑 End</button>
+						</div>
+						<div class="action-bar-row">
+								<button id="btn-generate" class="btn-primary" disabled>📝 Generate Note</button>
+						</div>
+				</nav>
     </div>
 
     <div id="modal-overlay" class="modal-overlay">
@@ -538,7 +598,7 @@
                             const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
                             chipsHtml += `<label class="chip-toggle">
                                 <input type="checkbox" style="display:none;" value="${o}" ${isChecked}>
-                                <span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:16px; padding:6px 14px; font-size:0.85rem; white-space:nowrap; cursor:pointer; display:inline-block; transition:all 0.2s;">${o}</span>
+                                <span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:20px; padding:10px 16px; min-height:40px; display:inline-flex; align-items:center; font-size:0.95rem; white-space:nowrap; cursor:pointer; transition:all 0.2s;">${o}</span>
                             </label>`;
                         });
 

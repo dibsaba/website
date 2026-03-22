@@ -48,7 +48,15 @@
     "Allergies",
     "Missed meal",
     "Constipation / GI issues",
-    "Pain / Discomfort"
+    "Pain / Discomfort",
+    "Seizure activity",
+    "Menses / Menstrual cycle",
+    "Dehydration",
+    "Lethargy / Fatigue",
+    "Dental pain",
+    "Ear infection",
+    "Rash / Skin irritation",
+    "Headache"
   ],
   "Skill_Domains":[
     "Expressive Communication",
@@ -195,7 +203,21 @@
     "Smooth", "Verbal Prompts", "Precursors Noted"
   ],
   "Chips_Skill_Acquisition":[
-    "Mastered", "Max Prompting", "Independent", "Field Reduced", "Fluency", "Required redirection to task", "Generalized to new environment", "Maintained across therapists"
+    "Mastered",
+    "Max Prompting",
+    "Independent",
+    "Field Reduced",
+    "Fluency",
+    "Required redirection to task",
+    "Generalized to new environment",
+    "Maintained across therapists",
+    "Emerging skill",
+    "Prompt dependent",
+    "Inconsistent responding",
+    "Mastered with novel stimuli",
+    "Failed to generalize",
+    "Required prompt fading",
+    "Spontaneous demonstration"
   ],
   "Chips_Session_End": {
     "Home": ["Happy Transition", "Sibling Joined Play", "Provided parent coaching", "Reviewed data graphs with family"],
@@ -204,10 +226,56 @@
     "Community":["Transitioned to Caregiver safely", "Navigated Parking Lot Safely", "Tolerated loud environment", "Practiced safety crossing"]
   },
   "Chips_Behavior_Reduction": {
-    "Aggression":["Swiped at therapist", "Attempted to bite", "Threw materials", "Required safety distance"],
-    "Elopement":["Bolted towards door", "Left instructional area", "Required physical block to prevent exit"],
-    "Property Destruction":["Ripped data sheets", "Swept items off desk", "Broke instructional materials"]
-  },
+    "Aggression":[
+      "Swiped at therapist",
+      "Attempted to bite",
+      "Threw materials",
+      "Required safety distance",
+      "Easily redirected",
+      "Required physical blocking",
+      "Preceded by crying"
+    ],
+    "Elopement":[
+      "Bolted towards door",
+      "Left instructional area",
+      "Required physical block to prevent exit",
+      "Returned independently",
+      "Triggered by loud noise",
+      "Maintained proximity after prompt"
+    ],
+    "Property Destruction":[
+      "Ripped data sheets",
+      "Swept items off desk",
+      "Broke instructional materials",
+      "Redirected to safe item",
+      "Occurred during transition",
+      "Required environmental clearing"
+    ],
+    "Self-Injurious Behavior (SIB)":[
+      "Blocked using safety pads",
+      "Required protective equipment",
+      "Occurred when denied access",
+      "Intensity remained mild",
+      "De-escalated via DRA"
+    ],
+    "Tantrum":[
+      "De-escalated within 5 minutes",
+      "Required a tactical break",
+      "Screaming subsided when ignored",
+      "Triggered by routine change"
+    ],
+    "Non-compliance":[
+      "Used wait out procedure",
+      "Completed with partial physical prompt",
+      "Required behavioral momentum",
+      "Responded to Premack principle"
+    ],
+    "Pica":[
+      "Blocked attempt to swallow",
+      "Successfully traded for edible",
+      "Swept area for hazards"
+    ]
+  }
   "Client_Affect": {
     "Positive / Regulated":[
       "calm and cooperative",
@@ -259,41 +327,82 @@
       "Intraverbal fill-ins",
       "Echoic imitation",
       "Answering WH- questions",
-      "Peer greetings"
+      "Peer greetings",
+      "Using an AAC device",
+      "Pointing to request",
+      "Conversational turn-taking",
+      "Following receptive instructions"
     ],
     "Daily Living (ADLs)":[
       "Tying shoes",
       "Washing hands",
       "Brushing teeth",
       "Using utensils properly",
-      "Packing a backpack"
+      "Packing a backpack",
+      "Completing toileting routine",
+      "Dressing independently",
+      "Eating a variety of foods",
+      "Completing daily chores",
+      "Opening food containers"
     ],
     "Academic Readiness":[
       "Sorting by category",
       "Matching non-identical items",
       "Identifying colors and shapes",
       "Tracing letters",
-      "Counting 1-10"
+      "Counting 1-10",
+      "Writing own name",
+      "Identifying numbers and letters",
+      "Completing patterning items",
+      "Following worksheet instructions"
     ],
     "Social / Play Skills":[
       "Turn-taking with a peer",
       "Parallel play",
       "Sharing preferred items",
       "Functional pretend play",
-      "Losing a game appropriately"
+      "Losing a game appropriately",
+      "Initiating peer play",
+      "Maintaining joint attention",
+      "Sustaining cooperative play",
+      "Imitating peer actions"
     ],
     "Executive Functioning":[
       "Waiting for 1 minute",
       "Following 2-step instructions",
       "Visual schedule adherence",
       "Transitioning away from a preferred item",
-      "Accepting 'No'"
+      "Accepting 'No'",
+      "Sustaining visual attention",
+      "Independent task initiation",
+      "Problem-solving a barrier",
+      "Self-monitoring behavior"
     ],
     "Motor Skills":[
       "Pincer grasp exercises",
       "Gross motor imitation",
       "Stringing beads",
-      "Catching a ball"
+      "Catching a ball",
+      "Cutting with scissors",
+      "Using a pencil grip",
+      "Jumping with two feet",
+      "Crossing the midline"
+    ],
+    "Coping / Tolerance":[
+      "Tolerating denied access",
+      "Accepting delayed reinforcement",
+      "Using deep breathing",
+      "Tolerating loud noises",
+      "Asking for a break",
+      "Tolerating task demands",
+      "Accepting changes in routine"
+    ],
+    "Vocational":[
+      "Sorting mail or items",
+      "Wiping down tables",
+      "Completing assembly tasks",
+      "Following a visual checklist",
+      "Clocking in and out"
     ]
   },
   "Teaching_Materials": {
@@ -301,26 +410,39 @@
       "2D picture cards",
       "worksheets and crayons",
       "animal flashcards",
-      "a token board"
+      "a token board",
+      "whiteboard and dry-erase markers",
+      "PECS communication book",
+      "social story books"
     ],
     "Tangible & 3D":[
       "wooden blocks",
       "shape sorters",
       "puzzles",
       "Lego bricks",
-      "cause-and-effect toys"
+      "cause-and-effect toys",
+      "playdough and molds",
+      "kinetic sand",
+      "magnetic building tiles",
+      "therapy ball"
     ],
     "Natural Environment":[
       "preferred natural toys",
       "snack and food items",
       "playground equipment",
-      "items found in the kitchen"
+      "items found in the kitchen",
+      "water play table",
+      "gross motor obstacle course",
+      "household cleaning supplies"
     ],
     "Technology":[
       "a tablet app",
       "an AAC device",
       "a visual timer",
-      "interactive videos"
+      "interactive videos",
+      "headphones for noise cancellation",
+      "augmented communication software",
+      "music player"
     ]
   },
   "Specific_Topography": {
@@ -329,32 +451,66 @@
       "kicking the furniture or staff",
       "biting directed at the therapist",
       "scratching arms and hands",
-      "hair-pulling"
+      "hair-pulling",
+      "pinching others' skin",
+      "punching with closed fists",
+      "head-butting staff or peers"
     ],
     "Property Destruction":[
       "sweeping items off the desk",
       "throwing instructional materials",
       "ripping paper and data sheets",
       "slamming doors",
-      "breaking toys"
+      "breaking toys",
+      "kicking holes in walls",
+      "overturning tables or chairs",
+      "tearing fabric or clothing"
     ],
     "Elopement":[
       "bolting towards the exit door",
       "leaving the instructional area",
       "running into the street/parking lot",
-      "hiding under furniture"
+      "hiding under furniture",
+      "pacing near the exit",
+      "running away from caregiver",
+      "dodging staff to escape"
     ],
     "Self-Injurious Behavior (SIB)":[
       "biting own hand or arm",
       "hitting head with an open hand",
       "banging head against the wall/floor",
-      "skin picking"
+      "skin picking",
+      "scratching own skin repeatedly",
+      "biting own lips or cheeks",
+      "gouging own eyes"
     ],
     "Tantrum / Stereotypy":[
       "dropping to the floor and crying",
       "loud, sustained vocal protests",
       "intense hand-flapping",
-      "repetitive vocal scripting"
+      "repetitive vocal scripting",
+      "screaming at a high pitch",
+      "rocking back and forth violently",
+      "spinning in circles"
+    ],
+    "Pica":[
+      "mouthing non-edible items",
+      "swallowing small objects",
+      "chewing on clothing or strings",
+      "licking the floor or walls"
+    ],
+    "Non-compliance":[
+      "refusing to transition",
+      "ignoring staff instructions",
+      "passively slumping in chair",
+      "walking away from task",
+      "verbally refusing tasks"
+    ],
+    "Spitting":[
+      "spitting on the floor",
+      "spitting on instructional materials",
+      "pooling saliva in mouth",
+      "spitting at staff or peers"
     ]
   },
   "Caregiver_Response": {
