@@ -70,7 +70,7 @@
         "Visual Schedule / Timer",
         "Premack Principle (First/Then)"
       ],
-      "blacklisted_interventions": [
+      "blacklisted_interventions":[
         "Planned Ignoring",
         "Escape Extinction",
         "Tactical Break"
@@ -200,63 +200,71 @@
   ],
   "Invalid_Combinations": {
     "Global": [
-    	["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],
+    ["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],
       ["engaging in crying / vocal protests", "SCHEMA:Chips_Session_Start"],
-      ["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "Highly Motivated"],
-      ["engaging in crying / vocal protests", "Quick Control"],
-      ["avoiding eye contact / turning away", "Highly Motivated"],["avoiding eye contact / turning away", "Quick Control"],
-      ["exhibiting a slowed response time / yawning", "Highly Motivated"],
+      ["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "Highly Motivated"],["engaging in crying / vocal protests", "Quick Control"],
+      ["avoiding eye contact / turning away", "Highly Motivated"],["avoiding eye contact / turning away", "Quick Control"],["exhibiting a slowed response time / yawning", "Highly Motivated"],
       ["exhibiting a slowed response time / yawning", "Quick Control"],["orienting away from speaker", "Highly Motivated"],
-      ["orienting away from speaker", "Quick Control"],["displaying an absence of maladaptive behavior", "Required heavy pairing"],["smiling and energetic", "exhibiting a slowed response time / yawning"],
-      ["smiling and energetic", "engaging in crying / vocal protests"],["smiling and energetic", "avoiding eye contact / turning away"],
-      ["smiling and energetic", "orienting away from speaker"],
-      ["withdrawn and avoiding interaction", "readily responding to instructions"],["agitated and crying", "displaying an absence of maladaptive behavior"],["agitated and crying", "readily responding to instructions"],
-      ["calm and cooperative", "engaging in crying / vocal protests"],["Independent", "Field reduced to 2"],
-      ["Independent", "Required max prompting"],
-      ["Independent", "Required redirection to task"],
-      ["calm and cooperative", "avoiding eye contact / turning away"],
-      ["calm and cooperative", "orienting away from speaker"],
-      ["calm and cooperative", "engaging in pacing / vocal stereotypy"],["calm and cooperative", "demonstrating a high rate of movement"],
-      ["lethargic due to poor sleep", "Highly Motivated"],
-      ["lethargic due to poor sleep", "Quick Control"],["withdrawn and avoiding interaction", "Highly Motivated"],
-      ["withdrawn and avoiding interaction", "Quick Control"],["exhibiting a sluggish response time", "Highly Motivated"],["exhibiting a sluggish response time", "Quick Control"],
-      ["Mastered", "Max Prompting"],
-      ["Mastered", "Modeling"],
-      ["Mastered", "Partial Physical"],
-      ["Mastered", "Full Physical"],["Mastered", "Gestural"],
-      ["Fluency", "Max Prompting"],
-      ["Fluency", "Modeling"],
-      ["Fluency", "Partial Physical"],
-      ["Fluency", "Full Physical"],["Fluency", "Required redirection to task"],
-      ["Independent", "Max Prompting"],["Independent", "Required redirection to task"]
+      ["orienting away from speaker", "Quick Control"],
+      ["displaying an absence of maladaptive behavior", "Required heavy pairing"],["happily initiating interaction", "avoiding eye contact / turning away"],
+      ["happily initiating interaction", "orienting away from speaker"],
+      ["happily initiating interaction", "engaging in crying / vocal protests"],["happily initiating interaction", "exhibiting a slowed response time / yawning"],["smiling and energetic", "exhibiting a slowed response time / yawning"],
+      ["smiling and energetic", "engaging in crying / vocal protests"],
+      ["smiling and energetic", "avoiding eye contact / turning away"],["smiling and energetic", "orienting away from speaker"],
+      ["calm and cooperative", "engaging in crying / vocal protests"],["calm and cooperative", "avoiding eye contact / turning away"],["calm and cooperative", "orienting away from speaker"],
+      ["relaxed and engaged", "engaging in crying / vocal protests"],["relaxed and engaged", "avoiding eye contact / turning away"],["relaxed and engaged", "orienting away from speaker"],
+      ["withdrawn and avoiding interaction", "readily responding to instructions"],["withdrawn and avoiding interaction", "Highly Motivated"],
+      ["withdrawn and avoiding interaction", "Quick Control"],
+      ["agitated and crying", "displaying an absence of maladaptive behavior"],["agitated and crying", "readily responding to instructions"],["exhibiting visible frustration", "displaying an absence of maladaptive behavior"],
+      ["exhibiting visible frustration", "readily responding to instructions"],["lethargic due to poor sleep", "Highly Motivated"],["lethargic due to poor sleep", "Quick Control"],["lethargic due to poor sleep", "demonstrating a high rate of movement"],
+      ["lethargic due to poor sleep", "readily responding to instructions"],
+      ["appearing physically fatigued", "Highly Motivated"],["appearing physically fatigued", "demonstrating a high rate of movement"],
+      ["exhibiting a sluggish response time", "Highly Motivated"],["exhibiting a sluggish response time", "Quick Control"],
+      ["Full Physical", "Independent"],["Full Physical", "Mastered"], ["Full Physical", "Fluency"],
+      ["Partial Physical", "Independent"],["Partial Physical", "Mastered"], ["Partial Physical", "Fluency"],
+      ["Modeling", "Independent"],["Modeling", "Mastered"], ["Modeling", "Fluency"],
+      ["Gestural", "Independent"],["Gestural", "Mastered"], ["Gestural", "Fluency"],
+      ["Verbal", "Independent"],["Verbal", "Mastered"], ["Verbal", "Fluency"],
+      ["Independent", "Max Prompting"],["Independent", "Required redirection to task"],
+      ["highly distracted and hyperactive", "exhibiting a slowed response time / yawning"],
+      ["highly distracted and hyperactive", "appearing physically fatigued"],
+      ["highly distracted and hyperactive", "lethargic due to poor sleep"],["withdrawn and avoiding interaction", "readily responding to instructions"],["withdrawn and avoiding interaction", "highly distracted and hyperactive"],
+      ["withdrawn and avoiding interaction", "happily initiating interaction"],["agitated and crying", "readily responding to instructions"],
+      ["agitated and crying", "calm and cooperative"],["agitated and crying", "relaxed and engaged"],
+      ["agitated and crying", "happily initiating interaction"],["calm and cooperative", "engaging in crying / vocal protests"],["calm and cooperative", "avoiding eye contact / turning away"],
+      ["calm and cooperative", "orienting away from speaker"],["calm and cooperative", "engaging in pacing / vocal stereotypy"],["calm and cooperative", "demonstrating a high rate of movement"],["relaxed and engaged", "engaging in crying / vocal protests"],
+      ["relaxed and engaged", "avoiding eye contact / turning away"],["relaxed and engaged", "orienting away from speaker"],
+      ["happily initiating interaction", "avoiding eye contact / turning away"],
+      ["happily initiating interaction", "orienting away from speaker"],["happily initiating interaction", "engaging in crying / vocal protests"],["happily initiating interaction", "exhibiting a slowed response time / yawning"],
+      ["smiling and energetic", "exhibiting a slowed response time / yawning"],["smiling and energetic", "engaging in crying / vocal protests"],["smiling and energetic", "avoiding eye contact / turning away"],
+      ["smiling and energetic", "orienting away from speaker"],["Independent", "Visual"], ["Independent", "Verbal"], ["Independent", "Gestural"],
+      ["Independent", "Modeling"],["Independent", "Partial Physical"], ["Independent", "Full Physical"],
+      ["Independent", "Positional"], ["Independent", "Time Delay"],
+      ["Mastered", "Modeling"], ["Mastered", "Partial Physical"], ["Mastered", "Full Physical"],
+      ["Fluency", "Modeling"], ["Fluency", "Partial Physical"], ["Fluency", "Full Physical"],["Fluency", "Max Prompting"]
     ],
-    "Initial_Presentation":[
-      ["readily responding to instructions", "engaging in crying / vocal protests"],["readily responding to instructions", "avoiding eye contact / turning away"],["readily responding to instructions", "engaging in pacing / vocal stereotypy"],["readily responding to instructions", "exhibiting a slowed response time / yawning"],
-      ["readily responding to instructions", "orienting away from speaker"],["readily responding to instructions", "demonstrating a high rate of movement"],["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]
+    "Initial_Presentation": [["readily responding to instructions", "engaging in crying / vocal protests"],
+      ["readily responding to instructions", "avoiding eye contact / turning away"],
+      ["readily responding to instructions", "engaging in pacing / vocal stereotypy"],["readily responding to instructions", "exhibiting a slowed response time / yawning"],["readily responding to instructions", "orienting away from speaker"],["readily responding to instructions", "demonstrating a high rate of movement"],["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]
     ],
     "Health_Variables": [["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"],
       ["None reported", "Poor sleep"],["None reported", "Illness symptoms"],
-      ["None reported", "Medication change"],["None reported", "Allergies"],
-      ["None reported", "Missed meal"],["None reported", "Constipation / GI issues"],
-      ["None reported", "Pain / Discomfort"]
+      ["None reported", "Medication change"],["None reported", "Allergies"],["None reported", "Missed meal"],["None reported", "Constipation / GI issues"],["None reported", "Pain / Discomfort"]
     ],
-    "Interventions": [["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["Escape Extinction", "Tactical Break"],
+    "Interventions": [["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
+      ["Escape Extinction", "Tactical Break"],
       ["Planned Ignoring", "Redirection"],["FCT (Functional Communication Training)", "Escape Extinction", "Blocking", "DRA (Differential Reinforcement of Alternative Behavior)"]
     ],
     "Others_Present": [
-      ["Caregiver unavailable", "Caregiver"],["Caregiver unavailable", "Mother"],
-      ["Caregiver unavailable", "Father"],
-      ["None", "Caregiver"],
-      ["None", "Mother"],
+      ["Caregiver unavailable", "Caregiver"],["Caregiver unavailable", "Mother"],["Caregiver unavailable", "Father"],
+      ["None", "Caregiver"],["None", "Mother"],
       ["None", "Father"],["None", "Sibling(s)"],
-      ["None", "Teacher"],
-      ["None", "BCBA"],["None", "Peer(s)"],
-      ["None", "Grandparent"],["None", "Other family member"]
+      ["None", "Teacher"],["None", "BCBA"],
+      ["None", "Peer(s)"],["None", "Grandparent"],
+      ["None", "Other family member"]
     ],
-    "Smart_Chips": [
-      ["Quick Control", "Extended Pairing"],
-      ["Highly Motivated", "Extended Pairing"],
-      ["Independent", "Max Prompting"]
+    "Smart_Chips": [["Quick Control", "Extended Pairing"],
+      ["Highly Motivated", "Extended Pairing"],["Independent", "Max Prompting"]
     ]
   },
   "Time_Intervention_Ratios": {
@@ -272,8 +280,8 @@
   "Location_Settings": {
     "Clinic":["Therapy room", "Sensory room", "Playground", "Outdoors", "Kitchen", "Dining room"],
     "Home":["Living room", "Bedroom", "Kitchen", "Dining room", "Outdoors", "Sensory room", "Playground", "Therapy room"],
-    "School": ["Classroom", "Playground", "Sensory room", "Outdoors", "Dining room"],
-    "Community": ["Store / Community setting", "Outdoors", "Playground"],
-    "Telehealth": ["Living room", "Bedroom", "Kitchen", "Dining room", "Therapy room"]
+    "School":["Classroom", "Playground", "Sensory room", "Outdoors", "Dining room"],
+    "Community":["Store / Community setting", "Outdoors", "Playground"],
+    "Telehealth":["Living room", "Bedroom", "Kitchen", "Dining room", "Therapy room"]
   }
 }
