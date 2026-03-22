@@ -2,7 +2,7 @@
  * @fileoverview GuardrailEngine - Enforces clinical constraints using Minimal Cutsets.
  */
 export default class GuardrailEngine {
-    constructor(rulesData) {
+    constructor(rulesData, schemaData) {
         this.functionRules = rulesData.Function_Based_Guardrails ||[];
         this.contradictionRules = rulesData.Contradiction_Guardrails ||[];
         this.exclusiveChoices = rulesData.Exclusive_Choices ||[];
@@ -10,6 +10,57 @@ export default class GuardrailEngine {
         this.sessionLimits = rulesData.Session_Limits ||[];
         this.locationSettings = rulesData.Location_Settings || null;
         this.fieldLimits = rulesData.Field_Limits || { default_max: 4 }; 
+        this.expandMacros(rulesData.Macro_Combinations ||[], schemaData);
+    }
+    
+    // Unpacks compact arrays, strings, and "CAT:" prefixes into flat cutsets
+    expandMacros(macros, schemaData) {
+        if (!macros || !macros.length) return;
+        
+        // 1. Build a dictionary mapping 'CAT:Name' to its array of items
+        const categoryMap = {};
+        if (schemaData) {
+            for (const key in schemaData) {
+                const field = schemaData[key];
+                if (typeof field === 'object' && !Array.isArray(field)) {
+                    for (const cat in field) {
+                        categoryMap[`CAT:${cat}`] = field[cat];
+                    }
+                }
+            }
+        }
+
+        if (!this.invalidCombinations.Global) this.invalidCombinations.Global =[];
+        
+        // Helper: Resolves any item into a flat array of strings
+        const resolveToSet = (item) => {
+            if (Array.isArray(item)) {
+                return item.flatMap(resolveToSet); // Recursively resolve nested arrays
+            } else if (typeof item === 'string' && item.startsWith('CAT:')) {
+                return categoryMap[item] || [];
+            } else {
+                return [item];
+            }
+        };
+        
+        // 2. Generate Cartesian products for N-dimensional macros
+        macros.forEach(macro => {
+            // Convert the macro (e.g. ["Continuous", ["Mastered", "Fluency"]]) into an array of sets
+            const sets = macro.map(resolveToSet);
+            
+            // Generate all possible combinations
+            const cartesian = (arrays) => {
+                return arrays.reduce((a, b) => 
+                    a.flatMap(d => b.map(e => [...d, e])),
+                    [[]]
+                );
+            };
+
+            const products = cartesian(sets);
+            products.forEach(p => {
+                this.invalidCombinations.Global.push(p);
+            });
+        });
     }
 
     getRulesForAntecedent(antecedent) {
