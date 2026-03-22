@@ -200,7 +200,7 @@
   ],
   "Invalid_Combinations": {
     "Global": [
-    ["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],
+    	["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],
       ["engaging in crying / vocal protests", "SCHEMA:Chips_Session_Start"],
       ["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "Highly Motivated"],["engaging in crying / vocal protests", "Quick Control"],
       ["avoiding eye contact / turning away", "Highly Motivated"],["avoiding eye contact / turning away", "Quick Control"],["exhibiting a slowed response time / yawning", "Highly Motivated"],
@@ -241,7 +241,12 @@
       ["Independent", "Modeling"],["Independent", "Partial Physical"], ["Independent", "Full Physical"],
       ["Independent", "Positional"], ["Independent", "Time Delay"],
       ["Mastered", "Modeling"], ["Mastered", "Partial Physical"], ["Mastered", "Full Physical"],
-      ["Fluency", "Modeling"], ["Fluency", "Partial Physical"], ["Fluency", "Full Physical"],["Fluency", "Max Prompting"]
+      ["Fluency", "Modeling"], ["Fluency", "Partial Physical"], ["Fluency", "Full Physical"],["Fluency", "Max Prompting"],
+      ["Max Prompting", "Independent"],
+      ["Max Prompting", "Visual"],["Max Prompting", "Verbal"],
+      ["Max Prompting", "Gestural"],["Max Prompting", "Positional"],
+      ["Max Prompting", "Time Delay"],
+      ["Max Prompting", "Modeling"]
     ],
     "Initial_Presentation": [["readily responding to instructions", "engaging in crying / vocal protests"],
       ["readily responding to instructions", "avoiding eye contact / turning away"],

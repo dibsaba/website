@@ -194,7 +194,6 @@
                 {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"}
             ],
             Skill_Acquisition:[
-                {id:"Skill_Domains", label:"Domain", type:"select"}, 
                 {id:"Specific_Target", label:"Specific Target / Program", type:"dynamic_dropdown", prompt_msg: "Enter program name (e.g., 'Tying shoes', 'Manding'):"}, 
                 {id:"Teaching_Materials", label:"Specific Materials Used", type:"dynamic_dropdown", prompt_msg: "Enter specific materials (e.g., 'animal flashcards'):"},
                 {id:"Teaching_Formats", label:"Format", type:"select"}, 
@@ -770,13 +769,23 @@
 
             inputs.forEach(el => {
                 if (el.tagName === 'SELECT') {
-                    // Captures all dropdowns, including the new Specific_Target dropdown
                     data[el.dataset.id] = el.value;
+                    
+                    // --- NEW: THE AUTO-DOMAIN ENGINE ---
+                    // Automatically extract the Domain from the optgroup category so the user can't mess it up!
+                    if (el.dataset.id === 'Specific_Target') {
+                        const selectedOpt = el.options[el.selectedIndex];
+                        if (selectedOpt && selectedOpt.parentElement.tagName === 'OPTGROUP') {
+                            // Strip out the "— " formatting from the label (e.g., "— Motor Skills —" becomes "Motor Skills")
+                            data['Skill_Domains'] = selectedOpt.parentElement.label.replace(/—/g, '').trim();
+                        } else {
+                            data['Skill_Domains'] = "Individualized Skills"; // Fallback for custom added targets
+                        }
+                    }
                 }
                 if (el.classList.contains('checkbox-group')) { 
-                    // Captures all Smart Chips and multichoice arrays
                     const c = Array.from(el.querySelectorAll('input:checked')).map(i => i.value); 
-                    data[el.dataset.id] = c.length ? c :["None selected"]; 
+                    data[el.dataset.id] = c.length ? c : ["None selected"]; 
                 }
             });
 
