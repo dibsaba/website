@@ -16,7 +16,11 @@
     "Classroom",
     "Sensory room",
     "Outdoors",
-    "Store / Community setting"
+    "Store / Community setting",
+    "Bathroom / Restroom",
+    "Vehicle / Transport",
+    "Hallway / Transition Area",
+    "Waiting Room"
   ],
   "Others_Present":[
     "Caregiver",
@@ -56,7 +60,10 @@
     "Dental pain",
     "Ear infection",
     "Rash / Skin irritation",
-    "Headache"
+    "Headache",
+    "Asthma / Respiratory issues",
+    "Lack of Appetite / Refused meal",
+    "Observed medication side effects"
   ],
   "Skill_Domains":[
     "Expressive Communication",
@@ -68,7 +75,10 @@
     "Motor Skills",
     "Academic Readiness",
     "Coping / Tolerance",
-    "Self-Management"
+    "Self-Management",
+    "Feeding / Food Tolerance",
+    "Toilet Training",
+    "Medical / Hygiene Tolerance"
   ],
   "Teaching_Formats":[
     "DTT (Discrete Trial Training)",
@@ -117,7 +127,10 @@
     "Drawing / Coloring",
     "Access to Outdoors",
     "Break / Escape",
-    "Tokens / Points"
+    "Tokens / Points",
+    "Physical Touch (deep pressure / squeezes)",
+    "Peer attention",
+    "Sensory breaks (dark room / quiet)"
   ],
   "Target_Behaviors":[
     "Aggression",
@@ -129,7 +142,10 @@
     "Vocal Stereotypy",
     "Motor Stereotypy",
     "Inappropriate Language",
-    "Pica"
+    "Pica",
+    "Disrobing",
+    "Spitting",
+    "Scatolia (Fecal smearing)"
   ],
   "Intensity": [
     "Mild",
@@ -162,7 +178,10 @@
     "NCR (Noncontingent Reinforcement)",
     "Visual Schedule / Timer",
     "Errorless Teaching",
-    "Stimulus Fading"
+    "Stimulus Fading",
+    "Token Economy / Token Board",
+    "Response Cost",
+    "Overcorrection (Positive Practice)"
   ],
   "Deescalation_Time":[
     "< 1 minute",
@@ -331,7 +350,9 @@
       "Using an AAC device",
       "Pointing to request",
       "Conversational turn-taking",
-      "Following receptive instructions"
+      "Following receptive instructions",
+      "Manding for cessation ('Stop'/'No')",
+      "Tacting internal states (Pain/Emotions)"
     ],
     "Daily Living (ADLs)":[
       "Tying shoes",
@@ -343,7 +364,9 @@
       "Dressing independently",
       "Eating a variety of foods",
       "Completing daily chores",
-      "Opening food containers"
+      "Opening food containers",
+      "Tolerating haircuts / nail clipping",
+      "Wiping independently"
     ],
     "Academic Readiness":[
       "Sorting by category",
@@ -511,6 +534,10 @@
       "spitting on instructional materials",
       "pooling saliva in mouth",
       "spitting at staff or peers"
+    ],
+    "Scatolia (Fecal smearing)":[
+      "smearing feces on the walls",
+      "smearing feces on the furniture"
     ]
   },
   "Caregiver_Response": {

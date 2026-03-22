@@ -201,7 +201,6 @@
   "Invalid_Combinations": {
     "Global": [
     	["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],
-      ["engaging in crying / vocal protests", "SCHEMA:Chips_Session_Start"],
       ["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "Highly Motivated"],["engaging in crying / vocal protests", "Quick Control"],
       ["avoiding eye contact / turning away", "Highly Motivated"],["avoiding eye contact / turning away", "Quick Control"],["exhibiting a slowed response time / yawning", "Highly Motivated"],
       ["exhibiting a slowed response time / yawning", "Quick Control"],["orienting away from speaker", "Highly Motivated"],
@@ -252,7 +251,8 @@
       ["Inconsistent responding", "Fluency"],
       ["Inconsistent responding", "Mastered"]
     ],
-    "Clinical_Impossibilities": [["Blocking", "Vocal Stereotypy"],
+    "Clinical_Impossibilities": [
+    	["Blocking", "Vocal Stereotypy"],
 			["Blocking", "Inappropriate Language"],["Blocking", "repetitive vocal scripting"],
 			["Blocking", "screaming at a high pitch"],["Blocking", "loud, sustained vocal protests"],
 			["Errorless Teaching", "Independent"],["Errorless Teaching", "Spontaneous demonstration"],
@@ -260,15 +260,23 @@
 			["Blocked using safety pads", "Planned Ignoring"],["Required a tactical break", "Escape Extinction"],
 			["Returned independently", "Required physical block to prevent exit"],["Easily redirected", "Required physical blocking"]
 		],
-		"Caregiver_Handoff_Constraints": [["Caregiver unavailable", "Discussed mastered skills"],
+		"Caregiver_Handoff_Constraints": [
+		  ["Caregiver unavailable", "Discussed mastered skills"],
 			["Caregiver unavailable", "Reviewed behavior incidents"],
 			["Caregiver unavailable", "Modeled intervention"],
 			["Caregiver unavailable", "Discussed generalization strategies"],
 			["Caregiver unavailable", "Reviewed upcoming session schedule"],["Caregiver unavailable", "Answered caregiver questions"],
 			["Caregiver unavailable", "Provided parent coaching"],["Caregiver unavailable", "Reviewed data graphs with family"]
 		],
-		"Telehealth_Constraints": [["Telehealth", "Full Physical"],
-			["Telehealth", "Partial Physical"],["Telehealth", "Navigated Parking Lot Safely"],
+		"Telehealth_Constraints": [
+			["Telehealth", "Full Physical"],
+			["Telehealth", "Partial Physical"],
+			["Telehealth", "Blocking"],
+			["Telehealth", "Required physical guidance to transition"],
+			["Telehealth", "Blocked using safety pads"],
+			["Telehealth", "Required physical block to prevent exit"],
+			["Telehealth", "holding the therapist's hand"],
+			["Telehealth", "Navigated Parking Lot Safely"],
 			["Telehealth", "Practiced safety crossing"]
 		],
 		"Prompting_and_Acquisition": [
@@ -309,9 +317,27 @@
       ["None", "Peer(s)"],["None", "Grandparent"],
       ["None", "Other family member"]
     ],
-    "Smart_Chips": [["Quick Control", "Extended Pairing"],
+    "Smart_Chips": [
+    	["Quick Control", "Extended Pairing"],
       ["Highly Motivated", "Extended Pairing"],["Independent", "Max Prompting"]
-    ]
+    ],
+    "Time_and_Intervention_Physics": [
+			["< 1 minute", "Tactical Break"],["< 1 minute", "Extended Pairing"],
+			["> 30 minutes", "Quick Control"],["De-escalated within 5 minutes", "> 30 minutes"],["De-escalated within 5 minutes", "15-30 minutes"]
+		],
+		"Behavior_Topography_Mismatches": [["Elopement", "biting own hand or arm"],["Elopement", "hitting head with an open hand"],
+			["Pica", "bolting towards the exit door"],["Non-compliance", "swallowing small objects"],
+			["Target_Behaviors: Spitting", "hair-pulling"],["Vocal Stereotypy", "open-handed hitting"]
+		],
+		"Skill_vs_Prompt_Contradictions":[
+			["Independent", "Prompt dependent"],
+			["Independent", "Required prompt fading"],["Spontaneous demonstration", "Max Prompting"],
+			["Fluency", "Required prompt fading"]
+		],
+		"Affect_vs_Behavior_Contradictions": [
+			["calm and cooperative", "Severe"],["smiling and energetic", "Severe"],
+			["displaying an absence of maladaptive behavior", "Severe"]
+		]
   },
   "Time_Intervention_Ratios": {
     "< 1 minute": 2 

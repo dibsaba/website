@@ -97,7 +97,16 @@
 						border: 1px solid transparent; 
 				}
         .checkbox-pill input:checked + span { background: var(--brand-accent); color: #fff; border-color: var(--brand-accent-dark); }
-        
+        .checkbox-pill input:disabled + span:active {
+						animation: shake 0.3s ease-in-out;
+						border-color: var(--brand-danger);
+				}
+				@keyframes shake {
+						0%, 100% { transform: translateX(0); }
+						25% { transform: translateX(-4px); }
+						75% { transform: translateX(4px); }
+				}
+				
         /* Make required dropdowns that are empty stand out slightly */
 				select.required-choice:has(option[value=""]:checked) {
 						border-left: 4px solid var(--brand-accent-light);
@@ -128,6 +137,19 @@
 				.type-Behavior_Reduction { border-left-color: var(--brand-danger); /* Red for behavior */ }
 				.type-Location_Transition { border-left-color: #8b5cf6; /* Purple for transition */ }
 				.type-Session_End { border-left-color: var(--brand-primary); }
+				
+				/* Bottom Sheet Animation for Mobile */
+				.bottom-sheet {
+						margin-top: auto; 
+						border-bottom-left-radius: 0;
+						border-bottom-right-radius: 0;
+						padding-bottom: env(safe-area-inset-bottom);
+						transform: translateY(100%);
+						animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+				}
+				@keyframes slideUp {
+						to { transform: translateY(0); }
+				}
         
         /* --- MOBILE RESPONSIVENESS FIXES (iPhone SE) --- */
         @media (max-width: 480px) {
@@ -220,6 +242,26 @@
             </footer>
         </div>
     </div>
+    
+    <!-- THE CUSTOM INPUT BOTTOM-SHEET MODAL -->
+		<div id="custom-prompt-overlay" class="modal-overlay" style="z-index: 200;">
+				<div class="modal bottom-sheet">
+						<header class="modal-header">
+								<h2 id="custom-prompt-title" style="font-size: 1.1rem;">Add Custom Detail</h2>
+								<button class="close-btn" id="btn-custom-cancel">&times;</button>
+						</header>
+						<div class="modal-body">
+								<p id="custom-prompt-msg" style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);"></p>
+								<input type="text" id="custom-prompt-input" placeholder="Type specific clinical detail..." autocomplete="off">
+								<div id="custom-prompt-counter" style="text-align: right; font-size: 0.85rem; margin-top: 8px; font-weight: 600; transition: color 0.2s;">
+										0/8 words
+								</div>
+						</div>
+						<footer class="modal-footer">
+								<button id="btn-custom-save" class="btn-primary" disabled>Save Permanently</button>
+						</footer>
+				</div>
+		</div>
 
     <script type="module">
         import GuardrailEngine from './guardrail_engine.js';
@@ -343,6 +385,57 @@
         const closeModals = () => { document.getElementById('modal-overlay').classList.remove('active'); currentEditingId = null; };
         document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeModals);
 
+				// --- PROMISIFIED CUSTOM INPUT ENGINE ---
+				function requestCustomInput(title, message, maxWords = 8) {
+						return new Promise((resolve) => {
+								const overlay = document.getElementById('custom-prompt-overlay');
+								const titleEl = document.getElementById('custom-prompt-title');
+								const msgEl = document.getElementById('custom-prompt-msg');
+								const inputEl = document.getElementById('custom-prompt-input');
+								const counterEl = document.getElementById('custom-prompt-counter');
+								const saveBtn = document.getElementById('btn-custom-save');
+								const cancelBtn = document.getElementById('btn-custom-cancel');
+				
+								titleEl.innerText = title;
+								msgEl.innerText = message;
+								inputEl.value = '';
+								counterEl.innerText = `0/${maxWords} words`;
+								counterEl.style.color = 'var(--text-muted)';
+								saveBtn.disabled = true;
+				
+								overlay.style.display = 'flex';
+								setTimeout(() => inputEl.focus(), 100); // Allow animation to clear before invoking keyboard
+				
+								const validateInput = () => {
+										const val = inputEl.value.trim();
+										const words = val.length > 0 ? val.split(/\s+/).length : 0;
+										const chars = val.length;
+										
+										counterEl.innerText = `${words}/${maxWords} words`;
+										
+										// STRICT CLINICAL VALIDATION
+										if (words > maxWords || chars < 3 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'none') {
+												counterEl.style.color = 'var(--brand-danger)';
+												saveBtn.disabled = true;
+										} else {
+												counterEl.style.color = 'var(--brand-success)';
+												saveBtn.disabled = false;
+										}
+								};
+				
+								inputEl.oninput = validateInput;
+				
+								const cleanup = () => {
+										overlay.style.display = 'none';
+										saveBtn.onclick = null;
+										cancelBtn.onclick = null;
+								};
+				
+								saveBtn.onclick = () => { cleanup(); resolve(inputEl.value.trim()); };
+								cancelBtn.onclick = () => { cleanup(); resolve(null); };
+						});
+				}
+
         const openForm = (type, existingEvent = null) => {
             currentType = type;
             currentEditingId = existingEvent ? existingEvent.id : null;
@@ -383,31 +476,36 @@
                 const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
 
                 // Evaluate Dropdowns (Bidirectional)
-                c.querySelectorAll('select').forEach(selectEl => {
-                    Array.from(selectEl.options).forEach(opt => {
-                        if (!opt.value || opt.value === "None selected") return;
-                        
-                        // Test this option as if it is the ONLY value from this select in the global state
-                        const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
-                        const hypotheticalGlobal = [...stateWithoutSelect, opt.value];
-                        
-                        const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
-                        
-                        if (!globalValidation.valid && !isDeadlocked) {
-                            opt.disabled = true; 
-                            
-                            // THE MOBILE BROWSER FIX: If the user bypassed the disabled state, aggressively clear it!
-                            if (selectEl.value === opt.value) {
-                                selectEl.value = ""; 
-                                // Remove the toxic value from globalState so it doesn't shut down the checkboxes
-                                const toxicIndex = globalState.indexOf(opt.value);
-                                if (toxicIndex > -1) globalState.splice(toxicIndex, 1);
-                            }
-                        } else {
-                            opt.disabled = false;
-                        }
-                    });
-                });
+								c.querySelectorAll('select').forEach(selectEl => {
+										Array.from(selectEl.options).forEach(opt => {
+												if (!opt.value || opt.value === "None selected") return;
+												
+												const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
+												const hypotheticalGlobal = [...stateWithoutSelect, opt.value];
+												const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+												
+												if (!globalValidation.valid && !isDeadlocked) {
+														opt.disabled = true; 
+														
+														// THE IOS SAFARI FIX: Force mobile browsers to remove the option from the native picker
+														opt.hidden = true;
+														opt.style.display = 'none'; 
+														
+														// Aggressive fallback clearing
+														if (selectEl.value === opt.value) {
+																selectEl.value = ""; 
+																const toxicIndex = globalState.indexOf(opt.value);
+																if (toxicIndex > -1) globalState.splice(toxicIndex, 1);
+														}
+												} else {
+														opt.disabled = false;
+														
+														// RESTORE VISIBILITY for valid options
+														opt.hidden = false;
+														opt.style.display = '';
+												}
+										});
+								});
 
                 // Evaluate Checkboxes
                 c.querySelectorAll('.checkbox-group').forEach(group => {
@@ -496,9 +594,9 @@
                         // 2. Load the exhaustive base options from schema.json
                         let baseOptions = schemaData[f.id] ||[];
 
-                        let html = `<div style="display:flex; gap:10px;">
-                            <select data-id="${f.id}" class="required-choice" style="flex:1;">
-                                <option value="">-- Select --</option>`;
+                        let html = `<div style="display:flex; flex-direction: column; gap: 8px;">
+													<select data-id="${f.id}" class="required-choice" style="width: 100%; min-height: 48px; font-size: 16px;">
+															<option value="">-- Select --</option>`;
                         
                         const renderOpt = (val) => {
                             const isSelected = existingVal === val ? 'selected' : '';
@@ -524,8 +622,11 @@
                         }
                         
                         html += `</select>
-                            <button type="button" class="btn-add-target btn-secondary" style="width:auto; padding:0 15px;">➕ Add</button>
-                        </div>`;
+													<button type="button" class="btn-add-target" 
+															style="width: 100%; min-height: 48px; border: 2px dashed #cbd5e1; background: #f8fafc; color: var(--text-body); border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
+															➕ Create New Option
+													</button>
+											  </div>`;
                         
                         ddContainer.innerHTML = html;
 
@@ -537,11 +638,14 @@
                         });
 
                         // The strict gatekeeper for new Custom targets
-                        ddContainer.querySelector('.btn-add-target').addEventListener('click', () => {
-                            const promptMsg = f.prompt_msg || "Enter a specific clinical detail to add permanently:";
-                            const newItem = prompt(promptMsg);
-                            if (newItem) {
-                                const val = newItem.trim();
+                        ddContainer.querySelector('.btn-add-target').addEventListener('click', async () => {
+														const promptMsg = f.prompt_msg || "Enter a specific clinical detail (1-8 words):";
+														// Swap the native prompt for our Promisified UI
+														const newItem = await requestCustomInput("Add Custom Target", promptMsg);
+														
+														if (newItem) {
+																// Validation is already handled by the modal!
+																const val = newItem;
                                 const wordCount = val.split(/\s+/).length;
                                 
                                 // STRICT VALIDATION
@@ -602,18 +706,18 @@
                             </label>`;
                         });
 
-                        chipsHtml += `
-                            <button type="button" class="btn-add-custom" data-storage-key="${storageKey}" style="background:none; border:1px dashed var(--brand-accent); color:var(--brand-accent); border-radius:16px; padding:5px 12px; font-size:0.85rem; cursor:pointer; white-space:nowrap;">
-                                ➕ Add
-                            </button>
-                        </div>`;
+                        chipsHtml += `</div>
+													<button type="button" class="btn-add-custom" data-storage-key="${storageKey}" 
+															style="width: 100%; min-height: 48px; margin-top: 4px; border: 2px dashed var(--brand-accent-light); color: var(--brand-accent-dark); background: transparent; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; display: flex; justify-content: center; align-items: center;">
+															➕ Add Custom Detail
+													</button>`;
                         
                         chipContainer.innerHTML = chipsHtml;
 
                         const addBtn = chipContainer.querySelector('.btn-add-custom');
                         if (addBtn) {
-                            addBtn.addEventListener('click', () => {
-                                const newChip = prompt("Enter a specific, clinical detail to add as a permanent button:\n(e.g., 'Pinched therapist forearm')");
+                            addBtn.addEventListener('click', async () => {
+																const newChip = await requestCustomInput("Add Custom Chip", "Enter a specific, clinical detail to add permanently (e.g., 'Pinched therapist forearm'):");
                                 if (newChip) {
                                     const val = newChip.trim();
                                     const isGarbage = (val.toLowerCase() === 'undefined' || val.toLowerCase() === 'n/a' || val.length < 4);
