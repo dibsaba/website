@@ -327,12 +327,23 @@
                 c.querySelectorAll('select').forEach(selectEl => {
                     Array.from(selectEl.options).forEach(opt => {
                         if (!opt.value || opt.value === "None selected") return;
-                        const hypotheticalGlobal = selectEl.value === opt.value ? globalState :[...globalState, opt.value];
+                        
+                        // Test this option as if it is the ONLY value from this select in the global state
+                        const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
+                        const hypotheticalGlobal = [...stateWithoutSelect, opt.value];
+                        
                         const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                         
                         if (!globalValidation.valid && !isDeadlocked) {
                             opt.disabled = true; 
-                            if (selectEl.value === opt.value) selectEl.value = ""; 
+                            
+                            // THE MOBILE BROWSER FIX: If the user bypassed the disabled state, aggressively clear it!
+                            if (selectEl.value === opt.value) {
+                                selectEl.value = ""; 
+                                // Remove the toxic value from globalState so it doesn't shut down the checkboxes
+                                const toxicIndex = globalState.indexOf(opt.value);
+                                if (toxicIndex > -1) globalState.splice(toxicIndex, 1);
+                            }
                         } else {
                             opt.disabled = false;
                         }
