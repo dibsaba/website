@@ -199,6 +199,42 @@
     "displaying an absence of maladaptive behavior"
   ],
   "Invalid_Combinations": {
+    "Toxic_Triads": [
+    	["Telehealth", "None", "swallowing small objects"],
+      ["Telehealth", "None", "biting own hand or arm"],
+      ["Planned Ignoring", "Severe", "Property Destruction"],
+      ["Planned Ignoring", "Severe", "Aggression"],
+      ["Escape Extinction", "Asthma / Respiratory issues", "loud, sustained vocal protests"],
+      ["Illness symptoms", "Non-compliance", "Escape Extinction"],
+      ["Sensory Overload", "Store / Community setting", "Escape Extinction"],
+      ["Constipation / GI issues", "Edibles", "Continuous"],
+      ["Overcorrection (Positive Practice)", "agitated and crying", "Aggression"],
+      ["Response Cost", "Severe", "Tantrum"],
+      ["Vehicle / Transport", "Elopement", "Escape Extinction"],
+      ["Completing toileting routine", "Telehealth", "Caregiver unavailable"],
+      ["Bathroom / Restroom", "Telehealth", "None"],
+      ["Ear infection", "Tolerating loud noises", "Escape Extinction"],
+    ],
+    "Toxic_Quads": [
+      ["Outdoors", "Telehealth", "Elopement", "Caregiver unavailable"],
+      ["Water play table", "Telehealth", "Pica", "Caregiver unavailable"],
+      ["Community", "Aggression", "Severe", "None"]
+    ],
+    "Expanded_Length_Two": [["Caregiver unavailable", "CAT:Caregiver_Response"],
+      ["None",[
+        "Answered caregiver questions", "Discussed generalization strategies", 
+        "Discussed mastered skills", "Modeled intervention", 
+        "Reviewed behavior incidents", "Reviewed upcoming session schedule"
+      ]],["Lack of Appetite / Refused meal", "Edibles"],
+      ["Telehealth", "Vehicle / Transport"],
+      [["Clinic", "School"], "Bedroom"],["displaying an absence of maladaptive behavior",[
+        "Blocking", "Escape Extinction", "Overcorrection (Positive Practice)", "Response Cost"
+      ]],
+      ["Seizure activity", "Swinging"],
+      [["Sensory Overload", "Pain / Discomfort"], "Overcorrection (Positive Practice)"],
+      ["Illness symptoms", "Peer Interaction"],
+      ["Access to Outdoors", "Outdoors"]
+    ]
     "Global": [
       [["displaying an absence of maladaptive behavior", "readily responding to instructions"], "SCHEMA:Chips_Behavior_Reduction"],
       [["Highly Motivated", "Quick Control"],[
@@ -319,11 +355,7 @@
     "< 1 minute": 2
   },
   "Field_Limits": {
-    "default_max": 4,
-    "Others_Present": 3,
-    "Health_Variables": 2,
-    "Specific_Reinforcers": 3,
-    "Interventions": 4
+    "default_max": 8
   },
   "Location_Settings": {
     "Clinic": [
