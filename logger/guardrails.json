@@ -3,6 +3,9 @@
     [["CAT:Daily Living (ADLs)", "CAT:Motor Skills"], ["DTT (Discrete Trial Training)", "CAT:Visual & Academic"]],
     ["CAT:Vocational", ["CAT:Tangible & 3D", "CAT:Visual & Academic"]],
     ["Continuous", ["Mastered", "Fluency", "Spontaneous demonstration"]],
+    ["Field Reduced", ["Independent", "Mastered", "Fluency", "Spontaneous demonstration"]],
+    ["CAT:Social / Play Skills","DTT (Discrete Trial Training)"],
+    ["Peer greetings", "CAT:Tangible & 3D"],
     ["Reviewed behavior incidents", "displaying an absence of maladaptive behavior"]
   ],
   "Function_Based_Guardrails":[

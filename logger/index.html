@@ -263,7 +263,7 @@
 				</div>
 		</div>
 
-    <script type="module">
+<script type="module">
         import GuardrailEngine from './guardrail_engine.js';
         import SessionNormalizer from './session_normalizer.js';
         import NarrativePlanner from './narrative_planner.js';
@@ -360,12 +360,12 @@
                 document.getElementById('dashboard-view').classList.add('active');
                 try {
                     const cb = "?v=" + new Date().getTime();
-										const[sch, syn, tpl, grd] = await Promise.all([
-												fetch('schema.json' + cb), 
-												fetch('synonyms.json' + cb), 
-												fetch('templates.json' + cb), 
-												fetch('guardrails.json' + cb)
-										]);
+                    const[sch, syn, tpl, grd] = await Promise.all([
+                        fetch('schema.json' + cb), 
+                        fetch('synonyms.json' + cb), 
+                        fetch('templates.json' + cb), 
+                        fetch('guardrails.json' + cb)
+                    ]);
                     schemaData = await sch.json();
                     guardrails = new GuardrailEngine(await grd.json(), schemaData);
                     const synJson = await syn.json(); synonymsData = synJson.Synonyms || synJson;
@@ -385,56 +385,54 @@
         const closeModals = () => { document.getElementById('modal-overlay').classList.remove('active'); currentEditingId = null; };
         document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeModals);
 
-				// --- PROMISIFIED CUSTOM INPUT ENGINE ---
-				function requestCustomInput(title, message, maxWords = 8) {
-						return new Promise((resolve) => {
-								const overlay = document.getElementById('custom-prompt-overlay');
-								const titleEl = document.getElementById('custom-prompt-title');
-								const msgEl = document.getElementById('custom-prompt-msg');
-								const inputEl = document.getElementById('custom-prompt-input');
-								const counterEl = document.getElementById('custom-prompt-counter');
-								const saveBtn = document.getElementById('btn-custom-save');
-								const cancelBtn = document.getElementById('btn-custom-cancel');
-				
-								titleEl.innerText = title;
-								msgEl.innerText = message;
-								inputEl.value = '';
-								counterEl.innerText = `0/${maxWords} words`;
-								counterEl.style.color = 'var(--text-muted)';
-								saveBtn.disabled = true;
-				
-								overlay.style.display = 'flex';
-								setTimeout(() => inputEl.focus(), 100); // Allow animation to clear before invoking keyboard
-				
-								const validateInput = () => {
-										const val = inputEl.value.trim();
-										const words = val.length > 0 ? val.split(/\s+/).length : 0;
-										const chars = val.length;
-										
-										counterEl.innerText = `${words}/${maxWords} words`;
-										
-										// STRICT CLINICAL VALIDATION
-										if (words > maxWords || chars < 3 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'none') {
-												counterEl.style.color = 'var(--brand-danger)';
-												saveBtn.disabled = true;
-										} else {
-												counterEl.style.color = 'var(--brand-success)';
-												saveBtn.disabled = false;
-										}
-								};
-				
-								inputEl.oninput = validateInput;
-				
-								const cleanup = () => {
-										overlay.style.display = 'none';
-										saveBtn.onclick = null;
-										cancelBtn.onclick = null;
-								};
-				
-								saveBtn.onclick = () => { cleanup(); resolve(inputEl.value.trim()); };
-								cancelBtn.onclick = () => { cleanup(); resolve(null); };
-						});
-				}
+        function requestCustomInput(title, message, maxWords = 8) {
+            return new Promise((resolve) => {
+                const overlay = document.getElementById('custom-prompt-overlay');
+                const titleEl = document.getElementById('custom-prompt-title');
+                const msgEl = document.getElementById('custom-prompt-msg');
+                const inputEl = document.getElementById('custom-prompt-input');
+                const counterEl = document.getElementById('custom-prompt-counter');
+                const saveBtn = document.getElementById('btn-custom-save');
+                const cancelBtn = document.getElementById('btn-custom-cancel');
+        
+                titleEl.innerText = title;
+                msgEl.innerText = message;
+                inputEl.value = '';
+                counterEl.innerText = `0/${maxWords} words`;
+                counterEl.style.color = 'var(--text-muted)';
+                saveBtn.disabled = true;
+        
+                overlay.style.display = 'flex';
+                setTimeout(() => inputEl.focus(), 100); 
+        
+                const validateInput = () => {
+                    const val = inputEl.value.trim();
+                    const words = val.length > 0 ? val.split(/\s+/).length : 0;
+                    const chars = val.length;
+                    
+                    counterEl.innerText = `${words}/${maxWords} words`;
+                    
+                    if (words > maxWords || chars < 3 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'none') {
+                        counterEl.style.color = 'var(--brand-danger)';
+                        saveBtn.disabled = true;
+                    } else {
+                        counterEl.style.color = 'var(--brand-success)';
+                        saveBtn.disabled = false;
+                    }
+                };
+        
+                inputEl.oninput = validateInput;
+        
+                const cleanup = () => {
+                    overlay.style.display = 'none';
+                    saveBtn.onclick = null;
+                    cancelBtn.onclick = null;
+                };
+        
+                saveBtn.onclick = () => { cleanup(); resolve(inputEl.value.trim()); };
+                cancelBtn.onclick = () => { cleanup(); resolve(null); };
+            });
+        }
 
         const openForm = (type, existingEvent = null) => {
             currentType = type;
@@ -445,23 +443,18 @@
             c.innerHTML = '';
             const btnSave = document.getElementById('btn-save');
 
-            // --- 1. HOISTED VALIDATOR ---
             function validateFormInputs() {
                 let formIsValid = true;
-                
-                // Force at least one selection for all Clinical Checkbox Arrays AND our new Target Dropdown
                 c.querySelectorAll('.required-choice').forEach(el => {
                     if (el.tagName === 'SELECT') {
-                        if (el.value === '') formIsValid = false; // Fails if "-- Select a Target --" is active
+                        if (el.value === '') formIsValid = false; 
                     } else if (el.classList.contains('checkbox-group')) {
                         if (el.querySelectorAll('input[type="checkbox"]:checked').length === 0) formIsValid = false;
                     }
                 });
-
                 btnSave.disabled = !formIsValid;
             }
 
-            // --- 2. HOISTED GUARDRAIL ENGINE ---
             function runAllGuardrails() {
                 const allFormChecked = Array.from(c.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
                 const allSelectValues = Array.from(c.querySelectorAll('select')).map(sel => sel.value).filter(v => v && v !== "None selected");
@@ -470,42 +463,48 @@
                     .map(container => `SCHEMA:${container.dataset.schemaRef}`);
                 
                 const globalState =[...allFormChecked, ...allSelectValues, ...activeSchemas];
-
-                // SAFETY NET: If the form is already in an invalid state (e.g. loading an old, bad session),
-                // we suspend aggressive lock-outs so the user can uncheck the conflicting boxes.
                 const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
 
                 // Evaluate Dropdowns (Bidirectional)
-								c.querySelectorAll('select').forEach(selectEl => {
-										Array.from(selectEl.options).forEach(opt => {
-												if (!opt.value || opt.value === "None selected") return;
-												
-												const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
-												const hypotheticalGlobal = [...stateWithoutSelect, opt.value];
-												const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
-												
-												if (!globalValidation.valid && !isDeadlocked) {
-														opt.disabled = true; 
-														
-														// THE IOS SAFARI FIX: Force mobile browsers to remove the option from the native picker
-														opt.hidden = true;
-														opt.style.display = 'none'; 
-														
-														// Aggressive fallback clearing
-														if (selectEl.value === opt.value) {
-																selectEl.value = ""; 
-																const toxicIndex = globalState.indexOf(opt.value);
-																if (toxicIndex > -1) globalState.splice(toxicIndex, 1);
-														}
-												} else {
-														opt.disabled = false;
-														
-														// RESTORE VISIBILITY for valid options
-														opt.hidden = false;
-														opt.style.display = '';
-												}
-										});
-								});
+                c.querySelectorAll('select').forEach(selectEl => {
+                    // Query ALL options, including those we hid inside spans
+                    const allOptions = selectEl.querySelectorAll('option');
+                    allOptions.forEach(opt => {
+                        if (!opt.value || opt.value === "None selected") return;
+                        
+                        const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
+                        const hypotheticalGlobal = [...stateWithoutSelect, opt.value];
+                        const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+                        
+                        if (!globalValidation.valid && !isDeadlocked) {
+                            opt.disabled = true; 
+                            
+                            // THE IOS SAFARI HACK: Wrap in display:none span to remove from DOM tree
+                            if (opt.parentElement.tagName !== 'SPAN') {
+                                const span = document.createElement('span');
+                                span.style.display = 'none';
+                                span.className = 'ios-hide';
+                                opt.parentElement.insertBefore(span, opt);
+                                span.appendChild(opt);
+                            }
+                            
+                            if (selectEl.value === opt.value) {
+                                selectEl.value = ""; 
+                                const toxicIndex = globalState.indexOf(opt.value);
+                                if (toxicIndex > -1) globalState.splice(toxicIndex, 1);
+                            }
+                        } else {
+                            opt.disabled = false;
+                            
+                            // UNWRAP FROM SPAN
+                            if (opt.parentElement.tagName === 'SPAN' && opt.parentElement.classList.contains('ios-hide')) {
+                                const span = opt.parentElement;
+                                span.parentElement.insertBefore(opt, span);
+                                span.remove();
+                            }
+                        }
+                    });
+                });
 
                 // Evaluate Checkboxes
                 c.querySelectorAll('.checkbox-group').forEach(group => {
@@ -534,7 +533,6 @@
                             
                             const hypotheticalGlobal = cb.checked ? globalState :[...globalState, cb.value];
                             
-                            // FIX: Inject the SCHEMA tag into the hypothetical state BEFORE they click it!
                             const container = cb.closest('.dynamic-chip-container');
                             if (container && !cb.checked) {
                                 const schemaTag = `SCHEMA:${container.dataset.schemaRef}`;
@@ -545,10 +543,9 @@
 
                             const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                             
-                            // Only disable if invalid AND we aren't in a deadlock
                             if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
                                 shouldDisable = true;
-                                if (cb.checked) cb.checked = false; // Uncheck safely
+                                if (cb.checked) cb.checked = false;
                             }
                         }
 
@@ -563,22 +560,15 @@
                 });
             }
             
-            // --- 3. EVENT DELEGATION (Catches dynamically rendered DOM elements) ---
-            c.onchange = () => {
-                runAllGuardrails();
-                validateFormInputs();
-            };
-            c.oninput = () => {
-                validateFormInputs();
-            };
+            c.onchange = () => { runAllGuardrails(); validateFormInputs(); };
+            c.oninput = () => validateFormInputs();
 
-            // --- 4. BUILD HTML ---
             UI_CONFIG[type].forEach(f => {
                 const w = document.createElement('div'); w.className = 'form-field';
                 w.innerHTML = `<label class="form-label">${f.label}</label>`;
                 
                 let optionsArray = schemaData[f.id] || [];
-                let existingVal = existingEvent ? existingEvent.data[f.id] : null; // Changed to 'let'
+                let existingVal = existingEvent ? existingEvent.data[f.id] : null; 
 
                 if (f.type === 'dynamic_dropdown') {
                     const ddContainer = document.createElement('div');
@@ -587,23 +577,20 @@
                     const storageKey = `aba_dict_${f.id}`; 
 
                     const renderDropdown = () => {
-                        // 1. Load custom items from memory (these will go in a "Custom Added" group)
                         let customSaved = JSON.parse(localStorage.getItem(storageKey)) ||[];
                         customSaved = customSaved.filter(t => t && t.toLowerCase() !== 'undefined' && t.toLowerCase() !== 'n/a' && t.length > 2);
                         
-                        // 2. Load the exhaustive base options from schema.json
                         let baseOptions = schemaData[f.id] ||[];
 
                         let html = `<div style="display:flex; flex-direction: column; gap: 8px;">
-													<select data-id="${f.id}" class="required-choice" style="width: 100%; min-height: 48px; font-size: 16px;">
-															<option value="">-- Select --</option>`;
+                            <select data-id="${f.id}" class="required-choice" style="width: 100%; min-height: 48px; font-size: 16px;">
+                                <option value="">-- Select --</option>`;
                         
                         const renderOpt = (val) => {
                             const isSelected = existingVal === val ? 'selected' : '';
                             return `<option value="${val}" ${isSelected}>${val}</option>`;
                         };
 
-                        // 3. THE MAGIC: Check if the schema is grouped (Object) or flat (Array)
                         if (!Array.isArray(baseOptions) && typeof baseOptions === 'object') {
                             for (const[groupName, items] of Object.entries(baseOptions)) {
                                 html += `<optgroup label="— ${groupName} —">`;
@@ -614,7 +601,6 @@
                             baseOptions.forEach(t => html += renderOpt(t));
                         }
 
-                        // 4. Render the permanent custom options at the bottom
                         if (customSaved.length > 0) {
                             html += `<optgroup label="— Custom Added —">`;
                             customSaved.forEach(t => html += renderOpt(t));
@@ -622,39 +608,26 @@
                         }
                         
                         html += `</select>
-													<button type="button" class="btn-add-target" 
-															style="width: 100%; min-height: 48px; border: 2px dashed #cbd5e1; background: #f8fafc; color: var(--text-body); border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
-															➕ Create New Option
-													</button>
-											  </div>`;
+                            <button type="button" class="btn-add-target" 
+                                style="width: 100%; min-height: 48px; border: 2px dashed #cbd5e1; background: #f8fafc; color: var(--text-body); border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
+                                ➕ Create New Option
+                            </button>
+                        </div>`;
                         
                         ddContainer.innerHTML = html;
 
-                        // Re-evaluate form validity and guardrails when selection changes
                         ddContainer.querySelector('select').addEventListener('change', (e) => {
                             existingVal = e.target.value;
                             validateFormInputs();
                             runAllGuardrails();
                         });
 
-                        // The strict gatekeeper for new Custom targets
                         ddContainer.querySelector('.btn-add-target').addEventListener('click', async () => {
-														const promptMsg = f.prompt_msg || "Enter a specific clinical detail (1-8 words):";
-														// Swap the native prompt for our Promisified UI
-														const newItem = await requestCustomInput("Add Custom Target", promptMsg);
-														
-														if (newItem) {
-																// Validation is already handled by the modal!
-																const val = newItem;
-                                const wordCount = val.split(/\s+/).length;
-                                
-                                // STRICT VALIDATION
-                                if (val.length < 3 || wordCount > 8 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'undefined') {
-                                    alert("Invalid entry. Must be 1-8 words and clinically specific.");
-                                    return;
-                                }
-                                
-                                // Prevent duplicates
+                            const promptMsg = f.prompt_msg || "Enter a specific clinical detail (1-8 words):";
+                            const newItem = await requestCustomInput("Add Custom Target", promptMsg);
+                            
+                            if (newItem) {
+                                const val = newItem;
                                 let existsInBase = false;
                                 if (!Array.isArray(baseOptions)) {
                                     existsInBase = Object.values(baseOptions).flat().map(v=>v.toLowerCase()).includes(val.toLowerCase());
@@ -667,7 +640,7 @@
                                     localStorage.setItem(storageKey, JSON.stringify(customSaved));
                                 }
                                 
-                                existingVal = val; // Auto-select the new target
+                                existingVal = val;
                                 renderDropdown();
                                 validateFormInputs();
                                 runAllGuardrails();
@@ -693,7 +666,7 @@
                             storageKey = `${f.schema_ref}_${contextKey}`;
                         }
 
-                        const savedCustom = customChips[storageKey] || [];
+                        const savedCustom = customChips[storageKey] ||[];
                         const combinedOptions = [...new Set([...(currentOptions || []), ...savedCustom])];
 
                         let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:wrap; align-items:center;">`;
@@ -707,38 +680,32 @@
                         });
 
                         chipsHtml += `</div>
-													<button type="button" class="btn-add-custom" data-storage-key="${storageKey}" 
-															style="width: 100%; min-height: 48px; margin-top: 4px; border: 2px dashed var(--brand-accent-light); color: var(--brand-accent-dark); background: transparent; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; display: flex; justify-content: center; align-items: center;">
-															➕ Add Custom Detail
-													</button>`;
+                            <button type="button" class="btn-add-custom" data-storage-key="${storageKey}" 
+                                style="width: 100%; min-height: 48px; margin-top: 4px; border: 2px dashed var(--brand-accent-light); color: var(--brand-accent-dark); background: transparent; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; display: flex; justify-content: center; align-items: center;">
+                                ➕ Add Custom Detail
+                            </button>`;
                         
                         chipContainer.innerHTML = chipsHtml;
 
                         const addBtn = chipContainer.querySelector('.btn-add-custom');
                         if (addBtn) {
                             addBtn.addEventListener('click', async () => {
-																const newChip = await requestCustomInput("Add Custom Chip", "Enter a specific, clinical detail to add permanently (e.g., 'Pinched therapist forearm'):");
+                                const newChip = await requestCustomInput("Add Custom Chip", "Enter a specific, clinical detail to add permanently (e.g., 'Pinched therapist forearm'):");
                                 if (newChip) {
                                     const val = newChip.trim();
-                                    const isGarbage = (val.toLowerCase() === 'undefined' || val.toLowerCase() === 'n/a' || val.length < 4);
                                     
-                                    if (isGarbage) {
-                                        alert("Invalid entry. Please enter a specific clinical detail.");
-                                        return;
-                                    }
-
                                     if (!customChips[storageKey]) customChips[storageKey] = [];
                                     if (!customChips[storageKey].includes(val)) {
                                         customChips[storageKey].push(val);
                                         localStorage.setItem('aba_custom_chips', JSON.stringify(customChips));
                                         
-                                        if (existingVal && !Array.isArray(existingVal)) existingVal = [];
+                                        if (existingVal && !Array.isArray(existingVal)) existingVal =[];
                                         else if (!existingVal) existingVal =[];
                                         
                                         if (!existingVal.includes(val)) existingVal.push(val);
                                         
                                         renderChips(contextKey);
-                                        runAllGuardrails(); // Force mathematical update for new element
+                                        runAllGuardrails();
                                         validateFormInputs();
                                     }
                                 }
@@ -801,7 +768,7 @@
                             const isSelected = currentVal === o ? 'selected' : '';
                             setSelect.innerHTML += `<option value="${o}" ${isSelected}>${o}</option>`;
                         });
-                        runAllGuardrails(); // Force evaluation after dynamic change
+                        runAllGuardrails();
                     };
                     locSelect.addEventListener('change', updateSettings);
                     updateSettings(); 
@@ -838,7 +805,6 @@
 
             if (type === 'Behavior_Reduction') setupBehaviorGuardrails(c);
             
-            // --- 5. INITIALIZATION RUN ---
             runAllGuardrails();
             validateFormInputs();
             
@@ -912,7 +878,6 @@
             const timeSelect = container.querySelector('select[data-id="Deescalation_Time"]');
             if (timeSelect && intsGroup) {
                 timeSelect.addEventListener('change', () => {
-                    // Force the Proactive Guardrails to recalculate when Time changes
                     const firstCb = intsGroup.querySelector('input[type="checkbox"]');
                     if (firstCb) {
                         firstCb.dispatchEvent(new Event('change', { bubbles: true }));
@@ -934,16 +899,12 @@
             inputs.forEach(el => {
                 if (el.tagName === 'SELECT') {
                     data[el.dataset.id] = el.value;
-                    
-                    // --- NEW: THE AUTO-DOMAIN ENGINE ---
-                    // Automatically extract the Domain from the optgroup category so the user can't mess it up!
                     if (el.dataset.id === 'Specific_Target') {
                         const selectedOpt = el.options[el.selectedIndex];
                         if (selectedOpt && selectedOpt.parentElement.tagName === 'OPTGROUP') {
-                            // Strip out the "— " formatting from the label (e.g., "— Motor Skills —" becomes "Motor Skills")
                             data['Skill_Domains'] = selectedOpt.parentElement.label.replace(/—/g, '').trim();
                         } else {
-                            data['Skill_Domains'] = "Individualized Skills"; // Fallback for custom added targets
+                            data['Skill_Domains'] = "Individualized Skills"; 
                         }
                     }
                 }
@@ -1006,7 +967,6 @@
         document.getElementById('btn-generate').onclick = () => {
             const sessionWarnings = guardrails.auditSession(timeline);
             if (sessionWarnings.length > 0) {
-                // CHANGED FROM confirm() to alert() - Hard Stop.
                 alert(`CLINICAL AUDIT FAILURE:\n\n${sessionWarnings.join('\n\n')}\n\nYou must edit your session data to resolve these issues before generating a note.`);
                 return;
             }
@@ -1033,7 +993,7 @@
         
         document.getElementById('btn-clear').onclick = () => { 
             if(confirm("Clear current session data? This cannot be undone.")) { 
-                timeline = []; 
+                timeline =[]; 
                 localStorage.removeItem('aba_tl'); 
                 renderTimeline(); 
             } 
