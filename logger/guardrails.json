@@ -268,7 +268,8 @@
     "Cross_Domain_Constraints": [
       [["CAT:Daily Living (ADLs)", "CAT:Motor Skills"], ["DTT (Discrete Trial Training)", "CAT:Visual & Academic"]],["CAT:Vocational", ["CAT:Tangible & 3D", "CAT:Visual & Academic"]],["Continuous", ["Mastered", "Fluency", "Spontaneous demonstration"]],
       ["Field Reduced",["Independent", "Mastered", "Fluency", "Spontaneous demonstration"]],["CAT:Social / Play Skills", "DTT (Discrete Trial Training)"],["Peer greetings", "CAT:Tangible & 3D"],
-      ["Reviewed behavior incidents", "displaying an absence of maladaptive behavior"]
+      ["Reviewed behavior incidents", "displaying an absence of maladaptive behavior"],
+      ["CAT:Academic Readiness", "CAT:Natural Environment"]
     ],
     "Prompting_and_Acquisition": [
       [["Fluency", "Independent", "Mastered"], ["Prompt dependent", "Required prompt fading"]],
@@ -356,7 +357,13 @@
     "< 1 minute": 2
   },
   "Field_Limits": {
-    "default_max": 8
+    "default_max": 4,
+    "Health_Variables": 2,
+    "Others_Present": 4,
+    "Specific_Reinforcers": 3,
+    "Interventions": 3,
+    "Target_Behaviors": 3,
+    "Prompt_Levels": 2
   },
   "Location_Settings": {
     "Clinic": [
