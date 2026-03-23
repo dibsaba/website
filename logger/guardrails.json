@@ -213,7 +213,7 @@
       ["Vehicle / Transport", "Elopement", "Escape Extinction"],
       ["Completing toileting routine", "Telehealth", "Caregiver unavailable"],
       ["Bathroom / Restroom", "Telehealth", "None"],
-      ["Ear infection", "Tolerating loud noises", "Escape Extinction"],
+      ["Ear infection", "Tolerating loud noises", "Escape Extinction"]
     ],
     "Toxic_Quads": [
       ["Outdoors", "Telehealth", "Elopement", "Caregiver unavailable"],
@@ -284,7 +284,8 @@
       ["Errorless Teaching",["Independent", "Mastered", "Spontaneous demonstration", "Time Delay"]],
       ["Required a tactical break", "Escape Extinction"],["Returned independently", "Required physical block to prevent exit"]
     ],
-    "Caregiver_Handoff_Constraints": [["Caregiver unavailable",[
+    "Caregiver_Handoff_Constraints": [
+    	["Caregiver unavailable",[
         "Discussed mastered skills", "Reviewed behavior incidents", "Modeled intervention", 
         "Discussed generalization strategies", "Reviewed upcoming session schedule", 
         "Answered caregiver questions", "Provided parent coaching", "Reviewed data graphs with family"
