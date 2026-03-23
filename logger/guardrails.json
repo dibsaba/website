@@ -199,6 +199,44 @@
     "displaying an absence of maladaptive behavior"
   ],
   "Invalid_Combinations": {
+    "Teaching_Format_Mismatches": [
+      [["Backward Chaining", "Forward Chaining", "Total Task Chaining"],["CAT:Academic Readiness",
+        "CAT:Communication", "CAT:Coping / Tolerance", "CAT:Play/Leisure"]],
+      ["DTT (Discrete Trial Training)",["CAT:Coping / Tolerance", "CAT:Self-Management", "CAT:Social / Play Skills"]],
+      ["Fluency Based Instruction",["CAT:Coping / Tolerance", "CAT:Self-Management"]]
+    ],
+    "Reinforcement_Physics":[
+      ["Continuous",["Access to Outdoors", "Break / Escape", "iPad / Tablet", "Music / Videos", "Swinging"]]
+    ],
+    "Prompting_Physics":[
+      [["Full Physical", "Partial Physical"],["Echoic imitation", "Answering WH- questions",
+        "Conversational turn-taking", "Manding for cessation ('Stop'/'No')",
+        "Tacting internal states (Pain/Emotions)", "Accepting 'No'", "Asking for a break", "Using deep breathing"]]
+      ],
+      [
+        "Positional",[
+          "Echoic imitation", "Conversational turn-taking", "Manding for cessation ('Stop'/'No')",
+          "Using deep breathing", "Gross motor imitation", "Jumping with two feet"
+        ]
+      ]
+    ],
+    "Material_and_Environment_Mismatches": [
+      ["CAT:Academic Readiness",["gross motor obstacle course", "playground equipment", "therapy ball", "water play table"],
+      [["Catching a ball", "Jumping with two feet"],["worksheets and crayons", "whiteboard and dry-erase markers", "a tablet app", "a token board", "PECS communication book"]],
+      ["Vehicle / Transport",["gross motor obstacle course", "playground equipment", "water play table", "whiteboard and dry-erase markers"]],
+      ["Bedroom",["water play table", "gross motor obstacle course"]]
+    ],
+    "Health_and_Safety_Constraints":[
+      ["Dental pain",["Eating a variety of foods", "Brushing teeth", "Edibles"]],
+      ["Constipation / GI issues", "Edibles"],
+      ["Asthma / Respiratory issues",["gross motor obstacle course", "Catching a ball", "Jumping with two feet"]],
+      ["Rash / Skin irritation",["Physical Touch (deep pressure / squeezes)", "playdough and molds", "kinetic sand"]]
+    ],
+    "Intervention_Physics": [
+      ["Overcorrection (Positive Practice)",["loud, sustained vocal protests", "screaming at a high pitch", 
+        "repetitive vocal scripting", "ignoring staff instructions", "passively slumping in chair", "verbally refusing tasks"]],
+      ["Stimulus Fading",["Elopement", "SIB", "Aggression", "Pica"]]
+    ],
     "Toxic_Triads": [
     	["Telehealth", "None", "swallowing small objects"],
       ["Telehealth", "None", "biting own hand or arm"],
@@ -269,11 +307,13 @@
       [["CAT:Daily Living (ADLs)", "CAT:Motor Skills"], ["DTT (Discrete Trial Training)", "CAT:Visual & Academic"]],["CAT:Vocational", ["CAT:Tangible & 3D", "CAT:Visual & Academic"]],["Continuous", ["Mastered", "Fluency", "Spontaneous demonstration"]],
       ["Field Reduced",["Independent", "Mastered", "Fluency", "Spontaneous demonstration"]],["CAT:Social / Play Skills", "DTT (Discrete Trial Training)"],["Peer greetings", "CAT:Tangible & 3D"],
       ["Reviewed behavior incidents", "displaying an absence of maladaptive behavior"],
-      ["CAT:Academic Readiness", "CAT:Natural Environment"]
+      ["CAT:Academic Readiness", "CAT:Natural Environment"],
+      [["Backward Chaining", "Forward Chaining", "Total Task Chaining", "Shaping"],["CAT:Academic Readiness", "CAT:Communication", "CAT:Social / Play Skills"]
     ],
     "Prompting_and_Acquisition": [
       [["Fluency", "Independent", "Mastered"], ["Prompt dependent", "Required prompt fading"]],
-      ["Spontaneous demonstration",["Full Physical", "Gestural", "Modeling", "Partial Physical", "Verbal", "Visual"]]
+      ["Spontaneous demonstration",["Full Physical", "Gestural", "Modeling", "Partial Physical", "Verbal", "Visual"]],
+      ["Continuous",["Access to Outdoors", "Break / Escape", "iPad / Tablet", "Music / Videos"]]
     ],
     "Clinical_Impossibilities": [
       ["Blocked using safety pads", "Planned Ignoring"],
