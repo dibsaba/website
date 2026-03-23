@@ -1,181 +1,172 @@
 {
-  "Macro_Combinations":[
-    [["CAT:Daily Living (ADLs)", "CAT:Motor Skills"], ["DTT (Discrete Trial Training)", "CAT:Visual & Academic"]],
-    ["CAT:Vocational", ["CAT:Tangible & 3D", "CAT:Visual & Academic"]],
-    ["Continuous", ["Mastered", "Fluency", "Spontaneous demonstration"]],
-    ["Field Reduced", ["Independent", "Mastered", "Fluency", "Spontaneous demonstration"]],
-    ["CAT:Social / Play Skills","DTT (Discrete Trial Training)"],
-    ["Peer greetings", "CAT:Tangible & 3D"],
-    ["Reviewed behavior incidents", "displaying an absence of maladaptive behavior"]
-  ],
-  "Function_Based_Guardrails":[
-    {
-      "antecedent": "Demand/Escape",
-      "whitelisted_interventions":[
-        "FCT (Functional Communication Training)",
-        "DRA (Differential Reinforcement of Alternative Behavior)",
-        "DRO (Differential Reinforcement of Other Behavior)",
-        "DRI (Differential Reinforcement of Incompatible Behavior)",
-        "Escape Extinction",
-        "Blocking",
-        "Premack Principle (First/Then)",
-        "Behavior Momentum / High-P Sequence",
-        "Visual Schedule / Timer",
-        "Errorless Teaching",
-        "Stimulus Fading"
-      ],
-      "blacklisted_interventions":[
-        "Tactical Break",
-        "Planned Ignoring",
-        "Redirection",
-        "NCR (Noncontingent Reinforcement)"
-      ]
-    },
-    {
-      "antecedent": "Denied Access/Tangible",
-      "whitelisted_interventions":[
-        "FCT (Functional Communication Training)",
-        "DRA (Differential Reinforcement of Alternative Behavior)",
-        "DRO (Differential Reinforcement of Other Behavior)",
-        "DRI (Differential Reinforcement of Incompatible Behavior)",
-        "Planned Ignoring",
-        "Premack Principle (First/Then)",
-        "Visual Schedule / Timer"
-      ],
-      "blacklisted_interventions":[
-        "Tactical Break",
-        "Redirection",
-        "Escape Extinction",
-        "Behavior Momentum / High-P Sequence"
-      ]
-    },
+  "Function_Based_Guardrails": [
     {
       "antecedent": "Attention Diverted",
-      "whitelisted_interventions":[
+      "whitelisted_interventions": [
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
         "FCT (Functional Communication Training)",
-        "DRA (Differential Reinforcement of Alternative Behavior)",
-        "DRO (Differential Reinforcement of Other Behavior)",
-        "DRI (Differential Reinforcement of Incompatible Behavior)",
-        "Planned Ignoring",
-        "NCR (Noncontingent Reinforcement)"
-      ],
-      "blacklisted_interventions":[
-        "Redirection",
-        "Tactical Break",
-        "Blocking",
-        "Escape Extinction",
-        "Stimulus Fading"
-      ]
-    },
-    {
-      "antecedent": "Unstructured Time/Automatic",
-      "whitelisted_interventions":[
-        "DRA (Differential Reinforcement of Alternative Behavior)",
-        "DRO (Differential Reinforcement of Other Behavior)",
-        "DRI (Differential Reinforcement of Incompatible Behavior)",
-        "Redirection",
-        "Blocking",
         "NCR (Noncontingent Reinforcement)",
-        "Visual Schedule / Timer",
-        "Premack Principle (First/Then)"
+        "Planned Ignoring"
       ],
-      "blacklisted_interventions":[
-        "Planned Ignoring",
+      "blacklisted_interventions": [
+        "Blocking",
         "Escape Extinction",
+        "Redirection",
+        "Stimulus Fading",
         "Tactical Break"
       ]
     },
     {
-      "antecedent": "Transition",
-      "whitelisted_interventions":[
-        "FCT (Functional Communication Training)",
-        "DRA (Differential Reinforcement of Alternative Behavior)",
-        "Escape Extinction",
-        "Premack Principle (First/Then)",
+      "antecedent": "Change in Routine",
+      "whitelisted_interventions": [
         "Behavior Momentum / High-P Sequence",
-        "Visual Schedule / Timer",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
         "Errorless Teaching",
-        "Stimulus Fading"
+        "FCT (Functional Communication Training)",
+        "Premack Principle (First/Then)",
+        "Stimulus Fading",
+        "Visual Schedule / Timer"
       ],
-      "blacklisted_interventions":[
-        "Tactical Break",
+      "blacklisted_interventions": [
+        "Escape Extinction",
         "Planned Ignoring",
-        "Redirection"
+        "Tactical Break"
+      ]
+    },
+    {
+      "antecedent": "Demand/Escape",
+      "whitelisted_interventions": [
+        "Behavior Momentum / High-P Sequence",
+        "Blocking",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "Errorless Teaching",
+        "Escape Extinction",
+        "FCT (Functional Communication Training)",
+        "Premack Principle (First/Then)",
+        "Stimulus Fading",
+        "Visual Schedule / Timer"
+      ],
+      "blacklisted_interventions": [
+        "NCR (Noncontingent Reinforcement)",
+        "Planned Ignoring",
+        "Redirection",
+        "Tactical Break"
+      ]
+    },
+    {
+      "antecedent": "Denied Access/Tangible",
+      "whitelisted_interventions": [
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "FCT (Functional Communication Training)",
+        "Planned Ignoring",
+        "Premack Principle (First/Then)",
+        "Visual Schedule / Timer"
+      ],
+      "blacklisted_interventions": [
+        "Behavior Momentum / High-P Sequence",
+        "Escape Extinction",
+        "Redirection",
+        "Tactical Break"
+      ]
+    },
+    {
+      "antecedent": "Interruption of Preferred Activity",
+      "whitelisted_interventions": [
+        "Behavior Momentum / High-P Sequence",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "Escape Extinction",
+        "FCT (Functional Communication Training)",
+        "Premack Principle (First/Then)",
+        "Stimulus Fading",
+        "Visual Schedule / Timer"
+      ],
+      "blacklisted_interventions": [
+        "Planned Ignoring",
+        "Redirection",
+        "Tactical Break"
       ]
     },
     {
       "antecedent": "Peer Interaction",
-      "whitelisted_interventions":[
-        "FCT (Functional Communication Training)",
+      "whitelisted_interventions": [
+        "Blocking",
         "DRA (Differential Reinforcement of Alternative Behavior)",
-        "DRO (Differential Reinforcement of Other Behavior)",
         "DRI (Differential Reinforcement of Incompatible Behavior)",
-        "Redirection",
-        "Blocking"
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "FCT (Functional Communication Training)",
+        "Redirection"
       ],
-      "blacklisted_interventions":[
-        "Planned Ignoring",
+      "blacklisted_interventions": [
         "Escape Extinction",
+        "Planned Ignoring",
         "Tactical Break"
       ]
     },
     {
       "antecedent": "Sensory Overload",
-      "whitelisted_interventions":[
-        "Tactical Break",
+      "whitelisted_interventions": [
         "FCT (Functional Communication Training)",
+        "NCR (Noncontingent Reinforcement)",
         "Redirection",
         "Stimulus Fading",
-        "Visual Schedule / Timer",
-        "NCR (Noncontingent Reinforcement)"
+        "Tactical Break",
+        "Visual Schedule / Timer"
       ],
-      "blacklisted_interventions":[
+      "blacklisted_interventions": [
+        "Behavior Momentum / High-P Sequence",
+        "Blocking",
+        "Errorless Teaching",
         "Escape Extinction",
         "Planned Ignoring",
-        "Blocking",
-        "Behavior Momentum / High-P Sequence",
-        "Errorless Teaching",
         "Premack Principle (First/Then)"
       ]
     },
     {
-      "antecedent": "Interruption of Preferred Activity",
-      "whitelisted_interventions":[
-        "FCT (Functional Communication Training)",
-        "DRA (Differential Reinforcement of Alternative Behavior)",
-        "DRO (Differential Reinforcement of Other Behavior)",
-        "Premack Principle (First/Then)",
+      "antecedent": "Transition",
+      "whitelisted_interventions": [
         "Behavior Momentum / High-P Sequence",
-        "Visual Schedule / Timer",
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "Errorless Teaching",
         "Escape Extinction",
-        "Stimulus Fading"
+        "FCT (Functional Communication Training)",
+        "Premack Principle (First/Then)",
+        "Stimulus Fading",
+        "Visual Schedule / Timer"
       ],
-      "blacklisted_interventions":[
-        "Tactical Break",
+      "blacklisted_interventions": [
         "Planned Ignoring",
-        "Redirection"
+        "Redirection",
+        "Tactical Break"
       ]
     },
     {
-      "antecedent": "Change in Routine",
-      "whitelisted_interventions":[
-        "FCT (Functional Communication Training)",
+      "antecedent": "Unstructured Time/Automatic",
+      "whitelisted_interventions": [
+        "Blocking",
         "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)",
         "DRO (Differential Reinforcement of Other Behavior)",
-        "Visual Schedule / Timer",
+        "NCR (Noncontingent Reinforcement)",
         "Premack Principle (First/Then)",
-        "Stimulus Fading",
-        "Behavior Momentum / High-P Sequence",
-        "Errorless Teaching"
+        "Redirection",
+        "Visual Schedule / Timer"
       ],
-      "blacklisted_interventions":[
-        "Tactical Break",
+      "blacklisted_interventions": [
+        "Escape Extinction",
         "Planned Ignoring",
-        "Escape Extinction"
+        "Tactical Break"
       ]
     }
   ],
-  "Contradiction_Guardrails":[
+  "Contradiction_Guardrails": [
     {
       "trigger_category": "Target_Behaviors",
       "trigger_value": "None",
@@ -201,155 +192,131 @@
       "action": "disable_all"
     }
   ],
-  "Exclusive_Choices":[
+  "Exclusive_Choices": [
+    "Caregiver unavailable",
     "None",
     "None reported",
-    "displaying an absence of maladaptive behavior",
-    "Caregiver unavailable"
+    "displaying an absence of maladaptive behavior"
   ],
   "Invalid_Combinations": {
     "Global": [
-    	["displaying an absence of maladaptive behavior", "SCHEMA:Chips_Behavior_Reduction"],
-      ["readily responding to instructions", "SCHEMA:Chips_Behavior_Reduction"],["engaging in crying / vocal protests", "Highly Motivated"],["engaging in crying / vocal protests", "Quick Control"],
-      ["avoiding eye contact / turning away", "Highly Motivated"],["avoiding eye contact / turning away", "Quick Control"],["exhibiting a slowed response time / yawning", "Highly Motivated"],
-      ["exhibiting a slowed response time / yawning", "Quick Control"],["orienting away from speaker", "Highly Motivated"],
-      ["orienting away from speaker", "Quick Control"],
-      ["displaying an absence of maladaptive behavior", "Required heavy pairing"],["happily initiating interaction", "avoiding eye contact / turning away"],
-      ["happily initiating interaction", "orienting away from speaker"],
-      ["happily initiating interaction", "engaging in crying / vocal protests"],["happily initiating interaction", "exhibiting a slowed response time / yawning"],["smiling and energetic", "exhibiting a slowed response time / yawning"],
-      ["smiling and energetic", "engaging in crying / vocal protests"],
-      ["smiling and energetic", "avoiding eye contact / turning away"],["smiling and energetic", "orienting away from speaker"],
-      ["calm and cooperative", "engaging in crying / vocal protests"],["calm and cooperative", "avoiding eye contact / turning away"],["calm and cooperative", "orienting away from speaker"],
-      ["relaxed and engaged", "engaging in crying / vocal protests"],["relaxed and engaged", "avoiding eye contact / turning away"],["relaxed and engaged", "orienting away from speaker"],
-      ["withdrawn and avoiding interaction", "readily responding to instructions"],["withdrawn and avoiding interaction", "Highly Motivated"],
-      ["withdrawn and avoiding interaction", "Quick Control"],
-      ["agitated and crying", "displaying an absence of maladaptive behavior"],["agitated and crying", "readily responding to instructions"],["exhibiting visible frustration", "displaying an absence of maladaptive behavior"],
-      ["exhibiting visible frustration", "readily responding to instructions"],["lethargic due to poor sleep", "Highly Motivated"],["lethargic due to poor sleep", "Quick Control"],["lethargic due to poor sleep", "demonstrating a high rate of movement"],
-      ["lethargic due to poor sleep", "readily responding to instructions"],
-      ["appearing physically fatigued", "Highly Motivated"],["appearing physically fatigued", "demonstrating a high rate of movement"],
-      ["exhibiting a sluggish response time", "Highly Motivated"],["exhibiting a sluggish response time", "Quick Control"],
-      ["Full Physical", "Independent"],["Full Physical", "Mastered"], ["Full Physical", "Fluency"],
-      ["Partial Physical", "Independent"],["Partial Physical", "Mastered"], ["Partial Physical", "Fluency"],
-      ["Modeling", "Independent"],["Modeling", "Mastered"], ["Modeling", "Fluency"],
-      ["Gestural", "Independent"],["Gestural", "Mastered"], ["Gestural", "Fluency"],
-      ["Verbal", "Independent"],["Verbal", "Mastered"], ["Verbal", "Fluency"],
-      ["Independent", "Max Prompting"],["Independent", "Required redirection to task"],
-      ["highly distracted and hyperactive", "exhibiting a slowed response time / yawning"],
-      ["highly distracted and hyperactive", "appearing physically fatigued"],
-      ["highly distracted and hyperactive", "lethargic due to poor sleep"],["withdrawn and avoiding interaction", "readily responding to instructions"],["withdrawn and avoiding interaction", "highly distracted and hyperactive"],
-      ["withdrawn and avoiding interaction", "happily initiating interaction"],["agitated and crying", "readily responding to instructions"],
-      ["agitated and crying", "calm and cooperative"],["agitated and crying", "relaxed and engaged"],
-      ["agitated and crying", "happily initiating interaction"],["calm and cooperative", "engaging in crying / vocal protests"],["calm and cooperative", "avoiding eye contact / turning away"],
-      ["calm and cooperative", "orienting away from speaker"],["calm and cooperative", "engaging in pacing / vocal stereotypy"],["calm and cooperative", "demonstrating a high rate of movement"],["relaxed and engaged", "engaging in crying / vocal protests"],
-      ["relaxed and engaged", "avoiding eye contact / turning away"],["relaxed and engaged", "orienting away from speaker"],
-      ["happily initiating interaction", "avoiding eye contact / turning away"],
-      ["happily initiating interaction", "orienting away from speaker"],["happily initiating interaction", "engaging in crying / vocal protests"],["happily initiating interaction", "exhibiting a slowed response time / yawning"],
-      ["smiling and energetic", "exhibiting a slowed response time / yawning"],["smiling and energetic", "engaging in crying / vocal protests"],["smiling and energetic", "avoiding eye contact / turning away"],
-      ["smiling and energetic", "orienting away from speaker"],["Independent", "Visual"], ["Independent", "Verbal"], ["Independent", "Gestural"],
-      ["Independent", "Modeling"],["Independent", "Partial Physical"], ["Independent", "Full Physical"],
-      ["Independent", "Positional"], ["Independent", "Time Delay"],
-      ["Mastered", "Modeling"], ["Mastered", "Partial Physical"], ["Mastered", "Full Physical"],
-      ["Fluency", "Modeling"], ["Fluency", "Partial Physical"], ["Fluency", "Full Physical"],["Fluency", "Max Prompting"],
-      ["Max Prompting", "Independent"],
-      ["Max Prompting", "Visual"],["Max Prompting", "Verbal"],
-      ["Max Prompting", "Gestural"],["Max Prompting", "Positional"],
-      ["Max Prompting", "Time Delay"],
-      ["Max Prompting", "Modeling"],
-      ["Lethargy / Fatigue", "demonstrating a high rate of movement"],["Lethargy / Fatigue", "smiling and energetic"],
-      ["Failed to generalize", "Generalized to new environment"],
-      ["Inconsistent responding", "Fluency"],
-      ["Inconsistent responding", "Mastered"]
+      [["displaying an absence of maladaptive behavior", "readily responding to instructions"], "SCHEMA:Chips_Behavior_Reduction"],
+      [["Highly Motivated", "Quick Control"],[
+        "engaging in crying / vocal protests", "avoiding eye contact / turning away", 
+        "exhibiting a slowed response time / yawning", "orienting away from speaker",
+        "withdrawn and avoiding interaction", "lethargic due to poor sleep", "exhibiting a sluggish response time"
+      ]],["Highly Motivated", "appearing physically fatigued"],
+      ["displaying an absence of maladaptive behavior", "Required heavy pairing"],
+      [["happily initiating interaction", "smiling and energetic"],[
+        "avoiding eye contact / turning away", "orienting away from speaker",
+        "engaging in crying / vocal protests", "exhibiting a slowed response time / yawning"
+      ]],
+      [["calm and cooperative", "relaxed and engaged"],[
+        "engaging in crying / vocal protests", "avoiding eye contact / turning away", "orienting away from speaker"
+      ]],
+      ["calm and cooperative",["engaging in pacing / vocal stereotypy", "demonstrating a high rate of movement"]],
+      ["withdrawn and avoiding interaction",["readily responding to instructions", "highly distracted and hyperactive", "happily initiating interaction"]],
+      ["agitated and crying",[
+        "displaying an absence of maladaptive behavior", "readily responding to instructions",
+        "calm and cooperative", "relaxed and engaged", "happily initiating interaction"
+      ]],
+      ["exhibiting visible frustration",["displaying an absence of maladaptive behavior", "readily responding to instructions"]],["lethargic due to poor sleep", ["demonstrating a high rate of movement", "readily responding to instructions"]],
+      ["appearing physically fatigued", "demonstrating a high rate of movement"],
+      [["Full Physical", "Partial Physical", "Modeling", "Gestural", "Verbal"], ["Independent", "Mastered", "Fluency"]],
+      ["Independent",["Max Prompting", "Required redirection to task", "Visual", "Positional", "Time Delay"]],
+      ["Max Prompting",["Visual", "Verbal", "Gestural", "Positional", "Time Delay", "Modeling"]],
+      ["highly distracted and hyperactive",["exhibiting a slowed response time / yawning", "appearing physically fatigued", "lethargic due to poor sleep"]],
+      ["Lethargy / Fatigue", ["demonstrating a high rate of movement", "smiling and energetic"]],["Failed to generalize", "Generalized to new environment"],
+      ["Inconsistent responding", ["Fluency", "Mastered"]]
+    ],
+    "Cross_Domain_Constraints": [
+      [["CAT:Daily Living (ADLs)", "CAT:Motor Skills"], ["DTT (Discrete Trial Training)", "CAT:Visual & Academic"]],["CAT:Vocational", ["CAT:Tangible & 3D", "CAT:Visual & Academic"]],["Continuous", ["Mastered", "Fluency", "Spontaneous demonstration"]],
+      ["Field Reduced",["Independent", "Mastered", "Fluency", "Spontaneous demonstration"]],["CAT:Social / Play Skills", "DTT (Discrete Trial Training)"],["Peer greetings", "CAT:Tangible & 3D"],
+      ["Reviewed behavior incidents", "displaying an absence of maladaptive behavior"]
+    ],
+    "Prompting_and_Acquisition": [
+      [["Fluency", "Independent", "Mastered"], ["Prompt dependent", "Required prompt fading"]],
+      ["Spontaneous demonstration",["Full Physical", "Gestural", "Modeling", "Partial Physical", "Verbal", "Visual"]]
     ],
     "Clinical_Impossibilities": [
-    	["Blocking", "Vocal Stereotypy"],
-			["Blocking", "Inappropriate Language"],["Blocking", "repetitive vocal scripting"],
-			["Blocking", "screaming at a high pitch"],["Blocking", "loud, sustained vocal protests"],
-			["Errorless Teaching", "Independent"],["Errorless Teaching", "Spontaneous demonstration"],
-			["Errorless Teaching", "Mastered"],["Errorless Teaching", "Time Delay"],
-			["Blocked using safety pads", "Planned Ignoring"],["Required a tactical break", "Escape Extinction"],
-			["Returned independently", "Required physical block to prevent exit"],["Easily redirected", "Required physical blocking"]
-		],
-		"Caregiver_Handoff_Constraints": [
-		  ["Caregiver unavailable", "Discussed mastered skills"],
-			["Caregiver unavailable", "Reviewed behavior incidents"],
-			["Caregiver unavailable", "Modeled intervention"],
-			["Caregiver unavailable", "Discussed generalization strategies"],
-			["Caregiver unavailable", "Reviewed upcoming session schedule"],["Caregiver unavailable", "Answered caregiver questions"],
-			["Caregiver unavailable", "Provided parent coaching"],["Caregiver unavailable", "Reviewed data graphs with family"]
-		],
-		"Telehealth_Constraints": [
-			["Telehealth", "Full Physical"],
-			["Telehealth", "Partial Physical"],
-			["Telehealth", "Blocking"],
-			["Telehealth", "Required physical guidance to transition"],
-			["Telehealth", "Blocked using safety pads"],
-			["Telehealth", "Required physical block to prevent exit"],
-			["Telehealth", "holding the therapist's hand"],
-			["Telehealth", "Navigated Parking Lot Safely"],
-			["Telehealth", "Practiced safety crossing"]
-		],
-		"Prompting_and_Acquisition": [
-			["Independent", "Prompt dependent"],
-			["Independent", "Required prompt fading"],
-			["Mastered", "Prompt dependent"],
-			["Mastered", "Required prompt fading"],["Fluency", "Prompt dependent"],
-			["Fluency", "Required prompt fading"],["Spontaneous demonstration", "Full Physical"],
-			["Spontaneous demonstration", "Partial Physical"],["Spontaneous demonstration", "Modeling"],
-			["Spontaneous demonstration", "Verbal"],
-			["Spontaneous demonstration", "Visual"],
-			["Spontaneous demonstration", "Gestural"]
-		],
-		"State_and_Transition_Contradictions": [
-			["exhibiting a sluggish response time", "smiling and energetic"],["exhibiting a sluggish response time", "demonstrating a high rate of movement"],["displaying an absence of maladaptive behavior", "displaying precursor behaviors"],["displaying an absence of maladaptive behavior", "engaging in crying / vocal protests"],
-			["transitioning smoothly without resistance", "Required physical guidance to transition"],
-			["transitioning smoothly without resistance", "requiring gentle physical guidance"],["transitioning smoothly without resistance", "dropping to the floor midway"],["transitioning smoothly without resistance", "whining and vocally protesting"],
-			["happily running to the next area", "Required physical guidance to transition"],["happily running to the next area", "requiring gentle physical guidance"],["happily running to the next area", "dropping to the floor midway"],["happily running to the next area", "whining and vocally protesting"],
-			["Smooth", "Required physical guidance to transition"],["Smooth", "dropping to the floor midway"]
-		],
-    "Initial_Presentation": [["readily responding to instructions", "engaging in crying / vocal protests"],
-      ["readily responding to instructions", "avoiding eye contact / turning away"],
-      ["readily responding to instructions", "engaging in pacing / vocal stereotypy"],["readily responding to instructions", "exhibiting a slowed response time / yawning"],["readily responding to instructions", "orienting away from speaker"],["readily responding to instructions", "demonstrating a high rate of movement"],["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]
+      ["Blocked using safety pads", "Planned Ignoring"],
+      ["Blocking",[
+        "Inappropriate Language", "Vocal Stereotypy", "loud, sustained vocal protests",
+        "repetitive vocal scripting", "screaming at a high pitch"
+      ]],
+      ["Easily redirected", "Required physical blocking"],
+      ["Errorless Teaching",["Independent", "Mastered", "Spontaneous demonstration", "Time Delay"]],
+      ["Required a tactical break", "Escape Extinction"],["Returned independently", "Required physical block to prevent exit"]
     ],
-    "Health_Variables": [["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"],
-      ["None reported", "Poor sleep"],["None reported", "Illness symptoms"],
-      ["None reported", "Medication change"],["None reported", "Allergies"],["None reported", "Missed meal"],["None reported", "Constipation / GI issues"],["None reported", "Pain / Discomfort"]
+    "Caregiver_Handoff_Constraints": [["Caregiver unavailable",[
+        "Discussed mastered skills", "Reviewed behavior incidents", "Modeled intervention", 
+        "Discussed generalization strategies", "Reviewed upcoming session schedule", 
+        "Answered caregiver questions", "Provided parent coaching", "Reviewed data graphs with family"
+      ]]
     ],
-    "Interventions": [["DRA (Differential Reinforcement of Alternative Behavior)", "DRO (Differential Reinforcement of Other Behavior)"],["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
+    "Telehealth_Constraints": [
+      ["Telehealth",[
+        "Blocked using safety pads", "Blocking", "Full Physical", "holding the therapist's hand",
+        "Navigated Parking Lot Safely", "Partial Physical", "Practiced safety crossing",
+        "Required physical block to prevent exit", "Required physical guidance to transition"
+      ]]
+    ],
+    "State_and_Transition_Contradictions": [
+      ["exhibiting a sluggish response time",["smiling and energetic", "demonstrating a high rate of movement"]],
+      ["displaying an absence of maladaptive behavior",["displaying precursor behaviors", "engaging in crying / vocal protests"]],
+      [["transitioning smoothly without resistance", "happily running to the next area", "Smooth"],[
+        "Required physical guidance to transition", "requiring gentle physical guidance", 
+        "dropping to the floor midway", "whining and vocally protesting"
+      ]]
+    ],
+    "Initial_Presentation": [
+      ["readily responding to instructions",[
+        "engaging in crying / vocal protests", "avoiding eye contact / turning away", 
+        "engaging in pacing / vocal stereotypy", "exhibiting a slowed response time / yawning", 
+        "orienting away from speaker", "demonstrating a high rate of movement"
+      ]],["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]
+    ],
+    "Health_Variables":[
+      ["Illness symptoms", "Constipation / GI issues", "Pain / Discomfort"],["None reported",[
+        "Poor sleep", "Illness symptoms", "Medication change", "Allergies", 
+        "Missed meal", "Constipation / GI issues", "Pain / Discomfort"
+      ]]
+    ],
+    "Interventions": [
+      ["DRA (Differential Reinforcement of Alternative Behavior)",[
+        "DRO (Differential Reinforcement of Other Behavior)", 
+        "DRI (Differential Reinforcement of Incompatible Behavior)"
+      ]],["DRO (Differential Reinforcement of Other Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)"],
       ["Escape Extinction", "Tactical Break"],
       ["Planned Ignoring", "Redirection"],["FCT (Functional Communication Training)", "Escape Extinction", "Blocking", "DRA (Differential Reinforcement of Alternative Behavior)"]
     ],
     "Others_Present": [
-      ["Caregiver unavailable", "Caregiver"],["Caregiver unavailable", "Mother"],["Caregiver unavailable", "Father"],
-      ["None", "Caregiver"],["None", "Mother"],
-      ["None", "Father"],["None", "Sibling(s)"],
-      ["None", "Teacher"],["None", "BCBA"],
-      ["None", "Peer(s)"],["None", "Grandparent"],
-      ["None", "Other family member"]
+      ["Caregiver unavailable",["Caregiver", "Mother", "Father"]],
+      ["None",[
+        "Caregiver", "Mother", "Father", "Sibling(s)", "Teacher", "BCBA", 
+        "Peer(s)", "Grandparent", "Other family member"
+      ]]
     ],
     "Smart_Chips": [
-    	["Quick Control", "Extended Pairing"],
-      ["Highly Motivated", "Extended Pairing"],["Independent", "Max Prompting"]
+      ["Extended Pairing",["Quick Control", "Highly Motivated"]],
+      ["Independent", "Max Prompting"]
     ],
     "Time_and_Intervention_Physics": [
-			["< 1 minute", "Tactical Break"],["< 1 minute", "Extended Pairing"],
-			["> 30 minutes", "Quick Control"],["De-escalated within 5 minutes", "> 30 minutes"],["De-escalated within 5 minutes", "15-30 minutes"]
-		],
-		"Behavior_Topography_Mismatches": [["Elopement", "biting own hand or arm"],["Elopement", "hitting head with an open hand"],
-			["Pica", "bolting towards the exit door"],["Non-compliance", "swallowing small objects"],
-			["Target_Behaviors: Spitting", "hair-pulling"],["Vocal Stereotypy", "open-handed hitting"]
-		],
-		"Skill_vs_Prompt_Contradictions":[
-			["Independent", "Prompt dependent"],
-			["Independent", "Required prompt fading"],["Spontaneous demonstration", "Max Prompting"],
-			["Fluency", "Required prompt fading"]
-		],
-		"Affect_vs_Behavior_Contradictions": [
-			["calm and cooperative", "Severe"],["smiling and energetic", "Severe"],
-			["displaying an absence of maladaptive behavior", "Severe"]
-		]
+      ["< 1 minute",["Tactical Break", "Extended Pairing"]],
+      ["> 30 minutes",["Quick Control", "De-escalated within 5 minutes"]],["De-escalated within 5 minutes", "15-30 minutes"]
+    ],
+    "Behavior_Topography_Mismatches": [["Elopement", ["biting own hand or arm", "hitting head with an open hand"]],["Pica", "bolting towards the exit door"],
+      ["Non-compliance", "swallowing small objects"],["Spitting", "hair-pulling"],
+      ["Vocal Stereotypy", "open-handed hitting"]
+    ],
+    "Affect_vs_Behavior_Contradictions": [
+      ["Severe",[
+        "calm and cooperative", "smiling and energetic", "displaying an absence of maladaptive behavior"
+      ]]
+    ]
   },
   "Time_Intervention_Ratios": {
-    "< 1 minute": 2 
+    "< 1 minute": 2
   },
   "Field_Limits": {
     "default_max": 4,
@@ -359,10 +326,42 @@
     "Interventions": 4
   },
   "Location_Settings": {
-    "Clinic":["Therapy room", "Sensory room", "Playground", "Outdoors", "Kitchen", "Dining room"],
-    "Home":["Living room", "Bedroom", "Kitchen", "Dining room", "Outdoors", "Sensory room", "Playground", "Therapy room"],
-    "School":["Classroom", "Playground", "Sensory room", "Outdoors", "Dining room"],
-    "Community":["Store / Community setting", "Outdoors", "Playground"],
-    "Telehealth":["Living room", "Bedroom", "Kitchen", "Dining room", "Therapy room"]
+    "Clinic": [
+      "Dining room",
+      "Kitchen",
+      "Outdoors",
+      "Playground",
+      "Sensory room",
+      "Therapy room"
+    ],
+    "Home": [
+      "Bedroom",
+      "Dining room",
+      "Kitchen",
+      "Living room",
+      "Outdoors",
+      "Playground",
+      "Sensory room",
+      "Therapy room"
+    ],
+    "School": [
+      "Classroom",
+      "Dining room",
+      "Outdoors",
+      "Playground",
+      "Sensory room"
+    ],
+    "Community": [
+      "Outdoors",
+      "Playground",
+      "Store / Community setting"
+    ],
+    "Telehealth": [
+      "Bedroom",
+      "Dining room",
+      "Kitchen",
+      "Living room",
+      "Therapy room"
+    ]
   }
 }

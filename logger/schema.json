@@ -1,50 +1,184 @@
 {
-  "Location":[
-    "Clinic",
-    "Community",
-    "Home",
-    "School",
-    "Telehealth"
+  "Antecedents": [
+    "Attention Diverted",
+    "Change in Routine",
+    "Demand/Escape",
+    "Denied Access/Tangible",
+    "Interruption of Preferred Activity",
+    "Peer Interaction",
+    "Sensory Overload",
+    "Transition",
+    "Unstructured Time/Automatic"
   ],
-  "Specific_Setting":[
-    "Bathroom / Restroom",
-    "Bedroom",
-    "Classroom",
-    "Dining room",
-    "Hallway / Transition Area",
-    "Kitchen",
-    "Living room",
-    "Outdoors",
-    "Playground",
-    "Sensory room",
-    "Store / Community setting",
-    "Therapy room",
-    "Vehicle / Transport",
-    "Waiting Room"
+  "Caregiver_Handoff": [
+    "Answered caregiver questions",
+    "Caregiver unavailable",
+    "Discussed generalization strategies",
+    "Discussed mastered skills",
+    "Modeled intervention",
+    "Reviewed behavior incidents",
+    "Reviewed upcoming session schedule"
   ],
-  "Others_Present":[
-    "BCBA",
-    "Caregiver",
-    "Father",
-    "Grandparent",
-    "Mother",
-    "None",
-    "Other family member",
-    "Peer(s)",
-    "Sibling(s)",
-    "Teacher"
+  "Caregiver_Response": {
+    "Engaged & Positive": [
+      "confirmed the next scheduled session",
+      "demonstrated the strategy back to the therapist",
+      "expressed satisfaction with progress",
+      "reported no new concerns",
+      "thanked the clinical team"
+    ],
+    "Inquiring & Concerned": [
+      "asked for tips on community generalization",
+      "asked questions about the behavior plan",
+      "expressed frustration with the current routine",
+      "mentioned sleep or diet issues",
+      "reported an increase in behaviors at home"
+    ]
+  },
+  "Chips_Behavior_Reduction": {
+    "Aggression": [
+      "Attempted to bite",
+      "Easily redirected",
+      "Preceded by crying",
+      "Required physical blocking",
+      "Required safety distance",
+      "Swiped at therapist",
+      "Threw materials"
+    ],
+    "Elopement": [
+      "Bolted towards door",
+      "Left instructional area",
+      "Maintained proximity after prompt",
+      "Required physical block to prevent exit",
+      "Returned independently",
+      "Triggered by loud noise"
+    ],
+    "Non-compliance": [
+      "Completed with partial physical prompt",
+      "Required behavioral momentum",
+      "Responded to Premack principle",
+      "Used wait out procedure"
+    ],
+    "Pica": [
+      "Blocked attempt to swallow",
+      "Successfully traded for edible",
+      "Swept area for hazards"
+    ],
+    "Property Destruction": [
+      "Broke instructional materials",
+      "Occurred during transition",
+      "Redirected to safe item",
+      "Required environmental clearing",
+      "Ripped data sheets",
+      "Swept items off desk"
+    ],
+    "Self-Injurious Behavior (SIB)": [
+      "Blocked using safety pads",
+      "De-escalated via DRA",
+      "Intensity remained mild",
+      "Occurred when denied access",
+      "Required protective equipment"
+    ],
+    "Tantrum": [
+      "De-escalated within 5 minutes",
+      "Required a tactical break",
+      "Screaming subsided when ignored",
+      "Triggered by routine change"
+    ]
+  },
+  "Chips_Location_Transition": [
+    "Precursors Noted",
+    "Smooth",
+    "Verbal Prompts"
   ],
-  "Initial_Presentation":[
-    "avoiding eye contact / turning away",
-    "demonstrating a high rate of movement",
+  "Chips_Session_End": {
+    "Clinic": [
+      "Client requested to stay longer",
+      "Discussed upcoming schedule change",
+      "Happy Transition",
+      "Transitioned to Waiting Room"
+    ],
+    "Community": [
+      "Navigated Parking Lot Safely",
+      "Practiced safety crossing",
+      "Tolerated loud environment",
+      "Transitioned to Caregiver safely"
+    ],
+    "Home": [
+      "Happy Transition",
+      "Provided parent coaching",
+      "Reviewed data graphs with family",
+      "Sibling Joined Play"
+    ],
+    "School": [
+      "Provided Paraprofessional Feedback",
+      "Returned to Class Routine",
+      "Reviewed IEP goals",
+      "Transitioned to Teacher"
+    ]
+  },
+  "Chips_Session_Start": [
+    "Extended Pairing",
+    "Highly Motivated",
+    "Paired w/ Toys",
+    "Quick Control"
+  ],
+  "Chips_Skill_Acquisition": [
+    "Emerging skill",
+    "Failed to generalize",
+    "Field Reduced",
+    "Fluency",
+    "Generalized to new environment",
+    "Inconsistent responding",
+    "Independent",
+    "Maintained across therapists",
+    "Mastered",
+    "Mastered with novel stimuli",
+    "Max Prompting",
+    "Prompt dependent",
+    "Required prompt fading",
+    "Required redirection to task",
+    "Spontaneous demonstration"
+  ],
+  "Client_Affect": {
+    "Dysregulated / Escalated": [
+      "agitated and crying",
+      "displaying precursor behaviors",
+      "exhibiting visible frustration",
+      "highly distracted and hyperactive",
+      "pacing the room rapidly"
+    ],
+    "Fatigued / Withdrawn": [
+      "appearing physically fatigued",
+      "exhibiting a sluggish response time",
+      "lethargic due to poor sleep",
+      "reluctant to separate from caregiver",
+      "withdrawn and avoiding interaction"
+    ],
+    "Positive / Regulated": [
+      "calm and cooperative",
+      "demonstrating a neutral affect",
+      "happily initiating interaction",
+      "relaxed and engaged",
+      "smiling and energetic"
+    ]
+  },
+  "Deescalation_Time": [
+    "< 1 minute",
+    "1-5 minutes",
+    "5-15 minutes",
+    "15-30 minutes",
+    "> 30 minutes"
+  ],
+  "End_Demeanor": [
     "displaying an absence of maladaptive behavior",
+    "displaying precursor behaviors",
     "engaging in crying / vocal protests",
-    "engaging in pacing / vocal stereotypy",
-    "exhibiting a slowed response time / yawning",
-    "orienting away from speaker",
+    "engaging in preferred activities",
+    "exhibiting fatigued / slowed responses",
     "readily responding to instructions"
   ],
-  "Health_Variables":[
+  "Health_Variables": [
     "Allergies",
     "Asthma / Respiratory issues",
     "Constipation / GI issues",
@@ -65,105 +199,22 @@
     "Rash / Skin irritation",
     "Seizure activity"
   ],
-  "Skill_Domains":[
-    "Academic Readiness",
-    "Coping / Tolerance",
-    "Daily Living",
-    "Executive Functioning",
-    "Expressive Communication",
-    "Feeding / Food Tolerance",
-    "Medical / Hygiene Tolerance",
-    "Motor Skills",
-    "Play/Leisure",
-    "Receptive Language",
-    "Self-Management",
-    "Social Skills",
-    "Toilet Training"
+  "Initial_Presentation": [
+    "avoiding eye contact / turning away",
+    "demonstrating a high rate of movement",
+    "displaying an absence of maladaptive behavior",
+    "engaging in crying / vocal protests",
+    "engaging in pacing / vocal stereotypy",
+    "exhibiting a slowed response time / yawning",
+    "orienting away from speaker",
+    "readily responding to instructions"
   ],
-  "Teaching_Formats":[
-    "Backward Chaining",
-    "DTT (Discrete Trial Training)",
-    "Fluency Based Instruction",
-    "Forward Chaining",
-    "Incidental Teaching",
-    "NET (Natural Environment Teaching)",
-    "Shaping",
-    "Task Analysis",
-    "Total Task Chaining"
-  ],
-  "Prompt_Levels":[
-    "Independent",
-    "Visual",
-    "Verbal",
-    "Gestural",
-    "Modeling",
-    "Partial Physical",
-    "Full Physical",
-    "Positional",
-    "Time Delay"
-  ],
-  "Reinforcement_Schedules":[
-    "Continuous",
-    "Fixed Ratio",
-    "Variable Ratio",
-    "Fixed Interval",
-    "Variable Interval",
-    "Token Economy",
-    "Differential Reinforcement"
-  ],
-  "Specific_Reinforcers":[
-    "Access to Outdoors",
-    "Books",
-    "Break / Escape",
-    "Bubbles",
-    "Cars / Trains",
-    "Drawing / Coloring",
-    "Edibles",
-    "Music / Videos",
-    "Peer attention",
-    "Physical Touch (deep pressure / squeezes)",
-    "Praise",
-    "Sensory breaks (dark room / quiet)",
-    "Sensory Toys / Fidgets",
-    "Stickers",
-    "Swinging",
-    "Tickles",
-    "Tokens / Points",
-    "Toys / Action Figures",
-    "iPad / Tablet"
-  ],
-  "Target_Behaviors":[
-    "Aggression",
-    "Disrobing",
-    "Elopement",
-    "Inappropriate Language",
-    "Motor Stereotypy",
-    "Non-compliance",
-    "Pica",
-    "Property Destruction",
-    "SIB",
-    "Scatolia (Fecal smearing)",
-    "Spitting",
-    "Tantrum",
-    "Vocal Stereotypy"
-  ],
-  "Intensity":[
+  "Intensity": [
     "Mild",
     "Moderate",
     "Severe"
   ],
-  "Antecedents":[
-    "Attention Diverted",
-    "Change in Routine",
-    "Demand/Escape",
-    "Denied Access/Tangible",
-    "Interruption of Preferred Activity",
-    "Peer Interaction",
-    "Sensory Overload",
-    "Transition",
-    "Unstructured Time/Automatic"
-  ],
-  "Interventions":[
+  "Interventions": [
     "Behavior Momentum / High-P Sequence",
     "Blocking",
     "DRA (Differential Reinforcement of Alternative Behavior)",
@@ -183,189 +234,99 @@
     "Token Economy / Token Board",
     "Visual Schedule / Timer"
   ],
-  "Deescalation_Time":[
-    "< 1 minute",
-    "1-5 minutes",
-    "5-15 minutes",
-    "15-30 minutes",
-    "> 30 minutes"
+  "Location": [
+    "Clinic",
+    "Community",
+    "Home",
+    "School",
+    "Telehealth"
   ],
-  "End_Demeanor":[
-    "displaying an absence of maladaptive behavior",
-    "displaying precursor behaviors",
-    "engaging in crying / vocal protests",
-    "engaging in preferred activities",
-    "exhibiting fatigued / slowed responses",
-    "readily responding to instructions"
+  "Others_Present": [
+    "BCBA",
+    "Caregiver",
+    "Father",
+    "Grandparent",
+    "Mother",
+    "None",
+    "Other family member",
+    "Peer(s)",
+    "Sibling(s)",
+    "Teacher"
   ],
-  "Caregiver_Handoff":[
-    "Answered caregiver questions",
-    "Caregiver unavailable",
-    "Discussed generalization strategies",
-    "Discussed mastered skills",
-    "Modeled intervention",
-    "Reviewed behavior incidents",
-    "Reviewed upcoming session schedule"
-  ],
-  "Transition_Context":[
-    "Engaged in precursor behaviors during transition",
-    "Required physical guidance to transition",
-    "Required verbal prompts to transition",
-    "Required visual schedule to transition",
-    "Transitioned smoothly and independently",
-    "Transitioned with minor resistance"
-  ],
-  "Chips_Session_Start":[
-    "Extended Pairing",
-    "Highly Motivated",
-    "Paired w/ Toys",
-    "Quick Control"
-  ],
-  "Chips_Location_Transition":[
-    "Precursors Noted",
-    "Smooth",
-    "Verbal Prompts"
-  ],
-  "Chips_Skill_Acquisition":[
-    "Emerging skill",
-    "Failed to generalize",
-    "Field Reduced",
-    "Fluency",
-    "Generalized to new environment",
-    "Inconsistent responding",
+  "Prompt_Levels": [
     "Independent",
-    "Maintained across therapists",
-    "Mastered",
-    "Mastered with novel stimuli",
-    "Max Prompting",
-    "Prompt dependent",
-    "Required prompt fading",
-    "Required redirection to task",
-    "Spontaneous demonstration"
+    "Visual",
+    "Verbal",
+    "Gestural",
+    "Modeling",
+    "Partial Physical",
+    "Full Physical",
+    "Positional",
+    "Time Delay"
   ],
-  "Chips_Session_End": {
-    "Clinic":[
-      "Client requested to stay longer",
-      "Discussed upcoming schedule change",
-      "Happy Transition",
-      "Transitioned to Waiting Room"
-    ],
-    "Community":[
-      "Navigated Parking Lot Safely",
-      "Practiced safety crossing",
-      "Tolerated loud environment",
-      "Transitioned to Caregiver safely"
-    ],
-    "Home":[
-      "Happy Transition",
-      "Provided parent coaching",
-      "Reviewed data graphs with family",
-      "Sibling Joined Play"
-    ],
-    "School":[
-      "Provided Paraprofessional Feedback",
-      "Returned to Class Routine",
-      "Reviewed IEP goals",
-      "Transitioned to Teacher"
-    ]
-  },
-  "Chips_Behavior_Reduction": {
-    "Aggression":[
-      "Attempted to bite",
-      "Easily redirected",
-      "Preceded by crying",
-      "Required physical blocking",
-      "Required safety distance",
-      "Swiped at therapist",
-      "Threw materials"
-    ],
-    "Elopement":[
-      "Bolted towards door",
-      "Left instructional area",
-      "Maintained proximity after prompt",
-      "Required physical block to prevent exit",
-      "Returned independently",
-      "Triggered by loud noise"
-    ],
-    "Non-compliance":[
-      "Completed with partial physical prompt",
-      "Required behavioral momentum",
-      "Responded to Premack principle",
-      "Used wait out procedure"
-    ],
-    "Pica":[
-      "Blocked attempt to swallow",
-      "Successfully traded for edible",
-      "Swept area for hazards"
-    ],
-    "Property Destruction":[
-      "Broke instructional materials",
-      "Occurred during transition",
-      "Redirected to safe item",
-      "Required environmental clearing",
-      "Ripped data sheets",
-      "Swept items off desk"
-    ],
-    "Self-Injurious Behavior (SIB)":[
-      "Blocked using safety pads",
-      "De-escalated via DRA",
-      "Intensity remained mild",
-      "Occurred when denied access",
-      "Required protective equipment"
-    ],
-    "Tantrum":[
-      "De-escalated within 5 minutes",
-      "Required a tactical break",
-      "Screaming subsided when ignored",
-      "Triggered by routine change"
-    ]
-  },
-  "Client_Affect": {
-    "Dysregulated / Escalated":[
-      "agitated and crying",
-      "displaying precursor behaviors",
-      "exhibiting visible frustration",
-      "highly distracted and hyperactive",
-      "pacing the room rapidly"
-    ],
-    "Fatigued / Withdrawn":[
-      "appearing physically fatigued",
-      "exhibiting a sluggish response time",
-      "lethargic due to poor sleep",
-      "reluctant to separate from caregiver",
-      "withdrawn and avoiding interaction"
-    ],
-    "Positive / Regulated":[
-      "calm and cooperative",
-      "demonstrating a neutral affect",
-      "happily initiating interaction",
-      "relaxed and engaged",
-      "smiling and energetic"
-    ]
-  },
-  "Transition_Detail": {
-    "Independent":[
-      "happily running to the next area",
-      "independently carrying their schedule",
-      "transitioning smoothly without resistance",
-      "walking independently"
-    ],
-    "Prompted":[
-      "following a visual schedule",
-      "holding the therapist's hand",
-      "requiring gentle physical guidance",
-      "requiring multiple verbal prompts",
-      "utilizing a transition object"
-    ],
-    "Resistant":[
-      "attempting to elope back to the previous area",
-      "dropping to the floor midway",
-      "requiring a prolonged tactical break",
-      "whining and vocally protesting"
-    ]
-  },
+  "Reinforcement_Schedules": [
+    "Continuous",
+    "Differential Reinforcement",
+    "Fixed Interval",
+    "Fixed Ratio",
+    "Token Economy",
+    "Variable Interval",
+    "Variable Ratio"
+  ],
+  "Skill_Domains": [
+    "Academic Readiness",
+    "Coping / Tolerance",
+    "Daily Living",
+    "Executive Functioning",
+    "Expressive Communication",
+    "Feeding / Food Tolerance",
+    "Medical / Hygiene Tolerance",
+    "Motor Skills",
+    "Play/Leisure",
+    "Receptive Language",
+    "Self-Management",
+    "Social Skills",
+    "Toilet Training"
+  ],
+  "Specific_Reinforcers": [
+    "Access to Outdoors",
+    "Books",
+    "Break / Escape",
+    "Bubbles",
+    "Cars / Trains",
+    "Drawing / Coloring",
+    "Edibles",
+    "iPad / Tablet",
+    "Music / Videos",
+    "Peer attention",
+    "Physical Touch (deep pressure / squeezes)",
+    "Praise",
+    "Sensory breaks (dark room / quiet)",
+    "Sensory Toys / Fidgets",
+    "Stickers",
+    "Swinging",
+    "Tickles",
+    "Tokens / Points",
+    "Toys / Action Figures"
+  ],
+  "Specific_Setting": [
+    "Bathroom / Restroom",
+    "Bedroom",
+    "Classroom",
+    "Dining room",
+    "Hallway / Transition Area",
+    "Kitchen",
+    "Living room",
+    "Outdoors",
+    "Playground",
+    "Sensory room",
+    "Store / Community setting",
+    "Therapy room",
+    "Vehicle / Transport",
+    "Waiting Room"
+  ],
   "Specific_Target": {
-    "Academic Readiness":[
+    "Academic Readiness": [
       "Completing patterning items",
       "Counting 1-10",
       "Following worksheet instructions",
@@ -376,7 +337,7 @@
       "Tracing letters",
       "Writing own name"
     ],
-    "Communication":[
+    "Communication": [
       "Answering WH- questions",
       "Conversational turn-taking",
       "Echoic imitation",
@@ -390,7 +351,7 @@
       "Tacting internal states (Pain/Emotions)",
       "Using an AAC device"
     ],
-    "Coping / Tolerance":[
+    "Coping / Tolerance": [
       "Accepting 'No'",
       "Accepting changes in routine",
       "Accepting delayed reinforcement",
@@ -400,7 +361,7 @@
       "Tolerating task demands",
       "Using deep breathing"
     ],
-    "Daily Living (ADLs)":[
+    "Daily Living (ADLs)": [
       "Brushing teeth",
       "Completing daily chores",
       "Completing toileting routine",
@@ -414,7 +375,7 @@
       "Washing hands",
       "Wiping independently"
     ],
-    "Executive Functioning":[
+    "Executive Functioning": [
       "Following 2-step instructions",
       "Independent task initiation",
       "Problem-solving a barrier",
@@ -424,7 +385,7 @@
       "Visual schedule adherence",
       "Waiting for 1 minute"
     ],
-    "Motor Skills":[
+    "Motor Skills": [
       "Catching a ball",
       "Crossing the midline",
       "Cutting with scissors",
@@ -434,7 +395,7 @@
       "Stringing beads",
       "Using a pencil grip"
     ],
-    "Social / Play Skills":[
+    "Social / Play Skills": [
       "Functional pretend play",
       "Imitating peer actions",
       "Initiating peer play",
@@ -445,7 +406,7 @@
       "Sustaining cooperative play",
       "Turn-taking with a peer"
     ],
-    "Vocational":[
+    "Vocational": [
       "Clocking in and out",
       "Completing assembly tasks",
       "Following a visual checklist",
@@ -453,8 +414,106 @@
       "Wiping down tables"
     ]
   },
+  "Specific_Topography": {
+    "Aggression": [
+      "biting directed at the therapist",
+      "hair-pulling",
+      "head-butting staff or peers",
+      "kicking the furniture or staff",
+      "open-handed hitting",
+      "pinching others' skin",
+      "punching with closed fists",
+      "scratching arms and hands"
+    ],
+    "Elopement": [
+      "bolting towards the exit door",
+      "dodging staff to escape",
+      "hiding under furniture",
+      "leaving the instructional area",
+      "pacing near the exit",
+      "running away from caregiver",
+      "running into the street/parking lot"
+    ],
+    "Non-compliance": [
+      "ignoring staff instructions",
+      "passively slumping in chair",
+      "refusing to transition",
+      "verbally refusing tasks",
+      "walking away from task"
+    ],
+    "Pica": [
+      "chewing on clothing or strings",
+      "licking the floor or walls",
+      "mouthing non-edible items",
+      "swallowing small objects"
+    ],
+    "Property Destruction": [
+      "breaking toys",
+      "kicking holes in walls",
+      "overturning tables or chairs",
+      "ripping paper and data sheets",
+      "slamming doors",
+      "sweeping items off the desk",
+      "tearing fabric or clothing",
+      "throwing instructional materials"
+    ],
+    "Scatolia (Fecal smearing)": [
+      "smearing feces on the furniture",
+      "smearing feces on the walls"
+    ],
+    "Self-Injurious Behavior (SIB)": [
+      "banging head against the wall/floor",
+      "biting own hand or arm",
+      "biting own lips or cheeks",
+      "gouging own eyes",
+      "hitting head with an open hand",
+      "scratching own skin repeatedly",
+      "skin picking"
+    ],
+    "Spitting": [
+      "pooling saliva in mouth",
+      "spitting at staff or peers",
+      "spitting on instructional materials",
+      "spitting on the floor"
+    ],
+    "Tantrum / Stereotypy": [
+      "dropping to the floor and crying",
+      "intense hand-flapping",
+      "loud, sustained vocal protests",
+      "repetitive vocal scripting",
+      "rocking back and forth violently",
+      "screaming at a high pitch",
+      "spinning in circles"
+    ]
+  },
+  "Target_Behaviors": [
+    "Aggression",
+    "Disrobing",
+    "Elopement",
+    "Inappropriate Language",
+    "Motor Stereotypy",
+    "Non-compliance",
+    "Pica",
+    "Property Destruction",
+    "Scatolia (Fecal smearing)",
+    "SIB",
+    "Spitting",
+    "Tantrum",
+    "Vocal Stereotypy"
+  ],
+  "Teaching_Formats": [
+    "Backward Chaining",
+    "DTT (Discrete Trial Training)",
+    "Fluency Based Instruction",
+    "Forward Chaining",
+    "Incidental Teaching",
+    "NET (Natural Environment Teaching)",
+    "Shaping",
+    "Task Analysis",
+    "Total Task Chaining"
+  ],
   "Teaching_Materials": {
-    "Natural Environment":[
+    "Natural Environment": [
       "gross motor obstacle course",
       "household cleaning supplies",
       "items found in the kitchen",
@@ -463,7 +522,7 @@
       "snack and food items",
       "water play table"
     ],
-    "Tangible & 3D":[
+    "Tangible & 3D": [
       "cause-and-effect toys",
       "kinetic sand",
       "Lego bricks",
@@ -474,7 +533,7 @@
       "therapy ball",
       "wooden blocks"
     ],
-    "Technology":[
+    "Technology": [
       "a tablet app",
       "a visual timer",
       "an AAC device",
@@ -483,7 +542,7 @@
       "interactive videos",
       "music player"
     ],
-    "Visual & Academic":[
+    "Visual & Academic": [
       "2D picture cards",
       "a token board",
       "animal flashcards",
@@ -493,92 +552,33 @@
       "worksheets and crayons"
     ]
   },
-  "Specific_Topography": {
-    "Aggression":[
-      "biting directed at the therapist",
-      "hair-pulling",
-      "head-butting staff or peers",
-      "kicking the furniture or staff",
-      "open-handed hitting",
-      "pinching others' skin",
-      "punching with closed fists",
-      "scratching arms and hands"
+  "Transition_Context": [
+    "Engaged in precursor behaviors during transition",
+    "Required physical guidance to transition",
+    "Required verbal prompts to transition",
+    "Required visual schedule to transition",
+    "Transitioned smoothly and independently",
+    "Transitioned with minor resistance"
+  ],
+  "Transition_Detail": {
+    "Independent": [
+      "happily running to the next area",
+      "independently carrying their schedule",
+      "transitioning smoothly without resistance",
+      "walking independently"
     ],
-    "Elopement":[
-      "bolting towards the exit door",
-      "dodging staff to escape",
-      "hiding under furniture",
-      "leaving the instructional area",
-      "pacing near the exit",
-      "running away from caregiver",
-      "running into the street/parking lot"
+    "Prompted": [
+      "following a visual schedule",
+      "holding the therapist's hand",
+      "requiring gentle physical guidance",
+      "requiring multiple verbal prompts",
+      "utilizing a transition object"
     ],
-    "Non-compliance":[
-      "ignoring staff instructions",
-      "passively slumping in chair",
-      "refusing to transition",
-      "verbally refusing tasks",
-      "walking away from task"
-    ],
-    "Pica":[
-      "chewing on clothing or strings",
-      "licking the floor or walls",
-      "mouthing non-edible items",
-      "swallowing small objects"
-    ],
-    "Property Destruction":[
-      "breaking toys",
-      "kicking holes in walls",
-      "overturning tables or chairs",
-      "ripping paper and data sheets",
-      "slamming doors",
-      "sweeping items off the desk",
-      "tearing fabric or clothing",
-      "throwing instructional materials"
-    ],
-    "Scatolia (Fecal smearing)":[
-      "smearing feces on the furniture",
-      "smearing feces on the walls"
-    ],
-    "Self-Injurious Behavior (SIB)":[
-      "banging head against the wall/floor",
-      "biting own hand or arm",
-      "biting own lips or cheeks",
-      "gouging own eyes",
-      "hitting head with an open hand",
-      "scratching own skin repeatedly",
-      "skin picking"
-    ],
-    "Spitting":[
-      "pooling saliva in mouth",
-      "spitting at staff or peers",
-      "spitting on instructional materials",
-      "spitting on the floor"
-    ],
-    "Tantrum / Stereotypy":[
-      "dropping to the floor and crying",
-      "intense hand-flapping",
-      "loud, sustained vocal protests",
-      "repetitive vocal scripting",
-      "rocking back and forth violently",
-      "screaming at a high pitch",
-      "spinning in circles"
-    ]
-  },
-  "Caregiver_Response": {
-    "Engaged & Positive":[
-      "confirmed the next scheduled session",
-      "demonstrated the strategy back to the therapist",
-      "expressed satisfaction with progress",
-      "reported no new concerns",
-      "thanked the clinical team"
-    ],
-    "Inquiring & Concerned":[
-      "asked for tips on community generalization",
-      "asked questions about the behavior plan",
-      "expressed frustration with the current routine",
-      "mentioned sleep or diet issues",
-      "reported an increase in behaviors at home"
+    "Resistant": [
+      "attempting to elope back to the previous area",
+      "dropping to the floor midway",
+      "requiring a prolonged tactical break",
+      "whining and vocally protesting"
     ]
   }
 }

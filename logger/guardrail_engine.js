@@ -5,19 +5,21 @@ export default class GuardrailEngine {
     constructor(rulesData, schemaData) {
         this.functionRules = rulesData.Function_Based_Guardrails ||[];
         this.contradictionRules = rulesData.Contradiction_Guardrails ||[];
-        this.exclusiveChoices = rulesData.Exclusive_Choices ||[];
-        this.invalidCombinations = rulesData.Invalid_Combinations || {};
+        this.exclusiveChoices = rulesData.Exclusive_Choices || [];
         this.sessionLimits = rulesData.Session_Limits ||[];
         this.locationSettings = rulesData.Location_Settings || null;
         this.fieldLimits = rulesData.Field_Limits || { default_max: 4 }; 
-        this.expandMacros(rulesData.Macro_Combinations ||[], schemaData);
+        
+        // The unified compiler handles all rules, allowing the DSL everywhere
+        this.compileAllCutsets(rulesData.Invalid_Combinations || {}, schemaData);
     }
     
-    // Unpacks compact arrays, strings, and "CAT:" prefixes into flat cutsets
-    expandMacros(macros, schemaData) {
-        if (!macros || !macros.length) return;
+    // Compiles ALL custom semantic categories into a single, flat Global array
+    compileAllCutsets(invalidCombosDict, schemaData) {
+        this.invalidCombinations = { Global:[] };
+        if (!invalidCombosDict) return;
         
-        // 1. Build a dictionary mapping 'CAT:Name' to its array of items
+        // 1. Build category map for 'CAT:' tags
         const categoryMap = {};
         if (schemaData) {
             for (const key in schemaData) {
@@ -30,37 +32,38 @@ export default class GuardrailEngine {
             }
         }
 
-        if (!this.invalidCombinations.Global) this.invalidCombinations.Global =[];
-        
-        // Helper: Resolves any item into a flat array of strings
+        // Helper: Resolves strings, CAT: tags, or nested arrays into flat arrays
         const resolveToSet = (item) => {
             if (Array.isArray(item)) {
-                return item.flatMap(resolveToSet); // Recursively resolve nested arrays
+                return item.flatMap(resolveToSet);
             } else if (typeof item === 'string' && item.startsWith('CAT:')) {
                 return categoryMap[item] || [];
             } else {
-                return [item];
+                return[item];
             }
         };
-        
-        // 2. Generate Cartesian products for N-dimensional macros
-        macros.forEach(macro => {
-            // Convert the macro (e.g. ["Continuous", ["Mastered", "Fluency"]]) into an array of sets
-            const sets = macro.map(resolveToSet);
-            
-            // Generate all possible combinations
-            const cartesian = (arrays) => {
-                return arrays.reduce((a, b) => 
-                    a.flatMap(d => b.map(e => [...d, e])),
-                    [[]]
-                );
-            };
 
-            const products = cartesian(sets);
-            products.forEach(p => {
-                this.invalidCombinations.Global.push(p);
+        // Cartesian product generator
+        const cartesian = (arrays) => {
+            return arrays.reduce((a, b) => 
+                a.flatMap(d => b.map(e => [...d, e])),
+                [[]]
+            );
+        };
+
+        // 2. Iterate through EVERY semantic grouping in the JSON
+        for (const groupKey in invalidCombosDict) {
+            const ruleArray = invalidCombosDict[groupKey];
+            if (!Array.isArray(ruleArray)) continue;
+
+            ruleArray.forEach(rule => {
+                const sets = rule.map(resolveToSet);
+                const products = cartesian(sets);
+                products.forEach(p => {
+                    this.invalidCombinations.Global.push(p);
+                });
             });
-        });
+        }
     }
 
     getRulesForAntecedent(antecedent) {
