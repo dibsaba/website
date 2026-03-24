@@ -205,14 +205,15 @@
       ["Response Cost", "Severe", "Tantrum"],
       ["Vehicle / Transport", "Elopement", "Escape Extinction"],["Completing toileting routine", "Telehealth", "Caregiver unavailable"],
       ["Bathroom / Restroom", "Telehealth", "None"],
-      ["Ear infection", "Tolerating loud noises", "Escape Extinction"]
+      ["Ear infection", "Tolerating loud noises", "Escape Extinction"],
+      ["Disrobing", ["Community", "Store / Community setting", "Playground"], "Planned Ignoring"]
     ],
     "Toxic_Quads": [["Outdoors", "Telehealth", "Elopement", "Caregiver unavailable"],
       ["Water play table", "Telehealth", "Pica", "Caregiver unavailable"],
       ["Community", "Aggression", "Severe", "None"]
     ],
     "Teaching_Format_Mismatches": [
-      [["Backward Chaining", "Forward Chaining", "Total Task Chaining", "Shaping"],["CAT:Academic Readiness", "CAT:Communication", "CAT:Coping / Tolerance", "CAT:Social / Play Skills"]],
+      [["Backward Chaining", "Forward Chaining", "Total Task Chaining", "Shaping"],["CAT:Academic Readiness", "CAT:Communication", "CAT:Coping / Tolerance", "CAT:Social / Play Skills", "CAT:Executive Functioning"]],
       ["DTT (Discrete Trial Training)",["CAT:Coping / Tolerance", "CAT:Self-Management", "CAT:Social / Play Skills"]],
       ["Fluency Based Instruction",["CAT:Coping / Tolerance", "CAT:Self-Management"]]
     ],
@@ -228,12 +229,22 @@
     "Material_and_Environment_Mismatches": [
       ["CAT:Academic Readiness",["gross motor obstacle course", "playground equipment", "therapy ball", "water play table", "CAT:Natural Environment"]],
       [["Catching a ball", "Jumping with two feet"],["worksheets and crayons", "whiteboard and dry-erase markers", "a tablet app", "a token board", "PECS communication book"]],["Vehicle / Transport",["gross motor obstacle course", "playground equipment", "water play table", "whiteboard and dry-erase markers"]],
-      ["Bedroom", ["water play table", "gross motor obstacle course"]]
+      ["Bedroom", ["water play table", "gross motor obstacle course"]],
+      ["Vehicle / Transport",[
+        "Washing hands", "Brushing teeth", "Completing toileting routine", 
+        "kicking holes in walls", "sweeping items off the desk", "hiding under furniture"
+      ]],
+      ["Bathroom / Restroom", "Caregiver unavailable"]
     ],
     "Health_and_Safety_Constraints": [
       ["Dental pain",["Eating a variety of foods", "Brushing teeth", "Edibles"]],
-      ["Constipation / GI issues", "Edibles"],["Asthma / Respiratory issues", ["gross motor obstacle course", "Catching a ball", "Jumping with two feet"]],
-      ["Rash / Skin irritation",["Physical Touch (deep pressure / squeezes)", "playdough and molds", "kinetic sand"]]
+      ["Constipation / GI issues", "Edibles"],
+      ["Asthma / Respiratory issues", ["gross motor obstacle course", "Catching a ball", "Jumping with two feet"]],
+      ["Rash / Skin irritation",["Physical Touch (deep pressure / squeezes)", "playdough and molds", "kinetic sand"]],
+      [["Ear infection", "Headache"], "Music / Videos"],
+      [["Constipation / GI issues", "Lack of Appetite / Refused meal", "Dental pain"], "CAT:Feeding / Food Tolerance"],
+      ["Seizure activity",["Gross motor imitation", "Catching a ball", "Jumping with two feet", "gross motor obstacle course", "Playground"]],
+      ["Telehealth", "Disrobing"]
     ],
     "Intervention_Physics": [
       ["Overcorrection (Positive Practice)",["loud, sustained vocal protests", "screaming at a high pitch", "repetitive vocal scripting", "ignoring staff instructions", "passively slumping in chair", "verbally refusing tasks"]],
@@ -279,7 +290,8 @@
     ],
     "State_and_Transition_Contradictions": [["exhibiting a sluggish response time", ["smiling and energetic", "demonstrating a high rate of movement"]],
       ["displaying an absence of maladaptive behavior",["displaying precursor behaviors", "engaging in crying / vocal protests"]],
-      [["transitioning smoothly without resistance", "happily running to the next area", "Smooth"],["Required physical guidance to transition", "requiring gentle physical guidance", "dropping to the floor midway", "whining and vocally protesting"]]
+      [["transitioning smoothly without resistance", "happily running to the next area", "Smooth"],["Required physical guidance to transition", "requiring gentle physical guidance", "dropping to the floor midway", "whining and vocally protesting"]],
+      ["Happy Transition",["engaging in crying / vocal protests", "displaying precursor behaviors", "exhibiting fatigued / slowed responses"]]
     ],
     "Initial_Presentation": [
       ["readily responding to instructions",["engaging in crying / vocal protests", "avoiding eye contact / turning away", "engaging in pacing / vocal stereotypy", "exhibiting a slowed response time / yawning", "orienting away from speaker", "demonstrating a high rate of movement"]],
