@@ -218,7 +218,8 @@
       ["Fluency Based Instruction",["CAT:Coping / Tolerance", "CAT:Self-Management"]]
     ],
     "Reinforcement_Physics": [["Continuous",["Access to Outdoors", "Break / Escape", "iPad / Tablet", "Music / Videos", "Swinging"]],
-      ["Continuous", ["Mastered", "Fluency", "Spontaneous demonstration"]]
+      ["Continuous", ["Mastered", "Fluency", "Spontaneous demonstration"]],
+      ["Continuous", ["Mastered", "Fluency", "Spontaneous demonstration", "Independent"]]
     ],
     "Prompting_Physics": [
       [["Full Physical", "Partial Physical"],["Echoic imitation", "Answering WH- questions", "Conversational turn-taking", "Manding for cessation ('Stop'/'No')", "Tacting internal states (Pain/Emotions)", "Accepting 'No'", "Asking for a break", "Using deep breathing"]],
@@ -234,7 +235,9 @@
         "Washing hands", "Brushing teeth", "Completing toileting routine", 
         "kicking holes in walls", "sweeping items off the desk", "hiding under furniture"
       ]],
-      ["Bathroom / Restroom", "Caregiver unavailable"]
+      ["Bathroom / Restroom", "Caregiver unavailable"],
+      [["an AAC device", "augmented communication software", "PECS communication book"],["CAT:Daily Living (ADLs)", "CAT:Motor Skills", "CAT:Vocational"]],
+      
     ],
     "Health_and_Safety_Constraints": [
       ["Dental pain",["Eating a variety of foods", "Brushing teeth", "Edibles"]],
@@ -258,7 +261,8 @@
       ["Seizure activity", "Swinging"],
       [["Sensory Overload", "Pain / Discomfort"], "Overcorrection (Positive Practice)"],
       ["Illness symptoms", "Peer Interaction"],
-      ["Access to Outdoors", "Outdoors"]
+      ["Access to Outdoors", "Outdoors"],
+      ["Reviewed behavior incidents", "NO_BEHAVIOR_LOGGED"]
     ],
     "Global": [
       [["displaying an absence of maladaptive behavior", "readily responding to instructions"], "SCHEMA:Chips_Behavior_Reduction"],
