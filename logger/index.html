@@ -456,7 +456,6 @@
             }
 
             function runAllGuardrails() {
-                function runAllGuardrails() {
                 const allFormChecked = Array.from(c.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
                 const allSelectValues = Array.from(c.querySelectorAll('select')).map(sel => sel.value).filter(v => v && v !== "None selected");
                 const activeSchemas = Array.from(c.querySelectorAll('.dynamic-chip-container'))

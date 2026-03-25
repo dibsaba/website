@@ -276,7 +276,7 @@
       ["Gestural", ["Echoic imitation", "Intraverbal fill-ins"]],
       ["Required safety distance",["Full Physical", "Partial Physical", "holding the therapist's hand", "Physical Touch (deep pressure / squeezes)", "Tickles"]],
       ["Visual", "Echoic imitation"],
-      ["Modeling", "Following receptive instructions, "Intraverbal fill-ins", "Conversational turn-taking", "Answering WH- questions""],
+      ["Modeling", ["Following receptive instructions", "Intraverbal fill-ins", "Conversational turn-taking", "Answering WH- questions"]],
       [["Full Physical", "Partial Physical", "Gestural", "Positional"], "CAT:Specific_Topography:Spitting"],
       [["Full Physical", "Partial Physical", "Positional"], "Self-monitoring behavior"]
     ],
@@ -345,7 +345,7 @@
       ["Pica", "Tokens / Points"]
     ],
     "Intervention_Physics": [
-      ["Overcorrection (Positive Practice)",["SIB", "CAT:Self-Injurious Behavior (SIB)", CAT:Skill_Domains:Medical / Hygiene Tolerance, "CAT:Specific_Topography:Spitting", "CAT:Specific_Target:Coping / Tolerance", "loud, sustained vocal protests", "screaming at a high pitch", "repetitive vocal scripting", "ignoring staff instructions", "passively slumping in chair", "verbally refusing tasks", "Store / Community setting", "Playground", "Community"]],
+      ["Overcorrection (Positive Practice)",["SIB", "CAT:Self-Injurious Behavior (SIB)", "CAT:Skill_Domains:Medical / Hygiene Tolerance", "CAT:Specific_Topography:Spitting", "CAT:Specific_Target:Coping / Tolerance", "loud, sustained vocal protests", "screaming at a high pitch", "repetitive vocal scripting", "ignoring staff instructions", "passively slumping in chair", "verbally refusing tasks", "Store / Community setting", "Playground", "Community"]],
       ["Stimulus Fading",["Elopement", "SIB", "Aggression", "Pica", "Tantrum", "Vocal Stereotypy", "loud, sustained vocal protests", "repetitive vocal scripting", "screaming at a high pitch"]],
       ["Errorless Teaching", ["Variable Ratio", "Variable Interval"]],
       ["NCR (Noncontingent Reinforcement)",["Self-monitoring behavior", "Independent task initiation", "Waiting for 1 minute", "Tolerating denied access"]],
