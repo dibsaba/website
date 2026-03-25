@@ -941,6 +941,28 @@
                     data[el.dataset.id] = c.length ? c : ["None selected"]; 
                 }
             });
+            
+            // Save active schemas so cross-form rules survive ---
+            const activeSchemas = Array.from(document.getElementById('form-container').querySelectorAll('.dynamic-chip-container'))
+                .filter(container => container.querySelectorAll('input[type="checkbox"]:checked').length > 0)
+                .map(container => `SCHEMA:${container.dataset.schemaRef}`);
+            
+            if (activeSchemas.length > 0) {
+                data["Active_Schemas"] = activeSchemas;
+            }
+            // ------------------------------------------------------------
+
+            if (currentEditingId) {
+                const idx = timeline.findIndex(t => t.id === currentEditingId);
+                if (idx > -1) timeline[idx].data = data;
+            } else {
+                timeline.push({ id: Date.now().toString(), type: currentType, timestamp: new Date().toISOString(), data });
+            }
+            
+            localStorage.setItem('aba_tl', JSON.stringify(timeline));
+            renderTimeline(); 
+            closeModals();
+        };
 
             if (currentEditingId) {
                 const idx = timeline.findIndex(t => t.id === currentEditingId);

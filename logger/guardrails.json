@@ -421,10 +421,15 @@
       ["Failed to generalize", "Generalized to new environment"],
       ["Inconsistent responding",["Fluency", "Mastered"]]
     ],
-    "Clinical_Impossibilities": [["Blocked using safety pads", "Planned Ignoring"],
-      ["Blocking",["Inappropriate Language", "Vocal Stereotypy", "loud, sustained vocal protests", "repetitive vocal scripting", "screaming at a high pitch"]],["Easily redirected", "Required physical blocking"],
+    "Clinical_Impossibilities": [
+      ["Blocked using safety pads", "Planned Ignoring"],
+      ["Blocking",["Inappropriate Language", "Vocal Stereotypy", "loud, sustained vocal protests", "repetitive vocal scripting", "screaming at a high pitch"]],
+      ["Easily redirected", "Required physical blocking"],
       ["Errorless Teaching",["Independent", "Mastered", "Spontaneous demonstration", "Time Delay"]],
-      ["Required a tactical break", "Escape Extinction"],["Returned independently", "Required physical block to prevent exit"]
+      ["Required a tactical break", "Escape Extinction"],
+      ["Returned independently", "Required physical block to prevent exit"],
+      [["engaging in crying / vocal protests", "engaging in pacing / vocal stereotypy", "displaying precursor behaviors", "agitated and crying", "highly distracted and hyperactive", "pacing the room rapidly"], "NO_BEHAVIOR_LOGGED"]
+  ]
     ],
     "Caregiver_Handoff_Constraints": [
       ["Caregiver unavailable",["Discussed mastered skills", "Reviewed behavior incidents", "Modeled intervention", "Discussed generalization strategies", "Reviewed upcoming session schedule", "Answered caregiver questions", "Provided parent coaching", "Reviewed data graphs with family"]]
