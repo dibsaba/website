@@ -964,18 +964,6 @@
             closeModals();
         };
 
-            if (currentEditingId) {
-                const idx = timeline.findIndex(t => t.id === currentEditingId);
-                if (idx > -1) timeline[idx].data = data;
-            } else {
-                timeline.push({ id: Date.now().toString(), type: currentType, timestamp: new Date().toISOString(), data });
-            }
-            
-            localStorage.setItem('aba_tl', JSON.stringify(timeline));
-            renderTimeline(); 
-            closeModals();
-        };
-
         function renderTimeline() {
             const f = document.getElementById('timeline-feed'); f.innerHTML = '';
             const started = timeline.some(t => t.type === 'Session_Start');
