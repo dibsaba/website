@@ -201,8 +201,9 @@
   "Invalid_Combinations": {
     "New_Adversarial_Patches": [
       ["Telehealth",["Physical Touch (deep pressure / squeezes)", "Tickles"]],
-      ["Seizure activity", "water play table"],["Scatolia (Fecal smearing)",["Community", "Store / Community setting", "Outdoors", "Playground"], "Planned Ignoring"],
-      ["NET (Natural Environment Teaching)",["worksheets and crayons", "whiteboard and dry-erase markers", "a token board"]],
+      ["Seizure activity", "water play table"],
+      ["Scatolia (Fecal smearing)", ["Community", "Store / Community setting", "Outdoors", "Playground"], "Planned Ignoring"],
+      ["NET (Natural Environment Teaching)", ["worksheets and crayons", "whiteboard and dry-erase markers", "a token board"]],
       ["Vehicle / Transport", "Tactical Break"]
     ],
     "Toxic_Triads": [
@@ -312,7 +313,7 @@
       [["Navigated Parking Lot Safely", "Practiced safety crossing"],["Bedroom", "Living room", "Kitchen", "Bathroom / Restroom", "Therapy room", "Sensory room", "Dining room"]],
       ["a tablet app",["Stringing beads", "Using a pencil grip", "Cutting with scissors", "Catching a ball", "Jumping with two feet"]],
       ["Edibles", ["Brushing teeth", "household cleaning supplies", "kinetic sand", "playdough and molds", "water play table"]],
-      ["Headache",["interactive videos", "iPad / Tablet", "a tablet app", "music player", "Music / Videos", "Technology"]],
+      ["Headache",["interactive videos", "iPad / Tablet", "a tablet app", "music player", "Music / Videos", "Technology"]]
     ],
     "Health_and_Safety_Constraints": [
       ["Dental pain",["Eating a variety of foods", "Brushing teeth", "Edibles"]],
