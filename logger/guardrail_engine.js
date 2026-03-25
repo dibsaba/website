@@ -21,11 +21,13 @@ export default class GuardrailEngine {
         
         // 1. Build category map for 'CAT:' tags
         const categoryMap = {};
-        const parentMap = {}; // <--- NEW: Stores the full list of items for a parent object
+        const parentMap = {};
         
         if (schemaData) {
             for (const key in schemaData) {
                 const field = schemaData[key];
+                
+                // 1. Handle nested objects (like Specific_Target, Specific_Topography)
                 if (typeof field === 'object' && !Array.isArray(field)) {
                     let topLevelItems =[];
                     for (const cat in field) {
@@ -33,7 +35,12 @@ export default class GuardrailEngine {
                         topLevelItems.push(...field[cat]);
                     }
                     categoryMap[`CAT:${key}`] = topLevelItems;
-                    parentMap[key] = topLevelItems; // <--- NEW
+                    parentMap[key] = topLevelItems; 
+                } 
+                // 2. NEW: Handle flat top-level arrays (like Deescalation_Time, Target_Behaviors)
+                else if (Array.isArray(field)) {
+                    categoryMap[`CAT:${key}`] = field;
+                    parentMap[key] = field;
                 }
             }
         }

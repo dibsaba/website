@@ -315,6 +315,11 @@
       ["readily responding to instructions",["engaging in crying / vocal protests", "avoiding eye contact / turning away", "engaging in pacing / vocal stereotypy", "exhibiting a slowed response time / yawning", "orienting away from speaker", "demonstrating a high rate of movement"]],
       ["exhibiting a slowed response time / yawning", "demonstrating a high rate of movement"]
     ],
+    "Instructional_Physics":[
+      [["Following worksheet instructions", "Tracing letters", "Writing own name", "Completing patterning items"], "NOT_CAT:Teaching_Materials:Visual & Academic"],
+      ["Fluency Based Instruction",["Fixed Interval", "Variable Interval", "Differential Reinforcement"]],
+      [["Access to Outdoors", "Swinging", "Bubbles"],["Living room", "Bedroom", "Kitchen", "Bathroom / Restroom", "Classroom", "Sensory room"]]
+    ]
     "Intervention_Physics": [
       ["Overcorrection (Positive Practice)",["SIB", "CAT:Self-Injurious Behavior (SIB)", "CAT:Skill_Domains:Medical / Hygiene Tolerance", "CAT:Specific_Topography:Spitting", "CAT:Specific_Target:Coping / Tolerance", "loud, sustained vocal protests", "screaming at a high pitch", "repetitive vocal scripting", "ignoring staff instructions", "passively slumping in chair", "verbally refusing tasks", "Store / Community setting", "Playground", "Community"]],
       ["Stimulus Fading",["Elopement", "SIB", "Aggression", "Pica", "Tantrum", "Vocal Stereotypy", "loud, sustained vocal protests", "repetitive vocal scripting", "screaming at a high pitch"]],
@@ -370,7 +375,9 @@
     ],
     "Operational_Definitions": [
       ["Aggression", "NOT_CAT:Specific_Topography:Aggression"],
+      ["Disrobing", "NOT_CAT:Specific_Topography:Disrobing"],
       ["Elopement", "NOT_CAT:Specific_Topography:Elopement"],
+			["Inappropriate Language", "NOT_CAT:Specific_Topography:Inappropriate Language"],
       ["Non-compliance", "NOT_CAT:Specific_Topography:Non-compliance"],
       ["Pica", "NOT_CAT:Specific_Topography:Pica"],
       ["Property Destruction", "NOT_CAT:Specific_Topography:Property Destruction"],

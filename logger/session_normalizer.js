@@ -37,19 +37,19 @@ export default class SessionNormalizer {
                     Antecedents: b.Antecedents,
                     count: 0,
                     Intensity: new Set(),
-                    Specific_Topography: new Set(),  // <--- FIX: Added Topography
+                    Specific_Topography: new Set(),
                     Interventions: new Set(),
                     Deescalation_Time: new Set(),
-                    Smart_Chips: new Set(),          // <--- FIX: Added Smart Chips
+                    Smart_Chips: new Set(),
                     Custom_Narrative:[]
                 };
             }
             grouped[key].count++;
             if (b.Intensity) grouped[key].Intensity.add(b.Intensity);
-            if (b.Specific_Topography) grouped[key].Specific_Topography.add(b.Specific_Topography); // <--- FIX
+            if (b.Specific_Topography) grouped[key].Specific_Topography.add(b.Specific_Topography);
             if (b.Interventions) b.Interventions.forEach(i => grouped[key].Interventions.add(i));
             if (b.Deescalation_Time) grouped[key].Deescalation_Time.add(b.Deescalation_Time);
-            if (b.Smart_Chips) b.Smart_Chips.forEach(c => grouped[key].Smart_Chips.add(c));         // <--- FIX
+            if (b.Smart_Chips) b.Smart_Chips.forEach(c => grouped[key].Smart_Chips.add(c));
             if (b.Custom_Narrative && b.Custom_Narrative.trim() !== "") grouped[key].Custom_Narrative.push(b.Custom_Narrative);
         });
 
@@ -59,10 +59,10 @@ export default class SessionNormalizer {
             Raw_Count: g.count, 
             Frequency: g.count === 1 ? "an episode of" : "multiple instances of",
             Intensity: Array.from(g.Intensity),
-            Specific_Topography: Array.from(g.Specific_Topography), // <--- FIX
+            Specific_Topography: Array.from(g.Specific_Topography),
             Interventions: Array.from(g.Interventions),
             Deescalation_Time: Array.from(g.Deescalation_Time),
-            Smart_Chips: Array.from(g.Smart_Chips),                 // <--- FIX
+            Smart_Chips: Array.from(g.Smart_Chips),
             Custom_Narrative: g.Custom_Narrative.join(". ")
         }));
     }

@@ -425,6 +425,12 @@
       "punching with closed fists",
       "scratching arms and hands"
     ],
+    "Disrobing":[
+      "removing shoes and socks",
+      "removing shirt",
+      "removing pants or underwear",
+      "stripping completely naked"
+    ],
     "Elopement": [
       "bolting towards the exit door",
       "dodging staff to escape",
@@ -433,6 +439,12 @@
       "pacing near the exit",
       "running away from caregiver",
       "running into the street/parking lot"
+    ],
+    "Inappropriate Language":[
+      "using profanity",
+      "making sexually explicit comments",
+      "making verbally threatening statements",
+      "calling staff or peers derogatory names"
     ],
     "Non-compliance": [
       "ignoring staff instructions",
