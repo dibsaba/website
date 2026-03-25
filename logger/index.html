@@ -763,7 +763,8 @@
                     const safePlaceholder = (f.placeholder || '').replace(/\n/g, '&#10;');
                     w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${safePlaceholder}">${existingVal || ''}</textarea>`;
                 } else if (f.type === 'select') {
-                    let sel = `<select data-id="${f.id}">`;
+                    let sel = `<select data-id="${f.id}" class="required-choice">
+                        <option value="">-- Select --</option>`;
                     optionsArray.forEach(o => {
                         const isSelected = existingVal === o ? 'selected' : '';
                         sel += `<option value="${o}" ${isSelected}>${o}</option>`;
@@ -789,7 +790,7 @@
                     const updateSettings = () => {
                         const allowed = guardrails.getAllowedSettings(locSelect.value);
                         const currentVal = setSelect.value;
-                        setSelect.innerHTML = '';
+                        setSelect.innerHTML = '<option value="">-- Select --</option>';
                         let options = schemaData['Specific_Setting'] ||[];
                         if (allowed) options = options.filter(o => allowed.includes(o));
                         options.forEach(o => {
@@ -818,7 +819,7 @@
                 const setSelect = c.querySelector('select[data-id="Specific_Setting"]');
                 if (setSelect) {
                     const validOptions = guardrails.getAvailableTransitions(currentLocation, currentSetting);
-                    setSelect.innerHTML = '';
+                    setSelect.innerHTML = '<option value="">-- Select --</option>';
                     if (validOptions.length === 0) {
                         setSelect.innerHTML = `<option value="">No valid transition areas</option>`;
                         setSelect.disabled = true;
