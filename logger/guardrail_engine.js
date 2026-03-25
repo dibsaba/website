@@ -21,36 +21,53 @@ export default class GuardrailEngine {
         
         // 1. Build category map for 'CAT:' tags
         const categoryMap = {};
-				if (schemaData) {
-						for (const key in schemaData) {
-								const field = schemaData[key];
-								if (typeof field === 'object' && !Array.isArray(field)) {
-										let topLevelItems = []; // <--- NEW
-										for (const cat in field) {
-												categoryMap[`CAT:${cat}`] = field[cat];
-												topLevelItems.push(...field[cat]); // <--- NEW
-										}
-										// Add the parent object itself (e.g., CAT:Caregiver_Response)
-										categoryMap[`CAT:${key}`] = topLevelItems; // <--- NEW
-								}
-						}
-				}
+        const parentMap = {}; // <--- NEW: Stores the full list of items for a parent object
+        
+        if (schemaData) {
+            for (const key in schemaData) {
+                const field = schemaData[key];
+                if (typeof field === 'object' && !Array.isArray(field)) {
+                    let topLevelItems =[];
+                    for (const cat in field) {
+                        categoryMap[`CAT:${cat}`] = field[cat];
+                        topLevelItems.push(...field[cat]);
+                    }
+                    categoryMap[`CAT:${key}`] = topLevelItems;
+                    parentMap[key] = topLevelItems; // <--- NEW
+                }
+            }
+        }
 
-        // Helper: Resolves strings, CAT: tags, or nested arrays into flat arrays
+        // Helper: Resolves strings, CAT: tags, NOT_CAT: tags, or nested arrays into flat arrays
         const resolveToSet = (item) => {
-						if (Array.isArray(item)) {
-								return item.flatMap(resolveToSet);
-						} else if (typeof item === 'string' && item.startsWith('CAT:')) {
-								const parts = item.split(':');
-								const catName = parts[parts.length - 1]; 
-								
-								// FIXED: Fallback to the literal string so the rule isn't mathematically wiped out 
-								// if it points to a standard dropdown value instead of a dictionary category.
-								return categoryMap[`CAT:${catName}`] || [catName]; 
-						} else {
-								return [item];
-						}
-				};
+            if (Array.isArray(item)) {
+                return item.flatMap(resolveToSet);
+                
+            // --- NEW: The Inverse Category Operator ---
+            } else if (typeof item === 'string' && item.startsWith('NOT_CAT:')) {
+                // FORMAT: NOT_CAT:ParentField:AllowedCategory (e.g., NOT_CAT:Specific_Topography:Aggression)
+                const parts = item.split(':');
+                if (parts.length === 3) {
+                    const parentName = parts[1];
+                    const allowedCatName = parts[2];
+                    
+                    const allItems = parentMap[parentName] || [];
+                    const allowedItems = categoryMap[`CAT:${allowedCatName}`] ||[];
+                    
+                    // Return all items in the parent category EXCEPT the allowed ones
+                    return allItems.filter(val => !allowedItems.includes(val));
+                }
+                return[];
+            // ------------------------------------------
+                
+            } else if (typeof item === 'string' && item.startsWith('CAT:')) {
+                const parts = item.split(':');
+                const catName = parts[parts.length - 1]; 
+                return categoryMap[`CAT:${catName}`] || [catName]; 
+            } else {
+                return [item];
+            }
+        };
 
         // Cartesian product generator
         const cartesian = (arrays) => {
