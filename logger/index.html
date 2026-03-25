@@ -443,18 +443,6 @@
             c.innerHTML = '';
             const btnSave = document.getElementById('btn-save');
 
-            function validateFormInputs() {
-                let formIsValid = true;
-                c.querySelectorAll('.required-choice').forEach(el => {
-                    if (el.tagName === 'SELECT') {
-                        if (el.value === '') formIsValid = false; 
-                    } else if (el.classList.contains('checkbox-group')) {
-                        if (el.querySelectorAll('input[type="checkbox"]:checked').length === 0) formIsValid = false;
-                    }
-                });
-                btnSave.disabled = !formIsValid;
-            }
-
             function runAllGuardrails() {
                 const allFormChecked = Array.from(c.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
                 const allSelectValues = Array.from(c.querySelectorAll('select')).map(sel => sel.value).filter(v => v && v !== "None selected");
@@ -575,10 +563,36 @@
                         }
                     });
                 });
+                
+                // --- THE ULTIMATE SAVE BUTTON LOCKOUT ---
+                const btnSave = document.getElementById('btn-save');
+                let formIsValid = true;
+                
+                c.querySelectorAll('.required-choice').forEach(el => {
+                    if (el.tagName === 'SELECT') {
+                        if (el.value === '') formIsValid = false; 
+                    } else if (el.classList.contains('checkbox-group')) {
+                        if (el.querySelectorAll('input[type="checkbox"]:checked').length === 0) formIsValid = false;
+                    }
+                });
+
+                if (isDeadlocked) {
+                    btnSave.disabled = true;
+                    btnSave.style.background = 'var(--brand-danger)';
+                    btnSave.innerText = 'Resolve Contradictions to Save';
+                } else if (!formIsValid) {
+                    btnSave.disabled = true;
+                    btnSave.style.background = '';
+                    btnSave.innerText = 'Incomplete Data';
+                } else {
+                    btnSave.disabled = false;
+                    btnSave.style.background = '';
+                    btnSave.innerText = 'Save Data';
+                }
             }
             
-            c.onchange = () => { runAllGuardrails(); validateFormInputs(); };
-            c.oninput = () => validateFormInputs();
+            c.onchange = () => runAllGuardrails();
+            c.oninput = () => runAllGuardrails();
 
             UI_CONFIG[type].forEach(f => {
                 const w = document.createElement('div'); w.className = 'form-field';
@@ -635,7 +649,6 @@
 
                         ddContainer.querySelector('select').addEventListener('change', (e) => {
                             existingVal = e.target.value;
-                            validateFormInputs();
                             runAllGuardrails();
                         });
 
@@ -659,7 +672,6 @@
                                 
                                 existingVal = val;
                                 renderDropdown();
-                                validateFormInputs();
                                 runAllGuardrails();
                             }
                         });
@@ -723,7 +735,6 @@
                                         
                                         renderChips(contextKey);
                                         runAllGuardrails();
-                                        validateFormInputs();
                                     }
                                 }
                             });
@@ -823,7 +834,6 @@
             if (type === 'Behavior_Reduction') setupBehaviorGuardrails(c);
             
             runAllGuardrails();
-            validateFormInputs();
             
             document.getElementById('form-modal').style.display = 'flex';
             document.getElementById('generate-modal').style.display = 'none';

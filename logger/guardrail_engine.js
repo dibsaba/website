@@ -37,9 +37,12 @@ export default class GuardrailEngine {
             if (Array.isArray(item)) {
                 return item.flatMap(resolveToSet);
             } else if (typeof item === 'string' && item.startsWith('CAT:')) {
-                return categoryMap[item] || [];
+                // Fix: Handle formats like "CAT:Specific_Target:Communication" by grabbing the last word
+                const parts = item.split(':');
+                const catName = parts[parts.length - 1]; 
+                return categoryMap[`CAT:${catName}`] || [];
             } else {
-                return[item];
+                return [item];
             }
         };
 
