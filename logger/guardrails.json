@@ -247,25 +247,30 @@
     ],
     "Teaching_Format_Mismatches": [
       [["Backward Chaining", "Forward Chaining", "Total Task Chaining", "Shaping"],["CAT:Academic Readiness", "CAT:Communication", "CAT:Coping / Tolerance", "CAT:Social / Play Skills", "CAT:Executive Functioning"]],
-      ["DTT (Discrete Trial Training)",["CAT:Coping / Tolerance", "CAT:Self-Management", "CAT:Social / Play Skills"]],
-      ["Fluency Based Instruction",["CAT:Coping / Tolerance", "CAT:Self-Management", "Completing toileting routine", "Brushing teeth", "Washing hands", "Dressing independently", "Functional pretend play", "Conversational turn-taking"]],
+      ["DTT (Discrete Trial Training)",["CAT:Coping / Tolerance", "CAT:Self-Management", "CAT:Social / Play Skills", "Tolerating haircuts / nail clipping", "Brushing teeth", "Washing hands", "Dressing independently"]],
+      ["Fluency Based Instruction",["CAT:Coping / Tolerance", "CAT:Self-Management", "CAT:Specific_Target:Daily Living (ADLs)", "CAT:Specific_Target:Motor Skills", "Functional pretend play", "Conversational turn-taking", "Problem-solving a barrier"]],
       ["NET (Natural Environment Teaching)",
       ["Tracing letters", "Writing own name", "Completing patterning items"]],
-      ["Task Analysis", "Conversational turn-taking"]
+      ["Task Analysis", ["CAT:Specific_Target:Coping / Tolerance", "Conversational turn-taking", "Echoic imitation", "Manding for cessation ('Stop'/'No')", "Tacting internal states (Pain/Emotions)", "Intraverbal fill-ins", "Accepting 'No'"]],
+      ["DTT (Discrete Trial Training)", "CAT:Specific_Target:Motor Skills"]
     ],
     "Reinforcement_Physics": [
       ["Continuous",["Access to Outdoors", "Break / Escape", "iPad / Tablet", "Music / Videos", "Swinging", "Mastered", "Fluency", "Spontaneous demonstration", "Independent", "Token Economy / Token Board"]]
     ],
     "Prompting_Physics": [
-      [["Full Physical", "Partial Physical"],["Echoic imitation", "Answering WH- questions", "Conversational turn-taking", "Manding for cessation ('Stop'/'No')", "Tacting internal states (Pain/Emotions)", "Accepting 'No'", "Asking for a break", "Using deep breathing"]],
-      ["Positional",["Echoic imitation", "Conversational turn-taking", "Manding for cessation ('Stop'/'No')", "Using deep breathing", "Gross motor imitation", "Jumping with two feet"]],
+      [["Full Physical", "Partial Physical"],["Echoic imitation", "Answering WH- questions", "Conversational turn-taking", "Manding for cessation ('Stop'/'No')", "Tacting internal states (Pain/Emotions)", "Accepting 'No'", "Asking for a break", "Using deep breathing", "Tolerating loud noises", "Tolerating denied access", "Accepting changes in routine"]],
+      ["Positional",["Echoic imitation", "Conversational turn-taking", "Manding for cessation ('Stop'/'No')", "Using deep breathing", "Gross motor imitation", "Jumping with two feet", "Intraverbal fill-ins", "Tacting internal states (Pain/Emotions)", "Peer greetings", "Writing own name", "Tracing letters", "Using a pencil grip", "Tying shoes"]],
       [["Fluency", "Independent", "Mastered", "Spontaneous demonstration"], ["Prompt dependent", "Required prompt fading"]],
       ["Spontaneous demonstration",["Full Physical", "Gestural", "Modeling", "Partial Physical", "Verbal", "Visual"]],
       ["Field Reduced", ["Independent", "Mastered", "Fluency", "Spontaneous demonstration"]],
       ["Full Physical", "Sustaining visual attention"],
       ["biting directed at the therapist", "Full Physical"],
       ["dodging staff to escape", ["Full Physical", "Partial Physical", "Positional"]],
-      ["Time Delay",["swallowing small objects", "smearing feces on the walls", "banging head against the wall/floor", "gouging own eyes", "biting own hand or arm"]]
+      ["Time Delay",["swallowing small objects", "smearing feces on the walls", "banging head against the wall/floor", "gouging own eyes", "biting own hand or arm"]],
+      ["Incidental Teaching", "Max Prompting"],
+      ["Shaping", "Full Physical"],
+      ["Fluency Based Instruction",["Full Physical", "Partial Physical", "Modeling"]],
+      ["Gestural", ["Echoic imitation", "Intraverbal fill-ins"]]
     ],
     "Material_and_Environment_Mismatches": [
       ["CAT:Academic Readiness",["gross motor obstacle course", "playground equipment", "therapy ball", "water play table", "CAT:Natural Environment"]],
@@ -277,16 +282,21 @@
       ["Bathroom / Restroom", "Caregiver unavailable"],
       [["an AAC device", "augmented communication software", "PECS communication book"],["CAT:Daily Living (ADLs)", "CAT:Motor Skills", "CAT:Vocational"]],
       ["Wiping independently",["Vehicle / Transport", "Outdoors", "Playground", "Living room", "Kitchen", "Dining room", "Classroom", "Hallway / Transition Area", "Store / Community setting"]],["NET (Natural Environment Teaching)", ["animal flashcards", "2D picture cards"]],["DTT (Discrete Trial Training)",["gross motor obstacle course", "playground equipment", "water play table", "therapy ball", "CAT:Natural Environment"]],
-      ["Vehicle / Transport", ["CAT:Toilet Training", "CAT:Medical / Hygiene Tolerance", "therapy ball", "kinetic sand", "magnetic building tiles", "puzzles", "DTT (Discrete Trial Training)", "pacing near the exit"]],
-      ["Bathroom / Restroom",["Music / Videos", "interactive videos", "a tablet app", "Edibles", "Eating a variety of foods", "snack and food items"]],
+      ["Vehicle / Transport", ["CAT:Toilet Training", "CAT:Medical / Hygiene Tolerance", "therapy ball", "kinetic sand", "magnetic building tiles", "puzzles", "DTT (Discrete Trial Training)", "pacing near the exit", "Swinging", "Completing daily chores"]],
+      ["Bathroom / Restroom",["Music / Videos", "interactive videos", "a tablet app", "Edibles", "Eating a variety of foods", "snack and food items", "gross motor obstacle course"]],
       ["Playground", ["worksheets and crayons", "whiteboard and dry-erase markers", "Following worksheet instructions"]],
       ["Scatolia (Fecal smearing)", ["playdough and molds", "kinetic sand", "Drawing / Coloring", "household cleaning supplies"]],
-      ["water play table",["an AAC device", "augmented communication software", "iPad / Tablet", "Music / Videos"]],
+      ["water play table",["an AAC device", "augmented communication software", "iPad / Tablet", "Music / Videos", "a tablet app"]],
       ["Telehealth",["CAT:Toilet Training", "CAT:Medical / Hygiene Tolerance", "Washing hands", "Brushing teeth", "Dressing independently"]],
       ["ripping paper and data sheets",["PECS communication book", "social story books", "worksheets and crayons", "animal flashcards", "a token board"]],
       ["throwing instructional materials", ["iPad / Tablet", "an AAC device", "interactive videos", "music player"]],
       ["hiding under furniture", ["Outdoors", "Playground"]],
-      ["DTT (Discrete Trial Training)", "Store / Community setting"]
+      ["DTT (Discrete Trial Training)", ["Playground", "Store / Community setting"]],
+      ["Incidental Teaching", "worksheets and crayons"],
+      ["NET (Natural Environment Teaching)", "Following worksheet instructions"],
+      ["CAT:Specific_Target:Vocational",["animal flashcards", "playdough and molds", "kinetic sand", "cause-and-effect toys"]],
+      ["Music / Videos", ["Echoic imitation", "Conversational turn-taking", "Intraverbal fill-ins"]],
+      ["Waiting Room", "CAT:Skill_Domains:Daily Living"]
     ],
     "Health_and_Safety_Constraints": [
       ["Dental pain",["Eating a variety of foods", "Brushing teeth", "Edibles"]],
@@ -303,21 +313,32 @@
       ["Ear infection", "headphones for noise cancellation"],
       ["Seizure activity", "therapy ball"],["Dehydration", "gross motor obstacle course"],
       ["Pica", "household cleaning supplies"],["Asthma / Respiratory issues", "Overcorrection (Positive Practice)"],
-      ["Response Cost",["banging head against the wall/floor", "biting own hand or arm", "gouging own eyes"]],
+      ["Response Cost",["banging head against the wall/floor", "biting own hand or arm", "gouging own eyes", "Seizure activity", "Asthma / Respiratory issues", "Illness symptoms", "Ear infection", "Dental pain"]],
       ["Overcorrection (Positive Practice)", "running into the street/parking lot"],
       ["Illness symptoms",["gross motor obstacle course", "Playground", "Catching a ball", "Jumping with two feet"]],
       ["Seizure activity", ["interactive videos", "iPad / Tablet"]],
       ["mouthing non-edible items", "Tokens / Points"],
       ["Pain / Discomfort", "Planned Ignoring"],
-      [["Asthma / Respiratory issues", "Rash / Skin irritation"], "household cleaning supplies"]
+      [["Asthma / Respiratory issues", "Rash / Skin irritation"], "household cleaning supplies"],
+      ["Overcorrection (Positive Practice)", ["Seizure activity", "Lethargy / Fatigue"]],
+      ["Edibles",["CAT:Specific_Topography:Scatolia (Fecal smearing)", "smearing feces on the walls", "smearing feces on the furniture", "licking the floor or walls"]],
+      ["swallowing small objects", "a token board"],
+      ["Planned Ignoring", "Seizure activity"],
+      ["Tickles", "Rash / Skin irritation"],
+      ["Escape Extinction", "Dehydration"]
     ],
     "Intervention_Physics": [
-      ["Overcorrection (Positive Practice)",["loud, sustained vocal protests", "screaming at a high pitch", "repetitive vocal scripting", "ignoring staff instructions", "passively slumping in chair", "verbally refusing tasks"]],
-      ["Stimulus Fading",["Elopement", "SIB", "Aggression", "Pica"]]
+      ["Overcorrection (Positive Practice)",["CAT:Specific_Topography:Spitting", "CAT:Specific_Target:Coping / Tolerance", "loud, sustained vocal protests", "screaming at a high pitch", "repetitive vocal scripting", "ignoring staff instructions", "passively slumping in chair", "verbally refusing tasks"]],
+      ["Stimulus Fading",["Elopement", "SIB", "Aggression", "Pica", "Tantrum", "Vocal Stereotypy", "loud, sustained vocal protests", "repetitive vocal scripting", "screaming at a high pitch"]],
+      ["Errorless Teaching", ["Variable Ratio", "Variable Interval"]],
+      ["NCR (Noncontingent Reinforcement)",["Self-monitoring behavior", "Independent task initiation", "Waiting for 1 minute", "Tolerating denied access"]],
+      ["Token Economy / Token Board", "Sensory Overload"],
+      [["Response Cost", "Overcorrection (Positive Practice)"],["Completing toileting routine", "Eating a variety of foods"]],
+      [["Escape Extinction", "Planned Ignoring"], "CAT:Skill_Domains:Medical / Hygiene Tolerance"]
     ],
     "Expanded_Length_Two":[
       ["Caregiver unavailable", ["CAT:Caregiver_Response", "Caregiver", "Father", "Mother", "Grandparent", "Other family member", "Transitioned to Caregiver safely", "running away from caregiver",
-        "reluctant to separate from caregiver"]],
+        "reluctant to separate from caregiver", "Home"]],
       ["None",["Answered caregiver questions", "Discussed generalization strategies", "Discussed mastered skills", "Modeled intervention", "Reviewed behavior incidents", "Reviewed upcoming session schedule",
         "Provided parent coaching", "Reviewed data graphs with family", "Imitating peer actions", "Initiating peer play", "Parallel play", "Turn-taking with a peer", "Peer greetings", "Peer attention",
         "Sibling Joined Play", "Maintained across therapists", "Sharing preferred items", "Sustaining cooperative play", "Losing a game appropriately", "Discussed upcoming schedule change", "Reviewed IEP goals"]],
@@ -328,12 +349,12 @@
       ["Illness symptoms", "Peer Interaction"],
       ["Access to Outdoors", "Outdoors"],
       ["Reviewed behavior incidents", "NO_BEHAVIOR_LOGGED"],
-      ["Telehealth",["biting directed at the therapist", "Swiped at therapist", "Swept area for hazards", "Required environmental clearing", "Blocked attempt to swallow", "Completed with partial physical prompt", "PECS communication book", "Catching a ball", "Parallel play", "Turn-taking with a peer", "Wiping independently"]],
+      ["Telehealth",["biting directed at the therapist", "Swiped at therapist", "Swept area for hazards", "Required environmental clearing", "Blocked attempt to swallow", "Completed with partial physical prompt", "PECS communication book", "Catching a ball", "Parallel play", "Turn-taking with a peer", "Wiping independently", "Required protective equipment"]],
       ["Echoic imitation", ["PECS communication book", "an AAC device", "augmented communication software", "headphones for noise cancellation"]],
       ["Eating a variety of foods", "Lack of Appetite / Refused meal"],
       ["Independent task initiation", ["Prompt dependent", "Required behavioral momentum"]],
       ["Independent", "Completed with partial physical prompt"],
-      ["Errorless Teaching", ["Failed to generalize", "Response Cost"]],
+      ["Errorless Teaching", ["Failed to generalize", "Inconsistent responding", "Response Cost"]],
       ["Token Economy / Token Board", "Unstructured Time/Automatic"],
       ["Time Delay", "Completed with partial physical prompt"],
       ["Sensory Overload", ["Tolerating loud noises", "interactive videos"]],
@@ -341,7 +362,14 @@
       ["Mastered",["Backward Chaining", "Emerging skill", "Forward Chaining", "Total Task Chaining"]],
       ["DRA (Differential Reinforcement of Alternative Behavior)", "displaying an absence of maladaptive behavior"],
       ["Bathroom / Restroom", "Peer(s)"],
-      ["Mastered with novel stimuli", ["Prompt dependent", "Required prompt fading"]]
+      ["Mastered with novel stimuli", ["Prompt dependent", "Required prompt fading"]],
+      ["headphones for noise cancellation", "Conversational turn-taking"],
+      ["Transitioned to Waiting Room", ["Home", "School", "Community", "Telehealth"]],
+      ["Returned to Class Routine",["Clinic", "Home", "Community", "Telehealth"]],
+      ["Sensory breaks (dark room / quiet)",["Playground", "Outdoors", "Vehicle / Transport"]],
+      ["Brushing teeth", "Store / Community setting"],["Sensory room",["Clocking in and out", "Completing assembly tasks", "Sorting mail or items", "Wiping down tables"]],
+      ["Physical Touch (deep pressure / squeezes)", "Bathroom / Restroom"],
+      ["Task Analysis", "Spontaneous demonstration"]
     ],
     "Global": [
       [["displaying an absence of maladaptive behavior", "readily responding to instructions"], "SCHEMA:Chips_Behavior_Reduction"],
@@ -377,7 +405,9 @@
       ["displaying an absence of maladaptive behavior",["displaying precursor behaviors", "engaging in crying / vocal protests"]],
       [["transitioning smoothly without resistance", "happily running to the next area", "Smooth"],["Required physical guidance to transition", "requiring gentle physical guidance", "dropping to the floor midway", "whining and vocally protesting",
         "requiring a prolonged tactical break", "attempting to elope back to the previous area", "refusing to transition", "Required physical block to prevent exit", "bolting towards the exit door", "leaving the instructional area"]],
-      ["Happy Transition",["engaging in crying / vocal protests", "displaying precursor behaviors", "exhibiting fatigued / slowed responses"]]
+      ["Happy Transition",["engaging in crying / vocal protests", "displaying precursor behaviors", "exhibiting fatigued / slowed responses"]],
+      ["Required physical guidance to transition", "CAT:Transition_Detail:Independent"],
+      [["Errorless Teaching", "Spontaneous demonstration"], "CAT:Client_Affect:Dysregulated / Escalated"]
     ],
     "Initial_Presentation": [
       ["readily responding to instructions",["engaging in crying / vocal protests", "avoiding eye contact / turning away", "engaging in pacing / vocal stereotypy", "exhibiting a slowed response time / yawning", "orienting away from speaker", "demonstrating a high rate of movement"]],
