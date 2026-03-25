@@ -467,7 +467,7 @@
                 if (currentType === 'Behavior_Reduction') hasBehavior = true;
                 if (!hasBehavior) timelineState.push("NO_BEHAVIOR_LOGGED");
                 
-                const globalState =[...allFormChecked, ...allSelectValues, ...activeSchemas];
+                const globalState = [...allFormChecked, ...allSelectValues, ...activeSchemas, ...timelineState];
                 const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
 
                 // Evaluate Dropdowns (Bidirectional)
