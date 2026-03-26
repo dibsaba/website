@@ -1,98 +1,115 @@
 /**
- * @fileoverview GuardrailEngine - Enforces clinical constraints using ACCL (ABA Clinical Constraint Logic).
+ * @fileoverview GuardrailEngine - Enforces clinical constraints using Ontological Inheritance and Compound Logic.
  */
 export default class GuardrailEngine {
     constructor(rulesData, schemaData) {
-        this.sets = rulesData.Sets || {};
         this.rules = rulesData.ACCL_Rules ||[];
         this.domainOverrides = rulesData.Domain_Overrides ||[];
         this.fieldLimits = rulesData.Field_Limits || { default_max: 4 };
         this.locationSettings = rulesData.Location_Settings || null;
         
-        // Preserve legacy overrides so index.html works without modification
+        // Preserve legacy overrides for index.html compatibility
         this.exclusiveChoices = rulesData.Exclusive_Choices ||[
             "Caregiver unavailable", "None", "None reported", "displaying an absence of maladaptive behavior"
         ];
         
-        // Convert Domain Overrides into the format the UI expects for whitelist filtering
         this.functionRules = this.domainOverrides.map(override => ({
             antecedent: override.triggerValue,
             whitelisted_interventions: override.allowed,
             blacklisted_interventions:[] 
         }));
+
+        // Build the Ontological Trait Map (The "IS_A" relationships)
+        this.itemTraits = {};
+        if (rulesData.Traits) {
+            for (const [trait, items] of Object.entries(rulesData.Traits)) {
+                items.forEach(item => {
+                    this.assignTrait(item, trait, schemaData);
+                });
+            }
+        }
     }
 
-    // DSL HELPER: Checks if the state intersects with an ACCL definition (Set name or raw string)
-    hasIntersection(conditionArray, state) {
-        for (const item of conditionArray) {
-            if (this.sets[item]) {
-                // If it's a Set, check if any member of the Set is in the current state
-                if (this.sets[item].some(val => state.includes(val))) return true;
-            } else {
-                // If it's a raw string, check if it's in the current state
-                if (state.includes(item)) return true;
+    // Maps traits to specific items, and dynamically inherits traits from schema categories
+    assignTrait(item, trait, schemaData) {
+        if (!this.itemTraits[item]) this.itemTraits[item] = [];
+        if (!this.itemTraits[item].includes(trait)) this.itemTraits[item].push(trait);
+
+        // Subsumption: If the item is a category in the schema (e.g., "Academic Readiness"),
+        // automatically apply the trait to all of its children (e.g., "Tracing letters").
+        if (schemaData) {
+            for (const key of Object.keys(schemaData)) {
+                if (schemaData[key] && schemaData[key][item] && Array.isArray(schemaData[key][item])) {
+                    schemaData[key][item].forEach(child => {
+                        if (!this.itemTraits[child]) this.itemTraits[child] =[];
+                        if (!this.itemTraits[child].includes(trait)) this.itemTraits[child].push(trait);
+                    });
+                }
+            }
+        }
+    }
+
+    // Evaluates strings or Compound Logic (ALL_OF, ANY_OF, NONE_OF) against the hydrated state
+    evaluateCondition(condition, stateSet) {
+        if (typeof condition === 'string') {
+            return stateSet.has(condition);
+        }
+        if (Array.isArray(condition)) {
+            // Implicit ANY_OF for arrays
+            return condition.some(c => this.evaluateCondition(c, stateSet));
+        }
+        if (typeof condition === 'object') {
+            if (condition.ALL_OF) {
+                return condition.ALL_OF.every(c => this.evaluateCondition(c, stateSet));
+            }
+            if (condition.ANY_OF) {
+                return condition.ANY_OF.some(c => this.evaluateCondition(c, stateSet));
+            }
+            if (condition.NONE_OF) {
+                return condition.NONE_OF.every(c => !this.evaluateCondition(c, stateSet));
             }
         }
         return false;
     }
 
-    // THE CORE ENGINE: Replaces the Cartesian Product "validateSubset"
     validateSubset(fieldId, selectedSubset) {
-        // Evaluate the proposed state against the ACCL Logic
+        // 1. Hydrate the state with Ontological Traits
+        let expandedState = new Set(selectedSubset);
+        selectedSubset.forEach(item => {
+            if (this.itemTraits[item]) {
+                this.itemTraits[item].forEach(trait => expandedState.add(trait));
+            }
+        });
+
+        // 2. Evaluate Axioms
         for (const rule of this.rules) {
-            const hasLeft = this.hasIntersection(rule.left, selectedSubset);
-            
-            // For EXCLUDES and MUTEX operators, if both sides exist, the state is invalid
-            if (rule.op === 'EXCLUDES' || rule.op === 'MUTEX') {
-                const hasRight = this.hasIntersection(rule.right, selectedSubset);
-                if (hasLeft && hasRight) {
-                    return { valid: false, ruleFailed: rule };
+            const leftTrue = this.evaluateCondition(rule.left, expandedState);
+            if (leftTrue) {
+                if (rule.op === 'EXCLUDES' || rule.op === 'MUTEX') {
+                    const rightTrue = this.evaluateCondition(rule.right, expandedState);
+                    if (rightTrue) {
+                        return { valid: false, ruleFailed: rule };
+                    }
+                } else if (rule.op === 'REQUIRES') {
+                    const rightTrue = this.evaluateCondition(rule.right, expandedState);
+                    if (!rightTrue) {
+                        return { valid: false, ruleFailed: rule };
+                    }
                 }
             }
         }
         return { valid: true };
     }
 
-    getRulesForAntecedent(antecedent) {
-        return this.functionRules.find(r => r.antecedent === antecedent) || { whitelisted_interventions: [], blacklisted_interventions:[] };
-    }
-
-    isExclusiveChoice(val) {
-        return this.exclusiveChoices.includes(val);
-    }
-
-    getContradictionActions(triggerCategory, triggerValue) {
-        // UI lockouts for when "None" is selected
-        if (triggerCategory === "Target_Behaviors" && triggerValue === "None") {
-            return[
-                { target_category: "Intensity", action: "disable_all" },
-                { target_category: "Antecedents", action: "disable_all" },
-                { target_category: "Interventions", action: "disable_all" },
-                { target_category: "Deescalation_Time", action: "disable_all" }
-            ];
-        }
+    // --- Legacy Passthrough Methods for UI Compatibility ---
+    getRulesForAntecedent(antecedent) { return this.functionRules.find(r => r.antecedent === antecedent) || { whitelisted_interventions: [], blacklisted_interventions:[] }; }
+    isExclusiveChoice(val) { return this.exclusiveChoices.includes(val); }
+    getContradictionActions(cat, val) { 
+        if (cat === "Target_Behaviors" && val === "None") return[ { target_category: "Intensity", action: "disable_all" }, { target_category: "Antecedents", action: "disable_all" }, { target_category: "Interventions", action: "disable_all" }, { target_category: "Deescalation_Time", action: "disable_all" } ];
         return[];
     }
-
-    getAllowedSettings(location) {
-        if (!this.locationSettings || !this.locationSettings[location]) return null;
-        return this.locationSettings[location];
-    }
-    
-    getAvailableTransitions(currentLocation, currentSetting) {
-        const allowed = this.getAllowedSettings(currentLocation);
-        if (!allowed) return[]; 
-        return allowed.filter(setting => setting !== currentSetting);
-    }
-    
-    getMaxSelections(fieldId) {
-        if (this.fieldLimits[fieldId] !== undefined) {
-            return this.fieldLimits[fieldId];
-        }
-        return this.fieldLimits.default_max || 4;
-    }
-
-    auditSession(timeline) {
-        return[]; // Audits are inherently handled live by the ACCL engine now.
-    }
+    getAllowedSettings(loc) { return this.locationSettings ? this.locationSettings[loc] : null; }
+    getAvailableTransitions(loc, cur) { const allowed = this.getAllowedSettings(loc); return allowed ? allowed.filter(s => s !== cur) :[]; }
+    getMaxSelections(fId) { return this.fieldLimits[fId] !== undefined ? this.fieldLimits[fId] : (this.fieldLimits.default_max || 4); }
+    auditSession() { return[]; }
 }
