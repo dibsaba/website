@@ -5,7 +5,9 @@
     "guardrails/Clinical_Physics.json",
     "guardrails/Cooper_Heron_Heward.json",
     "guardrails/FL_Medicaid.json",
-    "guardrails/Private_Payers.json"
+    "guardrails/Private_Payers.json",
+    "guardrails/Form_Logic.json",
+    "guardrails/Agency_Policies.json"
   ],
   "legacy_config": "guardrails/legacy_config.json"
 }

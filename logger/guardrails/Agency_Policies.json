@@ -1,0 +1,29 @@
+[
+  {
+    "citation": "Agency SOP: Severe Incident Reporting",
+    "rationale": "Any behavior marked as 'Severe' poses a liability risk. The technician must formally acknowledge that an Incident Report was filed before the software will allow them to save the behavior data.",
+    "rule": {
+      "op": "REQUIRES",
+      "left": "Severe",
+      "right": "Incident Report Filed"
+    }
+  },
+  {
+    "citation": "Agency SOP: Scope of Competence for Technicians",
+    "rationale": "RBTs/Technicians are not authorized to provide formal parent coaching, review IEP goals, or alter generalization strategies. A BCBA must be present in the session for these high-level clinical handoff tasks to be validly logged.",
+    "rule": {
+      "op": "REQUIRES",
+      "left": "IS_BCBA_LEVEL_TASK",
+      "right": "BCBA"
+    }
+  },
+  {
+    "citation": "Agency SOP: Mandatory In-Home Caregiver Engagement",
+    "rationale": "To maintain funding and comply with agency standards, all in-home sessions must conclude with active caregiver engagement. The technician cannot leave the handoff blank or select 'Caregiver unavailable' at the end of a home session.",
+    "rule": {
+      "op": "REQUIRES",
+      "left": { "ALL_OF": ["Home", "SCHEMA:Chips_Session_End"] },
+      "right": "IS_CAREGIVER_ENGAGEMENT"
+    }
+  }
+]
