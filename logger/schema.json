@@ -1,15 +1,5 @@
 {
-	"Aggression":[
-      "Attempted to bite",
-      "Easily redirected",
-      "Incident Report Filed",
-      "Preceded by crying",
-      "Required physical blocking",
-      "Required safety distance",
-      "Swiped at therapist",
-      "Threw materials"
-  ],
-  "Antecedents": [
+	"Antecedents": [
     "Attention Diverted",
     "Change in Routine",
     "Demand/Escape",
@@ -46,50 +36,54 @@
     ]
   },
   "Chips_Behavior_Reduction": {
-    "Aggression": [
+    "Aggression":[
       "Attempted to bite",
       "Easily redirected",
+      "Incident Report Filed",
       "Preceded by crying",
       "Required physical blocking",
       "Required safety distance",
       "Swiped at therapist",
       "Threw materials"
     ],
-    "Elopement": [
+    "Elopement":[
       "Bolted towards door",
+      "Incident Report Filed",
       "Left instructional area",
       "Maintained proximity after prompt",
       "Required physical block to prevent exit",
       "Returned independently",
       "Triggered by loud noise"
     ],
-    "Non-compliance": [
+    "Non-compliance":[
       "Completed with partial physical prompt",
       "Required behavioral momentum",
       "Responded to Premack principle",
       "Used wait out procedure"
     ],
-    "Pica": [
+    "Pica":[
       "Blocked attempt to swallow",
       "Successfully traded for edible",
       "Swept area for hazards"
     ],
-    "Property Destruction": [
+    "Property Destruction":[
       "Broke instructional materials",
+      "Incident Report Filed",
       "Occurred during transition",
       "Redirected to safe item",
       "Required environmental clearing",
       "Ripped data sheets",
       "Swept items off desk"
     ],
-    "Self-Injurious Behavior (SIB)": [
+    "Self-Injurious Behavior (SIB)":[
       "Blocked using safety pads",
       "De-escalated via DRA",
+      "Incident Report Filed",
       "Intensity remained mild",
       "Occurred when denied access",
       "Required protective equipment"
     ],
-    "Tantrum": [
+    "Tantrum":[
       "De-escalated within 5 minutes",
       "Required a tactical break",
       "Screaming subsided when ignored",
