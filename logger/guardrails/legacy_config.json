@@ -18,7 +18,7 @@
 				{ "target_category": "Deescalation_Time", "action": "disable_all" }
 			]
 		}
-	]
+	],
   "Domain_Overrides":[
     { "trigger": "Antecedents", "triggerValue": "Attention Diverted", "target": "Interventions", "allowed":["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)", "DRO (Differential Reinforcement of Other Behavior)", "FCT (Functional Communication Training)", "NCR (Noncontingent Reinforcement)", "Planned Ignoring"] },
     { "trigger": "Antecedents", "triggerValue": "Demand/Escape", "target": "Interventions", "allowed":["Behavior Momentum / High-P Sequence", "Blocking", "DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)", "DRO (Differential Reinforcement of Other Behavior)", "Errorless Teaching", "Escape Extinction", "FCT (Functional Communication Training)", "Premack Principle (First/Then)", "Stimulus Fading", "Visual Schedule / Timer"] },
