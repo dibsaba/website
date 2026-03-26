@@ -1,0 +1,29 @@
+[
+  {
+    "citation": "FL AHCA BA Services Coverage Policy (Section 2.2): Educational and Vocational Exclusion",
+    "rationale": "Medicaid prohibits billing ABA for educational tutoring or vocational training. If an academic or vocational target is performed independently without the presence of maladaptive behavior, it is no longer treating a core behavioral deficit and is unbillable.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": { "ANY_OF": ["IS_ACADEMIC", "IS_VOCATIONAL"] },
+      "right": { "ALL_OF": ["IS_INDEPENDENT", "displaying an absence of maladaptive behavior"] }
+    }
+  },
+  {
+    "citation": "FL AHCA BA Services Coverage Policy (Section 2.2): Custodial and Recreational Care Exclusion",
+    "rationale": "Medicaid prohibits billing ABA for respite, babysitting, or purely recreational activities. Operating in a community or play environment completely independently, with no maladaptive behaviors, constitutes recreation/respite.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": { "ANY_OF": ["IS_PUBLIC", "IS_RECREATION_ENVIRONMENT"] },
+      "right": { "ALL_OF":["IS_INDEPENDENT", "displaying an absence of maladaptive behavior", "Continuous"] }
+    }
+  },
+  {
+    "citation": "FL AHCA BA Services Coverage Policy (Section 2.2): Medical/Nursing Services Exclusion",
+    "rationale": "ABA providers cannot bill for nursing or medical care. If a client is experiencing a severe acute medical event (e.g., active seizure, severe respiratory distress), active structured teaching must be suspended until they are stable.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_MEDICAL_CRISIS",
+      "right": { "ANY_OF":["IS_INTENSIVE_TEACHING", "IS_NET_TEACHING", "IS_ACADEMIC"] }
+    }
+  }
+]

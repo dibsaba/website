@@ -47,6 +47,9 @@
   "IS_LOW_AROUSAL":[
     "Fatigued / Withdrawn", "appearing physically fatigued", "lethargic due to poor sleep", "exhibiting a sluggish response time", "exhibiting a slowed response time / yawning", "passively slumping in chair"
   ],
+  "IS_MEDICAL_CRISIS":[
+    "Seizure activity", "Asthma / Respiratory issues"
+  ],
   "IS_MEDICAL_DISTRESS":[
     "Seizure activity", "Asthma / Respiratory issues", "Illness symptoms", "Ear infection", "Dental pain", "Pain / Discomfort", "Headache"
   ],
@@ -65,11 +68,20 @@
   "IS_PROPERTY_DESTRUCTION":[
     "breaking toys", "kicking holes in walls", "overturning tables or chairs", "ripping paper and data sheets", "slamming doors", "sweeping items off the desk", "tearing fabric or clothing", "throwing instructional materials"
   ],
+  "IS_PUBLIC":[
+    "Store / Community setting", "Community"
+  ],
+  "IS_RECREATION_ENVIRONMENT":[
+    "Playground", "Outdoors", "interactive videos", "Music / Videos", "iPad / Tablet", "Swinging", "Bubbles", "water play table"
+  ],
   "IS_REGULATED":[
     "calm and cooperative", "relaxed and engaged", "smiling and energetic", "happily initiating interaction", "High rates of initiation toward the clinician"
   ],
   "IS_REMOTE": ["Telehealth"],
   "IS_SIB":[
     "banging head against the wall/floor", "biting own hand or arm", "biting own lips or cheeks", "gouging own eyes", "hitting head with an open hand", "scratching own skin repeatedly", "skin picking"
+  ],
+  "IS_VOCATIONAL":[
+    "Vocational", "Clocking in and out", "Completing assembly tasks", "Following a visual checklist", "Sorting mail or items", "Wiping down tables"
   ]
 }
