@@ -2,7 +2,7 @@
   "ontology": "guardrails/ontology.json",
   "rule_sources":[
     "guardrails/BACB_Ethics_Code.json",
-    "guardrails/Clinical_Physics.json",
+    "guardrails/clinical_physics.json",
     "guardrails/Cooper_Heron_Heward.json",
     "guardrails/FL_Medicaid.json",
     "guardrails/Private_Payers.json",
