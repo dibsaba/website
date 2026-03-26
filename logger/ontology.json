@@ -32,6 +32,9 @@
   "IS_HIGH_MOBILITY":[
     "gross motor obstacle course", "Playground", "Catching a ball", "Jumping with two feet", "Swinging", "Outdoors"
   ],
+  "IS_HOME_SETTING":[
+    "Home", "Bedroom", "Living room"
+  ],
   "IS_INAPPROPRIATE_LANGUAGE":[
     "Inappropriate Language", "using profanity", "making sexually explicit comments", "making verbally threatening statements", "calling staff or peers derogatory names"
   ],
@@ -78,6 +81,9 @@
     "calm and cooperative", "relaxed and engaged", "smiling and energetic", "happily initiating interaction", "High rates of initiation toward the clinician"
   ],
   "IS_REMOTE": ["Telehealth"],
+  "IS_SCHOOL_SETTING":[
+    "School", "Classroom"
+  ],
   "IS_SIB":[
     "banging head against the wall/floor", "biting own hand or arm", "biting own lips or cheeks", "gouging own eyes", "hitting head with an open hand", "scratching own skin repeatedly", "skin picking"
   ],

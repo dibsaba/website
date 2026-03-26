@@ -4,7 +4,8 @@
     "guardrails/BACB_Ethics_Code.json",
     "guardrails/Clinical_Physics.json",
     "guardrails/Cooper_Heron_Heward.json",
-    "guardrails/FL_Medicaid.json"
+    "guardrails/FL_Medicaid.json",
+    "guardrails/Private_Payers.json"
   ],
   "legacy_config": "guardrails/legacy_config.json"
 }
