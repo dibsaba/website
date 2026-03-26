@@ -13,7 +13,7 @@
     "citation": "Cooper, Heron, & Heward (2020): Continuous Reinforcement (CRF)",
     "rationale": "Continuous reinforcement (FR1) is utilized for skill acquisition (teaching new behaviors). Mastered, independent, and fluent skills must be transitioned to intermittent schedules to prevent satiation and mimic natural environments.",
     "rule": { "op": "EXCLUDES", "left": { "ALL_OF":["IS_INDEPENDENT", "Continuous"] }, "right": "displaying an absence of maladaptive behavior" }
-  }
+  },
   {
     "citation": "Cooper, Heron, & Heward (2020): Discrete Trial Training (DTT)",
     "rationale": "DTT requires a controlled environment to minimize distractions and maximize trial velocity. It cannot be conducted in high-mobility or highly distracting natural environments (e.g., water tables, playgrounds).",
