@@ -1,5 +1,15 @@
 [
   {
+    "citation": "Clinical Physics: Topographical Severity Baseline",
+    "rationale": "High-magnitude topographies (e.g., biting, head-butting, running into streets) inherently carry moderate to severe risk of tissue damage or catastrophic injury. They cannot be logged as 'Mild' intensity.",
+    "rule": { "op": "EXCLUDES", "left": "IS_SEVERE_TOPOGRAPHY", "right": "Mild" }
+  },
+  {
+    "citation": "Clinical Physics: Mutually Exclusive Interventions",
+    "rationale": "It is conceptually impossible to implement a DRO (Reinforcing absence of behavior) and a DRI (Reinforcing an incompatible behavior) simultaneously for a single behavioral episode.",
+    "rule": { "op": "MUTEX", "left":["DRO (Differential Reinforcement of Other Behavior)"], "right": ["DRI (Differential Reinforcement of Incompatible Behavior)"] }
+  },
+  {
     "citation": "Ontological Principle: Definitional Topography Alignment",
     "rationale": "A topographical action must belong to its defining behavioral class. Aggressive topographies cannot be logged under non-aggressive target behaviors.",
     "rule": { "op": "REQUIRES", "left": "IS_AGGRESSION", "right": "Aggression" }
@@ -25,18 +35,18 @@
     "rule": { "op": "REQUIRES", "left": "IS_INAPPROPRIATE_LANGUAGE", "right": "Inappropriate Language" }
   },
   {
-    "citation": "Physiological Law: Arousal Upper and Lower Bounds",
-    "rationale": "A human cannot be simultaneously hyper-aroused/hyperactive and lethargic/fatigued.",
-    "rule": { "op": "EXCLUDES", "left": "IS_HIGH_AROUSAL", "right": "IS_LOW_AROUSAL" }
+    "citation": "Physics: Spatial Limitations",
+    "rationale": "Gross motor activities requiring expansive space cannot be conducted in confined environments like a vehicle.",
+    "rule": { "op": "EXCLUDES", "left": "IS_CONFINED", "right": "IS_HIGH_MOBILITY" }
   },
-  {
+    {
     "citation": "Physiological Law: Affect Upper and Lower Bounds",
     "rationale": "A human nervous system cannot occupy states of high sympathetic arousal (dysregulation) and parasympathetic regulation simultaneously.",
     "rule": { "op": "EXCLUDES", "left": "IS_REGULATED", "right": "IS_DYSREGULATED" }
   },
-  {
-    "citation": "Physics: Spatial Limitations",
-    "rationale": "Gross motor activities requiring expansive space cannot be conducted in confined environments like a vehicle.",
-    "rule": { "op": "EXCLUDES", "left": "IS_CONFINED", "right": "IS_HIGH_MOBILITY" }
-  }
+	{
+    "citation": "Physiological Law: Arousal Upper and Lower Bounds",
+    "rationale": "A human cannot be simultaneously hyper-aroused/hyperactive and lethargic/fatigued.",
+    "rule": { "op": "EXCLUDES", "left": "IS_HIGH_AROUSAL", "right": "IS_LOW_AROUSAL" }
+  },
 ]

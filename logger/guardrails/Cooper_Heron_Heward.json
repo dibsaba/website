@@ -1,15 +1,5 @@
 [
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Prompt Fading & Independence",
-    "rationale": "An operational definition of 'Independent' responding requires the absence of supplemental stimuli (prompts). Logging a prompt alongside an independent marker is a definitional contradiction.",
-    "rule": { "op": "EXCLUDES", "left": "IS_INDEPENDENT", "right":["IS_PHYSICAL_PROMPT", "IS_LESSER_PROMPT", "IS_INTENSIVE_TEACHING", "Prompt dependent", "Required prompt fading"] }
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Shaping and Chaining",
-    "rationale": "Chaining procedures are designed for complex sequences of behaviors (e.g., Daily Living skills). They cannot be applied to discrete academic or communication responses (e.g., identifying a color).",
-    "rule": { "op": "EXCLUDES", "left": "IS_ACADEMIC", "right": "IS_CHAINING_FORMAT" }
-  },
-  {
+	{
     "citation": "Cooper, Heron, & Heward (2020): Continuous Reinforcement (CRF)",
     "rationale": "Continuous reinforcement (FR1) is utilized for skill acquisition (teaching new behaviors). Mastered, independent, and fluent skills must be transitioned to intermittent schedules to prevent satiation and mimic natural environments.",
     "rule": { "op": "EXCLUDES", "left": { "ALL_OF":["IS_INDEPENDENT", "Continuous"] }, "right": "displaying an absence of maladaptive behavior" }
@@ -23,5 +13,20 @@
     "citation": "Cooper, Heron, & Heward (2020): Natural Environment Teaching (NET)",
     "rationale": "Incidental teaching and NET rely on capturing naturally occurring motivation in messy/play environments. Highly structured academic materials (flashcards, worksheets) contradict the definition of NET.",
     "rule": { "op": "EXCLUDES", "left": "IS_NET_TEACHING", "right": "IS_ACADEMIC_MATERIALS" }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Prompt Fading & Independence",
+    "rationale": "An operational definition of 'Independent' responding requires the absence of supplemental stimuli (prompts). Logging a prompt alongside an independent marker is a definitional contradiction.",
+    "rule": { "op": "EXCLUDES", "left": "IS_INDEPENDENT", "right":["IS_PHYSICAL_PROMPT", "IS_LESSER_PROMPT", "IS_INTENSIVE_TEACHING", "Prompt dependent", "Required prompt fading"] }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Reinforcement Thinning",
+    "rationale": "A continuous (FR1) schedule is exclusively used during the initial acquisition of a skill. Once a skill demonstrates independence, mastery, or fluency, the schedule must be thinned to an intermittent rate to mimic natural contingencies.",
+    "rule": { "op": "EXCLUDES", "left": "IS_INDEPENDENT", "right": "Continuous" }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Shaping and Chaining",
+    "rationale": "Chaining procedures are designed for complex sequences of behaviors (e.g., Daily Living skills). They cannot be applied to discrete academic or communication responses (e.g., identifying a color).",
+    "rule": { "op": "EXCLUDES", "left": "IS_DISCRETE", "right": "IS_CHAINING_FORMAT" }
   }
 ]
