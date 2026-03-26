@@ -18,7 +18,7 @@
     "citation": "Cooper, Heron, & Heward (2020): Discrete vs. Chained Tasks",
     "rationale": "Discrete Trial Training (DTT) and Fluency Drills are designed for distinct, rapid responses. They cannot be used as the teaching format for complex, multi-step Daily Living tasks (ADLs) or duration-based Coping behaviors.",
     "rule": { "op": "EXCLUDES", "left": "IS_INTENSIVE_TEACHING", "right": { "ANY_OF": ["Coping / Tolerance", "Daily Living"] } }
-  }
+  },
   {
     "citation": "Cooper, Heron, & Heward (2020): Motivating Operations (Abolishing Operations)",
     "rationale": "A reported lack of appetite functions as an Abolishing Operation (AO), temporarily decreasing the reinforcing effectiveness of food. Edibles cannot be logged as an effective reinforcer during this state.",

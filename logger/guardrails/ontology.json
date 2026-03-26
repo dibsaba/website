@@ -66,7 +66,7 @@
   "IS_SMART_CHIP_REGULATED":[ "Happy Transition", "Quick Control", "Highly Motivated", "Paired w/ Toys" ],
   "IS_SMOOTH_TRANSITION":[ "happily running to the next area", "transitioning smoothly without resistance", "Transitioned smoothly and independently", "Smooth" ],
   "IS_SPONTANEOUS": [ "Spontaneous demonstration" ],
-  "IS_TOILETING_ADL":["Completing toileting routine", "Wiping independently", "Scatolia (Fecal smearing)"]
+  "IS_TOILETING_ADL":["Completing toileting routine", "Wiping independently", "Scatolia (Fecal smearing)"],
   "IS_TOKEN_ECONOMY": [ "Token Economy", "Token Economy / Token Board" ],
   "IS_TOKEN_MATERIAL": [ "a token board", "Tokens / Points" ],
   "IS_VOCAL_VERBAL_TARGET":[ "Echoic imitation", "Conversational turn-taking", "Answering WH- questions", "Intraverbal fill-ins", "Manding for cessation ('Stop'/'No')", "Tacting internal states (Pain/Emotions)" ],
