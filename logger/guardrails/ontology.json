@@ -29,14 +29,23 @@
   "IS_CAREGIVER_UNAVAILABLE":[
     "Caregiver unavailable", "None"
   ],
+  "IS_CHAINED":[
+    "Daily Living (ADLs)", "Vocational"
+  ],
   "IS_CHAINING_FORMAT":[
     "Backward Chaining", "Forward Chaining", "Total Task Chaining", "Shaping"
   ],
   "IS_CONFINED":[
     "Vehicle / Transport", "Bathroom / Restroom"
   ],
+  "IS_DISCRETE":[
+    "Academic Readiness", "Communication"
+  ],
   "IS_DYSREGULATED":[
     "agitated and crying", "displaying precursor behaviors", "engaging in crying / vocal protests", "avoiding eye contact / turning away"
+  ],
+  "IS_EDUCATIONAL":[
+    "Academic Readiness"
   ],
   "IS_ELOPEMENT":[
     "bolting towards the exit door", "dodging staff to escape", "hiding under furniture", "leaving the instructional area", "pacing near the exit", "running away from caregiver", "running into the street/parking lot"
@@ -113,6 +122,12 @@
   ],
   "IS_SIB":[
     "banging head against the wall/floor", "biting own hand or arm", "biting own lips or cheeks", "gouging own eyes", "hitting head with an open hand", "scratching own skin repeatedly", "skin picking"
+  ],
+  "IS_SMART_CHIP_DYSREGULATED":[
+    "Preceded by crying", "Triggered by loud noise", "Triggered by routine change", "Occurred when denied access"
+  ]
+  "IS_SMART_CHIP_REGULATED":[
+    "Happy Transition", "Quick Control", "Highly Motivated", "Paired w/ Toys"
   ],
   "IS_SMOOTH_TRANSITION":[
     "happily running to the next area", "transitioning smoothly without resistance", "Transitioned smoothly and independently", "Smooth"

@@ -454,7 +454,7 @@
                 let hasBehavior = false;
                 
                 timeline.forEach(t => {
-                    if (t.id !== currentEditingId) { // Ignore the event currently being edited
+                    if (t.id !== currentEditingId) { 
                         if (t.type === 'Behavior_Reduction') hasBehavior = true;
                         Object.values(t.data).forEach(val => {
                             if (Array.isArray(val)) timelineState.push(...val);
@@ -466,7 +466,38 @@
                 if (currentType === 'Behavior_Reduction') hasBehavior = true;
                 if (!hasBehavior) timelineState.push("NO_BEHAVIOR_LOGGED");
                 
-                const globalState = [...allFormChecked, ...allSelectValues, ...activeSchemas, ...timelineState];
+                let globalState =[...allFormChecked, ...allSelectValues, ...activeSchemas, ...timelineState];
+
+                // ========================================================================
+                // NEW: AUTO-RESOLVE 'REQUIRES' RULES (The Catch-22 Fix)
+                // ========================================================================
+                let requiresAutoFixed = false;
+                const expandedStateCheck = new Set(globalState);
+                globalState.forEach(item => {
+                    if (guardrails.itemTraits[item]) guardrails.itemTraits[item].forEach(t => expandedStateCheck.add(t));
+                });
+
+                guardrails.rules.forEach(rule => {
+                    if (rule.op === 'REQUIRES' && guardrails.evaluateCondition(rule.left, expandedStateCheck)) {
+                        // If the required right side is a specific string (like "Incident Report Filed")
+                        if (typeof rule.right === 'string' && !expandedStateCheck.has(rule.right)) {
+                            // Look for a checkbox with this value in the DOM
+                            const reqInput = c.querySelector(`input[type="checkbox"][value="${rule.right}"]`);
+                            if (reqInput && !reqInput.checked) {
+                                reqInput.checked = true; // Auto-click it!
+                                requiresAutoFixed = true;
+                            }
+                        }
+                    }
+                });
+
+                if (requiresAutoFixed) {
+                    // If the UI auto-clicked something, restart the validation loop to capture the new state
+                    setTimeout(runAllGuardrails, 0);
+                    return;
+                }
+                // ========================================================================
+
                 const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
 
                 // Evaluate Dropdowns (Bidirectional)

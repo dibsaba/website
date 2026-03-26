@@ -10,6 +10,7 @@
     "guardrails/Form_Logic.json",
     "guardrails/PCM_Safety_Care.json",
     "guardrails/Private_Payers.json",
+    "guardrails/Session_Dynamics.json",
     "guardrails/Skinner_Verbal_Behavior.json"
   ],
   "legacy_config": "guardrails/legacy_config.json"
