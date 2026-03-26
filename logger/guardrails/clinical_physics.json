@@ -6,8 +6,16 @@
   },
   {
     "citation": "Clinical Physics: Mutually Exclusive Interventions",
-    "rationale": "It is conceptually impossible to implement a DRO (Reinforcing absence of behavior) and a DRI (Reinforcing an incompatible behavior) simultaneously for a single behavioral episode.",
-    "rule": { "op": "MUTEX", "left":["DRO (Differential Reinforcement of Other Behavior)"], "right": ["DRI (Differential Reinforcement of Incompatible Behavior)"] }
+    "rationale": "It is conceptually impossible to implement multiple distinct differential reinforcement schedules simultaneously for a single behavioral episode.",
+    "rule": { 
+      "op": "MUTEX_GROUP", 
+      "items":[
+        "DRA (Differential Reinforcement of Alternative Behavior)",
+        "DRI (Differential Reinforcement of Incompatible Behavior)", 
+        "DRO (Differential Reinforcement of Other Behavior)",
+        "FCT (Functional Communication Training)"
+      ] 
+    }
   },
   {
   "citation": "Core Principle: Extinction Congruence",

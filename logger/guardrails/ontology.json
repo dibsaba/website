@@ -1,4 +1,7 @@
 {
+	"DRA (Differential Reinforcement of Alternative Behavior)": [
+    "FCT (Functional Communication Training)"
+  ],
   "IS_AAC_MATERIAL":[
     "an AAC device", "augmented communication software", "iPad / Tablet", "PECS communication book"
   ],
@@ -150,7 +153,7 @@
     "School", "Classroom"
   ],
   "IS_SEVERE_TOPOGRAPHY":[
-    "biting directed at the therapist", "head-butting staff or peers", "punching with closed fists", "running into the street/parking lot", "bolting towards the exit door", "banging head against the wall/floor", "gouging own eyes", "choking", "kicking holes in walls", "smearing feces on the walls", "swallowing small objects"
+    "biting directed at the therapist", "head-butting staff or peers", "punching with closed fists", "running into the street/parking lot", "bolting towards the exit door", "banging head against the wall/floor", "gouging own eyes", "choking", "kicking holes in walls", "smearing feces on the walls", "swallowing small objects", "hair-pulling"
   ],
   "IS_SIB":[
     "banging head against the wall/floor", "biting own hand or arm", "biting own lips or cheeks", "gouging own eyes", "hitting head with an open hand", "scratching own skin repeatedly", "skin picking"

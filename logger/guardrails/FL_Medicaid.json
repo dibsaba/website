@@ -25,5 +25,23 @@
       "left": "IS_MEDICAL_CRISIS",
       "right": { "ANY_OF":["IS_INTENSIVE_TEACHING", "IS_NET_TEACHING", "IS_ACADEMIC"] }
     }
+  },
+  {
+    "citation": "Medicaid/Payer Guidelines: Educational Exclusion",
+    "rationale": "Providing a 'Break / Escape' as a reinforcer for completing Academic targets perfectly mimics standard schoolwork compliance, which violates the strict medical necessity requirement for ABA.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_ACADEMIC",
+      "right": "Break / Escape"
+    }
+  },
+  {
+    "citation": "Medicaid/Payer Guidelines: Educational vs. Medical Necessity",
+    "rationale": "Medicaid prohibits billing ABA for academic tutoring. Running 'Academic Readiness' targets in unstructured play environments (like an obstacle course) using 'Incidental Teaching' is an immediate flag for unbillable educational play.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_ACADEMIC",
+      "right": { "ANY_OF":["IS_NET_ENVIRONMENT", "IS_NET_TEACHING"] }
+    }
   }
 ]

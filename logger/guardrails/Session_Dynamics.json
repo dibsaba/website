@@ -28,5 +28,15 @@
       "left": { "ALL_OF": ["IS_INDEPENDENT", "Continuous"] },
       "right": "displaying an absence of maladaptive behavior"
     }
+  },
+  {
+    "citation": "Clinical Physics: State-Dependent Learning",
+    "rationale": "A client actively experiencing clinical dysregulation or a behavioral crisis cannot logically demonstrate 'Fluency' (peak speed and accuracy) or 'Spontaneous' mastery of skills in the same session without raising data fabrication red flags.",
+    "rule": {
+      "scope": "GLOBAL",
+      "op": "EXCLUDES",
+      "left": { "ANY_OF":["IS_DYSREGULATED", "IS_CRISIS_INDICATOR"] },
+      "right": [ "Fluency", "IS_SPONTANEOUS" ]
+    }
   }
 ]

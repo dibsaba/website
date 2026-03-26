@@ -894,7 +894,10 @@
                 const actions = guardrails.getContradictionActions('Target_Behaviors', val);
                 
                 container.querySelectorAll('select').forEach(el => el.disabled = false);
+                
+                // Ensure the container is ALWAYS flex so it takes up its physical space
                 if (intsGroup) intsGroup.style.display = 'flex';
+                
                 const overrideBtn = container.querySelector('#btn-override-whitelist');
                 if (overrideBtn) overrideBtn.style.display = 'block';
 
@@ -904,7 +907,9 @@
                         if (targetEl) {
                             if (targetEl.tagName === 'SELECT') targetEl.disabled = true;
                             if (targetEl.classList.contains('checkbox-group')) {
-                                targetEl.style.display = 'none';
+                                // Don't hide the group, just visually lock it out
+                                targetEl.style.opacity = '0.3';
+                                targetEl.style.pointerEvents = 'none';
                                 if (overrideBtn) overrideBtn.style.display = 'none';
                             }
                         }
@@ -924,18 +929,34 @@
 
             const applyWhitelist = () => {
                 if (!intsGroup) return;
-                const rules = guardrails.getRulesForAntecedent(antSelect.value);
+                
+                // If no antecedent is selected, treat everything as blacklisted unless overridden
+                const hasAntecedent = antSelect.value && antSelect.value !== "None selected" && antSelect.value !== "";
+                const rules = hasAntecedent ? guardrails.getRulesForAntecedent(antSelect.value) : { whitelisted_interventions: [], blacklisted_interventions:[] };
+                
                 intsGroup.querySelectorAll('.checkbox-pill').forEach(p => {
                     const input = p.querySelector('input');
-                    if(rules.blacklisted_interventions.includes(input.value)) { 
-                        p.style.display = 'none'; input.checked = false; 
+                    
+                    // ALWAYS keep elements in the document flow
+                    p.style.display = 'inline-block'; 
+
+                    let isAllowed = false;
+                    if (hasAntecedent) {
+                        if (rules.whitelisted_interventions.includes(input.value)) isAllowed = true;
+                        if (ovr && !rules.blacklisted_interventions.includes(input.value)) isAllowed = true;
+                    } else {
+                        if (ovr) isAllowed = true;
                     }
-                    else if(rules.whitelisted_interventions.includes(input.value)) {
-                        p.style.display = 'inline-block';
-                    }
-                    else { 
-                        p.style.display = ovr ? 'inline-block' : 'none'; 
-                        if(!ovr) input.checked = false; 
+
+                    if (isAllowed) {
+                        // Reset opacity so the main runAllGuardrails can control it based on max selections
+                        p.style.opacity = '1';
+                        p.style.pointerEvents = 'auto';
+                    } else {
+                        // Visually disable and prevent clicks
+                        p.style.opacity = '0.2';
+                        p.style.pointerEvents = 'none';
+                        if (!ovr) input.checked = false; 
                     }
                 });
             };

@@ -11,7 +11,8 @@
     "Specific_Reinforcers": 3,
     "Interventions": 3,
     "Target_Behaviors": 3,
-    "Prompt_Levels": 2
+    "Prompt_Levels": 2,
+    "Others_Present": 2
   },
   "Location_Settings": {
     "Clinic":["Dining room", "Kitchen", "Outdoors", "Playground", "Sensory room", "Therapy room"],

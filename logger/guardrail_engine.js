@@ -118,12 +118,23 @@ export default class GuardrailEngine {
         });
 
         for (const rule of this.rules) {
-            // NEW LOGIC: Only check GLOBAL rules against the Global validation pass, 
-            // and LOCAL rules against the Field/Local validation pass.
             const isGlobalRule = rule.scope === "GLOBAL";
             if ((validationType === "Global" && !isGlobalRule) || (validationType !== "Global" && isGlobalRule)) {
                 continue; 
             }
+
+            // --- NEW: EXTENDED EXCLUSION OPERATOR (List of any length) ---
+            if (rule.op === 'MUTEX_GROUP') {
+                let matchCount = 0;
+                // Count how many items from the mutually exclusive list are currently in the state
+                for (const item of rule.items) {
+                    if (this.evaluateCondition(item, expandedState)) matchCount++;
+                }
+                // If more than 1 item from the list is true, it's a contradiction
+                if (matchCount > 1) return { valid: false, ruleFailed: rule };
+                continue; 
+            }
+            // -------------------------------------------------------------
 
             const leftTrue = this.evaluateCondition(rule.left, expandedState);
             if (leftTrue) {
