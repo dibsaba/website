@@ -1,8 +1,30 @@
 [
+	{
+    "citation": "Clinical Physics: Gross Motor Constraints",
+    "rationale": "Gross motor targets requiring significant physical movement cannot be taught using sedentary academic materials or tablets.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_GROSS_MOTOR_TARGET",
+      "right": { "ANY_OF":["IS_ACADEMIC_MATERIAL", "IS_AAC_MATERIAL"] }
+    }
+  },
   {
-    "citation": "Clinical Physics: Topographical Severity Baseline",
-    "rationale": "High-magnitude topographies (e.g., biting, head-butting, running into streets) inherently carry moderate to severe risk of tissue damage or catastrophic injury. They cannot be logged as 'Mild' intensity.",
-    "rule": { "op": "EXCLUDES", "left": "IS_SEVERE_TOPOGRAPHY", "right": "Mild" }
+    "citation": "Clinical Physics: Material / Target Congruence",
+    "rationale": "Academic targets require structured visual or academic materials. They cannot be taught using household items, playdough, or playground equipment.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_ACADEMIC",
+      "right": { "ANY_OF":["IS_NATURAL_MATERIAL", "IS_RECREATION_MATERIAL"] }
+    }
+  },
+  {
+    "citation": "Clinical Physics: Material / Target Congruence",
+    "rationale": "Daily living skills (ADLs) must be taught using the natural materials required for the task (e.g., teaching brushing teeth requires a toothbrush, not flashcards).",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_ADL_TARGET",
+      "right": { "ANY_OF":["IS_ACADEMIC_MATERIAL", "IS_RECREATION_MATERIAL"] }
+    }
   },
   {
     "citation": "Clinical Physics: Mutually Exclusive Interventions",
@@ -16,6 +38,11 @@
         "FCT (Functional Communication Training)"
       ] 
     }
+  },
+  {
+    "citation": "Clinical Physics: Topographical Severity Baseline",
+    "rationale": "High-magnitude topographies (e.g., biting, head-butting, running into streets) inherently carry moderate to severe risk of tissue damage or catastrophic injury. They cannot be logged as 'Mild' intensity.",
+    "rule": { "op": "EXCLUDES", "left": "IS_SEVERE_TOPOGRAPHY", "right": "Mild" }
   },
   {
   "citation": "Core Principle: Extinction Congruence",
