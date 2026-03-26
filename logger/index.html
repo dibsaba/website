@@ -466,7 +466,9 @@
                 if (currentType === 'Behavior_Reduction') hasBehavior = true;
                 if (!hasBehavior) timelineState.push("NO_BEHAVIOR_LOGGED");
                 
-                let globalState =[...allFormChecked, ...allSelectValues, ...activeSchemas, ...timelineState];
+                // --- UNIFIED MUTABLE STATES FOR PREVENTATIVE DISABLING ---
+                let localState =[...allFormChecked, ...allSelectValues, ...activeSchemas];
+                let globalState = [...localState, ...timelineState];
 
                 // ========================================================================
                 // AUTO-RESOLVE 'REQUIRES' RULES
@@ -479,9 +481,7 @@
 
                 guardrails.rules.forEach(rule => {
                     if (rule.op === 'REQUIRES' && guardrails.evaluateCondition(rule.left, expandedStateCheck)) {
-                        // If the required right side is a specific string (like "Incident Report Filed")
                         if (typeof rule.right === 'string' && !expandedStateCheck.has(rule.right)) {
-                            // Look for a checkbox with this value in the DOM
                             const reqInput = c.querySelector(`input[type="checkbox"][value="${rule.right}"]`);
                             if (reqInput && !reqInput.checked) {
                                 reqInput.checked = true; // Auto-click it!
@@ -492,7 +492,6 @@
                 });
 
                 if (requiresAutoFixed) {
-                    // If the UI auto-clicked something, restart the validation loop to capture the new state
                     setTimeout(runAllGuardrails, 0);
                     return;
                 }
@@ -502,29 +501,23 @@
 
                 // Evaluate Dropdowns (Bidirectional)
                 c.querySelectorAll('select').forEach(selectEl => {
-                    const fieldId = selectEl.dataset.id; // <-- 1. Get the field ID
+                    const fieldId = selectEl.dataset.id;
                     
-                    // Query ALL options, including those we hid inside spans
                     const allOptions = selectEl.querySelectorAll('option');
                     allOptions.forEach(opt => {
                         if (!opt.value || opt.value === "None selected") return;
                         
-                        // --- GLOBAL VALIDATION ---
                         const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
                         const hypotheticalGlobal = [...stateWithoutSelect, opt.value];
                         const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                         
-                        // --- NEW: LOCAL VALIDATION ---
-                        const localState = [...allFormChecked, ...allSelectValues, ...activeSchemas];
                         const localStateWithoutSelect = localState.filter(v => v !== selectEl.value);
                         const hypotheticalLocal =[...localStateWithoutSelect, opt.value];
                         const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                         
-                        // --- COMBINED CHECK ---
                         if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
                             opt.disabled = true; 
                             
-                            // THE IOS SAFARI HACK: Wrap in display:none span to remove from DOM tree
                             if (opt.parentElement.tagName !== 'SPAN') {
                                 const span = document.createElement('span');
                                 span.style.display = 'none';
@@ -535,13 +528,15 @@
                             
                             if (selectEl.value === opt.value) {
                                 selectEl.value = ""; 
-                                const toxicIndex = globalState.indexOf(opt.value);
-                                if (toxicIndex > -1) globalState.splice(toxicIndex, 1);
+                                // Strip from state so subsequent UI elements evaluate correctly
+                                const toxicGlobal = globalState.indexOf(opt.value);
+                                if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
+                                const toxicLocal = localState.indexOf(opt.value);
+                                if (toxicLocal > -1) localState.splice(toxicLocal, 1);
                             }
                         } else {
                             opt.disabled = false;
                             
-                            // UNWRAP FROM SPAN
                             if (opt.parentElement.tagName === 'SPAN' && opt.parentElement.classList.contains('ios-hide')) {
                                 const span = opt.parentElement;
                                 span.parentElement.insertBefore(opt, span);
@@ -573,10 +568,11 @@
                         if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else {
-                            const hypotheticalLocal = cb.checked ? currentlyChecked : [...currentlyChecked, cb.value];
+                            // NEW: Checkboxes now check the entire local form state, not just their own group
+                            const hypotheticalLocal = cb.checked ? localState :[...localState, cb.value];
                             const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                             
-                            const hypotheticalGlobal = cb.checked ? globalState :[...globalState, cb.value];
+                            const hypotheticalGlobal = cb.checked ? globalState : [...globalState, cb.value];
                             
                             const container = cb.closest('.dynamic-chip-container');
                             if (container && !cb.checked) {
@@ -590,7 +586,14 @@
                             
                             if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
                                 shouldDisable = true;
-                                if (cb.checked) cb.checked = false;
+                                if (cb.checked) {
+                                    cb.checked = false;
+                                    // Strip from state so subsequent checkboxes evaluate correctly
+                                    const toxicGlobal = globalState.indexOf(cb.value);
+                                    if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
+                                    const toxicLocal = localState.indexOf(cb.value);
+                                    if (toxicLocal > -1) localState.splice(toxicLocal, 1);
+                                }
                             }
                         }
 
