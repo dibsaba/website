@@ -1,0 +1,27 @@
+[
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Prompt Fading & Independence",
+    "rationale": "An operational definition of 'Independent' responding requires the absence of supplemental stimuli (prompts). Logging a prompt alongside an independent marker is a definitional contradiction.",
+    "rule": { "op": "EXCLUDES", "left": "IS_INDEPENDENT", "right":["IS_PHYSICAL_PROMPT", "IS_LESSER_PROMPT", "IS_INTENSIVE_TEACHING", "Prompt dependent", "Required prompt fading"] }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Shaping and Chaining",
+    "rationale": "Chaining procedures are designed for complex sequences of behaviors (e.g., Daily Living skills). They cannot be applied to discrete academic or communication responses (e.g., identifying a color).",
+    "rule": { "op": "EXCLUDES", "left": "IS_ACADEMIC", "right": "IS_CHAINING_FORMAT" }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Continuous Reinforcement (CRF)",
+    "rationale": "Continuous reinforcement (FR1) is utilized for skill acquisition (teaching new behaviors). Mastered, independent, and fluent skills must be transitioned to intermittent schedules to prevent satiation and mimic natural environments.",
+    "rule": { "op": "EXCLUDES", "left": { "ALL_OF":["IS_INDEPENDENT", "Continuous"] }, "right": "displaying an absence of maladaptive behavior" }
+  }
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Discrete Trial Training (DTT)",
+    "rationale": "DTT requires a controlled environment to minimize distractions and maximize trial velocity. It cannot be conducted in high-mobility or highly distracting natural environments (e.g., water tables, playgrounds).",
+    "rule": { "op": "EXCLUDES", "left": "IS_INTENSIVE_TEACHING", "right":["IS_NET_ENVIRONMENT", "IS_HIGH_MOBILITY"] }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Natural Environment Teaching (NET)",
+    "rationale": "Incidental teaching and NET rely on capturing naturally occurring motivation in messy/play environments. Highly structured academic materials (flashcards, worksheets) contradict the definition of NET.",
+    "rule": { "op": "EXCLUDES", "left": "IS_NET_TEACHING", "right": "IS_ACADEMIC_MATERIALS" }
+  }
+]

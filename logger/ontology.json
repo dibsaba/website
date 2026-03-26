@@ -1,18 +1,45 @@
 {
-  "IS_MEDICAL_DISTRESS":[
-    "Seizure activity", "Asthma / Respiratory issues", "Illness symptoms", "Ear infection", "Dental pain", "Pain / Discomfort", "Headache"
+  "IS_ACADEMIC":[
+    "Academic Readiness", "Completing patterning items", "Counting 1-10", "Following worksheet instructions", "Identifying colors and shapes", "Identifying numbers and letters", "Tracing letters", "Writing own name"
   ],
-  "IS_BIO_HAZARD":[
-    "Scatolia (Fecal smearing)", "Pica", "Spitting", "Disrobing"
+  "IS_ACADEMIC_MATERIALS":[
+    "whiteboard and dry-erase markers", "Following worksheet instructions", "animal flashcards", "worksheets and crayons", "Tracing letters"
   ],
   "IS_AGGRESSION":[
     "Aggression", "biting directed at the therapist", "hair-pulling", "head-butting staff or peers", "kicking the furniture or staff", "open-handed hitting", "pinching others' skin", "punching with closed fists", "scratching arms and hands"
   ],
+  "IS_AVERSIVE":[
+    "Escape Extinction", "Planned Ignoring", "Response Cost", "Overcorrection (Positive Practice)"
+  ],
+  "IS_BIO_HAZARD":[
+    "Scatolia (Fecal smearing)", "Pica", "Spitting", "Disrobing"
+  ],
+  "IS_CHAINING_FORMAT":[
+    "Backward Chaining", "Forward Chaining", "Total Task Chaining", "Shaping"
+  ],
+  "IS_DYSREGULATED":[
+    "agitated and crying", "displaying precursor behaviors", "engaging in crying / vocal protests", "avoiding eye contact / turning away"
+  ],
+  "IS_ELOPEMENT":[
+    "bolting towards the exit door", "dodging staff to escape", "hiding under furniture", "leaving the instructional area", "pacing near the exit", "running away from caregiver", "running into the street/parking lot"
+  ],
   "IS_INAPPROPRIATE_LANGUAGE":[
     "Inappropriate Language", "using profanity", "making sexually explicit comments", "making verbally threatening statements", "calling staff or peers derogatory names"
   ],
-  "IS_AVERSIVE":[
-    "Escape Extinction", "Planned Ignoring", "Response Cost", "Overcorrection (Positive Practice)"
+  "IS_INTENSIVE_TEACHING":[
+    "Errorless Teaching", "Max Prompting", "DTT (Discrete Trial Training)", "Fluency Based Instruction"
+  ],
+  "IS_LOW_AROUSAL":[
+    "Fatigued / Withdrawn", "appearing physically fatigued", "lethargic due to poor sleep", "exhibiting a sluggish response time", "exhibiting a slowed response time / yawning", "passively slumping in chair"
+  ],
+  "IS_MEDICAL_DISTRESS":[
+    "Seizure activity", "Asthma / Respiratory issues", "Illness symptoms", "Ear infection", "Dental pain", "Pain / Discomfort", "Headache"
+  ],
+  "IS_NET_ENVIRONMENT":[
+    "gross motor obstacle course", "playground equipment", "water play table", "preferred natural toys", "Playground", "Outdoors"
+  ],
+  "IS_NET_TEACHING":[
+    "Incidental Teaching", "NET (Natural Environment Teaching)"
   ],
   "IS_PHYSICAL_INTERVENTION":[
     "Blocking", "Tactical Break", "Required physical block to prevent exit", "Blocked using safety pads"
@@ -20,20 +47,14 @@
   "IS_PHYSICAL_PROMPT":[
     "Full Physical", "Partial Physical", "Gestural", "Positional"
   ],
-  "IS_ACADEMIC":[
-    "Academic Readiness", "Completing patterning items", "Counting 1-10", "Following worksheet instructions", "Identifying colors and shapes", "Identifying numbers and letters", "Tracing letters", "Writing own name"
-  ],
-  "IS_NET_ENVIRONMENT":[
-    "gross motor obstacle course", "playground equipment", "water play table", "preferred natural toys", "Playground", "Outdoors"
-  ],
-  "IS_DYSREGULATED":[
-    "agitated and crying", "displaying precursor behaviors", "engaging in crying / vocal protests", "avoiding eye contact / turning away"
+  "IS_PROPERTY_DESTRUCTION":[
+    "breaking toys", "kicking holes in walls", "overturning tables or chairs", "ripping paper and data sheets", "slamming doors", "sweeping items off the desk", "tearing fabric or clothing", "throwing instructional materials"
   ],
   "IS_REGULATED":[
     "calm and cooperative", "relaxed and engaged", "smiling and energetic", "happily initiating interaction", "High rates of initiation toward the clinician"
   ],
-  "IS_LOW_AROUSAL":[
-    "Fatigued / Withdrawn", "appearing physically fatigued", "lethargic due to poor sleep", "exhibiting a sluggish response time", "exhibiting a slowed response time / yawning", "passively slumping in chair"
-  ],
-  "IS_REMOTE": ["Telehealth"]
+  "IS_REMOTE": ["Telehealth"],
+  "IS_SIB":[
+    "banging head against the wall/floor", "biting own hand or arm", "biting own lips or cheeks", "gouging own eyes", "hitting head with an open hand", "scratching own skin repeatedly", "skin picking"
+  ]
 }

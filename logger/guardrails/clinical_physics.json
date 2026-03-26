@@ -1,0 +1,42 @@
+[
+  {
+    "citation": "Ontological Principle: Definitional Topography Alignment",
+    "rationale": "A topographical action must belong to its defining behavioral class. Aggressive topographies cannot be logged under non-aggressive target behaviors.",
+    "rule": { "op": "REQUIRES", "left": "IS_AGGRESSION", "right": "Aggression" }
+  },
+  {
+    "citation": "Ontological Principle: Definitional Topography Alignment",
+    "rationale": "Elopement topographies must be strictly categorized under Elopement.",
+    "rule": { "op": "REQUIRES", "left": "IS_ELOPEMENT", "right": "Elopement" }
+  },
+  {
+    "citation": "Ontological Principle: Definitional Topography Alignment",
+    "rationale": "Property destruction topographies must be strictly categorized under Property Destruction.",
+    "rule": { "op": "REQUIRES", "left": "IS_PROPERTY_DESTRUCTION", "right": "Property Destruction" }
+  },
+  {
+    "citation": "Ontological Principle: Definitional Topography Alignment",
+    "rationale": "Self-injurious topographies must be strictly categorized under SIB.",
+    "rule": { "op": "REQUIRES", "left": "IS_SIB", "right": "SIB" }
+  },
+  {
+    "citation": "Ontological Principle: Definitional Topography Alignment",
+    "rationale": "Verbal/vocal threats or profanity must be categorized strictly under Inappropriate Language.",
+    "rule": { "op": "REQUIRES", "left": "IS_INAPPROPRIATE_LANGUAGE", "right": "Inappropriate Language" }
+  },
+  {
+    "citation": "Physiological Law: Arousal Upper and Lower Bounds",
+    "rationale": "A human cannot be simultaneously hyper-aroused/hyperactive and lethargic/fatigued.",
+    "rule": { "op": "EXCLUDES", "left": "IS_HIGH_AROUSAL", "right": "IS_LOW_AROUSAL" }
+  },
+  {
+    "citation": "Physiological Law: Affect Upper and Lower Bounds",
+    "rationale": "A human nervous system cannot occupy states of high sympathetic arousal (dysregulation) and parasympathetic regulation simultaneously.",
+    "rule": { "op": "EXCLUDES", "left": "IS_REGULATED", "right": "IS_DYSREGULATED" }
+  },
+  {
+    "citation": "Physics: Spatial Limitations",
+    "rationale": "Gross motor activities requiring expansive space cannot be conducted in confined environments like a vehicle.",
+    "rule": { "op": "EXCLUDES", "left": "IS_CONFINED", "right": "IS_HIGH_MOBILITY" }
+  }
+]
