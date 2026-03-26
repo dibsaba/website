@@ -44,12 +44,9 @@ export default class GuardrailEngine {
         this.domainOverrides = rulesData.Domain_Overrides ||[];
         this.fieldLimits = rulesData.Field_Limits || { default_max: 4 };
         this.locationSettings = rulesData.Location_Settings || null;
-        
-        // Preserve legacy overrides for index.html compatibility
-        this.exclusiveChoices = rulesData.Exclusive_Choices ||[
-            "Caregiver unavailable", "None", "None reported", "displaying an absence of maladaptive behavior"
-        ];
-        
+        this.conditionalLimits = rulesData.Conditional_Field_Limits ||[];
+				this.inputConstraints = rulesData.Input_Constraints || { custom_chip_max_words: 8, custom_chip_min_chars: 3 };
+				this.contradictionActions = rulesData.Contradiction_Actions ||[];
         this.functionRules = this.domainOverrides.map(override => ({
             antecedent: override.triggerValue,
             whitelisted_interventions: override.allowed,
@@ -154,11 +151,19 @@ export default class GuardrailEngine {
     getRulesForAntecedent(antecedent) { return this.functionRules.find(r => r.antecedent === antecedent) || { whitelisted_interventions: [], blacklisted_interventions:[] }; }
     isExclusiveChoice(val) { return this.exclusiveChoices.includes(val); }
     getContradictionActions(cat, val) { 
-        if (cat === "Target_Behaviors" && val === "None") return[ { target_category: "Intensity", action: "disable_all" }, { target_category: "Antecedents", action: "disable_all" }, { target_category: "Interventions", action: "disable_all" }, { target_category: "Deescalation_Time", action: "disable_all" } ];
-        return[];
-    }
+				const rule = this.contradictionActions.find(r => r.trigger_category === cat && r.trigger_value === val);
+				return rule ? rule.actions :[];
+		}
     getAllowedSettings(loc) { return this.locationSettings ? this.locationSettings[loc] : null; }
     getAvailableTransitions(loc, cur) { const allowed = this.getAllowedSettings(loc); return allowed ? allowed.filter(s => s !== cur) :[]; }
-    getMaxSelections(fId) { return this.fieldLimits[fId] !== undefined ? this.fieldLimits[fId] : (this.fieldLimits.default_max || 4); }
+    getMaxSelections(fieldId, formState = {}) {
+				let max = this.fieldLimits[fieldId] !== undefined ? this.fieldLimits[fieldId] : (this.fieldLimits.default_max || 4);
+				
+				// Evaluate conditional limits (e.g., if Deescalation_Time === '< 1 minute', Interventions max = 2)
+				const condition = this.conditionalLimits.find(c => c.target_field === fieldId && formState[c.trigger_field] === c.trigger_value);
+				if (condition) max = condition.max_allowed;
+		
+				return max;
+		}
     auditSession() { return[]; }
 }

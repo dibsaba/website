@@ -1,4 +1,14 @@
 [
+  {
+    "citation": "Clinical Physics: Arousal & Intensive Instruction",
+    "rationale": "A highly dysregulated individual is neurologically incapable of engaging in intensive, fast-paced structured teaching (DTT/Errorless).",
+    "rule": {
+      "scope": "GLOBAL",
+      "op": "EXCLUDES",
+      "left": "IS_DYSREGULATED",
+      "right": "IS_INTENSIVE_TEACHING"
+    }
+  },
 	{
     "citation": "Clinical Physics: Gross Motor Constraints",
     "rationale": "Gross motor targets requiring significant physical movement cannot be taught using sedentary academic materials or tablets.",
@@ -6,6 +16,15 @@
       "op": "EXCLUDES",
       "left": "IS_GROSS_MOTOR_TARGET",
       "right": { "ANY_OF":["IS_ACADEMIC_MATERIAL", "IS_AAC_MATERIAL"] }
+    }
+  },
+  {
+    "citation": "Clinical Physics: Intervention Opposites",
+    "rationale": "You cannot provide a reinforcer freely (NCR) while simultaneously withholding it entirely (Extinction) in a single episode.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "NCR (Noncontingent Reinforcement)",
+      "right": { "ANY_OF": ["Planned Ignoring", "Escape Extinction"] }
     }
   },
   {
@@ -40,19 +59,32 @@
     }
   },
   {
-    "citation": "Clinical Physics: Topographical Severity Baseline",
-    "rationale": "High-magnitude topographies (e.g., biting, head-butting, running into streets) inherently carry moderate to severe risk of tissue damage or catastrophic injury. They cannot be logged as 'Mild' intensity.",
-    "rule": { "op": "EXCLUDES", "left": "IS_SEVERE_TOPOGRAPHY", "right": "Mild" }
+    "citation": "Clinical Physics: Severity & Passive Extinction Constraints",
+    "rationale": "Behaviors that threaten bodily harm or life safety (Aggression, SIB, Elopement, Pica) mathematically cannot be classified as 'Mild', nor can they be treated with passive 'Planned Ignoring'.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_IMMINENT_DANGER",
+      "right": { "ANY_OF": ["Mild", "Planned Ignoring"] }
+    }
   },
   {
-  "citation": "Core Principle: Extinction Congruence",
-  "rationale": "Applying attention extinction to escape-maintained behavior reinforces the escape. Applying escape extinction to attention-maintained behavior reinforces the attention.",
-  "rule": {"op": "EXCLUDES", "left": { "ANY_OF": ["IS_ESCAPE_MAINTAINED"] }, "right": "IS_ATTENTION_EXTINCTION"}
+    "citation": "Clinical Physics: Time & Complexity Constraint",
+    "rationale": "Proactive, complex schedules (Token Economies, NCR) cannot be implemented as reactive interventions in under 1 minute.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "< 1 minute",
+      "right": { "ANY_OF":["NCR (Noncontingent Reinforcement)", "Token Economy / Token Board"] }
+    }
+  },
+  {
+		"citation": "Core Principle: Extinction Congruence",
+		"rationale": "Applying attention extinction to escape-maintained behavior reinforces the escape. Applying escape extinction to attention-maintained behavior reinforces the attention.",
+		"rule": {"op": "EXCLUDES", "left": { "ANY_OF": ["IS_ESCAPE_MAINTAINED"] }, "right": "IS_ATTENTION_EXTINCTION"}
 	},
 	{
-  "citation": "Core Principle: Extinction Congruence",
-  "rationale": "You cannot use task-based/escape-extinction strategies for behaviors seeking attention.",
-  "rule": {"op": "EXCLUDES", "left": { "ANY_OF": ["IS_ATTENTION_MAINTAINED"] }, "right": "IS_ESCAPE_EXTINCTION"}
+		"citation": "Core Principle: Extinction Congruence",
+		"rationale": "You cannot use task-based/escape-extinction strategies for behaviors seeking attention.",
+		"rule": {"op": "EXCLUDES", "left": { "ANY_OF": ["IS_ATTENTION_MAINTAINED"] }, "right": "IS_ESCAPE_EXTINCTION"}
 	},
   {
     "citation": "Ontological Principle: Definitional Topography Alignment",

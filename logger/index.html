@@ -967,7 +967,11 @@
             handleContradictions();
             applyWhitelist();
             
-            const timeSelect = container.querySelector('select[data-id="Deescalation_Time"]');
+            const timeSelect = c.querySelector('select[data-id="Deescalation_Time"]');
+						const formState = {
+								"Deescalation_Time": timeSelect ? timeSelect.value : null
+						};
+						let maxAllowed = guardrails.getMaxSelections(fieldId, formState);
             if (timeSelect && intsGroup) {
                 timeSelect.addEventListener('change', () => {
                     const firstCb = intsGroup.querySelector('input[type="checkbox"]');

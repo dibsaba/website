@@ -1,4 +1,24 @@
 {
+	"Conditional_Field_Limits":[
+		{
+			"trigger_field": "Deescalation_Time",
+			"trigger_value": "< 1 minute",
+			"target_field": "Interventions",
+			"max_allowed": 2
+		}
+	],
+	"Contradiction_Actions":[
+		{
+			"trigger_category": "Target_Behaviors",
+			"trigger_value": "None",
+			"actions":[
+				{ "target_category": "Intensity", "action": "disable_all" },
+				{ "target_category": "Antecedents", "action": "disable_all" },
+				{ "target_category": "Interventions", "action": "disable_all" },
+				{ "target_category": "Deescalation_Time", "action": "disable_all" }
+			]
+		}
+	]
   "Domain_Overrides":[
     { "trigger": "Antecedents", "triggerValue": "Attention Diverted", "target": "Interventions", "allowed":["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)", "DRO (Differential Reinforcement of Other Behavior)", "FCT (Functional Communication Training)", "NCR (Noncontingent Reinforcement)", "Planned Ignoring"] },
     { "trigger": "Antecedents", "triggerValue": "Demand/Escape", "target": "Interventions", "allowed":["Behavior Momentum / High-P Sequence", "Blocking", "DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)", "DRO (Differential Reinforcement of Other Behavior)", "Errorless Teaching", "Escape Extinction", "FCT (Functional Communication Training)", "Premack Principle (First/Then)", "Stimulus Fading", "Visual Schedule / Timer"] },
@@ -14,6 +34,10 @@
     "Prompt_Levels": 2,
     "Others_Present": 2
   },
+	"Input_Constraints": {
+		"custom_chip_max_words": 8,
+		"custom_chip_min_chars": 3
+	},
   "Location_Settings": {
     "Clinic":["Dining room", "Kitchen", "Outdoors", "Playground", "Sensory room", "Therapy room"],
     "Home":["Bedroom", "Dining room", "Kitchen", "Living room", "Outdoors", "Playground", "Sensory room", "Therapy room"],
