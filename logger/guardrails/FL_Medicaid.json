@@ -27,6 +27,11 @@
     }
   },
   {
+    "citation": "FL AHCA BA Services Coverage Policy: Developmental Appropriateness",
+    "rationale": "Interventions and materials must be age and developmentally appropriate. Billing for Vocational targets (e.g., assembly tasks, sorting mail) while utilizing infant or toddler toys (e.g., playdough, bubbles) will be flagged as developmentally inappropriate and unbillable.",
+    "rule": { "op": "EXCLUDES", "left": "Vocational", "right": "IS_INFANT_TOY" }
+  }
+  {
     "citation": "Medicaid/Payer Guidelines: Educational Exclusion",
     "rationale": "Providing a 'Break / Escape' as a reinforcer for completing Academic targets perfectly mimics standard schoolwork compliance, which violates the strict medical necessity requirement for ABA.",
     "rule": {

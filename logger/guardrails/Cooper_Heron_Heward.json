@@ -1,4 +1,9 @@
 [
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Automatic Reinforcement",
+    "rationale": "Automatic reinforcement (Sensory) does not rely on the social mediation of others. A Token Economy requires socially mediated delivery and exchange, making it functionally incompatible as a targeted intervention for sensory-maintained behavior.",
+    "rule": { "op": "EXCLUDES", "left": "Unstructured Time/Automatic", "right": "Token Economy / Token Board" }
+  },
 	{
     "citation": "Cooper, Heron, & Heward (2020): Continuous Reinforcement (CRF)",
     "rationale": "Continuous reinforcement (FR1) is utilized for skill acquisition (teaching new behaviors). Mastered, independent, and fluent skills must be transitioned to intermittent schedules to prevent satiation and mimic natural environments.",
@@ -8,6 +13,16 @@
     "citation": "Cooper, Heron, & Heward (2020): Discrete Trial Training (DTT)",
     "rationale": "DTT requires a controlled environment to minimize distractions and maximize trial velocity. It cannot be conducted in high-mobility or highly distracting natural environments (e.g., water tables, playgrounds).",
     "rule": { "op": "EXCLUDES", "left": "IS_INTENSIVE_TEACHING", "right":["IS_NET_ENVIRONMENT", "IS_HIGH_MOBILITY"] }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Discrete vs. Chained Tasks",
+    "rationale": "Discrete Trial Training (DTT) and Fluency Drills are designed for distinct, rapid responses. They cannot be used as the teaching format for complex, multi-step Daily Living tasks (ADLs) or duration-based Coping behaviors.",
+    "rule": { "op": "EXCLUDES", "left": "IS_INTENSIVE_TEACHING", "right": { "ANY_OF": ["Coping / Tolerance", "Daily Living"] } }
+  }
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Motivating Operations (Abolishing Operations)",
+    "rationale": "A reported lack of appetite functions as an Abolishing Operation (AO), temporarily decreasing the reinforcing effectiveness of food. Edibles cannot be logged as an effective reinforcer during this state.",
+    "rule": { "op": "EXCLUDES", "left": "Lack of Appetite / Refused meal", "right": "IS_EDIBLE" }
   },
   {
     "citation": "Cooper, Heron, & Heward (2020): Natural Environment Teaching (NET)",
@@ -25,8 +40,18 @@
     "rule": { "op": "EXCLUDES", "left": "IS_INDEPENDENT", "right": "Continuous" }
   },
   {
+    "citation": "Cooper, Heron, & Heward (2020): Shaping",
+    "rationale": "Shaping is defined as the differential reinforcement of successive approximations toward a terminal behavior. Using a Full Physical prompt forces the terminal behavior, which inherently violates the definition of Shaping.",
+    "rule": { "op": "EXCLUDES", "left": "Shaping", "right": "Full Physical" }
+  },
+  {
     "citation": "Cooper, Heron, & Heward (2020): Shaping and Chaining",
     "rationale": "Chaining procedures are designed for complex sequences of behaviors (e.g., Daily Living skills). They cannot be applied to discrete academic or communication responses (e.g., identifying a color).",
     "rule": { "op": "EXCLUDES", "left": "IS_DISCRETE", "right": "IS_CHAINING_FORMAT" }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Topography of Private Events",
+    "rationale": "Internal states and emotional tolerance (e.g., deep breathing, accepting 'no') are private events that cannot be physically manipulated. Full or Partial Physical prompts cannot be applied to internal coping mechanisms.",
+    "rule": { "op": "EXCLUDES", "left": "IS_INTERNAL_STATE_TARGET", "right": "IS_PHYSICAL_PROMPT" }
   }
 ]

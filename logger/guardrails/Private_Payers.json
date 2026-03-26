@@ -9,6 +9,16 @@
     }
   },
   {
+    "citation": "General Medical Necessity: Exacerbation of Medical Symptoms",
+    "rationale": "Behavioral interventions must not exacerbate known medical distress. Interventions utilizing physical contact, deep pressure, or tickles cannot be implemented if the client is presenting with active rash or skin irritation.",
+    "rule": { "op": "EXCLUDES", "left": "Rash / Skin irritation", "right": "IS_PHYSICAL_CONTACT" }
+  },
+  {
+    "citation": "General Medical Necessity: Infection Control and Biohazards",
+    "rationale": "Standard health and safety guidelines prohibit the delivery of food or oral edibles during active bio-hazard events (Scatolia/Fecal Smearing).",
+    "rule": { "op": "EXCLUDES", "left": "Scatolia (Fecal smearing)", "right": "IS_EDIBLE" }
+  },
+  {
     "citation": "Optum/UHC ABA Guidelines: Safety & Liability in the Home",
     "rationale": "Private payer contracts strictly prohibit RBTs/Technicians from being left alone in a home with a minor (acting as a babysitter). A valid adult caregiver MUST be present in the home at all times for liability and medical necessity purposes.",
     "rule": {
