@@ -36,12 +36,13 @@
     }
   },
   {
-  "citation": "Data Integrity: Unlogged Behaviors",
-  "rationale": "If crisis indicators, extreme dysregulation, or safety management procedures are logged anywhere in the session, a corresponding Behavior form MUST be filled out.",
-  "rule": {
-  	"scope": "GLOBAL",
-    "op": "EXCLUDES",
-    "left": "NO_BEHAVIOR_LOGGED",
-    "right": "IS_CRISIS_INDICATOR"
-  }
+		"citation": "Data Integrity: Unlogged Behaviors",
+		"rationale": "If crisis indicators, extreme dysregulation, or safety management procedures are logged anywhere in the session, a corresponding Behavior form MUST be filled out.",
+		"rule": {
+			"scope": "GLOBAL",
+			"op": "EXCLUDES",
+			"left": "NO_BEHAVIOR_LOGGED",
+			"right": "IS_CRISIS_INDICATOR"
+		}
+	}
 ]

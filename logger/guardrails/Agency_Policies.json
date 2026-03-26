@@ -29,11 +29,12 @@
     }
   },
   {
-  "citation": "Payer Guidelines: Supervision & Liability",
-  "rationale": "A technician cannot be left alone with a client in a home, school, or community setting. If 'None' is selected for Others Present, the location must be a Clinic.",
-  "rule": {
-    "op": "EXCLUDES",
-    "left": "None",
-    "right": "IS_NON_CLINIC"
-  }
+		"citation": "Payer Guidelines: Supervision & Liability",
+		"rationale": "A technician cannot be left alone with a client in a home, school, or community setting. If 'None' is selected for Others Present, the location must be a Clinic.",
+		"rule": {
+			"op": "EXCLUDES",
+			"left": "None",
+			"right": "IS_NON_CLINIC"
+		}
+	}
 ]
