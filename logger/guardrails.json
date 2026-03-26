@@ -1,13 +1,16 @@
 {
   "ontology": "guardrails/ontology.json",
   "rule_sources":[
+  	"guardrails/Agency_Policies.json",
     "guardrails/BACB_Ethics_Code.json",
     "guardrails/clinical_physics.json",
     "guardrails/Cooper_Heron_Heward.json",
+    "guardrails/Data_Congruence.json",
     "guardrails/FL_Medicaid.json",
-    "guardrails/Private_Payers.json",
     "guardrails/Form_Logic.json",
-    "guardrails/Agency_Policies.json"
+    "guardrails/PCM_Safety_Care.json",
+    "guardrails/Private_Payers.json",
+    "guardrails/Skinner_Verbal_Behavior.json"
   ],
   "legacy_config": "guardrails/legacy_config.json"
 }

@@ -1,4 +1,10 @@
 {
+  "IS_AAC_MATERIAL":[
+    "an AAC device", "augmented communication software", "iPad / Tablet", "PECS communication book"
+  ],
+  "IS_AAC_TARGET":[
+    "Using an AAC device"
+  ],
   "IS_ACADEMIC":[
     "Academic Readiness", "Completing patterning items", "Counting 1-10", "Following worksheet instructions", "Identifying colors and shapes", "Identifying numbers and letters", "Tracing letters", "Writing own name"
   ],
@@ -35,6 +41,9 @@
   "IS_ELOPEMENT":[
     "bolting towards the exit door", "dodging staff to escape", "hiding under furniture", "leaving the instructional area", "pacing near the exit", "running away from caregiver", "running into the street/parking lot"
   ],
+  "IS_ERROR_OR_STRUGGLE":[
+    "Field Reduced", "Failed to generalize", "Inconsistent responding", "Required redirection to task", "Prompt dependent", "Required prompt fading", "Emerging skill"
+  ],
   "IS_HIGH_AROUSAL":[
     "demonstrating a high rate of movement", "highly distracted and hyperactive", "agitated and crying", "happily running to the next area", "pacing the room rapidly"
   ],
@@ -44,6 +53,9 @@
   "IS_HOME_SETTING":[
     "Home", "Bedroom", "Living room"
   ],
+  "IS_IMMINENT_DANGER":[
+    "Aggression", "SIB", "Elopement", "Pica", "IS_AGGRESSION", "IS_SIB", "IS_ELOPEMENT"
+  ]
   "IS_INAPPROPRIATE_LANGUAGE":[
     "Inappropriate Language", "using profanity", "making sexually explicit comments", "making verbally threatening statements", "calling staff or peers derogatory names"
   ],
@@ -77,6 +89,9 @@
   "IS_PHYSICAL_PROMPT":[
     "Full Physical", "Partial Physical", "Gestural", "Positional"
   ],
+  "IS_PHYSICAL_SAFETY_MANAGEMENT":[
+    "Required physical blocking", "Blocked using safety pads", "Required physical block to prevent exit", "Blocked attempt to swallow"
+  ],
   "IS_PROPERTY_DESTRUCTION":[
     "breaking toys", "kicking holes in walls", "overturning tables or chairs", "ripping paper and data sheets", "slamming doors", "sweeping items off the desk", "tearing fabric or clothing", "throwing instructional materials"
   ],
@@ -102,11 +117,17 @@
   "IS_SMOOTH_TRANSITION":[
     "happily running to the next area", "transitioning smoothly without resistance", "Transitioned smoothly and independently", "Smooth"
   ],
+  "IS_SPONTANEOUS":[
+    "Spontaneous demonstration"
+  ],
   "IS_TOKEN_ECONOMY":[
     "Token Economy", "Token Economy / Token Board"
   ],
   "IS_TOKEN_MATERIAL":[
     "a token board", "Tokens / Points"
+  ],
+  "IS_VOCAL_VERBAL_TARGET":[
+    "Echoic imitation", "Conversational turn-taking", "Answering WH- questions", "Intraverbal fill-ins", "Manding for cessation ('Stop'/'No')", "Tacting internal states (Pain/Emotions)"
   ],
   "IS_VOCATIONAL":[
     "Vocational", "Clocking in and out", "Completing assembly tasks", "Following a visual checklist", "Sorting mail or items", "Wiping down tables"

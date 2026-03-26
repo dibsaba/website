@@ -1,0 +1,20 @@
+[
+  {
+    "citation": "Professional Crisis Management Association (PCMA): Justification of Restraint",
+    "rationale": "Physical safety management and blocking procedures are highly restrictive and carry legal liability. They can ONLY be utilized in the presence of continuous, imminent danger (Aggression, SIB, Elopement, Pica). Using physical blocks for Non-compliance or Inappropriate Language constitutes unlawful restraint.",
+    "rule": {
+      "op": "REQUIRES",
+      "left": "IS_PHYSICAL_SAFETY_MANAGEMENT",
+      "right": "IS_IMMINENT_DANGER"
+    }
+  },
+  {
+    "citation": "Professional Crisis Management Association (PCMA): Proportionality",
+    "rationale": "Physical interventions must be proportional to the threat. A behavior classified as 'Mild' intensity does not mathematically meet the threshold of imminent danger required to justify physical blocking or safety pads.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_PHYSICAL_SAFETY_MANAGEMENT",
+      "right": "Mild"
+    }
+  }
+]

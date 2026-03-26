@@ -1,0 +1,38 @@
+[
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
+    "rationale": "Data must accurately reflect the performance. An operational definition of 'Independent' or 'Mastered' completely precludes the presence of instructional struggles, prompt dependence, or error-correction strategies like field reduction.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_INDEPENDENT",
+      "right": "IS_ERROR_OR_STRUGGLE"
+    }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Operational Definition of Fluency",
+    "rationale": "Fluency is mathematically defined as accuracy plus speed (short latency). It is a physiological and definitional contradiction to mark a skill as 'Fluent' while simultaneously logging 'sluggish' or 'slowed' response times.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "Fluency",
+      "right": "IS_LOW_AROUSAL"
+    }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
+    "rationale": "Continuous reinforcement (FR1) is exclusively for the acquisition of new skills. Once a skill reaches 'Mastered' status, the schedule must be thinned (intermittent) to maintain the behavior and prevent satiation.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "Mastered",
+      "right": "Continuous"
+    }
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Stimulus Control and Spontaneity",
+    "rationale": "A 'Spontaneous demonstration' means the behavior occurred without an explicit discriminative stimulus or prompt from the technician. It cannot co-occur with any prompt level or intensive teaching format.",
+    "rule": {
+      "op": "EXCLUDES",
+      "left": "IS_SPONTANEOUS",
+      "right":["IS_PHYSICAL_PROMPT", "IS_LESSER_PROMPT", "IS_INTENSIVE_TEACHING", "Max Prompting", "Errorless Teaching"]
+    }
+  }
+]
