@@ -39,7 +39,7 @@
     "rationale": "Gross motor activities requiring expansive space cannot be conducted in confined environments like a vehicle.",
     "rule": { "op": "EXCLUDES", "left": "IS_CONFINED", "right": "IS_HIGH_MOBILITY" }
   },
-    {
+  {
     "citation": "Physiological Law: Affect Upper and Lower Bounds",
     "rationale": "A human nervous system cannot occupy states of high sympathetic arousal (dysregulation) and parasympathetic regulation simultaneously.",
     "rule": { "op": "EXCLUDES", "left": "IS_REGULATED", "right": "IS_DYSREGULATED" }
@@ -48,5 +48,5 @@
     "citation": "Physiological Law: Arousal Upper and Lower Bounds",
     "rationale": "A human cannot be simultaneously hyper-aroused/hyperactive and lethargic/fatigued.",
     "rule": { "op": "EXCLUDES", "left": "IS_HIGH_AROUSAL", "right": "IS_LOW_AROUSAL" }
-  },
+  }
 ]
