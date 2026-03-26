@@ -1,0 +1,39 @@
+{
+  "IS_MEDICAL_DISTRESS":[
+    "Seizure activity", "Asthma / Respiratory issues", "Illness symptoms", "Ear infection", "Dental pain", "Pain / Discomfort", "Headache"
+  ],
+  "IS_BIO_HAZARD":[
+    "Scatolia (Fecal smearing)", "Pica", "Spitting", "Disrobing"
+  ],
+  "IS_AGGRESSION":[
+    "Aggression", "biting directed at the therapist", "hair-pulling", "head-butting staff or peers", "kicking the furniture or staff", "open-handed hitting", "pinching others' skin", "punching with closed fists", "scratching arms and hands"
+  ],
+  "IS_INAPPROPRIATE_LANGUAGE":[
+    "Inappropriate Language", "using profanity", "making sexually explicit comments", "making verbally threatening statements", "calling staff or peers derogatory names"
+  ],
+  "IS_AVERSIVE":[
+    "Escape Extinction", "Planned Ignoring", "Response Cost", "Overcorrection (Positive Practice)"
+  ],
+  "IS_PHYSICAL_INTERVENTION":[
+    "Blocking", "Tactical Break", "Required physical block to prevent exit", "Blocked using safety pads"
+  ],
+  "IS_PHYSICAL_PROMPT":[
+    "Full Physical", "Partial Physical", "Gestural", "Positional"
+  ],
+  "IS_ACADEMIC":[
+    "Academic Readiness", "Completing patterning items", "Counting 1-10", "Following worksheet instructions", "Identifying colors and shapes", "Identifying numbers and letters", "Tracing letters", "Writing own name"
+  ],
+  "IS_NET_ENVIRONMENT":[
+    "gross motor obstacle course", "playground equipment", "water play table", "preferred natural toys", "Playground", "Outdoors"
+  ],
+  "IS_DYSREGULATED":[
+    "agitated and crying", "displaying precursor behaviors", "engaging in crying / vocal protests", "avoiding eye contact / turning away"
+  ],
+  "IS_REGULATED":[
+    "calm and cooperative", "relaxed and engaged", "smiling and energetic", "happily initiating interaction", "High rates of initiation toward the clinician"
+  ],
+  "IS_LOW_AROUSAL":[
+    "Fatigued / Withdrawn", "appearing physically fatigued", "lethargic due to poor sleep", "exhibiting a sluggish response time", "exhibiting a slowed response time / yawning", "passively slumping in chair"
+  ],
+  "IS_REMOTE": ["Telehealth"]
+}

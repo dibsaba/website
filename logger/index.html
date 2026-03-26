@@ -367,7 +367,7 @@
                         fetch('guardrails.json' + cb)
                     ]);
                     schemaData = await sch.json();
-                    guardrails = new GuardrailEngine(await grd.json(), schemaData);
+                    guardrails = await GuardrailEngine.build('guardrails.json', schemaData);
                     const synJson = await syn.json(); synonymsData = synJson.Synonyms || synJson;
                     const tplJson = await tpl.json(); templatesData = tplJson.Templates || tplJson;
                     renderTimeline();

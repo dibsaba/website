@@ -2,6 +2,43 @@
  * @fileoverview GuardrailEngine - Enforces clinical constraints using Ontological Inheritance and Compound Logic.
  */
 export default class GuardrailEngine {
+		// Asynchronous builder that parses the Manifest and merges all the rule files
+    static async build(manifestUrl, schemaData) {
+        // 1. Fetch the manifest
+        const cb = "?v=" + new Date().getTime(); // Cache buster
+        const manifestRes = await fetch(manifestUrl + cb);
+        const manifest = await manifestRes.json();
+        
+        // 2. Fetch the Ontology
+        const ontologyRes = await fetch(manifest.ontology + cb);
+        const ontologyData = await ontologyRes.json();
+        
+        // 3. Fetch all Rule Sources in parallel
+        const rulePromises = manifest.rule_sources.map(src => fetch(src + cb).then(res => res.json()));
+        const ruleFiles = await Promise.all(rulePromises);
+        
+        // 4. Merge all rules into a single array
+        let combinedRules =[];
+        ruleFiles.forEach(file => {
+            // Extract the "rule" object from the citation wrappers
+            const rules = file.map(entry => entry.rule);
+            combinedRules = combinedRules.concat(rules);
+        });
+
+        // 5. Fetch Legacy configs (Field Limits, Domain Overrides, etc.)
+        const legacyRes = await fetch(manifest.legacy_config + cb);
+        const legacyData = await legacyRes.json();
+
+        // 6. Construct the final data object for the Engine
+        const rulesData = {
+            Traits: ontologyData,
+            ACCL_Rules: combinedRules,
+            ...legacyData
+        };
+
+        return new GuardrailEngine(rulesData, schemaData);
+    }
+
     constructor(rulesData, schemaData) {
         this.rules = rulesData.ACCL_Rules ||[];
         this.domainOverrides = rulesData.Domain_Overrides ||[];
