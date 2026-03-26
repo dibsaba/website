@@ -363,8 +363,7 @@
                     const[sch, syn, tpl, grd] = await Promise.all([
                         fetch('schema.json' + cb), 
                         fetch('synonyms.json' + cb), 
-                        fetch('templates.json' + cb), 
-                        fetch('guardrails.json' + cb)
+                        fetch('templates.json' + cb)
                     ]);
                     schemaData = await sch.json();
                     guardrails = await GuardrailEngine.build('guardrails.json', schemaData);

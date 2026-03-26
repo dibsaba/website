@@ -17,17 +17,32 @@
   "IS_CHAINING_FORMAT":[
     "Backward Chaining", "Forward Chaining", "Total Task Chaining", "Shaping"
   ],
+  "IS_CONFINED":[
+    "Vehicle / Transport", "Bathroom / Restroom"
+  ],
   "IS_DYSREGULATED":[
     "agitated and crying", "displaying precursor behaviors", "engaging in crying / vocal protests", "avoiding eye contact / turning away"
   ],
   "IS_ELOPEMENT":[
     "bolting towards the exit door", "dodging staff to escape", "hiding under furniture", "leaving the instructional area", "pacing near the exit", "running away from caregiver", "running into the street/parking lot"
   ],
+  "IS_HIGH_AROUSAL":[
+    "demonstrating a high rate of movement", "highly distracted and hyperactive", "agitated and crying", "happily running to the next area", "pacing the room rapidly"
+  ],
+  "IS_HIGH_MOBILITY":[
+    "gross motor obstacle course", "Playground", "Catching a ball", "Jumping with two feet", "Swinging", "Outdoors"
+  ],
   "IS_INAPPROPRIATE_LANGUAGE":[
     "Inappropriate Language", "using profanity", "making sexually explicit comments", "making verbally threatening statements", "calling staff or peers derogatory names"
   ],
+  "IS_INDEPENDENT":[
+    "Independent", "Mastered", "Fluency", "Spontaneous demonstration", "Transitioned smoothly and independently", "happily running to the next area"
+  ],
   "IS_INTENSIVE_TEACHING":[
     "Errorless Teaching", "Max Prompting", "DTT (Discrete Trial Training)", "Fluency Based Instruction"
+  ],
+  "IS_LESSER_PROMPT":[
+    "Visual", "Verbal", "Modeling", "Time Delay"
   ],
   "IS_LOW_AROUSAL":[
     "Fatigued / Withdrawn", "appearing physically fatigued", "lethargic due to poor sleep", "exhibiting a sluggish response time", "exhibiting a slowed response time / yawning", "passively slumping in chair"
