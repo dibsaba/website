@@ -499,11 +499,70 @@
 
                 const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
 
-                // Evaluate Dropdowns (Bidirectional)
+                // ========================================================================
+                // 1. EVALUATE CHECKBOXES FIRST (So bad clicks uncheck themselves immediately)
+                // ========================================================================
+                c.querySelectorAll('.checkbox-group').forEach(group => {
+                    const fieldId = group.dataset.id;
+                    const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
+                    const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
+
+                    const isAtMax = currentlyChecked.length >= maxAllowed;
+                    const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
+
+                    checkboxes.forEach(cb => {
+                        const pillSpan = cb.nextElementSibling;
+                        let shouldDisable = false;
+
+                        if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
+                        else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
+                        else {
+                            const hypotheticalLocal = cb.checked ? localState : [...localState, cb.value];
+                            const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
+                            
+                            const hypotheticalGlobal = cb.checked ? globalState :[...globalState, cb.value];
+                            
+                            const container = cb.closest('.dynamic-chip-container');
+                            if (container && !cb.checked) {
+                                const schemaTag = `SCHEMA:${container.dataset.schemaRef}`;
+                                if (!hypotheticalGlobal.includes(schemaTag)) {
+                                    hypotheticalGlobal.push(schemaTag);
+                                }
+                            }
+
+                            const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+                            
+                            if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
+                                shouldDisable = true;
+                                if (cb.checked) {
+                                    cb.checked = false; // Uncheck the contradictory item
+                                    // Strip from state so subsequent elements evaluate safely
+                                    const toxicGlobal = globalState.indexOf(cb.value);
+                                    if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
+                                    const toxicLocal = localState.indexOf(cb.value);
+                                    if (toxicLocal > -1) localState.splice(toxicLocal, 1);
+                                }
+                            }
+                        }
+
+                        // Enforce the max limits (e.g. 2 for Others_Present)
+                        if (!cb.checked && !shouldDisable && currentlyChecked.length >= maxAllowed) shouldDisable = true;
+
+                        cb.disabled = shouldDisable;
+                        if(pillSpan) {
+                            pillSpan.style.opacity = shouldDisable ? '0.4' : '1';
+                            pillSpan.style.cursor = shouldDisable ? 'not-allowed' : 'pointer';
+                        }
+                    });
+                });
+
+                // ========================================================================
+                // 2. EVALUATE DROPDOWNS SECOND (Safely against the cleaned state)
+                // ========================================================================
                 c.querySelectorAll('select').forEach(selectEl => {
                     const fieldId = selectEl.dataset.id;
-                    
                     const allOptions = selectEl.querySelectorAll('option');
+                    
                     allOptions.forEach(opt => {
                         if (!opt.value || opt.value === "None selected") return;
                         
@@ -528,7 +587,6 @@
                             
                             if (selectEl.value === opt.value) {
                                 selectEl.value = ""; 
-                                // Strip from state so subsequent UI elements evaluate correctly
                                 const toxicGlobal = globalState.indexOf(opt.value);
                                 if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
                                 const toxicLocal = localState.indexOf(opt.value);
@@ -542,67 +600,6 @@
                                 span.parentElement.insertBefore(opt, span);
                                 span.remove();
                             }
-                        }
-                    });
-                });
-
-                // Evaluate Checkboxes
-                c.querySelectorAll('.checkbox-group').forEach(group => {
-                    const fieldId = group.dataset.id;
-                    const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
-                    const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
-                    
-                    let maxAllowed = guardrails.getMaxSelections(fieldId);
-                    if (fieldId === 'Interventions') {
-                        const timeSelect = c.querySelector('select[data-id="Deescalation_Time"]');
-                        if (timeSelect && timeSelect.value === '< 1 minute') maxAllowed = 2; 
-                    }
-
-                    const isAtMax = currentlyChecked.length >= maxAllowed;
-                    const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
-
-                    checkboxes.forEach(cb => {
-                        const pillSpan = cb.nextElementSibling;
-                        let shouldDisable = false;
-
-                        if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
-                        else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
-                        else {
-                            // NEW: Checkboxes now check the entire local form state, not just their own group
-                            const hypotheticalLocal = cb.checked ? localState :[...localState, cb.value];
-                            const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
-                            
-                            const hypotheticalGlobal = cb.checked ? globalState : [...globalState, cb.value];
-                            
-                            const container = cb.closest('.dynamic-chip-container');
-                            if (container && !cb.checked) {
-                                const schemaTag = `SCHEMA:${container.dataset.schemaRef}`;
-                                if (!hypotheticalGlobal.includes(schemaTag)) {
-                                    hypotheticalGlobal.push(schemaTag);
-                                }
-                            }
-
-                            const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
-                            
-                            if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
-                                shouldDisable = true;
-                                if (cb.checked) {
-                                    cb.checked = false;
-                                    // Strip from state so subsequent checkboxes evaluate correctly
-                                    const toxicGlobal = globalState.indexOf(cb.value);
-                                    if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
-                                    const toxicLocal = localState.indexOf(cb.value);
-                                    if (toxicLocal > -1) localState.splice(toxicLocal, 1);
-                                }
-                            }
-                        }
-
-                        if (!cb.checked && !shouldDisable && currentlyChecked.length >= maxAllowed) shouldDisable = true;
-
-                        cb.disabled = shouldDisable;
-                        if(pillSpan) {
-                            pillSpan.style.opacity = shouldDisable ? '0.4' : '1';
-                            pillSpan.style.cursor = shouldDisable ? 'not-allowed' : 'pointer';
                         }
                     });
                 });
@@ -967,11 +964,7 @@
             handleContradictions();
             applyWhitelist();
             
-            const timeSelect = c.querySelector('select[data-id="Deescalation_Time"]');
-						const formState = {
-								"Deescalation_Time": timeSelect ? timeSelect.value : null
-						};
-						let maxAllowed = guardrails.getMaxSelections(fieldId, formState);
+            const timeSelect = container.querySelector('select[data-id="Deescalation_Time"]');
             if (timeSelect && intsGroup) {
                 timeSelect.addEventListener('change', () => {
                     const firstCb = intsGroup.querySelector('input[type="checkbox"]');

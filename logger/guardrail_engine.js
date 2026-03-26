@@ -116,7 +116,10 @@ export default class GuardrailEngine {
 
         for (const rule of this.rules) {
             const isGlobalRule = rule.scope === "GLOBAL";
-            if ((validationType === "Global" && !isGlobalRule) || (validationType !== "Global" && isGlobalRule)) {
+            
+            // Local form validation skips global timeline rules. 
+            // BUT Global validation evaluates EVERYTHING.
+            if (validationType !== "Global" && isGlobalRule) {
                 continue; 
             }
 
