@@ -30,6 +30,7 @@
     "citation": "TRICARE ACD Operations Manual: Educational Setting Exclusions",
     "rationale": "TRICARE strictly prohibits billing ABA for academic support (school shadowing). If ABA is provided in a school setting, it must strictly target behavioral reduction, social skills, or coping. Targeting 'Academic Readiness' in a school violates the IDEA mandate (which dictates the school must provide academic support).",
     "rule": {
+    	"scope": "GLOBAL",
       "op": "EXCLUDES",
       "left": "IS_SCHOOL_SETTING",
       "right": "IS_ACADEMIC"

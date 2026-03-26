@@ -12,6 +12,7 @@
     "citation": "Agency SOP: Scope of Competence for Technicians",
     "rationale": "RBTs/Technicians are not authorized to provide formal parent coaching, review IEP goals, or alter generalization strategies. A BCBA must be present in the session for these high-level clinical handoff tasks to be validly logged.",
     "rule": {
+    	"scope": "GLOBAL",
       "op": "REQUIRES",
       "left": "IS_BCBA_LEVEL_TASK",
       "right": "BCBA"
@@ -21,9 +22,18 @@
     "citation": "Agency SOP: Mandatory In-Home Caregiver Engagement",
     "rationale": "To maintain funding and comply with agency standards, all in-home sessions must conclude with active caregiver engagement. The technician cannot leave the handoff blank or select 'Caregiver unavailable' at the end of a home session.",
     "rule": {
+	    "scope": "GLOBAL",
       "op": "REQUIRES",
       "left": { "ALL_OF": ["Home", "SCHEMA:Chips_Session_End"] },
       "right": "IS_CAREGIVER_ENGAGEMENT"
     }
+  },
+  {
+  "citation": "Payer Guidelines: Supervision & Liability",
+  "rationale": "A technician cannot be left alone with a client in a home, school, or community setting. If 'None' is selected for Others Present, the location must be a Clinic.",
+  "rule": {
+    "op": "EXCLUDES",
+    "left": "None",
+    "right": "IS_NON_CLINIC"
   }
 ]

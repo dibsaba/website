@@ -14,6 +14,12 @@
   "IS_AGGRESSION":[
     "Aggression", "biting directed at the therapist", "hair-pulling", "head-butting staff or peers", "kicking the furniture or staff", "open-handed hitting", "pinching others' skin", "punching with closed fists", "scratching arms and hands"
   ],
+	"IS_ATTENTION_EXTINCTION":[
+	  "Planned Ignoring", "Time Out"
+	],
+	"IS_ATTENTION_MAINTAINED":[
+		"Attention Diverted", "Peer Interaction"
+	],
   "IS_AVERSIVE":[
     "Escape Extinction", "Planned Ignoring", "Response Cost", "Overcorrection (Positive Practice)"
   ],
@@ -38,6 +44,14 @@
   "IS_CONFINED":[
     "Vehicle / Transport", "Bathroom / Restroom"
   ],
+  "IS_CRISIS_INDICATOR":[
+		"Incident Report Filed", 
+		"IS_DYSREGULATED", 
+		"IS_PHYSICAL_SAFETY_MANAGEMENT", 
+		"Required a tactical break", 
+		"Required environmental clearing",
+		"Preceded by crying"
+	],
   "IS_DISCRETE":[
     "Academic Readiness", "Communication"
   ],
@@ -52,6 +66,12 @@
   ],
   "IS_ERROR_OR_STRUGGLE":[
     "Field Reduced", "Failed to generalize", "Inconsistent responding", "Required redirection to task", "Prompt dependent", "Required prompt fading", "Emerging skill"
+  ],
+  "IS_ESCAPE_EXTINCTION":[
+  	"Escape Extinction", "Premack Principle (First/Then)", "Behavior Momentum / High-P Sequence"
+  ],
+  "IS_ESCAPE_MAINTAINED": [
+  	"Demand/Escape", "Transition"
   ],
   "IS_HIGH_AROUSAL":[
     "demonstrating a high rate of movement", "highly distracted and hyperactive", "agitated and crying", "happily running to the next area", "pacing the room rapidly"
@@ -92,6 +112,12 @@
   "IS_NET_TEACHING":[
     "Incidental Teaching", "NET (Natural Environment Teaching)"
   ],
+  "IS_NON_CLINIC":[
+    "Home", "School", "Community"
+  ],
+  "IS_NON_DANGEROUS_BEHAVIOR":[
+  	"Vocal Stereotypy", "Motor Stereotypy", "Non-compliance", "Inappropriate Language"
+  ],
   "IS_PHYSICAL_INTERVENTION":[
     "Blocking", "Tactical Break", "Required physical block to prevent exit", "Blocked using safety pads"
   ],
@@ -117,6 +143,9 @@
   "IS_RESISTANT_TRANSITION":[
     "attempting to elope back to the previous area", "dropping to the floor midway", "requiring a prolonged tactical break", "whining and vocally protesting", "Engaged in precursor behaviors during transition", "Required physical guidance to transition"
   ],
+  "IS_RESTRICTIVE_PUNISHMENT": [
+    "Response Cost", "Overcorrection (Positive Practice)", "Tactical Break"
+	],
   "IS_SCHOOL_SETTING":[
     "School", "Classroom"
   ],

@@ -109,8 +109,7 @@ export default class GuardrailEngine {
         return false;
     }
 
-    validateSubset(fieldId, selectedSubset) {
-        // 1. Hydrate the state with Ontological Traits
+    validateSubset(validationType, selectedSubset) {
         let expandedState = new Set(selectedSubset);
         selectedSubset.forEach(item => {
             if (this.itemTraits[item]) {
@@ -118,20 +117,22 @@ export default class GuardrailEngine {
             }
         });
 
-        // 2. Evaluate Axioms
         for (const rule of this.rules) {
+            // NEW LOGIC: Only check GLOBAL rules against the Global validation pass, 
+            // and LOCAL rules against the Field/Local validation pass.
+            const isGlobalRule = rule.scope === "GLOBAL";
+            if ((validationType === "Global" && !isGlobalRule) || (validationType !== "Global" && isGlobalRule)) {
+                continue; 
+            }
+
             const leftTrue = this.evaluateCondition(rule.left, expandedState);
             if (leftTrue) {
                 if (rule.op === 'EXCLUDES' || rule.op === 'MUTEX') {
                     const rightTrue = this.evaluateCondition(rule.right, expandedState);
-                    if (rightTrue) {
-                        return { valid: false, ruleFailed: rule };
-                    }
+                    if (rightTrue) return { valid: false, ruleFailed: rule };
                 } else if (rule.op === 'REQUIRES') {
                     const rightTrue = this.evaluateCondition(rule.right, expandedState);
-                    if (!rightTrue) {
-                        return { valid: false, ruleFailed: rule };
-                    }
+                    if (!rightTrue) return { valid: false, ruleFailed: rule };
                 }
             }
         }

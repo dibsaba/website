@@ -502,16 +502,26 @@
 
                 // Evaluate Dropdowns (Bidirectional)
                 c.querySelectorAll('select').forEach(selectEl => {
+                    const fieldId = selectEl.dataset.id; // <-- 1. Get the field ID
+                    
                     // Query ALL options, including those we hid inside spans
                     const allOptions = selectEl.querySelectorAll('option');
                     allOptions.forEach(opt => {
                         if (!opt.value || opt.value === "None selected") return;
                         
+                        // --- GLOBAL VALIDATION ---
                         const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
                         const hypotheticalGlobal = [...stateWithoutSelect, opt.value];
                         const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                         
-                        if (!globalValidation.valid && !isDeadlocked) {
+                        // --- NEW: LOCAL VALIDATION ---
+                        const localState = [...allFormChecked, ...allSelectValues, ...activeSchemas];
+                        const localStateWithoutSelect = localState.filter(v => v !== selectEl.value);
+                        const hypotheticalLocal =[...localStateWithoutSelect, opt.value];
+                        const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
+                        
+                        // --- COMBINED CHECK ---
+                        if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
                             opt.disabled = true; 
                             
                             // THE IOS SAFARI HACK: Wrap in display:none span to remove from DOM tree

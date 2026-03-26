@@ -10,6 +10,16 @@
     "rule": { "op": "MUTEX", "left":["DRO (Differential Reinforcement of Other Behavior)"], "right": ["DRI (Differential Reinforcement of Incompatible Behavior)"] }
   },
   {
+  "citation": "Core Principle: Extinction Congruence",
+  "rationale": "Applying attention extinction to escape-maintained behavior reinforces the escape. Applying escape extinction to attention-maintained behavior reinforces the attention.",
+  "rule": {"op": "EXCLUDES", "left": { "ANY_OF": ["IS_ESCAPE_MAINTAINED"] }, "right": "IS_ATTENTION_EXTINCTION"}
+	},
+	{
+  "citation": "Core Principle: Extinction Congruence",
+  "rationale": "You cannot use task-based/escape-extinction strategies for behaviors seeking attention.",
+  "rule": {"op": "EXCLUDES", "left": { "ANY_OF": ["IS_ATTENTION_MAINTAINED"] }, "right": "IS_ESCAPE_EXTINCTION"}
+	},
+  {
     "citation": "Ontological Principle: Definitional Topography Alignment",
     "rationale": "A topographical action must belong to its defining behavioral class. Aggressive topographies cannot be logged under non-aggressive target behaviors.",
     "rule": { "op": "REQUIRES", "left": "IS_AGGRESSION", "right": "Aggression" }

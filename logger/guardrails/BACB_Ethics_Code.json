@@ -9,15 +9,6 @@
     }
   },
   {
-    "citation": "BACB Ethics Code 4.02: Appropriate Interventions",
-    "rationale": "Interventions must be based on environmental assessment and context. Remote telehealth settings prohibit the use of physical prompting or physical safety management.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_REMOTE",
-      "right":["IS_PHYSICAL_PROMPT", "IS_PHYSICAL_INTERVENTION", "Physical Touch (deep pressure / squeezes)", "Tickles", "Caregiver unavailable", "None"]
-    }
-  },
-  {
     "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
     "rationale": "Behavior analysts must create and maintain accurate documentation of their professional activities. Reporting severe behavior duration as under 1 minute contradicts the definitional reality of severe episodic behavior.",
     "rule": {
@@ -27,12 +18,18 @@
     }
   },
   {
+    "citation": "BACB Ethics Code 4.02: Appropriate Interventions",
+    "rationale": "Interventions must be based on environmental assessment and context. Remote telehealth settings prohibit the use of physical prompting or physical safety management.",
+    "rule": {"scope": "GLOBAL", "op": "EXCLUDES", "left": "IS_REMOTE", "right":["IS_PHYSICAL_PROMPT", "IS_PHYSICAL_INTERVENTION", "Physical Touch (deep pressure / squeezes)", "Tickles", "Caregiver unavailable", "None"]}
+  },
+  {
     "citation": "BACB Ethics Code 4.09: Least Restrictive Procedures",
     "rationale": "Behavior analysts review and appraise the restrictiveness of procedures. A caregiver must be present in public environments to ensure the least restrictive safety management.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": ["Store / Community setting", "Community"],
-      "right": ["Caregiver unavailable"]
-    }
-  }
+    "rule": {"scope": "GLOBAL", "op": "EXCLUDES", "left": ["Store / Community setting", "Community"], "right": ["Caregiver unavailable"]}
+  },
+  {
+  "citation": "BACB Ethics 4.09: Least Restrictive Procedures",
+  "rationale": "Highly restrictive or punishment-based procedures cannot be utilized for behaviors that do not pose an imminent threat to safety or learning.",
+  "rule": {"op": "EXCLUDES", "left": "IS_NON_DANGEROUS_BEHAVIOR", "right": "IS_RESTRICTIVE_PUNISHMENT"}
+	}
 ]
