@@ -1,5 +1,15 @@
 [
   {
+    "citation": "Clinical Physics: Affect and Presentation Congruence",
+    "rationale": "A client actively dysregulated cannot logically demonstrate an absence of maladaptive behavior.",
+    "rule": {
+      "scope": "GLOBAL",
+      "op": "EXCLUDES",
+      "left": "IS_DYSREGULATED",
+      "right": "displaying an absence of maladaptive behavior"
+    }
+  },
+  {
     "citation": "Clinical Physics: Affect and Smart Chip Congruence",
     "rationale": "A client cannot simultaneously be in a state of clinical dysregulation (crying, precursor behaviors, extreme fatigue) and demonstrate states of high regulation (Happy Transition, Quick Control).",
     "rule": {
