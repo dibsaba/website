@@ -828,8 +828,9 @@
                                         customChips[storageKey].push(val);
                                         localStorage.setItem('aba_custom_chips', JSON.stringify(customChips));
                                         
-                                        if (existingVal && !Array.isArray(existingVal)) existingVal =[];
-                                        else if (!existingVal) existingVal =[];
+                                        // FIX 1: Capture current checked state before adding a custom chip
+                                        const currentChecked = Array.from(chipContainer.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
+                                        existingVal = currentChecked;
                                         
                                         if (!existingVal.includes(val)) existingVal.push(val);
                                         
@@ -855,7 +856,13 @@
                             const behaviorSelect = c.querySelector('select[data-id="Target_Behaviors"]');
                             if (behaviorSelect) {
                                 renderChips(behaviorSelect.value);
-                                behaviorSelect.addEventListener('change', (e) => renderChips(e.target.value));
+                                behaviorSelect.addEventListener('change', (e) => {
+                                    // FIX 2: Capture current checked state before the dropdown rebuilds the HTML
+                                    const currentChecked = Array.from(chipContainer.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
+                                    existingVal = currentChecked.length > 0 ? currentChecked : null;
+                                    
+                                    renderChips(e.target.value);
+                                });
                             }
                         }, 0);
                     }
