@@ -521,10 +521,14 @@
                         if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
                         else {
-                            const hypotheticalLocal = cb.checked ? localState : [...localState, cb.value];
+                            // Apply closure to local checkbox validation
+                            const rawHypotheticalLocal = cb.checked ? localState : [...localState, cb.value];
+                            const hypotheticalLocal = guardrails.applyRequiresClosure(rawHypotheticalLocal);
                             const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                             
-                            const hypotheticalGlobal = cb.checked ? globalState :[...globalState, cb.value];
+                            // Apply closure to global checkbox validation
+                            const rawHypotheticalGlobal = cb.checked ? globalState : [...globalState, cb.value];
+                            const hypotheticalGlobal = guardrails.applyRequiresClosure(rawHypotheticalGlobal);
                             
                             const container = cb.closest('.dynamic-chip-container');
                             if (container && !cb.checked) {
@@ -539,23 +543,13 @@
                             if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
                                 shouldDisable = true;
                                 if (cb.checked) {
-                                    cb.checked = false; // Uncheck the contradictory item
-                                    // Strip from state so subsequent elements evaluate safely
+                                    cb.checked = false; 
                                     const toxicGlobal = globalState.indexOf(cb.value);
                                     if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
                                     const toxicLocal = localState.indexOf(cb.value);
                                     if (toxicLocal > -1) localState.splice(toxicLocal, 1);
                                 }
                             }
-                        }
-
-                        // Enforce the max limits (e.g. 2 for Others_Present)
-                        if (!cb.checked && !shouldDisable && currentlyChecked.length >= maxAllowed) shouldDisable = true;
-
-                        cb.disabled = shouldDisable;
-                        if(pillSpan) {
-                            pillSpan.style.opacity = shouldDisable ? '0.4' : '1';
-                            pillSpan.style.cursor = shouldDisable ? 'not-allowed' : 'pointer';
                         }
                     });
                 });
@@ -570,19 +564,16 @@
                     allOptions.forEach(opt => {
                         if (!opt.value || opt.value === "None selected") return;
                         
+                        // Apply closure to global dropdown validation
                         const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
-
-												// 1. Generate the hypothetical state
-												const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
-												
-												// 2. APPLY THE CLOSURE BEFORE VALIDATION
-												const hypotheticalGlobal = guardrails.applyRequiresClosure(rawHypotheticalGlobal);
-												
-												// 3. Now test the closed set!
-												const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+                        const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
+                        const hypotheticalGlobal = guardrails.applyRequiresClosure(rawHypotheticalGlobal);
+                        const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                         
+                        // Apply closure to local dropdown validation
                         const localStateWithoutSelect = localState.filter(v => v !== selectEl.value);
-                        const hypotheticalLocal =[...localStateWithoutSelect, opt.value];
+                        const rawHypotheticalLocal =[...localStateWithoutSelect, opt.value];
+                        const hypotheticalLocal = guardrails.applyRequiresClosure(rawHypotheticalLocal);
                         const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                         
                         if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {

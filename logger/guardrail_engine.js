@@ -145,13 +145,22 @@ export default class GuardrailEngine {
         let closure = new Set(stateArray);
         let addedNew = true;
 
-        // Keep looping until we stop finding new requirements (resolves chained requirements A->B->C)
+        // Keep looping until we stop finding new requirements
         while (addedNew) {
             addedNew = false;
+            
+            // Re-expand traits for the current closure state so trait-based requirements trigger
+            let expandedState = new Set(closure);
+            closure.forEach(item => {
+                if (this.itemTraits[item]) {
+                    this.itemTraits[item].forEach(trait => expandedState.add(trait));
+                }
+            });
+
             for (const rule of this.rules) {
                 if (rule.op === 'REQUIRES') {
-                    // If the Left condition is met, but the Right is missing...
-                    if (this.evaluateCondition(rule.left, closure) && !closure.has(rule.right)) {
+                    // Evaluate against the expanded state, but only add the missing raw requirement
+                    if (this.evaluateCondition(rule.left, expandedState) && !closure.has(rule.right)) {
                         closure.add(rule.right);
                         addedNew = true;
                     }
