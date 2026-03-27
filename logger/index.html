@@ -507,6 +507,10 @@
                     const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
                     const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
 
+										const timeSelect = c.querySelector('select[data-id="Deescalation_Time"]');
+                    const formState = { "Deescalation_Time": timeSelect ? timeSelect.value : null };
+                    let maxAllowed = guardrails.getMaxSelections(fieldId, formState);
+
                     const isAtMax = currentlyChecked.length >= maxAllowed;
                     const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
 
