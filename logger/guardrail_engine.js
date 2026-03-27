@@ -105,12 +105,6 @@ export default class GuardrailEngine {
             ACCL_Rules: combinedRules,
             ...legacyData
         };
-        
-				const rulesData = {
-            Traits: ontologyData,
-            ACCL_Rules: combinedRules,
-            ...legacyData
-        };
 
         const engine = new GuardrailEngine(rulesData, schemaData);
         
