@@ -309,7 +309,7 @@
                 {id:"Intensity", label:"Intensity", type:"select"}, 
                 {id:"Antecedents", label:"Antecedent", type:"select"}, 
                 {id:"Specific_Topography", label:"Specific Topography", type:"dynamic_dropdown", prompt_msg: "Enter exact topography (e.g., 'open-handed hitting'):"},
-                {id:"Interventions", label:"Interventions", type:"multichoice"}, 
+                {id:"Interventions", label:"Recommended Interventions", type:"multichoice"}, 
                 {id:"Deescalation_Time", label:"Time", type:"select"}, 
                 {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"}
             ],
@@ -989,6 +989,13 @@
             overrideBtn.innerText = 'Show All Allowable'; 
             overrideBtn.style.marginTop = '10px';
             let ovr = false; 
+
+            // Grab the heading (label) element for Interventions so we can update its text
+            let intsLabel = null;
+            if (intsGroup && intsGroup.parentNode) {
+                intsLabel = intsGroup.parentNode.querySelector('label.form-label');
+            }
+
             if (intsGroup) intsGroup.parentNode.appendChild(overrideBtn);
 
             const applyWhitelist = () => {
@@ -1025,8 +1032,19 @@
                 });
             };
 
-            antSelect.addEventListener('change', () => { ovr=false; overrideBtn.innerText='Show All Allowable'; applyWhitelist(); });
-            overrideBtn.addEventListener('click', () => { ovr=!ovr; overrideBtn.innerText=ovr?'Hide Non-Whitelisted':'Show All Allowable'; applyWhitelist(); });
+            antSelect.addEventListener('change', () => { 
+                ovr = false; 
+                overrideBtn.innerText = 'Show All Allowable'; 
+                if (intsLabel) intsLabel.innerText = 'Recommended Interventions';
+                applyWhitelist(); 
+            });
+            
+            overrideBtn.addEventListener('click', () => { 
+                ovr = !ovr; 
+                overrideBtn.innerText = ovr ? 'Show Only Recommended' : 'Show All Allowable'; 
+                if (intsLabel) intsLabel.innerText = ovr ? 'Allowable Interventions' : 'Recommended Interventions';
+                applyWhitelist(); 
+            });
             
             handleContradictions();
             applyWhitelist();
