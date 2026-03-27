@@ -551,6 +551,15 @@
                                 }
                             }
                         }
+                        
+                        // Enforce the max limits (e.g. 4 for Initial_Presentation)
+                        if (!cb.checked && !shouldDisable && currentlyChecked.length >= maxAllowed) shouldDisable = true;
+
+                        cb.disabled = shouldDisable;
+                        if(pillSpan) {
+                            pillSpan.style.opacity = shouldDisable ? '0.4' : '1';
+                            pillSpan.style.cursor = shouldDisable ? 'not-allowed' : 'pointer';
+                        }
                     });
                 });
 
