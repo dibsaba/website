@@ -47,6 +47,12 @@ export default class GuardrailEngine {
         this.conditionalLimits = rulesData.Conditional_Field_Limits ||[];
 				this.inputConstraints = rulesData.Input_Constraints || { custom_chip_max_words: 8, custom_chip_min_chars: 3 };
 				this.contradictionActions = rulesData.Contradiction_Actions ||[];
+				this.exclusiveChoices = rulesData.Exclusive_Choices ||[
+            "Caregiver unavailable", 
+            "None", 
+            "None reported", 
+            "displaying an absence of maladaptive behavior"
+        ];
         this.functionRules = this.domainOverrides.map(override => ({
             antecedent: override.triggerValue,
             whitelisted_interventions: override.allowed,
