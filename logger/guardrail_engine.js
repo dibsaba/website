@@ -115,27 +115,79 @@ export default class GuardrailEngine {
     }
 
     constructor(rulesData, schemaData) {
-        this.rules = rulesData.ACCL_Rules ||[];
+        this.rules = rulesData.ACCL_Rules || [];
         this.domainOverrides = rulesData.Domain_Overrides ||[];
         this.fieldLimits = rulesData.Field_Limits || { default_max: 4 };
         this.locationSettings = rulesData.Location_Settings || null;
         this.conditionalLimits = rulesData.Conditional_Field_Limits ||[];
-				this.inputConstraints = rulesData.Input_Constraints || { custom_chip_max_words: 8, custom_chip_min_chars: 3 };
-				this.contradictionActions = rulesData.Contradiction_Actions ||[];
-				this.exclusiveChoices = rulesData.Exclusive_Choices ||[];
+        this.inputConstraints = rulesData.Input_Constraints || { custom_chip_max_words: 8, custom_chip_min_chars: 3 };
+        this.contradictionActions = rulesData.Contradiction_Actions ||[];
+        this.exclusiveChoices = rulesData.Exclusive_Choices ||[];
         this.functionRules = this.domainOverrides.map(override => ({
             antecedent: override.triggerValue,
             whitelisted_interventions: override.allowed,
             blacklisted_interventions:[] 
         }));
 
-        // Build the Ontological Trait Map (The "IS_A" relationships)
         this.itemTraits = {};
+        
+        // 1. Assign explicit direct traits from the Ontology
         if (rulesData.Traits) {
             for (const [trait, items] of Object.entries(rulesData.Traits)) {
                 items.forEach(item => {
-                    this.assignTrait(item, trait, schemaData);
+                    if (!this.itemTraits[item]) this.itemTraits[item] =[];
+                    if (!this.itemTraits[item].includes(trait)) this.itemTraits[item].push(trait);
                 });
+            }
+        }
+
+        // 2. Ontological Subsumption via Trait Intersection (Pre-computed at startup)
+        if (schemaData) {
+            const itemParents = {};
+            
+            // Map every child to a Set of all its parent categories
+            for (const key of Object.keys(schemaData)) {
+                const group = schemaData[key];
+                if (group && typeof group === 'object' && !Array.isArray(group)) {
+                    for (const [parent, children] of Object.entries(group)) {
+                        if (Array.isArray(children)) {
+                            children.forEach(child => {
+                                if (!itemParents[child]) itemParents[child] = new Set();
+                                itemParents[child].add(parent);
+                            });
+                        }
+                    }
+                }
+            }
+            
+            // For each child, intersect the traits of all its parents
+            for (const [child, parents] of Object.entries(itemParents)) {
+                let intersectedTraits = null;
+                
+                parents.forEach(parent => {
+                    const parentTraits = new Set(this.itemTraits[parent] ||[]);
+                    if (!intersectedTraits) {
+                        // Initialize with the first parent's traits
+                        intersectedTraits = new Set(parentTraits);
+                    } else {
+                        // Keep ONLY the traits present in every parent
+                        for (const t of intersectedTraits) {
+                            if (!parentTraits.has(t)) {
+                                intersectedTraits.delete(t);
+                            }
+                        }
+                    }
+                });
+                
+                // Safely apply the universally shared traits down to the child
+                if (intersectedTraits && intersectedTraits.size > 0) {
+                    if (!this.itemTraits[child]) this.itemTraits[child] =[];
+                    intersectedTraits.forEach(t => {
+                        if (!this.itemTraits[child].includes(t)) {
+                            this.itemTraits[child].push(t);
+                        }
+                    });
+                }
             }
         }
     }
@@ -168,30 +220,6 @@ export default class GuardrailEngine {
             }
         }
         return Array.from(closure);
-    }
-
-    // Maps traits to specific items, and dynamically inherits traits from schema categories
-    assignTrait(item, trait, schemaData) {
-        if (!this.itemTraits[item]) this.itemTraits[item] = [];
-        if (!this.itemTraits[item].includes(trait)) this.itemTraits[item].push(trait);
-
-        // Subsumption: If the item is a category in the schema (e.g., "Academic Readiness"),
-        // automatically apply the trait to all of its children (e.g., "Tracing letters").
-        if (schemaData) {
-            for (const key of Object.keys(schemaData)) {
-                // FIX: Prevent Smart Chips from inheriting definitive Topography traits.
-                // Because chips like "Incident Report Filed" are shared across multiple 
-                // behaviors, subsumption makes the engine think it IS all of them at once!
-                if (key.startsWith('Chips_')) continue;
-
-                if (schemaData[key] && schemaData[key][item] && Array.isArray(schemaData[key][item])) {
-                    schemaData[key][item].forEach(child => {
-                        if (!this.itemTraits[child]) this.itemTraits[child] =[];
-                        if (!this.itemTraits[child].includes(trait)) this.itemTraits[child].push(trait);
-                    });
-                }
-            }
-        }
     }
 
     // Evaluates strings or Compound Logic (ALL_OF, ANY_OF, NONE_OF) against the hydrated state
