@@ -25,6 +25,12 @@
     { "trigger": "Antecedents", "triggerValue": "Denied Access/Tangible", "target": "Interventions", "allowed":["DRA (Differential Reinforcement of Alternative Behavior)", "DRI (Differential Reinforcement of Incompatible Behavior)", "DRO (Differential Reinforcement of Other Behavior)", "FCT (Functional Communication Training)", "Planned Ignoring", "Premack Principle (First/Then)", "Visual Schedule / Timer"] },
     { "trigger": "Antecedents", "triggerValue": "Sensory Overload", "target": "Interventions", "allowed":["FCT (Functional Communication Training)", "NCR (Noncontingent Reinforcement)", "Redirection", "Stimulus Fading", "Tactical Break", "Visual Schedule / Timer"] }
   ],
+  "Exclusive_Choices":[
+    "Caregiver unavailable", 
+    "None", 
+    "None reported", 
+    "displaying an absence of maladaptive behavior"
+  ],
   "Field_Limits": {
     "default_max": 4,
     "Health_Variables": 2,
