@@ -2,6 +2,76 @@
  * @fileoverview GuardrailEngine - Enforces clinical constraints using Ontological Inheritance and Compound Logic.
  */
 export default class GuardrailEngine {
+		synthesizeDeadlockClosures(schemaData) {
+        // Define the domains that, if fully exhausted, render the form un-savable.
+        const requiredFields =[
+            "Specific_Target", "Teaching_Formats", "Prompt_Levels", 
+            "Reinforcement_Schedules", "Specific_Setting", 
+            "Target_Behaviors", "Antecedents", "Intensity", "Deescalation_Time"
+        ];
+
+        const synthesizedRules =[];
+
+        requiredFields.forEach(field => {
+            if (!schemaData[field]) return;
+
+            // 1. Flatten the schema options for this field (handles flat arrays & optgroups)
+            let allOptions = [];
+            if (Array.isArray(schemaData[field])) {
+                allOptions = schemaData[field];
+            } else {
+                Object.values(schemaData[field]).forEach(group => allOptions.push(...group));
+            }
+            if (allOptions.length === 0) return;
+
+            // 2. Map each EXCLUDES rule to its "Strike Set"
+            const ruleStrikes =[];
+            this.rules.forEach(rule => {
+                if (rule.op === 'EXCLUDES') {
+                    // Find all options in this field that the rule would disable
+                    const struckOptions = allOptions.filter(opt => {
+                        let optState = new Set([opt]);
+                        if (this.itemTraits[opt]) {
+                            this.itemTraits[opt].forEach(t => optState.add(t));
+                        }
+                        // Use the engine's native logic to see if the rule hits this option
+                        return this.evaluateCondition(rule.right, optState);
+                    });
+
+                    if (struckOptions.length > 0) {
+                        ruleStrikes.push({
+                            antecedent: rule.left,
+                            strikes: new Set(struckOptions)
+                        });
+                    }
+                }
+            });
+
+            // 3. Find pairs of conditions that perfectly cover all options (Set Cover)
+            for (let i = 0; i < ruleStrikes.length; i++) {
+                for (let j = i + 1; j < ruleStrikes.length; j++) {
+                    const combined = new Set([...ruleStrikes[i].strikes, ...ruleStrikes[j].strikes]);
+                    
+                    if (combined.size === allOptions.length) {
+                        // 4. Synthesize the Closure Rule!
+                        synthesizedRules.push({
+                            citation: "Synthesized Closure Principle",
+                            rationale: `Selecting these conditions simultaneously exhausts all valid options for the required field: ${field}.`,
+                            op: "EXCLUDES",
+                            left: ruleStrikes[i].antecedent,
+                            right: ruleStrikes[j].antecedent,
+                            scope: "GLOBAL" // Ensures it works across form states
+                        });
+                    }
+                }
+            }
+        });
+
+        // 5. Append the newly deduced logic to the engine
+        this.rules = this.rules.concat(synthesizedRules);
+        console.log(`[Guardrail Engine] Synthesized ${synthesizedRules.length} closure rules.`, synthesizedRules);
+    }
+    
 		// Asynchronous builder that parses the Manifest and merges all the rule files
     static async build(manifestUrl, schemaData) {
         // 1. Fetch the manifest
@@ -35,8 +105,19 @@ export default class GuardrailEngine {
             ACCL_Rules: combinedRules,
             ...legacyData
         };
+        
+				const rulesData = {
+            Traits: ontologyData,
+            ACCL_Rules: combinedRules,
+            ...legacyData
+        };
 
-        return new GuardrailEngine(rulesData, schemaData);
+        const engine = new GuardrailEngine(rulesData, schemaData);
+        
+        // Compute the logical closure before returning the engine to the app
+        engine.synthesizeDeadlockClosures(schemaData);
+        
+        return engine;
     }
 
     constructor(rulesData, schemaData) {
