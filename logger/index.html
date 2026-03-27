@@ -442,7 +442,7 @@
             c.innerHTML = '';
             const btnSave = document.getElementById('btn-save');
 
-            function runAllGuardrails() {
+            function runAllGuardrails(e) { // <-- 1. Accept the event argument
                 const allFormChecked = Array.from(c.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
                 const allSelectValues = Array.from(c.querySelectorAll('select')).map(sel => sel.value).filter(v => v && v !== "None selected");
                 const activeSchemas = Array.from(c.querySelectorAll('.dynamic-chip-container'))
@@ -467,36 +467,85 @@
                 if (!hasBehavior) timelineState.push("NO_BEHAVIOR_LOGGED");
                 
                 // --- UNIFIED MUTABLE STATES FOR PREVENTATIVE DISABLING ---
-                let localState =[...allFormChecked, ...allSelectValues, ...activeSchemas];
+                let localState = [...allFormChecked, ...allSelectValues, ...activeSchemas];
                 let globalState = [...localState, ...timelineState];
 
                 // ========================================================================
-                // AUTO-RESOLVE 'REQUIRES' RULES
+                // AUTO-RESOLVE 'REQUIRES' RULES (SMART EVENT-AWARE RESOLUTION)
                 // ========================================================================
                 let requiresAutoFixed = false;
-                const expandedStateCheck = new Set(globalState);
-                globalState.forEach(item => {
-                    if (guardrails.itemTraits[item]) guardrails.itemTraits[item].forEach(t => expandedStateCheck.add(t));
-                });
+                
+                // If a specific DOM event triggered this, evaluate the user's intent:
+                if (e && e.target) {
+                    const changedVal = e.target.value;
+                    const isChecked = e.target.checked;
+                    const isCheckbox = e.target.type === 'checkbox';
+                    const isSelect = e.target.tagName === 'SELECT';
 
-                guardrails.rules.forEach(rule => {
-                    if (rule.op === 'REQUIRES' && guardrails.evaluateCondition(rule.left, expandedStateCheck)) {
-                        if (typeof rule.right === 'string' && !expandedStateCheck.has(rule.right)) {
-                            const reqInput = c.querySelector(`input[type="checkbox"][value="${rule.right}"]`);
-                            if (reqInput && !reqInput.checked) {
-                                reqInput.checked = true; // Auto-click it!
-                                requiresAutoFixed = true;
+                    guardrails.rules.forEach(rule => {
+                        if (rule.op === 'REQUIRES') {
+                            // CASE 1: User explicitly unchecked the REQUIRED item (e.g., deselected Incident Report Filed)
+                            if (isCheckbox && !isChecked && changedVal === rule.right) {
+                                // To clear the contradiction, we must unset the Antecedent (e.g., reset Severe)
+                                if (typeof rule.left === 'string' && localState.includes(rule.left)) {
+                                    const leftSelect = c.querySelector(`select option[value="${rule.left}"]`);
+                                    if (leftSelect && leftSelect.parentElement.value === rule.left) {
+                                        leftSelect.parentElement.value = "";
+                                        requiresAutoFixed = true;
+                                    }
+                                    const leftCb = c.querySelector(`input[type="checkbox"][value="${rule.left}"]`);
+                                    if (leftCb && leftCb.checked) {
+                                        leftCb.checked = false;
+                                        requiresAutoFixed = true;
+                                    }
+                                }
+                            } 
+                            // CASE 2: User explicitly selected the Antecedent (e.g., selected Severe)
+                            else if ((isSelect && changedVal === rule.left) || (isCheckbox && isChecked && changedVal === rule.left)) {
+                                // Enforce the required consequence (e.g., select Incident Report Filed)
+                                if (typeof rule.right === 'string' && !localState.includes(rule.right)) {
+                                    const reqInput = c.querySelector(`input[type="checkbox"][value="${rule.right}"]`);
+                                    if (reqInput && !reqInput.checked) {
+                                        reqInput.checked = true;
+                                        requiresAutoFixed = true;
+                                    }
+                                    const rightSelect = c.querySelector(`select option[value="${rule.right}"]`);
+                                    if (rightSelect && rightSelect.parentElement.value !== rule.right) {
+                                        rightSelect.parentElement.value = rule.right;
+                                        requiresAutoFixed = true;
+                                    }
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
+                
+                // Fallback for programmatic loads or initial schema generation where 'e' is undefined
+                if (!requiresAutoFixed) {
+                    const expandedStateCheck = new Set(globalState);
+                    globalState.forEach(item => {
+                        if (guardrails.itemTraits[item]) guardrails.itemTraits[item].forEach(t => expandedStateCheck.add(t));
+                    });
+
+                    guardrails.rules.forEach(rule => {
+                        if (rule.op === 'REQUIRES' && guardrails.evaluateCondition(rule.left, expandedStateCheck)) {
+                            if (typeof rule.right === 'string' && !expandedStateCheck.has(rule.right)) {
+                                const reqInput = c.querySelector(`input[type="checkbox"][value="${rule.right}"]`);
+                                if (reqInput && !reqInput.checked) {
+                                    reqInput.checked = true; // Auto-click it!
+                                    requiresAutoFixed = true;
+                                }
+                            }
+                        }
+                    });
+                }
 
                 if (requiresAutoFixed) {
-                    setTimeout(runAllGuardrails, 0);
+                    setTimeout(() => runAllGuardrails(), 0); // Safely re-run with cleared event data
                     return;
                 }
                 // ========================================================================
-
+                
                 const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
 
                 // ========================================================================
@@ -642,8 +691,8 @@
                 }
             }
             
-            c.onchange = () => runAllGuardrails();
-            c.oninput = () => runAllGuardrails();
+            c.onchange = (e) => runAllGuardrails(e);
+            c.oninput = (e) => runAllGuardrails(e);
 
             UI_CONFIG[type].forEach(f => {
                 const w = document.createElement('div'); w.className = 'form-field';
