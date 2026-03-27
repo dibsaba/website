@@ -969,6 +969,7 @@
             applyWhitelist();
             
             const timeSelect = container.querySelector('select[data-id="Deescalation_Time"]');
+            
             if (timeSelect && intsGroup) {
                 timeSelect.addEventListener('change', () => {
                     const firstCb = intsGroup.querySelector('input[type="checkbox"]');
