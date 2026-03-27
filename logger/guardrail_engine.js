@@ -179,6 +179,11 @@ export default class GuardrailEngine {
         // automatically apply the trait to all of its children (e.g., "Tracing letters").
         if (schemaData) {
             for (const key of Object.keys(schemaData)) {
+                // FIX: Prevent Smart Chips from inheriting definitive Topography traits.
+                // Because chips like "Incident Report Filed" are shared across multiple 
+                // behaviors, subsumption makes the engine think it IS all of them at once!
+                if (key.startsWith('Chips_')) continue;
+
                 if (schemaData[key] && schemaData[key][item] && Array.isArray(schemaData[key][item])) {
                     schemaData[key][item].forEach(child => {
                         if (!this.itemTraits[child]) this.itemTraits[child] =[];
