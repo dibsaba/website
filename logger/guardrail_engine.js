@@ -140,6 +140,27 @@ export default class GuardrailEngine {
         }
     }
 
+		// Computes the mathematical closure of all REQUIRES relationships for a given state
+    applyRequiresClosure(stateArray) {
+        let closure = new Set(stateArray);
+        let addedNew = true;
+
+        // Keep looping until we stop finding new requirements (resolves chained requirements A->B->C)
+        while (addedNew) {
+            addedNew = false;
+            for (const rule of this.rules) {
+                if (rule.op === 'REQUIRES') {
+                    // If the Left condition is met, but the Right is missing...
+                    if (this.evaluateCondition(rule.left, closure) && !closure.has(rule.right)) {
+                        closure.add(rule.right);
+                        addedNew = true;
+                    }
+                }
+            }
+        }
+        return Array.from(closure);
+    }
+
     // Maps traits to specific items, and dynamically inherits traits from schema categories
     assignTrait(item, trait, schemaData) {
         if (!this.itemTraits[item]) this.itemTraits[item] = [];

@@ -571,8 +571,15 @@
                         if (!opt.value || opt.value === "None selected") return;
                         
                         const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
-                        const hypotheticalGlobal = [...stateWithoutSelect, opt.value];
-                        const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+
+												// 1. Generate the hypothetical state
+												const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
+												
+												// 2. APPLY THE CLOSURE BEFORE VALIDATION
+												const hypotheticalGlobal = guardrails.applyRequiresClosure(rawHypotheticalGlobal);
+												
+												// 3. Now test the closed set!
+												const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                         
                         const localStateWithoutSelect = localState.filter(v => v !== selectEl.value);
                         const hypotheticalLocal =[...localStateWithoutSelect, opt.value];
