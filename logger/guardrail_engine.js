@@ -192,15 +192,13 @@ export default class GuardrailEngine {
     }
 
 		// Computes the mathematical closure of all REQUIRES relationships for a given state
-    applyRequiresClosure(stateArray) {
+    applyRequiresClosure(stateArray, availableFormValues = null) {
         let closure = new Set(stateArray);
         let addedNew = true;
 
-        // Keep looping until we stop finding new requirements
         while (addedNew) {
             addedNew = false;
             
-            // Re-expand traits for the current closure state so trait-based requirements trigger
             let expandedState = new Set(closure);
             closure.forEach(item => {
                 if (this.itemTraits[item]) {
@@ -215,18 +213,37 @@ export default class GuardrailEngine {
                         // Handle strict One-to-One requirements (Strings)
                         if (typeof rule.right === 'string') {
                             if (!closure.has(rule.right)) {
-                                closure.add(rule.right);
-                                addedNew = true;
+                                // NEW: Only optimistically add if it exists on the current screen
+                                let canAutoResolve = true;
+                                if (availableFormValues) {
+                                    canAutoResolve = availableFormValues.includes(rule.right) || 
+                                        availableFormValues.some(val => this.itemTraits[val] && this.itemTraits[val].includes(rule.right));
+                                }
+                                
+                                if (canAutoResolve) {
+                                    closure.add(rule.right);
+                                    addedNew = true;
+                                }
                             }
                         } 
                         // Handle One-to-Many requirements (Arrays)
                         else if (Array.isArray(rule.right)) {
-                            // If none of the required options are in the closure, optimistically 
-                            // add them so validateSubset doesn't preemptively fail the antecedent.
                             const hasAny = rule.right.some(r => closure.has(r));
                             if (!hasAny) {
-                                rule.right.forEach(r => closure.add(r));
-                                addedNew = true;
+                                let optionsToAdd = rule.right;
+                                
+                                // NEW: Only add array options that are physically on the current form
+                                if (availableFormValues) {
+                                    optionsToAdd = rule.right.filter(r => 
+                                        availableFormValues.includes(r) || 
+                                        availableFormValues.some(val => this.itemTraits[val] && this.itemTraits[val].includes(r))
+                                    );
+                                }
+                                
+                                if (optionsToAdd.length > 0) {
+                                    optionsToAdd.forEach(r => closure.add(r));
+                                    addedNew = true;
+                                }
                             }
                         }
                     }
