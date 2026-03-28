@@ -30,13 +30,13 @@
   },
   {
     "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
-    "rationale": "Noncontingent Reinforcement (NCR) involves time-based delivery of stimuli independent of responding. Ratio schedules (FR, VR) require a specific number of responses for reinforcement, making them functionally incompatible with NCR. Noncontingent Reinforcement (NCR) delivers reinforcers on a time-based schedule independent of behavior. Differential reinforcement requires a strict response contingency (reinforcing one behavior while withholding reinforcement for another), making them mutually exclusive.",
+    "rationale": "Noncontingent Reinforcement (NCR) involves time-based delivery of stimuli independent of responding. Differential reinforcement requires a strict response contingency, making them mutually exclusive.",
     "op": "EXCLUDES",
     "left": "NCR (Noncontingent Reinforcement)",
     "right":[
       "Fixed Ratio",
       "Variable Ratio",
-      "Differential Reinforcement"
+      "IS_DIFFERENTIAL_REINFORCEMENT"
     ]
   },
   {
@@ -209,7 +209,7 @@
     "op": "EXCLUDES",
     "left": "Shaping",
     "right":[
-      "Full Physical",
+      "fully physically prompted",
       "Errorless Teaching",
       "Max Prompting"
     ]

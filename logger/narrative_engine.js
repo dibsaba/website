@@ -101,10 +101,15 @@ export default class NarrativeEngine {
                 // --- THE NEW SEMANTIC EXPANSION ENGINE ---
                 if (eventData.Smart_Chips && Array.isArray(eventData.Smart_Chips)) {
                     eventData.Smart_Chips.forEach(chip => {
-                        if (chip !== "None selected" && templates.Chip_Expansions && templates.Chip_Expansions[chip]) {
-                            const chipOptions = templates.Chip_Expansions[chip];
-                            let chipSentence = getElement(chipOptions);
-                            sentence += " " + chipSentence;
+                        if (chip !== "None selected") {
+                            if (templates.Chip_Expansions && templates.Chip_Expansions[chip]) {
+                                const chipOptions = templates.Chip_Expansions[chip];
+                                let chipSentence = getElement(chipOptions);
+                                sentence += " " + chipSentence;
+                            } else {
+                                // FALLBACK: Guarantee no auto-clicked or custom chip is ever dropped
+                                sentence += ` The clinician noted: ${chip.toLowerCase()}.`;
+                            }
                         }
                     });
                 }

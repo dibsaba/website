@@ -50,9 +50,9 @@
   },
   {
     "citation": "Clinical Physics: Material / Target Congruence",
-    "rationale": "Academic targets require structured visual or academic materials. They cannot be taught using household items, playdough, or playground equipment.",
+    "rationale": "Strict educational tutoring targets (like worksheets and tracing) require structured visual or academic materials. They cannot be logically taught using household items, playdough, or playground equipment.",
     "op": "EXCLUDES",
-    "left": "IS_ACADEMIC",
+    "left": "IS_EDUCATIONAL_TUTORING",
     "right":[
       "IS_NATURAL_MATERIAL",
       "IS_RECREATION_MATERIAL"

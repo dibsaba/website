@@ -38,7 +38,7 @@
     "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
     "rationale": "Time delay prompting involves intentionally waiting before intervening. This is an unethical and dangerous procedure to apply to behaviors involving imminent danger (SIB, Aggression, Elopement, Pica).",
     "op": "EXCLUDES",
-    "left": "Time Delay",
+    "left": "time-delayed",
     "right": "IS_IMMINENT_DANGER"
   },
   {
@@ -201,8 +201,8 @@
     "op": "EXCLUDES",
     "left": "IS_VOCAL_VERBAL_TARGET",
     "right": [
-      "Full Physical",
-      "Partial Physical"
+      "fully physically prompted",
+      "partially physically prompted"
     ]
   },
   {
@@ -211,8 +211,8 @@
     "op": "EXCLUDES",
     "left": "IS_INTERNAL_STATE_TARGET",
     "right": [
-      "Full Physical",
-      "Partial Physical"
+      "fully physically prompted",
+      "partially physically prompted"
     ]
   }
 ]

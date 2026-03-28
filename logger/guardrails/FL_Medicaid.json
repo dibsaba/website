@@ -1,4 +1,11 @@
 [
+	{
+    "citation": "FL AHCA BA Services Coverage Policy: Academic/Tutoring Exclusion",
+    "rationale": "ABA cannot be billed for academic tutoring or homework help. While early learner skills (matching, sorting) are billable, explicit schoolwork tasks (tracing, writing, worksheets) run in the home setting cross the line into unbillable educational tutoring.",
+    "op": "EXCLUDES",
+    "left": "IS_HOME_SETTING",
+    "right": "IS_EDUCATIONAL_TUTORING"
+  },
   {
     "citation": "FL AHCA BA Services Coverage Policy (Section 2.2): Educational and Vocational Exclusion",
     "rationale": "Medicaid prohibits billing ABA for educational tutoring or vocational training. If an academic or vocational target is performed independently without the presence of maladaptive behavior, it is no longer treating a core behavioral deficit and is unbillable.",
@@ -84,9 +91,9 @@
   },
   {
 		"citation": "Medicaid/Payer Guidelines: Educational Exclusion",
-		"rationale": "Medicaid prohibits billing ABA for academic tutoring. Running highly structured 'Academic Readiness' targets (like worksheets) in unstructured play environments using 'Incidental Teaching' is an immediate flag for unbillable educational tutoring rather than behavioral therapy.",
+		"rationale": "Medicaid prohibits billing ABA for academic tutoring. Running highly structured educational targets (like worksheets) in unstructured play environments using 'Incidental Teaching' is an immediate flag for unbillable educational tutoring rather than behavioral therapy.",
 		"op": "EXCLUDES",
-		"left": "IS_ACADEMIC",
+		"left": "IS_EDUCATIONAL_TUTORING",
 		"right":[
 			"IS_HIGH_MOBILITY_ENVIRONMENT",
 			"IS_NET_TEACHING"

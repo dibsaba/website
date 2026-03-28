@@ -73,11 +73,11 @@
   },
   {
     "citation": "TRICARE ACD Operations Manual: Educational Setting Exclusions",
-    "rationale": "TRICARE strictly prohibits billing ABA for academic support (school shadowing). If ABA is provided in a school setting, it must strictly target behavioral reduction, social skills, or coping. Targeting 'Academic Readiness' in a school violates the IDEA mandate (which dictates the school must provide academic support). The use of academic materials (such as worksheets, flashcards, and whiteboards) in a school setting strongly implies educational instruction or academic tutoring rather than medically necessary ABA. TRICARE mandates that ABA services in the school setting focus exclusively on clinical behavioral targets.",
+    "rationale": "TRICARE strictly prohibits billing ABA for academic support (school shadowing). If ABA is provided in a school setting, it must strictly target clinical behavior. The use of strict tutoring targets or academic materials (such as worksheets, flashcards, and whiteboards) in a school setting strongly implies educational instruction rather than medically necessary ABA.",
     "op": "EXCLUDES",
     "left": "IS_SCHOOL_SETTING",
     "right":[
-      "IS_ACADEMIC",
+      "IS_EDUCATIONAL_TUTORING",
       "IS_ACADEMIC_MATERIAL"
     ],
     "scope": "GLOBAL"

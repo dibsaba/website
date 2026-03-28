@@ -11,13 +11,13 @@
     "Unstructured Time/Automatic"
   ],
   "Caregiver_Handoff": [
-    "Answered caregiver questions",
-    "Caregiver unavailable",
-    "Discussed generalization strategies",
-    "Discussed mastered skills",
-    "Modeled intervention",
-    "Reviewed behavior incidents",
-    "Reviewed upcoming session schedule"
+    "answering caregiver questions",
+    "caregiver unavailable",
+    "discussing generalization strategies",
+    "discussing mastered skills",
+    "modeling the intervention",
+    "reviewing behavior incidents",
+    "reviewing the upcoming schedule"
   ],
   "Caregiver_Response": {
     "Engaged & Positive": [
@@ -147,14 +147,14 @@
   "Client_Affect": {
     "Dysregulated / Escalated": [
       "agitated and crying",
-      "displaying precursor behaviors",
-      "exhibiting visible frustration",
+      "dysregulated with precursor behaviors",
+      "visibly frustrated",
       "highly distracted and hyperactive",
       "pacing the room rapidly"
     ],
     "Fatigued / Withdrawn": [
-      "appearing physically fatigued",
-      "exhibiting a sluggish response time",
+      "physically fatigued",
+      "sluggish and fatigued",
       "lethargic due to poor sleep",
       "reluctant to separate from caregiver",
       "withdrawn and avoiding interaction"
@@ -162,7 +162,7 @@
     "Positive / Regulated": [
       "calm and cooperative",
       "demonstrating a neutral affect",
-      "happily initiating interaction",
+      "happy and interactive",
       "relaxed and engaged",
       "smiling and energetic"
     ]
@@ -253,24 +253,16 @@
     "Sibling(s)",
     "Teacher"
   ],
-  "Responsible_Parties_Present":[
-    "Caregiver",
-    "Father",
-    "Grandparent",
-    "Mother",
-    "No responsible adult",
-    "Other family member"
-  ],
   "Prompt_Levels": [
-    "Independent",
-    "Visual",
-    "Verbal",
-    "Gestural",
-    "Modeling",
-    "Partial Physical",
-    "Full Physical",
-    "Positional",
-    "Time Delay"
+    "independent",
+    "visually prompted",
+    "verbally prompted",
+    "gesturally prompted",
+    "model-prompted",
+    "partially physically prompted",
+    "fully physically prompted",
+    "positionally prompted",
+    "time-delayed"
   ],
   "Reinforcement_Schedules": [
     "Continuous",
@@ -280,6 +272,14 @@
     "Token Economy",
     "Variable Interval",
     "Variable Ratio"
+  ],
+  "Responsible_Parties_Present":[
+    "Caregiver",
+    "Father",
+    "Grandparent",
+    "Mother",
+    "No responsible adult",
+    "Other family member"
   ],
   "Skill_Domains": [
     "Academic Readiness",
