@@ -2,143 +2,167 @@
   {
     "citation": "Clinical Physics: Arousal & Intensive Instruction",
     "rationale": "A highly dysregulated individual is neurologically incapable of engaging in intensive, fast-paced structured teaching (DTT/Errorless).",
-    "rule": {
-      "scope": "GLOBAL",
-      "op": "EXCLUDES",
-      "left": "IS_DYSREGULATED",
-      "right": "IS_INTENSIVE_TEACHING"
-    }
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left": "IS_DYSREGULATED",
+    "right": "IS_INTENSIVE_TEACHING"
   },
-	{
+  {
     "citation": "Clinical Physics: Gross Motor Constraints",
     "rationale": "Gross motor targets requiring significant physical movement cannot be taught using sedentary academic materials or tablets.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_GROSS_MOTOR_TARGET",
-      "right": { "ANY_OF":["IS_ACADEMIC_MATERIAL", "IS_AAC_MATERIAL"] }
-    }
+    "op": "EXCLUDES",
+    "left": "IS_GROSS_MOTOR_TARGET",
+    "right":[
+      "IS_ACADEMIC_MATERIAL",
+      "IS_AAC_MATERIAL"
+    ]
   },
   {
     "citation": "Clinical Physics: Intervention Opposites",
     "rationale": "You cannot provide a reinforcer freely (NCR) while simultaneously withholding it entirely (Extinction) in a single episode.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "NCR (Noncontingent Reinforcement)",
-      "right": { "ANY_OF": ["Planned Ignoring", "Escape Extinction"] }
-    }
+    "op": "EXCLUDES",
+    "left": "NCR (Noncontingent Reinforcement)",
+    "right": [
+      "Planned Ignoring",
+      "Escape Extinction"
+    ]
   },
   {
     "citation": "Clinical Physics: Material / Target Congruence",
     "rationale": "Academic targets require structured visual or academic materials. They cannot be taught using household items, playdough, or playground equipment.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_ACADEMIC",
-      "right": { "ANY_OF":["IS_NATURAL_MATERIAL", "IS_RECREATION_MATERIAL"] }
-    }
+    "op": "EXCLUDES",
+    "left": "IS_ACADEMIC",
+    "right":[
+      "IS_NATURAL_MATERIAL",
+      "IS_RECREATION_MATERIAL"
+    ]
   },
   {
     "citation": "Clinical Physics: Material / Target Congruence",
     "rationale": "Daily living skills (ADLs) must be taught using the natural materials required for the task (e.g., teaching brushing teeth requires a toothbrush, not flashcards).",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_ADL_TARGET",
-      "right": { "ANY_OF":["IS_ACADEMIC_MATERIAL", "IS_RECREATION_MATERIAL"] }
-    }
+    "op": "EXCLUDES",
+    "left": "IS_ADL_TARGET",
+    "right":[
+      "IS_ACADEMIC_MATERIAL",
+      "IS_RECREATION_MATERIAL"
+    ]
   },
   {
     "citation": "Clinical Physics: Mutually Exclusive Interventions",
     "rationale": "It is conceptually impossible to implement multiple distinct differential reinforcement schedules simultaneously for a single behavioral episode.",
-    "rule": { 
-      "op": "MUTEX_GROUP", 
-      "items":[
-        "DRA (Differential Reinforcement of Alternative Behavior)",
-        "DRI (Differential Reinforcement of Incompatible Behavior)", 
-        "DRO (Differential Reinforcement of Other Behavior)",
-        "FCT (Functional Communication Training)"
-      ] 
-    }
+    "op": "MUTEX_GROUP",
+    "items":[
+      "DRA (Differential Reinforcement of Alternative Behavior)",
+      "DRI (Differential Reinforcement of Incompatible Behavior)",
+      "DRO (Differential Reinforcement of Other Behavior)",
+      "FCT (Functional Communication Training)"
+    ]
   },
   {
     "citation": "Clinical Physics: Severity & Passive Extinction Constraints",
     "rationale": "Behaviors that threaten bodily harm or life safety (Aggression, SIB, Elopement, Pica) mathematically cannot be classified as 'Mild', nor can they be treated with passive 'Planned Ignoring'.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_IMMINENT_DANGER",
-      "right": { "ANY_OF": ["Mild", "Planned Ignoring"] }
-    }
+    "op": "EXCLUDES",
+    "left": "IS_IMMINENT_DANGER",
+    "right": [
+      "Mild",
+      "Planned Ignoring"
+    ]
   },
   {
     "citation": "Clinical Physics: Time & Complexity Constraint",
     "rationale": "Proactive, complex schedules (Token Economies, NCR) cannot be implemented as reactive interventions in under 1 minute.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "< 1 minute",
-      "right": { "ANY_OF":["NCR (Noncontingent Reinforcement)", "Token Economy / Token Board"] }
-    }
+    "op": "EXCLUDES",
+    "left": "< 1 minute",
+    "right":[
+      "NCR (Noncontingent Reinforcement)",
+      "Token Economy / Token Board"
+    ]
   },
   {
-		"citation": "Core Principle: Extinction Congruence",
-		"rationale": "Applying attention extinction to escape-maintained behavior reinforces the escape. Applying escape extinction to attention-maintained behavior reinforces the attention.",
-		"rule": {"op": "EXCLUDES", "left": { "ANY_OF": ["IS_ESCAPE_MAINTAINED"] }, "right": "IS_ATTENTION_EXTINCTION"}
-	},
-	{
-		"citation": "Core Principle: Extinction Congruence",
-		"rationale": "You cannot use task-based/escape-extinction strategies for behaviors seeking attention.",
-		"rule": {"op": "EXCLUDES", "left": { "ANY_OF": ["IS_ATTENTION_MAINTAINED"] }, "right": "IS_ESCAPE_EXTINCTION"}
-	},
+    "citation": "Core Principle: Extinction Congruence",
+    "rationale": "Applying attention extinction to escape-maintained behavior reinforces the escape. Applying escape extinction to attention-maintained behavior reinforces the attention.",
+    "op": "EXCLUDES",
+    "left": "IS_ESCAPE_MAINTAINED",
+    "right": "IS_ATTENTION_EXTINCTION"
+  },
+  {
+    "citation": "Core Principle: Extinction Congruence",
+    "rationale": "You cannot use task-based/escape-extinction strategies for behaviors seeking attention.",
+    "op": "EXCLUDES",
+    "left": "IS_ATTENTION_MAINTAINED",
+    "right": "IS_ESCAPE_EXTINCTION"
+  },
   {
     "citation": "Ontological Principle: Definitional Topography Alignment",
     "rationale": "A topographical action must belong to its defining behavioral class. Aggressive topographies cannot be logged under non-aggressive target behaviors.",
-    "rule": { "op": "REQUIRES", "left": "IS_AGGRESSION", "right": "Aggression" }
+    "op": "REQUIRES",
+    "left": "IS_AGGRESSION",
+    "right": "Aggression"
   },
   {
     "citation": "Ontological Principle: Definitional Topography Alignment",
     "rationale": "Elopement topographies must be strictly categorized under Elopement.",
-    "rule": { "op": "REQUIRES", "left": "IS_ELOPEMENT", "right": "Elopement" }
+    "op": "REQUIRES",
+    "left": "IS_ELOPEMENT",
+    "right": "Elopement"
   },
   {
     "citation": "Ontological Principle: Definitional Topography Alignment",
     "rationale": "Property destruction topographies must be strictly categorized under Property Destruction.",
-    "rule": { "op": "REQUIRES", "left": "IS_PROPERTY_DESTRUCTION", "right": "Property Destruction" }
+    "op": "REQUIRES",
+    "left": "IS_PROPERTY_DESTRUCTION",
+    "right": "Property Destruction"
   },
   {
     "citation": "Ontological Principle: Definitional Topography Alignment",
     "rationale": "Self-injurious topographies must be strictly categorized under SIB.",
-    "rule": { "op": "REQUIRES", "left": "IS_SIB", "right": "SIB" }
+    "op": "REQUIRES",
+    "left": "IS_SIB",
+    "right": "SIB"
   },
   {
     "citation": "Ontological Principle: Definitional Topography Alignment",
     "rationale": "Verbal/vocal threats or profanity must be categorized strictly under Inappropriate Language.",
-    "rule": { "op": "REQUIRES", "left": "IS_INAPPROPRIATE_LANGUAGE", "right": "Inappropriate Language" }
+    "op": "REQUIRES",
+    "left": "IS_INAPPROPRIATE_LANGUAGE",
+    "right": "Inappropriate Language"
   },
   {
     "citation": "Physics: Auditory Interference",
     "rationale": "Vocal/Verbal targets (which require auditory processing and listening) cannot be reliably assessed or targeted while the client's ears are obstructed by noise-canceling headphones or competing media audio.",
-    "rule": { "op": "EXCLUDES", "left": "IS_VOCAL_VERBAL_TARGET", "right": "IS_AUDITORY_BLOCKER" }
+    "op": "EXCLUDES",
+    "left": "IS_VOCAL_VERBAL_TARGET",
+    "right": "IS_AUDITORY_BLOCKER"
   },
   {
     "citation": "Physics: Geographic Contradictions",
     "rationale": "You cannot provide 'Access to Outdoors' as a reinforcing consequence if the client is already geographically located outdoors.",
-    "rule": { "op": "EXCLUDES", "left": "Access to Outdoors", "right": { "ANY_OF": ["Outdoors", "Playground"] } }
+    "op": "EXCLUDES",
+    "left": "Access to Outdoors",
+    "right": [
+      "Outdoors",
+      "Playground"
+    ]
   },
   {
     "citation": "Physics: Spatial Distance Requirements",
     "rationale": "If the therapist is required to maintain a safety distance from the client, it is physically impossible to simultaneously implement interventions or prompts that require physical contact.",
-    "rule": { "op": "EXCLUDES", "left": "Required safety distance", "right": "IS_PHYSICAL_CONTACT" }
+    "op": "EXCLUDES",
+    "left": "Required safety distance",
+    "right": "IS_PHYSICAL_CONTACT"
   },
   {
     "citation": "Physics: Spatial Limitations",
     "rationale": "Gross motor activities requiring expansive space cannot be conducted in confined environments like a vehicle.",
-    "rule": { "op": "EXCLUDES", "left": "IS_CONFINED", "right": "IS_HIGH_MOBILITY" }
+    "op": "EXCLUDES",
+    "left": "IS_CONFINED",
+    "right": "IS_HIGH_MOBILITY"
   },
   {
-    "citation": "Physiological Law: Affect Upper and Lower Bounds",
-    "rationale": "A human nervous system cannot occupy states of high sympathetic arousal (dysregulation) and parasympathetic regulation simultaneously.",
-    "rule": { "op": "EXCLUDES", "left": "IS_REGULATED", "right": "IS_DYSREGULATED" }
-  },
-	{
     "citation": "Physiological Law: Arousal Upper and Lower Bounds",
     "rationale": "A human cannot be simultaneously hyper-aroused/hyperactive and lethargic/fatigued.",
-    "rule": { "op": "EXCLUDES", "left": "IS_HIGH_AROUSAL", "right": "IS_LOW_AROUSAL" }
+    "op": "EXCLUDES",
+    "left": "IS_HIGH_AROUSAL",
+    "right": "IS_LOW_AROUSAL"
   }
 ]

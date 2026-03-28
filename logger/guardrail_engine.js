@@ -90,9 +90,8 @@ export default class GuardrailEngine {
         // 4. Merge all rules into a single array
         let combinedRules =[];
         ruleFiles.forEach(file => {
-            // Extract the "rule" object from the citation wrappers
-            const rules = file.map(entry => entry.rule);
-            combinedRules = combinedRules.concat(rules);
+            // Because the DSL is now flattened, the file array IS the rules array!
+            combinedRules = combinedRules.concat(file);
         });
 
         // 5. Fetch Legacy configs (Field Limits, Domain Overrides, etc.)

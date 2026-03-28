@@ -1,17 +1,9 @@
 [
   {
-    "citation": "UI Logic: Transition State Mutex",
-    "rationale": "A single transition event cannot be simultaneously smooth/independent and resistant/prompt-dependent.",
-    "rule": { "op": "EXCLUDES", "left": "IS_SMOOTH_TRANSITION", "right": "IS_RESISTANT_TRANSITION" }
-  },
-  {
     "citation": "UI Logic: Token Economy Material Match",
     "rationale": "A token economy schedule inherently requires token-based materials to be utilized during the trial.",
-    "rule": { "op": "REQUIRES", "left": "IS_TOKEN_ECONOMY", "right": "IS_TOKEN_MATERIAL" }
-  },
-  {
-    "citation": "UI Logic: Caregiver Availability Mutex",
-    "rationale": "If a caregiver is documented as unavailable, no active handoff tasks or caregiver responses can be logged.",
-    "rule": { "op": "EXCLUDES", "left": "IS_CAREGIVER_UNAVAILABLE", "right": "IS_CAREGIVER_ENGAGEMENT" }
+    "op": "REQUIRES",
+    "left": "IS_TOKEN_ECONOMY",
+    "right": "IS_TOKEN_MATERIAL"
   }
 ]

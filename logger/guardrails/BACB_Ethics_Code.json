@@ -2,68 +2,217 @@
   {
     "citation": "BACB Ethics Code 2.01: Providing Effective Treatment",
     "rationale": "Behavior analysts prioritize maximizing desired outcomes and protecting clients from harm. Behavioral extinction or punishment cannot be used to treat physiological distress or pain.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_MEDICAL_DISTRESS",
-      "right": "IS_AVERSIVE"
-    }
+    "op": "EXCLUDES",
+    "left": "IS_MEDICAL_DISTRESS",
+    "right": "IS_AVERSIVE"
+  },
+  {
+    "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
+    "rationale": "During an active medical emergency, ethical guidelines dictate prioritizing client health and safety over intensive, demand-heavy academic or discrete trial teaching. To prevent exacerbation of a medical crisis and protect the client from harm, high-exertion gross motor activities cannot be forced or targeted while a client is experiencing active asthma, dehydration, or seizures.",
+    "op": "EXCLUDES",
+    "left": "IS_MEDICAL_CRISIS",
+    "right":[
+      "IS_INTENSIVE_TEACHING",
+      "IS_HIGH_EXERTION"
+    ]
   },
   {
     "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
     "rationale": "A client actively experiencing seizure activity must be protected from fall hazards. Gross motor activities, swinging, or therapy balls must be suspended.",
-    "rule": { "op": "EXCLUDES", "left": "Seizure activity", "right": "IS_FALL_HAZARD" }
+    "op": "EXCLUDES",
+    "left": "Seizure activity",
+    "right": "IS_FALL_HAZARD"
   },
   {
     "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
-    "rationale": "To prevent accidental ingestion and protect the client from harm, small tangible items posing a choking hazard cannot be used while the client is actively engaging in Pica.",
-    "rule": { "op": "EXCLUDES", "left": "IS_CHOKING_HAZARD", "right": "Pica" }
+    "rationale": "To prevent accidental ingestion and protect the client from harm, small tangible items posing a choking hazard cannot be used while the client is actively engaging in Pica or actively mouthing/swallowing objects.",
+    "op": "EXCLUDES",
+    "left": "IS_CHOKING_HAZARD",
+    "right":[
+      "Pica",
+      "mouthing non-edible items",
+      "swallowing small objects"
+    ]
   },
   {
-    "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
-    "rationale": "To prevent exacerbation of medical distress, high-exertion activities cannot be forced or targeted while a client is experiencing active asthma or respiratory issues.",
-    "rule": { "op": "EXCLUDES", "left": "Asthma / Respiratory issues", "right": "IS_HIGH_EXERTION" }
-  },{
     "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
     "rationale": "Time delay prompting involves intentionally waiting before intervening. This is an unethical and dangerous procedure to apply to behaviors involving imminent danger (SIB, Aggression, Elopement, Pica).",
-    "rule": { "op": "EXCLUDES", "left": "Time Delay", "right": "IS_IMMINENT_DANGER" }
+    "op": "EXCLUDES",
+    "left": "Time Delay",
+    "right": "IS_IMMINENT_DANGER"
   },
   {
     "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
-    "rationale": "To protect the client from bodily harm, sharp objects cannot be utilized as instructional materials while the client is actively engaging in self-injurious behavior.",
-    "rule": { "op": "EXCLUDES", "left": "IS_SHARP_OBJECT", "right": "IS_SIB" }
+    "rationale": "Planned ignoring cannot be safely or ethically used to target behaviors that pose an immediate physical threat, as intentionally withholding intervention could lead to severe bodily injury.",
+    "op": "EXCLUDES",
+    "left": "Planned Ignoring",
+    "right":[
+      "IS_IMMINENT_DANGER",
+      "IS_SEVERE_TOPOGRAPHY"
+    ]
+  },
+  {
+    "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
+    "rationale": "To protect the client and others from bodily harm, sharp objects cannot be utilized as instructional materials while the client is actively engaging in severe behaviors like self-injury, aggression, or elopement.",
+    "op": "EXCLUDES",
+    "left": "IS_SHARP_OBJECT",
+    "right": "IS_IMMINENT_DANGER"
+  },
+  {
+    "citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
+    "rationale": "To maintain a hygienic environment and protect from contamination, behaviors involving bodily fluids or fecal matter cannot be safely targeted or managed in food preparation or dining areas.",
+    "op": "EXCLUDES",
+    "left":[
+      "Scatolia (Fecal smearing)",
+      "Spitting",
+      "smearing feces on the furniture",
+      "smearing feces on the walls",
+      "spitting at staff or peers",
+      "spitting on instructional materials",
+      "spitting on the floor"
+    ],
+    "right": "IS_FOOD_PREP_AREA"
   },
   {
     "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
     "rationale": "Behavior analysts must create and maintain accurate documentation of their professional activities. Reporting severe behavior duration as under 1 minute contradicts the definitional reality of severe episodic behavior.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "Severe",
-      "right": "< 1 minute"
-    }
+    "op": "EXCLUDES",
+    "left": "Severe",
+    "right": "< 1 minute"
+  },
+  {
+    "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
+    "rationale": "Accurate clinical documentation requires logical consistency. Documenting the use of extreme physical safety management (e.g., safety pads, blocking a swallow) mathematically contradicts an intensity rating of 'Mild'.",
+    "op": "EXCLUDES",
+    "left": "IS_PHYSICAL_SAFETY_MANAGEMENT",
+    "right": "Mild"
+  },
+  {
+    "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
+    "rationale": "Accurate clinical documentation requires logical consistency. Topographies that inherently present significant safety, dignity, or property risks (such as eye gouging or running into the street) contradict a 'Mild' intensity rating.",
+    "op": "EXCLUDES",
+    "left": "IS_SEVERE_TOPOGRAPHY",
+    "right": "Mild"
+  },
+  {
+    "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
+    "rationale": "Accurate clinical documentation requires logical consistency. Problem behaviors that escalate to a severity requiring a formal Incident Report cannot be accurately designated as 'Mild'.",
+    "op": "EXCLUDES",
+    "left": "Incident Report Filed",
+    "right": "Mild"
+  },
+  {
+    "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
+    "rationale": "Accurate clinical documentation requires logical consistency. Selecting that a behavior de-escalated within 5 minutes directly contradicts selecting a de-escalation time bracket of 5 minutes or greater.",
+    "op": "EXCLUDES",
+    "left": "De-escalated within 5 minutes",
+    "right":[
+      "5-15 minutes",
+      "15-30 minutes",
+      "> 30 minutes"
+    ]
+  },
+  {
+    "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
+    "rationale": "Accurate clinical documentation requires logical consistency. Documenting a transition as smooth and independent contradicts the concurrent selection of resistant behaviors, dropping to the floor, or required physical guidance.",
+    "op": "EXCLUDES",
+    "left": "IS_SMOOTH_TRANSITION",
+    "right": "IS_RESISTANT_TRANSITION"
+  },
+  {
+    "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
+    "rationale": "Accurate clinical documentation requires logical consistency. Reporting that a caregiver was unavailable strictly contradicts the selection of active caregiver engagement, parent coaching, or handoff discussions.",
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left": "IS_CAREGIVER_UNAVAILABLE",
+    "right": "IS_CAREGIVER_ENGAGEMENT"
+  },
+  {
+    "citation": "BACB Ethics Code",
+    "rationale": "Accurate clinical documentation requires logical consistency. Documenting a client as fully regulated and positive contradicts simultaneously noting them as highly dysregulated and agitated in the exact same measurement instance. Least restrictive procedures dictate that a client presenting as calm, cooperative, and regulated should never be concurrently subjected to highly restrictive punishments or physical interventions.",
+    "op": "EXCLUDES",
+    "left": "IS_REGULATED",
+    "right":[
+      "IS_DYSREGULATED",
+      "IS_PHYSICAL_INTERVENTION",
+      "IS_RESTRICTIVE_PUNISHMENT"
+    ]
   },
   {
     "citation": "BACB Ethics Code 4.02: Appropriate Interventions",
-    "rationale": "Interventions must be based on environmental assessment and context. Remote telehealth settings prohibit the use of physical prompting or physical safety management.",
-    "rule": {"scope": "GLOBAL", "op": "EXCLUDES", "left": "IS_REMOTE", "right":["IS_PHYSICAL_PROMPT", "IS_PHYSICAL_INTERVENTION", "Physical Touch (deep pressure / squeezes)", "Tickles", "Caregiver unavailable", "None"]}
+    "rationale": "Remote telehealth sessions physically distance the clinician from the client, fundamentally prohibiting direct physical prompting, physical safety management, tactile reinforcement, or the capability of physical aggression directed at the clinician. Telehealth sessions require a caregiver or responsible adult to be present/available to facilitate environmental assessment, physical safety management, and prompt implementation when necessary.",
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left": "IS_REMOTE",
+    "right":[
+      "IS_PHYSICAL_CONTACT",
+      "IS_PHYSICAL_INTERVENTION",
+      "IS_PHYSICAL_PROMPT",
+      "Completed with partial physical prompt",
+      "Required physical guidance to transition",
+      "Required protective equipment",
+      "Swiped at therapist",
+      "biting directed at the therapist",
+      "IS_CAREGIVER_UNAVAILABLE"
+    ]
   },
   {
     "citation": "BACB Ethics Code 4.07: Incorporating and Addressing Diversity (Client Dignity)",
-    "rationale": "To preserve client privacy and dignity, peers or siblings cannot be documented as present during toileting or restroom-based interventions.",
-    "rule": { "op": "EXCLUDES", "left": "Bathroom / Restroom", "right": "IS_PEER_OR_SIBLING" }
+    "rationale": "To preserve client privacy and dignity, peers or siblings cannot be documented as present during toileting, toilet training, or restroom-based interventions.",
+    "op": "EXCLUDES",
+    "left":[
+      "Bathroom / Restroom",
+      "IS_TOILETING_ADL",
+      "Toilet Training"
+    ],
+    "right": "IS_PEER_OR_SIBLING"
   },
   {
     "citation": "BACB Ethics Code 4.07: Incorporating and Addressing Diversity (Client Dignity)",
-    "rationale": "To uphold the dignity and privacy of the client, toileting and hygiene ADLs cannot be conducted in common areas, food preparation areas, or public storefronts.",
-    "rule": { "op": "EXCLUDES", "left": "IS_TOILETING_ADL", "right": "IS_FOOD_PREP_AREA" }
+    "rationale": "To uphold the dignity and privacy of the client, personal hygiene and toileting skill acquisition (ADLs) must strictly be conducted in a restroom environment, not in common areas or public settings.",
+    "op": "REQUIRES",
+    "left":[
+      "IS_TOILETING_ADL",
+      "Toilet Training"
+    ],
+    "right": "Bathroom / Restroom"
   },
   {
     "citation": "BACB Ethics Code 4.09: Least Restrictive Procedures",
-    "rationale": "Behavior analysts review and appraise the restrictiveness of procedures. A caregiver must be present in public environments to ensure the least restrictive safety management.",
-    "rule": {"scope": "GLOBAL", "op": "EXCLUDES", "left": ["Store / Community setting", "Community"], "right": ["Caregiver unavailable"]}
+    "rationale": "Behavior analysts must recommend the least restrictive safety management. In public or community environments, a caregiver must be available to assist with or manage safety to avoid utilizing overly restrictive clinic-based physical procedures in public.",
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left": "IS_PUBLIC",
+    "right": "IS_CAREGIVER_UNAVAILABLE"
   },
   {
-  "citation": "BACB Ethics 4.09: Least Restrictive Procedures",
-  "rationale": "Highly restrictive or punishment-based procedures cannot be utilized for behaviors that do not pose an imminent threat to safety or learning.",
-  "rule": {"op": "EXCLUDES", "left": "IS_NON_DANGEROUS_BEHAVIOR", "right": "IS_RESTRICTIVE_PUNISHMENT"}
-	}
+    "citation": "BACB Ethics Code 4.09: Least Restrictive Procedures",
+    "rationale": "Highly restrictive or punishment-based procedures (e.g., response cost, overcorrection) cannot be utilized for behaviors that do not pose an imminent threat to safety or learning. Physical interventions, such as blocking or tactical breaks, are highly restrictive and must be reserved for dangerous topographies. They cannot be used for non-dangerous behaviors like stereotypy, foul language, or non-compliance.",
+    "op": "EXCLUDES",
+    "left": "IS_NON_DANGEROUS_BEHAVIOR",
+    "right":[
+      "IS_RESTRICTIVE_PUNISHMENT",
+      "IS_PHYSICAL_INTERVENTION"
+    ]
+  },
+  {
+    "citation": "BACB Ethics Code 4.09: Least Restrictive Procedures",
+    "rationale": "Applying physical prompts to strictly vocal-verbal communication targets is physically impossible and violates the mandate to use the least restrictive prompt necessary, as it involves inappropriate physical contact.",
+    "op": "EXCLUDES",
+    "left": "IS_VOCAL_VERBAL_TARGET",
+    "right": [
+      "Full Physical",
+      "Partial Physical"
+    ]
+  },
+  {
+    "citation": "BACB Ethics Code 4.09: Least Restrictive Procedures",
+    "rationale": "Enforcing compliance through physical guidance for internal state or tolerance targets (e.g., accepting 'No', tolerating loud noises) acts as an inappropriate, restrictive restraint rather than a functional teaching procedure.",
+    "op": "EXCLUDES",
+    "left": "IS_INTERNAL_STATE_TARGET",
+    "right": [
+      "Full Physical",
+      "Partial Physical"
+    ]
+  }
 ]

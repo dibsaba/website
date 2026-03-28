@@ -2,28 +2,32 @@
   {
     "citation": "Skinner (1957) Verbal Behavior: Topography of the Response",
     "rationale": "Vocal-verbal responses require the physical manipulation of the vocal cords, which cannot be physically prompted by a technician. Utilizing Full or Partial Physical prompts for vocal targets is a physiological impossibility.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_VOCAL_VERBAL_TARGET",
-      "right": "IS_PHYSICAL_PROMPT"
-    }
+    "op": "EXCLUDES",
+    "left": "IS_VOCAL_VERBAL_TARGET",
+    "right": "IS_PHYSICAL_PROMPT"
   },
   {
     "citation": "Skinner (1957) Verbal Behavior: Mand Function and Motivation (MO)",
-    "rationale": "A mand (request) is controlled by a specific motivating operation. If a client is manding for a break or cessation of an activity, the functional reinforcer MUST be the removal of the demand (Break / Escape). Providing a tangible item (like an edible) violates the functional definition of a mand for escape.",
-    "rule": {
-      "op": "REQUIRES",
-      "left": "IS_MAND_FOR_BREAK",
-      "right": "Break / Escape"
-    }
+    "rationale": "A mand (request) is controlled by a specific motivating operation. If a client is manding for a break or cessation of an activity, the functional reinforcer MUST be the removal of the demand (Break / Escape). Providing a tangible item without the functional removal of a demand violates the definition of a mand for escape. (Note: The previous hallucinated ontology term 'IS_MAND_FOR_BREAK' has been replaced with the explicit schema targets).",
+    "op": "REQUIRES",
+    "left":[
+      "Manding for cessation ('Stop'/'No')",
+      "Asking for a break"
+    ],
+    "right": "Break / Escape"
+  },
+  {
+    "citation": "Skinner (1957) Verbal Behavior: Mand Function and Motivation (MO)",
+    "rationale": "A mand for a specific tangible item is controlled by an establishing operation for that item. If a client is manding for desired items, reinforcing with a break or escape does not functionally match the motivation of the mand and violates verbal behavior principles.",
+    "op": "EXCLUDES",
+    "left": "Manding for desired items",
+    "right": "Break / Escape"
   },
   {
     "citation": "Skinner (1957) Verbal Behavior: Topography-Based AAC",
     "rationale": "If the targeted communication modality relies on an external device or picture exchange system, the corresponding materials must be present in the instructional environment.",
-    "rule": {
-      "op": "REQUIRES",
-      "left": "IS_AAC_TARGET",
-      "right": "IS_AAC_MATERIAL"
-    }
+    "op": "REQUIRES",
+    "left": "IS_AAC_TARGET",
+    "right": "IS_AAC_MATERIAL"
   }
 ]

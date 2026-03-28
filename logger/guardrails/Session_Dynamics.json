@@ -2,51 +2,53 @@
   {
     "citation": "Clinical Physics: Affect and Presentation Congruence",
     "rationale": "A client actively dysregulated cannot logically demonstrate an absence of maladaptive behavior.",
-    "rule": {
-      "scope": "GLOBAL",
-      "op": "EXCLUDES",
-      "left": "IS_DYSREGULATED",
-      "right": "displaying an absence of maladaptive behavior"
-    }
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left": "IS_DYSREGULATED",
+    "right": "displaying an absence of maladaptive behavior"
   },
   {
     "citation": "Clinical Physics: Affect and Smart Chip Congruence",
     "rationale": "A client cannot simultaneously be in a state of clinical dysregulation (crying, precursor behaviors, extreme fatigue) and demonstrate states of high regulation (Happy Transition, Quick Control).",
-    "rule": {
-    	"scope": "GLOBAL",
-      "op": "EXCLUDES",
-      "left": { "ANY_OF":["IS_DYSREGULATED", "IS_LOW_AROUSAL"] },
-      "right": "IS_SMART_CHIP_REGULATED"
-    }
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left":[
+      "IS_DYSREGULATED",
+      "IS_LOW_AROUSAL"
+    ],
+    "right": "IS_SMART_CHIP_REGULATED"
   },
   {
     "citation": "Clinical Physics: Affect and Smart Chip Congruence",
     "rationale": "A client marked with dysregulated smart chips cannot simultaneously be logged with an absence of maladaptive behavior.",
-    "rule": {
-    	"scope": "GLOBAL",
-      "op": "EXCLUDES",
-      "left": "IS_SMART_CHIP_DYSREGULATED",
-      "right": "displaying an absence of maladaptive behavior"
-    }
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left": "IS_SMART_CHIP_DYSREGULATED",
+    "right": "displaying an absence of maladaptive behavior"
   },
   {
     "citation": "Clinical Physics: Independence and Reinforcement",
     "rationale": "If a skill is completely independent and there are no maladaptive behaviors, providing continuous (FR1) reinforcement is clinically inappropriate for maintenance targets.",
-    "rule": {
-    	"scope": "GLOBAL",
-      "op": "EXCLUDES",
-      "left": { "ALL_OF": ["IS_INDEPENDENT", "Continuous"] },
-      "right": "displaying an absence of maladaptive behavior"
-    }
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left": [
+        "IS_INDEPENDENT",
+        "Continuous"
+    ],
+    "right": "displaying an absence of maladaptive behavior"
   },
   {
     "citation": "Clinical Physics: State-Dependent Learning",
     "rationale": "A client actively experiencing clinical dysregulation or a behavioral crisis cannot logically demonstrate 'Fluency' (peak speed and accuracy) or 'Spontaneous' mastery of skills in the same session without raising data fabrication red flags.",
-    "rule": {
-      "scope": "GLOBAL",
-      "op": "EXCLUDES",
-      "left": { "ANY_OF":["IS_DYSREGULATED", "IS_CRISIS_INDICATOR"] },
-      "right": [ "Fluency", "IS_SPONTANEOUS" ]
-    }
+    "scope": "GLOBAL",
+    "op": "EXCLUDES",
+    "left":[
+      "IS_DYSREGULATED",
+      "IS_CRISIS_INDICATOR"
+    ],
+    "right": [
+      "Fluency",
+      "IS_SPONTANEOUS"
+    ]
   }
 ]

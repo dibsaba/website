@@ -1,49 +1,97 @@
 [
   {
     "citation": "Aetna / General MNC: Billing for Sleep / Unresponsiveness",
-    "rationale": "Auditors claw back funds if they suspect the client was asleep or entirely unresponsive during billed 'intensive' therapy. Extreme lethargy/fatigue contradicts the ability to run high-velocity intensive teaching formats (like DTT or Fluency). Therapy must pivot to NET, pairing, or be terminated.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_LOW_AROUSAL",
-      "right": "IS_INTENSIVE_TEACHING"
-    }
+    "rationale": "Auditors claw back funds if they suspect the client was asleep or entirely unresponsive during billed 'intensive' therapy. Extreme lethargy/fatigue contradicts the ability to run high-velocity intensive teaching formats (like DTT, Fluency, or High-P). Therapy must pivot to NET, pairing, or be terminated. Gross motor targets and high-exertion activities require a level of physical engagement and wakefulness that is clinically and physically incompatible with concurrent documentation of extreme lethargy, unresponsiveness, or sleep. It is a clear documentation contradiction to describe a client as both heavily fatigued or unresponsive and simultaneously exhibiting highly energetic, positive, or rapid-movement states (Note: overtired meltdowns/crying are deliberately permitted, but positive energetic states are restricted).",
+    "op": "EXCLUDES",
+    "left":[
+      "IS_LOW_AROUSAL",
+      "Lethargy / Fatigue",
+      "exhibiting fatigued / slowed responses"
+    ],
+    "right":[
+      "IS_INTENSIVE_TEACHING",
+      "Behavior Momentum / High-P Sequence",
+      "Fluency",
+      "IS_HIGH_EXERTION",
+      "IS_GROSS_MOTOR_TARGET",
+      "smiling and energetic",
+      "Highly Motivated",
+      "demonstrating a high rate of movement",
+      "happily running to the next area"
+    ],
+    "scope": "GLOBAL"
   },
   {
     "citation": "General Medical Necessity: Exacerbation of Medical Symptoms",
     "rationale": "Behavioral interventions must not exacerbate known medical distress. Interventions utilizing physical contact, deep pressure, or tickles cannot be implemented if the client is presenting with active rash or skin irritation.",
-    "rule": { "op": "EXCLUDES", "left": "Rash / Skin irritation", "right": "IS_PHYSICAL_CONTACT" }
+    "op": "EXCLUDES",
+    "left": "Rash / Skin irritation",
+    "right": "IS_PHYSICAL_CONTACT"
   },
   {
     "citation": "General Medical Necessity: Infection Control and Biohazards",
     "rationale": "Standard health and safety guidelines prohibit the delivery of food or oral edibles during active bio-hazard events (Scatolia/Fecal Smearing).",
-    "rule": { "op": "EXCLUDES", "left": "Scatolia (Fecal smearing)", "right": "IS_EDIBLE" }
+    "op": "EXCLUDES",
+    "left": "Scatolia (Fecal smearing)",
+    "right": "IS_EDIBLE"
   },
   {
     "citation": "Optum/UHC ABA Guidelines: Safety & Liability in the Home",
-    "rationale": "Private payer contracts strictly prohibit RBTs/Technicians from being left alone in a home with a minor (acting as a babysitter). A valid adult caregiver MUST be present in the home at all times for liability and medical necessity purposes.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "Home",
-      "right": "None"
-    }
+    "rationale": "Private payer contracts strictly prohibit RBTs/Technicians from being left alone in a home with a minor (acting as a babysitter). An explicit indicator of caregiver unavailability mathematically contradicts medical necessity and liability constraints.",
+    "op": "EXCLUDES",
+    "left": "IS_HOME_SETTING",
+    "right": "IS_CAREGIVER_UNAVAILABLE",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Optum/UHC ABA Guidelines: Valid Caregiver Presence Requirement",
+    "rationale": "To ensure strict compliance with safety and liability mandates in a home setting, the session must explicitly document the presence of a valid adult caregiver. The presence of siblings, peers, or a BCBA alone is insufficient to meet the legal caregiver requirement.",
+    "op": "REQUIRES",
+    "left": "IS_HOME_SETTING",
+    "right":[
+      "Caregiver",
+      "Father",
+      "Grandparent",
+      "Mother",
+      "Other family member"
+    ],
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Optum/UHC ABA Guidelines: Telehealth Valid Caregiver Requirement",
+    "rationale": "Payer policies dictate that telehealth sessions for minors require active adult supervision to manage physical safety needs and facilitate intervention. The documentation must explicitly log a valid caregiver.",
+    "op": "REQUIRES",
+    "left": "IS_REMOTE",
+    "right":[
+      "Caregiver",
+      "Father",
+      "Grandparent",
+      "Mother",
+      "Other family member"
+    ],
+    "scope": "GLOBAL"
   },
   {
     "citation": "Optum/UHC ABA Guidelines: Client Dignity & Public Restraints",
-    "rationale": "Utilizing exclusionary or restrictive procedures (like a Tactical Break) in a public/community setting is a massive liability and client dignity violation. Escalations in public should utilize redirection, blocking, or transitioning to a private setting, not public tactical breaks.",
-    "rule": {
-      "op": "EXCLUDES",
-      "left": "IS_PUBLIC",
-      "right": "Tactical Break"
-    }
+    "rationale": "Utilizing exclusionary or restrictive procedures (like a Tactical Break) in a public/community setting is a massive liability and client dignity violation. Escalations in public should utilize redirection, blocking, or transitioning to a private setting, never a public time-out.",
+    "op": "EXCLUDES",
+    "left": "IS_PUBLIC",
+    "right":[
+      "Tactical Break",
+      "Required a tactical break",
+      "requiring a prolonged tactical break"
+    ],
+    "scope": "GLOBAL"
   },
   {
     "citation": "TRICARE ACD Operations Manual: Educational Setting Exclusions",
-    "rationale": "TRICARE strictly prohibits billing ABA for academic support (school shadowing). If ABA is provided in a school setting, it must strictly target behavioral reduction, social skills, or coping. Targeting 'Academic Readiness' in a school violates the IDEA mandate (which dictates the school must provide academic support).",
-    "rule": {
-    	"scope": "GLOBAL",
-      "op": "EXCLUDES",
-      "left": "IS_SCHOOL_SETTING",
-      "right": "IS_ACADEMIC"
-    }
+    "rationale": "TRICARE strictly prohibits billing ABA for academic support (school shadowing). If ABA is provided in a school setting, it must strictly target behavioral reduction, social skills, or coping. Targeting 'Academic Readiness' in a school violates the IDEA mandate (which dictates the school must provide academic support). The use of academic materials (such as worksheets, flashcards, and whiteboards) in a school setting strongly implies educational instruction or academic tutoring rather than medically necessary ABA. TRICARE mandates that ABA services in the school setting focus exclusively on clinical behavioral targets.",
+    "op": "EXCLUDES",
+    "left": "IS_SCHOOL_SETTING",
+    "right":[
+      "IS_ACADEMIC",
+      "IS_ACADEMIC_MATERIAL"
+    ],
+    "scope": "GLOBAL"
   }
 ]
