@@ -1,4 +1,14 @@
 [
+	{
+    "citation": "Clinical Liability & Data Integrity",
+    "rationale": "Behaviors posing imminent bodily harm (e.g., biting the therapist, head-butting) cannot be downgraded to 'Mild' or 'Moderate' to bypass reporting protocols.",
+    "op": "EXCLUDES",
+    "left": "IS_SEVERE_TOPOGRAPHY",
+    "right": [
+      "Mild",
+      "Moderate"
+    ]
+  },
   {
     "citation": "Clinical Physics: Arousal & Intensive Instruction",
     "rationale": "A highly dysregulated individual is neurologically incapable of engaging in intensive, fast-paced structured teaching (DTT/Errorless).",
@@ -26,6 +36,17 @@
       "Planned Ignoring",
       "Escape Extinction"
     ]
+  },
+	{
+    "citation": "Clinical Physics: Intervention Time Constraint",
+    "rationale": "It is clinically improbable to successfully prompt, wait for, and differentially reinforce an alternative communication or behavior (DRA/DRO/FCT) for a severe target behavior in under 1 minute.",
+    "op": "EXCLUDES",
+    "left":[
+      "DRA (Differential Reinforcement of Alternative Behavior)",
+      "DRO (Differential Reinforcement of Other Behavior)",
+      "FCT (Functional Communication Training)"
+    ],
+    "right": "< 1 minute"
   },
   {
     "citation": "Clinical Physics: Material / Target Congruence",

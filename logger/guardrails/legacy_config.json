@@ -27,18 +27,20 @@
   ],
   "Exclusive_Choices":[
     "Caregiver unavailable", 
-    "None", 
+    "No responsible adult", 
+    "No others",
     "None reported", 
     "displaying an absence of maladaptive behavior"
   ],
   "Field_Limits": {
     "default_max": 4,
     "Health_Variables": 2,
-    "Specific_Reinforcers": 3,
     "Interventions": 3,
-    "Target_Behaviors": 3,
+    "Others_Present": 2,
     "Prompt_Levels": 2,
-    "Others_Present": 2
+    "Responsible_Parties_Present": 2,
+    "Specific_Reinforcers": 3,
+    "Target_Behaviors": 3
   },
 	"Input_Constraints": {
 		"custom_chip_max_words": 8,

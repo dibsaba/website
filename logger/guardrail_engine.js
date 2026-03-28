@@ -210,10 +210,25 @@ export default class GuardrailEngine {
 
             for (const rule of this.rules) {
                 if (rule.op === 'REQUIRES') {
-                    // Evaluate against the expanded state, but only add the missing raw requirement
-                    if (this.evaluateCondition(rule.left, expandedState) && !closure.has(rule.right)) {
-                        closure.add(rule.right);
-                        addedNew = true;
+                    if (this.evaluateCondition(rule.left, expandedState)) {
+                        
+                        // Handle strict One-to-One requirements (Strings)
+                        if (typeof rule.right === 'string') {
+                            if (!closure.has(rule.right)) {
+                                closure.add(rule.right);
+                                addedNew = true;
+                            }
+                        } 
+                        // Handle One-to-Many requirements (Arrays)
+                        else if (Array.isArray(rule.right)) {
+                            // If none of the required options are in the closure, optimistically 
+                            // add them so validateSubset doesn't preemptively fail the antecedent.
+                            const hasAny = rule.right.some(r => closure.has(r));
+                            if (!hasAny) {
+                                rule.right.forEach(r => closure.add(r));
+                                addedNew = true;
+                            }
+                        }
                     }
                 }
             }

@@ -45,30 +45,18 @@
   },
   {
     "citation": "Optum/UHC ABA Guidelines: Valid Caregiver Presence Requirement",
-    "rationale": "To ensure strict compliance with safety and liability mandates in a home setting, the session must explicitly document the presence of a valid adult caregiver. The presence of siblings, peers, or a BCBA alone is insufficient to meet the legal caregiver requirement.",
-    "op": "REQUIRES",
+    "rationale": "To ensure strict compliance with safety and liability mandates in a home setting, the session must explicitly document the presence of a valid responsible adult.",
+    "op": "EXCLUDES",
     "left": "IS_HOME_SETTING",
-    "right":[
-      "Caregiver",
-      "Father",
-      "Grandparent",
-      "Mother",
-      "Other family member"
-    ],
+    "right": "No responsible adult",
     "scope": "GLOBAL"
   },
   {
     "citation": "Optum/UHC ABA Guidelines: Telehealth Valid Caregiver Requirement",
-    "rationale": "Payer policies dictate that telehealth sessions for minors require active adult supervision to manage physical safety needs and facilitate intervention. The documentation must explicitly log a valid caregiver.",
-    "op": "REQUIRES",
+    "rationale": "Payer policies dictate that telehealth sessions for minors require active adult supervision to manage physical safety needs and facilitate intervention.",
+    "op": "EXCLUDES",
     "left": "IS_REMOTE",
-    "right":[
-      "Caregiver",
-      "Father",
-      "Grandparent",
-      "Mother",
-      "Other family member"
-    ],
+    "right": "No responsible adult",
     "scope": "GLOBAL"
   },
   {

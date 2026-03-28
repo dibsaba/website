@@ -245,17 +245,21 @@
     "School",
     "Telehealth"
   ],
-  "Others_Present": [
+  "Others_Present":[
     "BCBA",
+    "No others",
+    "Other therapist",
+    "Peer(s)",
+    "Sibling(s)",
+    "Teacher"
+  ],
+  "Responsible_Parties_Present":[
     "Caregiver",
     "Father",
     "Grandparent",
     "Mother",
-    "None",
-    "Other family member",
-    "Peer(s)",
-    "Sibling(s)",
-    "Teacher"
+    "No responsible adult",
+    "Other family member"
   ],
   "Prompt_Levels": [
     "Independent",
