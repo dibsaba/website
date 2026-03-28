@@ -19,17 +19,19 @@
     "rationale": "To maintain funding and comply with agency standards, all in-home sessions must conclude with active caregiver engagement. The technician cannot leave the handoff blank or select 'Caregiver unavailable' at the end of a home session.",
     "scope": "GLOBAL",
     "op": "REQUIRES",
-    "left": [
-        "Home",
+    "left": {
+      "ALL_OF":[
+        "IS_HOME_SETTING",
         "SCHEMA:Chips_Session_End"
-    ],
+      ]
+    },
     "right": "IS_CAREGIVER_ENGAGEMENT"
   },
   {
     "citation": "Payer Guidelines: Supervision & Liability",
-    "rationale": "A technician cannot be left alone with a client in a home, school, or community setting. If 'None' is selected for Others Present, the location must be a Clinic.",
+    "rationale": "A technician cannot be left alone with a client in a home, school, or community setting. If 'No responsible adult' is selected, the location must be a Clinic.",
     "op": "EXCLUDES",
-    "left": "None",
+    "left": "No responsible adult",
     "right": "IS_NON_CLINIC"
   }
 ]

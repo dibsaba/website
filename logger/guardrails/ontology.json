@@ -12,7 +12,7 @@
   "IS_BCBA_LEVEL_TASK":[ "Provided parent coaching", "Reviewed IEP goals", "Discussed generalization strategies" ],
   "IS_BIO_HAZARD":[ "Scatolia (Fecal smearing)", "Pica", "Spitting", "Disrobing", "smearing feces on the furniture", "smearing feces on the walls", "chewing on clothing or strings", "licking the floor or walls", "mouthing non-edible items", "swallowing small objects", "pooling saliva in mouth", "spitting at staff or peers", "spitting on instructional materials", "spitting on the floor" ],
   "IS_CAREGIVER_ENGAGEMENT":[ "confirmed the next scheduled session", "demonstrated the strategy back to the therapist", "expressed satisfaction with progress", "reported no new concerns", "thanked the clinical team", "asked for tips on community generalization", "asked questions about the behavior plan", "expressed frustration with the current routine", "mentioned sleep or diet issues", "reported an increase in behaviors at home", "Discussed generalization strategies", "Discussed mastered skills", "Modeled intervention", "Reviewed behavior incidents", "Reviewed upcoming session schedule", "Answered caregiver questions", "Provided parent coaching", "Reviewed data graphs with family" ],
-  "IS_CAREGIVER_UNAVAILABLE":[ "Caregiver unavailable", "No Responsible adult" ],
+  "IS_CAREGIVER_UNAVAILABLE":[ "Caregiver unavailable", "No responsible adult" ],
   "IS_CHAINED":[ "Daily Living (ADLs)", "Vocational" ],
   "IS_CHAINING_FORMAT":[ "Backward Chaining", "Forward Chaining", "Total Task Chaining", "Shaping", "Task Analysis" ],
   "IS_CHOKING_HAZARD":["kinetic sand", "playdough and molds", "Lego bricks", "magnetic building tiles", "Tokens / Points", "Stringing beads", "puzzles", "shape sorters", "wooden blocks"],

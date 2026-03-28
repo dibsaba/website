@@ -31,10 +31,12 @@
     "rationale": "If a skill is completely independent and there are no maladaptive behaviors, providing continuous (FR1) reinforcement is clinically inappropriate for maintenance targets.",
     "scope": "GLOBAL",
     "op": "EXCLUDES",
-    "left": [
+    "left": {
+      "ALL_OF":[
         "IS_INDEPENDENT",
         "Continuous"
-    ],
+      ]
+    },
     "right": "displaying an absence of maladaptive behavior"
   },
   {
