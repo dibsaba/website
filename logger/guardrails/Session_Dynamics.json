@@ -52,5 +52,21 @@
       "Fluency",
       "IS_SPONTANEOUS"
     ]
+  },
+  {
+    "citation": "Conceptual Consistency: Spontaneity vs Contingency",
+    "rationale": "A response mathematically cannot be recorded as 'Spontaneous' if it was contingent on a delivered First/Then (Premack) instruction.",
+    "op": "EXCLUDES",
+    "left": "IS_PREMACK_CONTINGENCY",
+    "right": "IS_SPONTANEOUS",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Data Integrity: Environmental Requirements for Social Targets",
+    "rationale": "Peer-mediated targets fundamentally require the physical presence of a peer or sibling in the session environment to be validly recorded.",
+    "op": "REQUIRES",
+    "left": "IS_PEER_TARGET",
+    "right": "IS_PEER_OR_SIBLING",
+    "scope": "GLOBAL"
   }
 ]

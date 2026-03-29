@@ -1,5 +1,24 @@
 [
   {
+    "citation": "BACB Ethics Code",
+    "rationale": "Accurate clinical documentation requires logical consistency. Documenting a client as fully regulated and positive contradicts simultaneously noting them as highly dysregulated and agitated in the exact same measurement instance. Least restrictive procedures dictate that a client presenting as calm, cooperative, and regulated should never be concurrently subjected to highly restrictive punishments or physical interventions.",
+    "op": "EXCLUDES",
+    "left": "IS_REGULATED",
+    "right":[
+      "IS_DYSREGULATED",
+      "IS_PHYSICAL_INTERVENTION",
+      "IS_RESTRICTIVE_PUNISHMENT"
+    ]
+  },
+  {
+		"citation": "BACB Ethics Code 2.01: Protection from Harm",
+		"rationale": "Implementing repeated, high-effort physical tasks (Positive Practice/Overcorrection) on a client demonstrating significant physiological fatigue or lethargy crosses ethical bounds and is medically contraindicated.",
+		"op": "EXCLUDES",
+		"left": "IS_LOW_AROUSAL",
+		"right": "IS_HIGH_EFFORT_PUNISHMENT",
+		"scope": "GLOBAL"
+	},
+  {
     "citation": "BACB Ethics Code 2.01: Providing Effective Treatment",
     "rationale": "Behavior analysts prioritize maximizing desired outcomes and protecting clients from harm. Behavioral extinction or punishment cannot be used to treat physiological distress or pain.",
     "op": "EXCLUDES",
@@ -128,16 +147,13 @@
     "right": "IS_CAREGIVER_ENGAGEMENT"
   },
   {
-    "citation": "BACB Ethics Code",
-    "rationale": "Accurate clinical documentation requires logical consistency. Documenting a client as fully regulated and positive contradicts simultaneously noting them as highly dysregulated and agitated in the exact same measurement instance. Least restrictive procedures dictate that a client presenting as calm, cooperative, and regulated should never be concurrently subjected to highly restrictive punishments or physical interventions.",
-    "op": "EXCLUDES",
-    "left": "IS_REGULATED",
-    "right":[
-      "IS_DYSREGULATED",
-      "IS_PHYSICAL_INTERVENTION",
-      "IS_RESTRICTIVE_PUNISHMENT"
-    ]
-  },
+		"citation": "BACB Ethics Code 2.06: Maintaining Confidentiality",
+		"rationale": "High-level clinical discussions, IEP reviews, and incident reviews inherently contain protected health information (PHI) and cannot ethically occur in the presence of peers or siblings.",
+		"op": "EXCLUDES",
+		"left": "IS_CONFIDENTIAL_DISCUSSION",
+		"right": "IS_PEER_OR_SIBLING",
+		"scope": "GLOBAL"
+	},
   {
     "citation": "BACB Ethics Code 4.02: Appropriate Interventions",
     "rationale": "Remote telehealth sessions physically distance the clinician from the client, fundamentally prohibiting direct physical prompting, physical safety management, tactile reinforcement, or the capability of physical aggression directed at the clinician. Telehealth sessions require a caregiver or responsible adult to be present/available to facilitate environmental assessment, physical safety management, and prompt implementation when necessary.",

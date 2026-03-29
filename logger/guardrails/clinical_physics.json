@@ -190,5 +190,133 @@
     "op": "EXCLUDES",
     "left": "IS_HIGH_AROUSAL",
     "right": "IS_LOW_AROUSAL"
+  },
+  {
+    "citation": "Clinical Physics: Electronics and Water Hazard",
+    "rationale": "Electronic devices present an electrocution/damage hazard if utilized simultaneously with water-based activities.",
+    "op": "EXCLUDES",
+    "left": "IS_WATER_ENVIRONMENT",
+    "right": "IS_ELECTRONIC_DEVICE",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Medical Necessity: Exacerbation of Respiratory Distress",
+    "rationale": "Forcing respiratory-heavy interventions while a client is actively experiencing respiratory distress is physiologically unsafe.",
+    "op": "EXCLUDES",
+    "left": "IS_RESPIRATORY_DISTRESS",
+    "right": "IS_RESPIRATORY_DEMAND",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Clinical Physics: Fine Motor Capability",
+    "rationale": "A client cannot engage in complex fine motor manipulation if their hands and arms are actively compromised by SIB.",
+    "op": "EXCLUDES",
+    "left": "IS_HAND_COMPROMISE",
+    "right": "IS_FINE_MOTOR_TARGET",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Clinical Physics: Spatial Logic of Elopement",
+    "rationale": "Geographic bolting behaviors requiring significant spatial distance fundamentally contradict being confined within a localized transport vehicle.",
+    "op": "EXCLUDES",
+    "left": "IS_CONFINED",
+    "right": "IS_ELOPEMENT",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Clinical Physics: Visual Modality Necessity",
+    "rationale": "Executing tasks heavily dependent on visual discrimination is physically impossible in a visually deprived environment.",
+    "op": "EXCLUDES",
+    "left": "IS_DARK_ENVIRONMENT",
+    "right": "IS_VISUAL_DEPENDENT_TASK",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Standard Health Guidelines: Infection Control",
+    "rationale": "The delivery and consumption of edible items within a restroom constitutes a severe bio-hazard.",
+    "op": "EXCLUDES",
+    "left": "IS_TOILETING_ADL",
+    "right": "IS_EDIBLE",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Clinical Physics: Cognitive Load and Arousal",
+    "rationale": "A client experiencing active, visible dysregulation is neurologically incapable of independently executing complex executive functioning skills.",
+    "op": "EXCLUDES",
+    "left": "IS_EXECUTIVE_FUNCTIONING",
+    "right": "IS_DYSREGULATED",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Safety Standards: Hazardous Materials in Transit",
+    "rationale": "Using sharp instructional tools within a moving vehicle presents an immediate physical safety risk.",
+    "op": "EXCLUDES",
+    "left": "IS_CONFINED",
+    "right": "IS_SHARP_OBJECT",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Clinical Physics: Competing Vocal Topographies",
+    "rationale": "A client cannot successfully engage in precise vocal-verbal targets while their vocal cords are simultaneously compromised by loud screaming or vocal stereotypy.",
+    "op": "EXCLUDES",
+    "left": "IS_VOCAL_COMPROMISE",
+    "right": "IS_VOCAL_VERBAL_TARGET",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Medical Necessity: Exacerbation of Skin Conditions",
+    "rationale": "Utilizing messy tactile materials on compromised, severely irritated skin presents an infection risk.",
+    "op": "EXCLUDES",
+    "left": "IS_TACTILE_DISTRESS",
+    "right": "IS_MESSY_MATERIAL",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Clinical Physics: Social Deprivation",
+    "rationale": "A tactical break physically and socially isolates the client. It is impossible to concurrently target cooperative social play.",
+    "op": "EXCLUDES",
+    "left": "IS_EXCLUSIONARY_TIMEOUT",
+    "right": "IS_SOCIAL_PLAY",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Clinical Physics: Spatial Restrictions on Prompting",
+    "rationale": "If a safety distance must be maintained, the therapist is spatially prohibited from providing close-proximity manual or gestural prompts.",
+    "op": "EXCLUDES",
+    "left": "IS_DISTANCE_REQUIRED",
+    "right": "IS_PROXIMITY_PROMPT",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Medical Necessity: Exacerbation of Oral Pain",
+    "rationale": "Targets requiring internal oral manipulation cannot be ethically enforced while the client is experiencing acute dental pain.",
+    "op": "EXCLUDES",
+    "left": "IS_ORAL_DISTRESS",
+    "right": "IS_ORAL_DEMAND",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Clinical Physics: Mutual Exclusivity of Affection and Assault",
+    "rationale": "It is clinically disjointed to report intimate, proximity-based pairing synchronously with direct physical violence perpetrated against the therapist.",
+    "op": "EXCLUDES",
+    "left": "IS_STAFF_DIRECTED_AGGRESSION",
+    "right": "IS_PROXIMITY_PAIRING",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Safety Standards: Motor Vehicle Restrictions",
+    "rationale": "Utilizing therapy balls, swings, or engaging in gross motor jumping within a vehicle presents a critical danger.",
+    "op": "EXCLUDES",
+    "left": "IS_CONFINED",
+    "right": "IS_FALL_HAZARD",
+    "scope": "GLOBAL"
+  },
+  {
+    "citation": "Safety Standards: Liability in Transit",
+    "rationale": "Providing highly fragmentable or small manipulatives to a client in a vehicle creates a severe choking liability.",
+    "op": "EXCLUDES",
+    "left": "IS_CONFINED",
+    "right": "IS_CHOKING_HAZARD",
+    "scope": "GLOBAL"
   }
 ]
