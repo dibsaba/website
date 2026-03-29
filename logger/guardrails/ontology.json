@@ -580,7 +580,7 @@
   ],
   "IS_ORAL_DEMAND":[
   	"Brushing teeth", "Eating a variety of foods"
-  ]
+  ],
   "IS_ORAL_DISTRESS":[
     "Dental pain", "biting own lips or cheeks", "pooling saliva in mouth"
   ],
@@ -862,5 +862,5 @@
   ],
   "IS_WATER_ENVIRONMENT":[
     "Bathroom / Restroom", "Washing hands", "Completing toileting routine", "Brushing teeth", "water play table"
-  ],
+  ]
 }
