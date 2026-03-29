@@ -1,13 +1,10 @@
 [
 	{
     "citation": "Clinical Liability & Data Integrity",
-    "rationale": "Behaviors posing imminent bodily harm (e.g., biting the therapist, head-butting) cannot be downgraded to 'Mild' or 'Moderate' to bypass reporting protocols.",
+    "rationale": "Behaviors posing imminent bodily harm (e.g., biting, physical blocks) cannot be downgraded to 'Mild' or 'Moderate' to bypass reporting protocols.",
     "op": "EXCLUDES",
     "left": "IS_SEVERE_TOPOGRAPHY",
-    "right": [
-      "Mild",
-      "Moderate"
-    ]
+    "right": ["Mild", "Moderate"]
   },
   {
     "citation": "Clinical Physics: Arousal & Intensive Instruction",
@@ -26,6 +23,14 @@
       "IS_ACADEMIC_MATERIAL",
       "IS_AAC_MATERIAL"
     ]
+  },
+  {
+    "citation": "Clinical Physics: Indoor/Outdoor Constraint",
+    "rationale": "Large outdoor natural environment materials (like playground equipment or water tables) cannot be logically utilized in confined indoor settings like a living room.",
+    "op": "EXCLUDES",
+    "left": "IS_OUTDOOR_MATERIAL",
+    "right": "IS_INDOOR_SETTING",
+    "scope": "GLOBAL"
   },
   {
     "citation": "Clinical Physics: Intervention Opposites",

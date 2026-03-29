@@ -96,10 +96,10 @@
   },
   {
     "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",
-    "rationale": "Accurate clinical documentation requires logical consistency. Problem behaviors that escalate to a severity requiring a formal Incident Report cannot be accurately designated as 'Mild'.",
+    "rationale": "Accurate clinical documentation requires logical consistency. Problem behaviors that escalate to a severity requiring a formal Incident Report cannot be accurately designated as 'Mild' or 'Moderate'.",
     "op": "EXCLUDES",
     "left": "Incident Report Filed",
-    "right": "Mild"
+    "right": ["Mild", "Moderate"]
   },
   {
     "citation": "BACB Ethics Code 2.05: Documentation Protection and Retention",

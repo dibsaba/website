@@ -47,6 +47,7 @@
   "IS_IMMINENT_DANGER":[ "Aggression", "SIB", "Elopement", "Pica" ],
   "IS_INAPPROPRIATE_LANGUAGE":[ "Inappropriate Language", "using profanity", "making sexually explicit comments", "making verbally threatening statements", "calling staff or peers derogatory names" ],
   "IS_INDEPENDENT":[ "Independent", "Mastered", "Fluency", "Spontaneous demonstration", "Transitioned smoothly and independently", "happily running to the next area", "independently carrying their schedule", "walking independently" ],
+  "IS_INDOOR_SETTING":["Living room", "Bedroom", "Kitchen", "Dining room", "Bathroom / Restroom", "Therapy room", "Classroom"],
   "IS_INFANT_TOY": ["cause-and-effect toys", "playdough and molds", "Bubbles", "kinetic sand"],
   "IS_INTENSIVE_TEACHING":[ "Errorless Teaching", "Max Prompting", "DTT (Discrete Trial Training)", "Fluency Based Instruction" ],
   "IS_INTERNAL_STATE_TARGET":["Using deep breathing", "Accepting 'No'", "Tolerating loud noises", "Asking for a break", "Tolerating denied access", "Accepting changes in routine", "Tolerating task demands", "Tolerating haircuts / nail clipping"],
@@ -58,6 +59,7 @@
   "IS_NET_TEACHING": [ "Incidental Teaching", "NET (Natural Environment Teaching)" ],
   "IS_NON_CLINIC": [ "Home", "School", "Community", "Telehealth" ],
   "IS_NON_DANGEROUS_BEHAVIOR":[ "Vocal Stereotypy", "Motor Stereotypy", "Non-compliance", "Inappropriate Language" ],
+  "IS_OUTDOOR_MATERIAL":["playground equipment", "water play table", "gross motor obstacle course"],
   "IS_PEER_OR_SIBLING":["Peer(s)", "Sibling(s)", "Peer attention", "Initiating peer play", "Turn-taking with a peer"],
   "IS_PHYSICAL_CONTACT":["Full Physical", "Partial Physical", "holding the therapist's hand", "Physical Touch (deep pressure / squeezes)", "Tickles", "Blocked using safety pads", "Required physical blocking"],
   "IS_PHYSICAL_INTERVENTION":[ "Blocking", "Tactical Break", "Required physical block to prevent exit", "Blocked using safety pads", "Required physical blocking", "Blocked attempt to swallow" ],
@@ -71,7 +73,11 @@
   "IS_RESISTANT_TRANSITION":[ "attempting to elope back to the previous area", "dropping to the floor midway", "requiring a prolonged tactical break", "whining and vocally protesting", "Engaged in precursor behaviors during transition", "Required physical guidance to transition" ],
   "IS_RESTRICTIVE_PUNISHMENT":[ "Response Cost", "Overcorrection (Positive Practice)", "Tactical Break" ],
   "IS_SCHOOL_SETTING":[ "School", "Classroom" ],
-  "IS_SEVERE_TOPOGRAPHY":[ "biting directed at the therapist", "head-butting staff or peers", "punching with closed fists", "running into the street/parking lot", "bolting towards the exit door", "banging head against the wall/floor", "gouging own eyes", "choking", "kicking holes in walls", "smearing feces on the walls", "swallowing small objects", "hair-pulling", "kicking the furniture or staff", "stripping completely naked", "hitting head with an open hand" ],
+  "IS_SEVERE_TOPOGRAPHY":[
+    "biting directed at the therapist", "attempted to bite", "Required physical blocking", "Required physical block to prevent exit", "Blocked using safety pads","head-butting staff or peers", "punching with closed fists",
+    "running into the street/parking lot", "bolting towards the exit door", "banging head against the wall/floor", "gouging own eyes", "choking", "kicking holes in walls", "smearing feces on the walls",
+    "swallowing small objects", "hair-pulling", "kicking the furniture or staff", "stripping completely naked", "hitting head with an open hand"
+  ],
   "IS_SHARP_OBJECT":["Cutting with scissors"],
   "IS_SIB":[ "SIB", "Self-Injurious Behavior (SIB)", "banging head against the wall/floor", "biting own hand or arm", "biting own lips or cheeks", "gouging own eyes", "hitting head with an open hand", "scratching own skin repeatedly", "skin picking" ],
   "IS_SMART_CHIP_DYSREGULATED":[ "Preceded by crying", "Triggered by loud noise", "Triggered by routine change", "Occurred when denied access" ],

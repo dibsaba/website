@@ -14,6 +14,39 @@
     ]
   },
   {
+    "citation": "Cooper, Heron, & Heward (2020): Chaining",
+    "rationale": "Chaining procedures and task analyses are designed for complex behavioral sequences. They cannot be applied to discrete academic or communication responses. (Note: Upgraded to protect Shaping, which CAN be applied to discrete responses). Discrete Trial Training (DTT) and Fluency-Based Instruction are designed for isolated, discrete responses. They contradict the methodology of multi-step sequence chaining or task analyses.",
+    "op": "EXCLUDES",
+    "left":[
+      "Backward Chaining",
+      "Forward Chaining",
+      "Total Task Chaining",
+      "Task Analysis"
+    ],
+    "right":[
+      "IS_DISCRETE",
+      "DTT (Discrete Trial Training)",
+      "Fluency Based Instruction"
+    ]
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Chaining",
+    "rationale": "A single target sequence cannot be taught using backward, forward, and total task chaining simultaneously; these are mutually exclusive step-progression methodologies.",
+    "op": "EXCLUDES",
+    "left": "Backward Chaining",
+    "right":[
+      "Forward Chaining",
+      "Total Task Chaining"
+    ]
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Chaining",
+    "rationale": "Forward chaining and total task chaining are distinct, mutually exclusive methodologies for teaching a behavioral sequence.",
+    "op": "EXCLUDES",
+    "left": "Forward Chaining",
+    "right": "Total Task Chaining"
+  },
+  {
     "citation": "Cooper, Heron, & Heward (2020): Continuous Reinforcement (CRF)",
     "rationale": "Continuous reinforcement (FR1) is utilized for initial skill acquisition. Mastered, independent, generalized, and fluent skills must be transitioned to intermittent schedules to prevent satiation and simulate natural environments.",
     "op": "EXCLUDES",
@@ -29,71 +62,73 @@
     ]
   },
   {
-    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
-    "rationale": "Noncontingent Reinforcement (NCR) involves time-based delivery of stimuli independent of responding. Differential reinforcement requires a strict response contingency, making them mutually exclusive.",
-    "op": "EXCLUDES",
-    "left": "NCR (Noncontingent Reinforcement)",
-    "right":[
-      "Fixed Ratio",
-      "Variable Ratio",
-      "IS_DIFFERENTIAL_REINFORCEMENT"
-    ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
-    "rationale": "The Premack Principle (First/Then) is a contingent behavioral procedure requiring the completion of a low-probability behavior to access a high-probability behavior. This fundamentally contradicts Noncontingent Reinforcement (NCR), which delivers reinforcement completely independent of behavior.",
-    "op": "EXCLUDES",
-    "left": "Premack Principle (First/Then)",
-    "right": "NCR (Noncontingent Reinforcement)"
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
-    "rationale": "Errorless teaching and maximum prompting are utilized during the initial acquisition phase of learning and necessitate a continuous, immediate schedule of reinforcement (FR1). Intermittent schedules (VI, VR, FI) are designed for maintenance and are functionally incompatible with these high-prompting acquisition procedures.",
-    "op": "EXCLUDES",
+    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
+    "rationale": "Measurement validity dictates that if a skill is documented as prompt dependent or requiring prompt fading, the exact prompt level (e.g., verbal, physical) or intensive teaching method must be explicitly recorded to reflect the accurate level of support.",
+    "op": "REQUIRES",
     "left":[
-      "Errorless Teaching",
-      "Max Prompting"
+      "Prompt dependent",
+      "Required prompt fading"
     ],
-    "right":[
-      "Fixed Interval",
-      "Variable Interval",
-      "Variable Ratio"
-    ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Teaching Formats",
-    "rationale": "DTT requires a highly controlled environment to minimize distractions, establish clear stimulus control, and maximize trial velocity. It cannot be conducted in highly distracting or high-mobility environments like playgrounds or water tables. Intensive teaching formats such as DTT are designed for discrete, rapid single-response skills. They are clinically contraindicated for complex, multi-step sequences like Daily Living, Vocational tasks, or Toilet Training routines. DTT relies on externally observable, discrete responses with immediate consequences. It is not an appropriate primary teaching methodology for duration-based emotional regulation, coping mechanisms, or internal states. Intensive, highly structured, teacher-directed formats (DTT) are logically incompatible with concurrently utilizing naturalistic, child-led formats (NET) or task analysis formats for the same learning target.",
-    "op": "EXCLUDES",
-    "left": "IS_INTENSIVE_TEACHING",
-    "right":[
-      "IS_HIGH_MOBILITY_ENVIRONMENT",
-      "water play table",
-      "IS_CHAINED",
-      "IS_ADL_TARGET",
-      "Daily Living",
-      "Toilet Training",
-      "IS_INTERNAL_STATE_TARGET",
-      "Coping / Tolerance",
-      "IS_NET_TEACHING",
-      "IS_CHAINING_FORMAT"
-    ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Stimulus Control and Spontaneity",
-    "rationale": "A 'Spontaneous demonstration' occurs strictly without antecedent prompts or programmed discriminative stimuli. Existing rules have been mathematically pruned: 'Max Prompting' and 'Errorless Teaching' are now subsumed by the broader 'IS_INTENSIVE_TEACHING' ontology, which inherently relies on explicit SDs and prompt delivery. Spontaneity is the pinnacle of skill mastery and independence. It mathematically contradicts any clinical indicator of error, struggle, or prompt dependence during the execution of a target. This captures granular schema gaps where specific physical, visual, or verbal prompts were documented outside of the primary skill acquisition ontology (e.g., during behavior reduction or transitions). If these explicit prompt forms were required, the co-occurring action cannot be documented as spontaneous.",
-    "op": "EXCLUDES",
-    "left": "IS_SPONTANEOUS",
     "right":[
       "IS_PHYSICAL_PROMPT",
       "IS_LESSER_PROMPT",
-      "IS_INTENSIVE_TEACHING",
+      "Max Prompting",
+      "Errorless Teaching",
+      "Completed with partial physical prompt"
+    ]
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
+    "rationale": "Errorless teaching methodologies necessitate the immediate delivery of a controlling prompt. Data validity requires the associated prompt level utilized to be concurrently documented.",
+    "op": "REQUIRES",
+    "left": "Errorless Teaching",
+    "right":[
+      "IS_PHYSICAL_PROMPT",
+      "IS_LESSER_PROMPT",
+      "Max Prompting"
+    ]
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
+    "rationale": "Measurement validity dictates that a skill cannot be simultaneously recorded as failing to generalize while also successfully generalizing to a new environment.",
+    "op": "EXCLUDES",
+    "left": "Failed to generalize",
+    "right": "Generalized to new environment"
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
+    "rationale": "Data must accurately reflect the client's current clinical state. Documenting an 'absence of maladaptive behavior' completely precludes the concurrent selection of active target behaviors, crises, or dangerous topographies.",
+    "op": "EXCLUDES",
+    "left": "displaying an absence of maladaptive behavior",
+    "right":[
+      "IS_AGGRESSION",
+      "IS_ELOPEMENT",
+      "IS_SIB",
+      "IS_PROPERTY_DESTRUCTION",
+      "IS_NON_DANGEROUS_BEHAVIOR",
+      "IS_BIO_HAZARD",
+      "IS_CRISIS_INDICATOR"
+    ]
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
+    "rationale": "Data must accurately reflect the performance. An operational definition of 'Independent' or 'Mastered' completely precludes the presence of instructional struggles, prompt dependence, error-correction strategies, or transition resistance.",
+    "op": "EXCLUDES",
+    "left":[
+      "IS_INDEPENDENT",
+      "Mastered with novel stimuli"
+    ],
+    "right":[
       "IS_ERROR_OR_STRUGGLE",
-      "Completed with partial physical prompt",
-      "Maintained proximity after prompt",
+      "IS_PHYSICAL_PROMPT",
+      "IS_LESSER_PROMPT",
+      "Errorless Teaching",
+      "Max Prompting",
+      "IS_RESISTANT_TRANSITION",
       "Required verbal prompts to transition",
       "Required visual schedule to transition",
-      "requiring multiple verbal prompts",
-      "Verbal Prompts"
+      "Completed with partial physical prompt",
+      "Transitioned with minor resistance"
     ]
   },
   {
@@ -165,24 +200,18 @@
     ]
   },
   {
-    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
-    "rationale": "Data must accurately reflect the performance. An operational definition of 'Independent' or 'Mastered' completely precludes the presence of instructional struggles, prompt dependence, error-correction strategies, or transition resistance.",
+    "citation": "Cooper, Heron, & Heward (2020): Operational Definition of Fluency",
+    "rationale": "Fluency is mathematically defined as accuracy plus speed (short latency). It is a physiological and definitional contradiction to mark a skill as 'Fluent' while simultaneously logging 'sluggish' or 'slowed' response times. Fluency requires mastery-level accuracy and consistent, independent responding. It is a definitional contradiction to log a skill as fluent while also indicating it is an emerging skill, prompt dependent, or prone to errors. A skill cannot be considered fluent if it requires prompting or errorless teaching procedures, as fluency strictly necessitates unprompted, independent, and rapid responding. Fluency is characterized by rapid, short-latency responding. Logging a skill as fluent directly contradicts the clinical observation of fatigued or slowed responses at the end of the session.",
     "op": "EXCLUDES",
-    "left":[
-      "IS_INDEPENDENT",
-      "Mastered with novel stimuli"
-    ],
+    "left": "Fluency",
     "right":[
+      "IS_LOW_AROUSAL",
       "IS_ERROR_OR_STRUGGLE",
       "IS_PHYSICAL_PROMPT",
       "IS_LESSER_PROMPT",
-      "Errorless Teaching",
       "Max Prompting",
-      "IS_RESISTANT_TRANSITION",
-      "Required verbal prompts to transition",
-      "Required visual schedule to transition",
-      "Completed with partial physical prompt",
-      "Transitioned with minor resistance"
+      "Errorless Teaching",
+      "exhibiting fatigued / slowed responses"
     ]
   },
   {
@@ -204,6 +233,57 @@
     "right": "Continuous"
   },
   {
+    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
+    "rationale": "Emerging skills, or targets requiring prompting and field reductions, must be reinforced on a Continuous (FR1) schedule to ensure acquisition. Intermittent schedules are for maintenance and are clinically invalid here.",
+    "op": "EXCLUDES",
+    "left": "IS_ERROR_OR_STRUGGLE",
+    "right":[
+      "Fixed Interval",
+      "Variable Interval",
+      "Fixed Ratio",
+      "Variable Ratio"
+    ]
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
+    "rationale": "Errorless teaching and maximum prompting are utilized during the initial acquisition phase of learning and necessitate a continuous, immediate schedule of reinforcement (FR1). Intermittent schedules (VI, VR, FI) are designed for maintenance and are functionally incompatible with these high-prompting acquisition procedures.",
+    "op": "EXCLUDES",
+    "left":[
+      "Errorless Teaching",
+      "Max Prompting"
+    ],
+    "right":[
+      "Fixed Interval",
+      "Variable Interval",
+      "Variable Ratio"
+    ]
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
+    "rationale": "Fluency-based instruction requires rapid, uninterrupted rates of responding. Delivering a continuous schedule of reinforcement (FR1) mechanically interrupts the response flow, preventing true fluency. Reinforcement should be intermittent or delivered at the end of a timing.",
+    "op": "EXCLUDES",
+    "left": "Fluency Based Instruction",
+    "right": "Continuous"
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
+    "rationale": "Noncontingent Reinforcement (NCR) involves time-based delivery of stimuli independent of responding. Differential reinforcement requires a strict response contingency, making them mutually exclusive.",
+    "op": "EXCLUDES",
+    "left": "NCR (Noncontingent Reinforcement)",
+    "right":[
+      "Fixed Ratio",
+      "Variable Ratio",
+      "IS_DIFFERENTIAL_REINFORCEMENT"
+    ]
+  },
+  {
+    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
+    "rationale": "The Premack Principle (First/Then) is a contingent behavioral procedure requiring the completion of a low-probability behavior to access a high-probability behavior. This fundamentally contradicts Noncontingent Reinforcement (NCR), which delivers reinforcement completely independent of behavior.",
+    "op": "EXCLUDES",
+    "left": "Premack Principle (First/Then)",
+    "right": "NCR (Noncontingent Reinforcement)"
+  },
+  {
     "citation": "Cooper, Heron, & Heward (2020): Shaping",
     "rationale": "Shaping is defined as the differential reinforcement of successive approximations toward a terminal behavior. Using a Full Physical prompt forces the terminal behavior, which inherently violates the definition of Shaping. Shaping requires the learner to emit approximations and contact differential reinforcement. Errorless teaching and maximum prompting force the correct response immediately, removing the opportunity to shape emerging behavior.",
     "op": "EXCLUDES",
@@ -215,37 +295,40 @@
     ]
   },
   {
-    "citation": "Cooper, Heron, & Heward (2020): Chaining",
-    "rationale": "Chaining procedures and task analyses are designed for complex behavioral sequences. They cannot be applied to discrete academic or communication responses. (Note: Upgraded to protect Shaping, which CAN be applied to discrete responses). Discrete Trial Training (DTT) and Fluency-Based Instruction are designed for isolated, discrete responses. They contradict the methodology of multi-step sequence chaining or task analyses.",
+    "citation": "Cooper, Heron, & Heward (2020): Stimulus Control and Spontaneity",
+    "rationale": "A 'Spontaneous demonstration' occurs strictly without antecedent prompts or programmed discriminative stimuli. Existing rules have been mathematically pruned: 'Max Prompting' and 'Errorless Teaching' are now subsumed by the broader 'IS_INTENSIVE_TEACHING' ontology, which inherently relies on explicit SDs and prompt delivery. Spontaneity is the pinnacle of skill mastery and independence. It mathematically contradicts any clinical indicator of error, struggle, or prompt dependence during the execution of a target. This captures granular schema gaps where specific physical, visual, or verbal prompts were documented outside of the primary skill acquisition ontology (e.g., during behavior reduction or transitions). If these explicit prompt forms were required, the co-occurring action cannot be documented as spontaneous.",
     "op": "EXCLUDES",
-    "left":[
-      "Backward Chaining",
-      "Forward Chaining",
-      "Total Task Chaining",
-      "Task Analysis"
-    ],
+    "left": "IS_SPONTANEOUS",
     "right":[
-      "IS_DISCRETE",
-      "DTT (Discrete Trial Training)",
-      "Fluency Based Instruction"
+      "IS_PHYSICAL_PROMPT",
+      "IS_LESSER_PROMPT",
+      "IS_INTENSIVE_TEACHING",
+      "IS_ERROR_OR_STRUGGLE",
+      "Completed with partial physical prompt",
+      "Maintained proximity after prompt",
+      "Required verbal prompts to transition",
+      "Required visual schedule to transition",
+      "requiring multiple verbal prompts",
+      "Verbal Prompts"
     ]
   },
   {
-    "citation": "Cooper, Heron, & Heward (2020): Chaining",
-    "rationale": "A single target sequence cannot be taught using backward, forward, and total task chaining simultaneously; these are mutually exclusive step-progression methodologies.",
+    "citation": "Cooper, Heron, & Heward (2020): Teaching Formats",
+    "rationale": "DTT requires a highly controlled environment to minimize distractions, establish clear stimulus control, and maximize trial velocity. It cannot be conducted in highly distracting or high-mobility environments like playgrounds or water tables. Intensive teaching formats such as DTT are designed for discrete, rapid single-response skills. They are clinically contraindicated for complex, multi-step sequences like Daily Living, Vocational tasks, or Toilet Training routines. DTT relies on externally observable, discrete responses with immediate consequences. It is not an appropriate primary teaching methodology for duration-based emotional regulation, coping mechanisms, or internal states. Intensive, highly structured, teacher-directed formats (DTT) are logically incompatible with concurrently utilizing naturalistic, child-led formats (NET) or task analysis formats for the same learning target.",
     "op": "EXCLUDES",
-    "left": "Backward Chaining",
+    "left": "IS_INTENSIVE_TEACHING",
     "right":[
-      "Forward Chaining",
-      "Total Task Chaining"
+      "IS_HIGH_MOBILITY_ENVIRONMENT",
+      "water play table",
+      "IS_CHAINED",
+      "IS_ADL_TARGET",
+      "Daily Living",
+      "Toilet Training",
+      "IS_INTERNAL_STATE_TARGET",
+      "Coping / Tolerance",
+      "IS_NET_TEACHING",
+      "IS_CHAINING_FORMAT"
     ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Chaining",
-    "rationale": "Forward chaining and total task chaining are distinct, mutually exclusive methodologies for teaching a behavioral sequence.",
-    "op": "EXCLUDES",
-    "left": "Forward Chaining",
-    "right": "Total Task Chaining"
   },
   {
     "citation": "Cooper, Heron, & Heward (2020): Topography of Private Events",
@@ -259,76 +342,5 @@
       "IS_PHYSICAL_PROMPT",
       "Completed with partial physical prompt"
     ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
-    "rationale": "Measurement validity dictates that if a skill is documented as prompt dependent or requiring prompt fading, the exact prompt level (e.g., verbal, physical) or intensive teaching method must be explicitly recorded to reflect the accurate level of support.",
-    "op": "REQUIRES",
-    "left":[
-      "Prompt dependent",
-      "Required prompt fading"
-    ],
-    "right":[
-      "IS_PHYSICAL_PROMPT",
-      "IS_LESSER_PROMPT",
-      "Max Prompting",
-      "Errorless Teaching",
-      "Completed with partial physical prompt"
-    ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
-    "rationale": "Errorless teaching methodologies necessitate the immediate delivery of a controlling prompt. Data validity requires the associated prompt level utilized to be concurrently documented.",
-    "op": "REQUIRES",
-    "left": "Errorless Teaching",
-    "right":[
-      "IS_PHYSICAL_PROMPT",
-      "IS_LESSER_PROMPT",
-      "Max Prompting"
-    ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
-    "rationale": "Measurement validity dictates that a skill cannot be simultaneously recorded as failing to generalize while also successfully generalizing to a new environment.",
-    "op": "EXCLUDES",
-    "left": "Failed to generalize",
-    "right": "Generalized to new environment"
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Measurement Validity",
-    "rationale": "Data must accurately reflect the client's current clinical state. Documenting an 'absence of maladaptive behavior' completely precludes the concurrent selection of active target behaviors, crises, or dangerous topographies.",
-    "op": "EXCLUDES",
-    "left": "displaying an absence of maladaptive behavior",
-    "right":[
-      "IS_AGGRESSION",
-      "IS_ELOPEMENT",
-      "IS_SIB",
-      "IS_PROPERTY_DESTRUCTION",
-      "IS_NON_DANGEROUS_BEHAVIOR",
-      "IS_BIO_HAZARD",
-      "IS_CRISIS_INDICATOR"
-    ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Operational Definition of Fluency",
-    "rationale": "Fluency is mathematically defined as accuracy plus speed (short latency). It is a physiological and definitional contradiction to mark a skill as 'Fluent' while simultaneously logging 'sluggish' or 'slowed' response times. Fluency requires mastery-level accuracy and consistent, independent responding. It is a definitional contradiction to log a skill as fluent while also indicating it is an emerging skill, prompt dependent, or prone to errors. A skill cannot be considered fluent if it requires prompting or errorless teaching procedures, as fluency strictly necessitates unprompted, independent, and rapid responding. Fluency is characterized by rapid, short-latency responding. Logging a skill as fluent directly contradicts the clinical observation of fatigued or slowed responses at the end of the session.",
-    "op": "EXCLUDES",
-    "left": "Fluency",
-    "right":[
-      "IS_LOW_AROUSAL",
-      "IS_ERROR_OR_STRUGGLE",
-      "IS_PHYSICAL_PROMPT",
-      "IS_LESSER_PROMPT",
-      "Max Prompting",
-      "Errorless Teaching",
-      "exhibiting fatigued / slowed responses"
-    ]
-  },
-  {
-    "citation": "Cooper, Heron, & Heward (2020): Schedules of Reinforcement",
-    "rationale": "Fluency-based instruction requires rapid, uninterrupted rates of responding. Delivering a continuous schedule of reinforcement (FR1) mechanically interrupts the response flow, preventing true fluency. Reinforcement should be intermittent or delivered at the end of a timing.",
-    "op": "EXCLUDES",
-    "left": "Fluency Based Instruction",
-    "right": "Continuous"
   }
 ]
