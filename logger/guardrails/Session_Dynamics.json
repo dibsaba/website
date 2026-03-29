@@ -68,5 +68,53 @@
     "left": "IS_PEER_TARGET",
     "right": "IS_PEER_OR_SIBLING",
     "scope": "GLOBAL"
-  }
+  },
+  {
+		"citation": "Clinical Physics: Executive Functioning and Token Economies",
+		"rationale": "A client in a state of severe clinical dysregulation lacks the executive functioning and emotional capacity to process complex, delayed reinforcement systems like token economies.",
+		"op": "EXCLUDES",
+		"left": "IS_DYSREGULATED",
+		"right": "IS_TOKEN_ECONOMY",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Data Integrity: Affect and Crisis Contradiction",
+		"rationale": "It is logically and clinically impossible for a session to end with 'Quick Control' or a 'Happy Transition' while concurrently documenting a formal behavioral crisis that required tactical breaks or incident reports.",
+		"op": "EXCLUDES",
+		"left": "IS_SMART_CHIP_REGULATED",
+		"right": "IS_CRISIS_INDICATOR",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: State-Dependent Learning & Multi-step Execution",
+		"rationale": "A client who is heavily fatigued, slumping, or exhibiting extreme lethargy lacks the sustained neurological endurance, arousal, and attention required to independently execute complex, multi-step chained sequences (e.g., daily chores, dressing).",
+		"op": "EXCLUDES",
+		"left": "IS_SLEEP_LETHARGY",
+		"right": "IS_CHAINED",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Session Dynamics: Physical Interference with Transition Supports",
+		"rationale": "A client actively utilizing a transition object requires the physical use of their hands to grasp and carry the item. This is physically impossible if their hands are concurrently occupied or compromised by severe self-injury (biting/scratching hands).",
+		"op": "EXCLUDES",
+		"left": "IS_HAND_COMPROMISE",
+		"right": "IS_HAND_HELD_ITEM",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Session Dynamics: Logical Duration of Passive Procedures",
+		"rationale": "A 'wait out' procedure for non-compliance implies allowing the behavior to naturally subside without active intervention. Documenting that an escalation was resolved via a passive wait out procedure in '< 1 minute' defies the clinical reality of the procedure's duration trajectory.",
+		"op": "EXCLUDES",
+		"left": "IS_WAIT_OUT",
+		"right": "< 1 minute",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Session Dynamics: Motivation and Delayed Reinforcement",
+		"rationale": "A client experiencing severe sleep-induced lethargy or unresponsiveness lacks the establishing operations, executive functioning, and alertness necessary to process abstract, delayed reinforcement contingencies like a token economy.",
+		"op": "EXCLUDES",
+		"left": "IS_SLEEP_LETHARGY",
+		"right": "IS_TOKEN_ECONOMY",
+		"scope": "GLOBAL"
+	}
 ]

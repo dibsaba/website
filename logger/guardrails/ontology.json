@@ -71,6 +71,10 @@
     "interactive videos",
     "music player"
   ],
+  "IS_AUDITORY_DEMAND": [
+		"Tolerating loud noises",
+		"Tolerated loud environment"
+	],
   "IS_AUDITORY_DISTRESS": [
     "Ear infection"
   ],
@@ -176,7 +180,8 @@
     "puzzles",
     "shape sorters",
     "swallowing small objects",
-    "wooden blocks"
+    "wooden blocks",
+    "Stickers"
   ],
   "IS_CLINIC_SETTING":[
     "Clinic"
@@ -328,7 +333,12 @@
     "Tracing letters",
     "Using a pencil grip",
     "Writing own name",
-    "worksheets and crayons"
+    "worksheets and crayons",
+    "Using an AAC device",
+    "Tying shoes",
+    "Opening food containers",
+    "Wiping independently",
+    "Completing daily chores"
   ],
   "IS_FOOD_PREP_AREA":[
     "Dining room",
@@ -348,6 +358,7 @@
     "Practiced safety crossing"
   ],
   "IS_HAND_COMPROMISE": ["biting own hand or arm", "scratching arms and hands"],
+  "IS_HAND_HELD_ITEM": ["utilizing a transition object"],
   "IS_HIGH_AROUSAL":[
     "agitated and crying",
     "demonstrating a high rate of movement",
@@ -465,6 +476,7 @@
     "Accepting delayed reinforcement",
     "Asking for a break",
     "Coping / Tolerance",
+    "Tolerated loud environment"
     "Tolerating denied access",
     "Tolerating haircuts / nail clipping",
     "Tolerating loud noises",
@@ -608,7 +620,7 @@
     "Sustaining cooperative play",
     "Turn-taking with a peer"
   ],
-  "IS_PEER_TARGET":["Peer greetings", "Imitating peer actions", "Initiating peer play", "Turn-taking with a peer", "Parallel play", "Losing a game appropriately", "Sharing preferred items", "Sustaining cooperative play"],
+  "IS_PEER_TARGET":["Peer greetings", "Imitating peer actions", "Initiating peer play", "Turn-taking with a peer", "Parallel play", "Losing a game appropriately", "Sharing preferred items", "Sustaining cooperative play", "Conversational turn-taking"],
   "IS_PHYSICAL_CONTACT":[
     "Blocked attempt to swallow",
     "Blocked using safety pads",
@@ -790,6 +802,13 @@
     "scratching own skin repeatedly",
     "skin picking"
   ],
+	"IS_SLIP_HAZARD":[
+		"Bathroom / Restroom",
+		"water play table",
+		"Washing hands",
+		"Completing toileting routine",
+		"Brushing teeth"
+	],
   "IS_SMART_CHIP_DYSREGULATED":[
     "Occurred when denied access",
     "Preceded by crying",
@@ -797,6 +816,8 @@
     "Triggered by routine change"
   ],
   "IS_SMART_CHIP_REGULATED":[
+  	"Client requested to stay longer",
+  	"Extended Pairing",
     "Happy Transition",
     "Highly Motivated",
     "Paired w/ Toys",
@@ -834,12 +855,24 @@
     "Tokens / Points",
     "a token board"
   ],
+	"IS_TOXIC_HAZARD": [
+		"household cleaning supplies"
+	],
   "IS_TRANSITION":[
     "Transition",
     "Returned to Class Routine",
+    "Transitioned to Teacher",
     "Transitioned to Waiting Room"
   ],
-  "IS_VISUAL_DEPENDENT_TASK":["Tracing letters", "Writing own name", "Following worksheet instructions", "Following a visual checklist", "Completing patterning items", "Matching non-identical items", "Sorting by category", "Identifying colors and shapes", "Identifying numbers and letters", "Sustaining visual attention", "2D picture cards", "animal flashcards", "PECS communication book", "social story books", "whiteboard and dry-erase markers", "worksheets and crayons"],
+	"IS_VIBRATING_ENVIRONMENT": [
+		"Vehicle / Transport"
+	],
+  "IS_VISUAL_DEPENDENT_TASK":[
+  	"Tracing letters", "Writing own name", "Following worksheet instructions", "Following a visual checklist", "Completing patterning items",
+  	"Matching non-identical items", "Sorting by category", "Identifying colors and shapes", "Identifying numbers and letters", "Sustaining visual attention",
+  	"2D picture cards", "animal flashcards", "PECS communication book", "social story books", "whiteboard and dry-erase markers", "worksheets and crayons",
+  	"Visual schedule adherence", "a visual timer", "following a visual schedule", "Token Economy / Token Board", "a token board"
+  ],
   "IS_VOCAL_COMPROMISE":["screaming at a high pitch", "repetitive vocal scripting", "loud, sustained vocal protests", "engaging in pacing / vocal stereotypy"],
   "IS_VOCAL_VERBAL_TARGET":[
     "Answering WH- questions",
@@ -860,7 +893,34 @@
     "Vocational",
     "Wiping down tables"
   ],
+	"IS_WAIT_OUT": [
+		"Used wait out procedure"
+	],
   "IS_WATER_ENVIRONMENT":[
     "Bathroom / Restroom", "Washing hands", "Completing toileting routine", "Brushing teeth", "water play table"
-  ]
+  ],
+  "IS_FRAGMENTABLE_MATERIAL":[
+      "kinetic sand",
+      "playdough and molds"
+    ],
+    "IS_TRAFFIC_HAZARD_SKILL":[
+      "Navigated Parking Lot Safely",
+      "Practiced safety crossing",
+      "running into the street/parking lot"
+    ],
+    "IS_PROJECTILE_BEHAVIOR":[
+      "sweeping items off the desk",
+      "Threw materials",
+      "throwing instructional materials"
+    ],
+    "IS_LOWER_BODY_DISROBING":[
+      "removing pants or underwear",
+      "stripping completely naked"
+    ],
+    "IS_SLEEP_LETHARGY":[
+      "exhibiting a slowed response time / yawning",
+      "exhibiting fatigued / slowed responses",
+      "lethargic due to poor sleep",
+      "passively slumping in chair"
+    ]
 }

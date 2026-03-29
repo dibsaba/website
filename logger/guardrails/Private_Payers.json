@@ -81,5 +81,45 @@
       "IS_ACADEMIC_MATERIAL"
     ],
     "scope": "GLOBAL"
-  }
+  },
+  {
+		"citation": "General Medical Necessity: Exacerbation of Medical Symptoms",
+		"rationale": "Auditors recognize that enforcing high rates of vocal-verbal behavior (e.g., echoics, manding) while a client is actively suffering from acute dental or oral pain is both unethical and medically counterproductive.",
+		"op": "EXCLUDES",
+		"left": "IS_ORAL_DISTRESS",
+		"right": "IS_VOCAL_VERBAL_TARGET",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "General Medical Necessity: Sensory Contraindication",
+		"rationale": "Targeting tolerance to loud noises or loud environments when a client is actively presenting with an ear infection exacerbates physiological pain and violates medical necessity guidelines.",
+		"op": "EXCLUDES",
+		"left": "IS_AUDITORY_DEMAND",
+		"right": "IS_AUDITORY_DISTRESS",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "General Medical Necessity: Respiratory Limits",
+		"rationale": "Billing for rigorous gross motor activities and high exertion exercises is medically contraindicated and dangerous when a client is actively presenting with respiratory distress or asthma attacks.",
+		"op": "EXCLUDES",
+		"left": "IS_RESPIRATORY_DISTRESS",
+		"right": "IS_HIGH_EXERTION",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Optum/UHC ABA Guidelines: Client Dignity & Public Management",
+		"rationale": "Utilizing a passive 'wait out' procedure for maladaptive behaviors (like dropping to the floor or screaming) in a public/community setting draws undue public attention, violates client dignity, and poses an unmanaged liability. Active redirection or environmental transition must be used.",
+		"op": "EXCLUDES",
+		"left": "IS_PUBLIC",
+		"right": "IS_WAIT_OUT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "FL AHCA BA Services Coverage Policy: Babysitting & Active Treatment Mandate",
+		"rationale": "Implementing a completely passive 'wait out' procedure while a responsible caregiver is unavailable in the home or community legally constitutes passive babysitting rather than the provision of active, medically necessary behavioral intervention.",
+		"op": "EXCLUDES",
+		"left": "IS_CAREGIVER_UNAVAILABLE",
+		"right": "IS_WAIT_OUT",
+		"scope": "GLOBAL"
+	}
 ]

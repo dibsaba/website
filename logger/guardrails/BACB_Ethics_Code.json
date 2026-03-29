@@ -230,5 +230,104 @@
       "fully physically prompted",
       "partially physically prompted"
     ]
-  }
+  },
+  {
+		"citation": "BACB Ethics Code 2.06: Maintaining Confidentiality (Telehealth Privacy)",
+		"rationale": "Conducting remote telehealth sessions while a client is engaged in toileting or restroom-based personal hygiene tasks constitutes a severe violation of client privacy, dignity, and electronic recording ethics.",
+		"op": "EXCLUDES",
+		"left": "IS_REMOTE",
+		"right": "IS_TOILETING_ADL",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 4.07: Incorporating and Addressing Diversity (Client Dignity)",
+		"rationale": "To maintain hygienic standards and protect client dignity, behaviors involving genital exposure or lower-body disrobing must be excluded and immediately redirected from food preparation and dining areas.",
+		"op": "EXCLUDES",
+		"left": "IS_LOWER_BODY_DISROBING",
+		"right": "IS_FOOD_PREP_AREA",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 4.07: Incorporating and Addressing Diversity (Client Dignity)",
+		"rationale": "To uphold basic human dignity and privacy, behaviors involving lower-body disrobing or stripping naked must never be permitted or managed in the visual presence of peers or siblings.",
+		"op": "EXCLUDES",
+		"left": "IS_LOWER_BODY_DISROBING",
+		"right": "IS_PEER_OR_SIBLING",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 4.09: Least Restrictive Procedures (Client Dignity)",
+		"rationale": "Applying highly restrictive physical safety management, blocking, or physical restraints while a client is seated on a toilet or engaged in intimate hygiene tasks constitutes a profound violation of physical dignity.",
+		"op": "EXCLUDES",
+		"left": "IS_PHYSICAL_SAFETY_MANAGEMENT",
+		"right": "IS_TOILETING_ADL",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 2.01: Providing Effective Treatment (Protection from Harm)",
+		"rationale": "Attempting to teach pedestrian safety or traffic navigation skills while a client is actively dysregulated and engaging in bolting/elopement exposes the client to an uncontrolled, lethal vehicular hazard.",
+		"op": "EXCLUDES",
+		"left": "IS_TRAFFIC_HAZARD_SKILL",
+		"right": "IS_ELOPEMENT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 2.01: Protection from Harm (Biohazards)",
+		"rationale": "To prevent the transmission of communicable diseases and biohazards, a client actively smearing feces or spitting bodily fluids must be immediately isolated and cannot ethically remain engaged in peer play.",
+		"op": "EXCLUDES",
+		"left": "IS_BIO_HAZARD",
+		"right": "IS_SOCIAL_PLAY",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 4.07: Incorporating and Addressing Diversity (Client Dignity)",
+		"rationale": "Implementing high-effort, restrictive punishment procedures (e.g., overcorrection, repeated physical practice) in a public community setting draws undue public attention and violates the core mandate to preserve client dignity.",
+		"op": "EXCLUDES",
+		"left": "IS_PUBLIC",
+		"right": "IS_HIGH_EFFORT_PUNISHMENT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 2.01: Protection from Harm (Toxic Exposure)",
+		"rationale": "Permitting a client to access or utilize household cleaning supplies while they are actively engaging in Pica, mouthing non-edible items, or licking surfaces presents a lethal poisoning hazard and violates ethical mandates to protect clients from harm.",
+		"op": "EXCLUDES",
+		"left": "IS_TOXIC_HAZARD",
+		"right": "IS_PICA",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 4.07: Client Dignity & Public Health",
+		"rationale": "Allowing a client to engage in severe bio-hazardous or highly vulnerable behaviors (fecal smearing, stripping completely naked, exposing genitals) in a public community setting or store without immediate active removal or isolation violates core dignity and public health mandates.",
+		"op": "EXCLUDES",
+		"left": "IS_PUBLIC",
+		"right":[
+			"IS_LOWER_BODY_DISROBING",
+			"Scatolia (Fecal smearing)"
+		],
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 2.01: Protection from Harm",
+		"rationale": "A 'wait out' procedure inherently dictates passive observation and non-interference. Ethically and legally, this cannot be applied when a client is engaging in behaviors that present an imminent threat to life or safety (e.g., elopement into traffic, severe SIB, aggression).",
+		"op": "EXCLUDES",
+		"left": "IS_WAIT_OUT",
+		"right": "IS_IMMINENT_DANGER",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 2.01: Protection from Harm (Third Party Risk)",
+		"rationale": "Ethical guidelines require protecting all individuals in the clinical environment. Facilitating close-proximity peer play or peer-mediated targets while a client is actively engaging in staff-directed or peer-directed aggression places the peer at imminent risk of physical trauma.",
+		"op": "EXCLUDES",
+		"left": "IS_PEER_TARGET",
+		"right": "IS_AGGRESSION",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "BACB Ethics Code 2.01: Protection from Harm (Environmental Hazards)",
+		"rationale": "Executing high-velocity gross motor activities, jumping, or physical obstacle courses in environments inherently prone to wet, slippery surfaces (bathrooms, water tables) creates an unmanageable fall hazard and traumatic brain injury risk.",
+		"op": "EXCLUDES",
+		"left": "IS_SLIP_HAZARD",
+		"right": "IS_HIGH_EXERTION",
+		"scope": "GLOBAL"
+	}
 ]

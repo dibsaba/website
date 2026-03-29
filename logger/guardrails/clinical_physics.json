@@ -318,5 +318,213 @@
     "left": "IS_CONFINED",
     "right": "IS_CHOKING_HAZARD",
     "scope": "GLOBAL"
-  }
+  },
+  {
+		"citation": "Medical Necessity: Exacerbation of Respiratory Distress",
+		"rationale": "Applying physical safety management or restraint procedures to a client actively experiencing respiratory distress (e.g., asthma) poses a lethal risk of positional asphyxia and is medically contraindicated.",
+		"op": "EXCLUDES",
+		"left": "IS_RESPIRATORY_DISTRESS",
+		"right": "IS_PHYSICAL_SAFETY_MANAGEMENT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Pica Ingestion Hazard",
+		"rationale": "Materials that easily crumble or fragment present an unmanageable and severe ingestion hazard for clients actively engaging in Pica.",
+		"op": "EXCLUDES",
+		"left": "IS_PICA",
+		"right": "IS_FRAGMENTABLE_MATERIAL",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Property Destruction Liability",
+		"rationale": "Providing fragile, high-value electronic devices during active episodes of property destruction is clinically illogical and creates unnecessary financial liability and hazard from broken glass and batteries.",
+		"op": "EXCLUDES",
+		"left": "IS_PROPERTY_DESTRUCTION",
+		"right": "IS_ELECTRONIC_DEVICE",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Safety Standards: Sharp Objects in Darkness",
+		"rationale": "Utilizing sharp objects like scissors in a visually deprived environment (dark room) is a severe physical safety hazard.",
+		"op": "EXCLUDES",
+		"left": "IS_DARK_ENVIRONMENT",
+		"right": "IS_SHARP_OBJECT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Safety Standards: Auditory Deprivation in Traffic",
+		"rationale": "Navigating high-risk traffic environments or parking lots while wearing noise-canceling headphones deprives the client of crucial auditory safety cues, presenting a critical danger.",
+		"op": "EXCLUDES",
+		"left": "IS_AUDITORY_BLOCKER",
+		"right": "IS_TRAFFIC_HAZARD_SKILL",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Safety Standards: Projectiles in Confined Spaces",
+		"rationale": "Throwing objects or sweeping materials off surfaces within confined spaces like a moving vehicle presents an acute risk of distracting the driver and causing a motor vehicle accident.",
+		"op": "EXCLUDES",
+		"left": "IS_CONFINED",
+		"right": "IS_PROJECTILE_BEHAVIOR",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Telehealth Environmental Modification",
+		"rationale": "A remote telehealth clinician cannot physically clear the environment of hazards or sweep the area; this fundamentally requires a physically present individual.",
+		"op": "EXCLUDES",
+		"left": "IS_REMOTE",
+		"right": "IS_ENVIRONMENTAL_MODIFICATION",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Safety Standards: Fall Hazards in Darkness",
+		"rationale": "Executing gross motor activities with inherent fall risks (e.g., jumping, swinging, obstacle courses) in a dark or visually deprived room constitutes a severe physical safety hazard.",
+		"op": "EXCLUDES",
+		"left": "IS_DARK_ENVIRONMENT",
+		"right": "IS_FALL_HAZARD",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Medical Necessity: Seizure Water Hazard",
+		"rationale": "Permitting a client to access water environments (e.g., baths, washing, water tables) while actively experiencing seizure activity presents an acute and immediate drowning hazard.",
+		"op": "EXCLUDES",
+		"left": "Seizure activity",
+		"right": "IS_WATER_ENVIRONMENT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Fine Motor Manipulation Constraint",
+		"rationale": "A client cannot physically engage in precise fine motor manipulation (e.g., writing, cutting, stringing beads) while they are actively being physically restrained or blocked for safety.",
+		"op": "EXCLUDES",
+		"left": "IS_PHYSICAL_SAFETY_MANAGEMENT",
+		"right": "IS_FINE_MOTOR_TARGET",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Medical Necessity: Aspiration Hazard",
+		"rationale": "Administering oral edibles to a client who is severely lethargic, passively slumping, or exhibiting extreme fatigue presents an aspiration and choking hazard.",
+		"op": "EXCLUDES",
+		"left": "IS_SLEEP_LETHARGY",
+		"right": "IS_EDIBLE",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Safety Standards: Restraint in Confined Spaces",
+		"rationale": "Implementing active physical restraint or extreme physical blocking procedures within the confined space of a moving vehicle or restricted bathroom is physically dangerous and logistically contraindicated.",
+		"op": "EXCLUDES",
+		"left": "IS_PHYSICAL_SAFETY_MANAGEMENT",
+		"right": "IS_CONFINED",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Aspiration Hazard",
+		"rationale": "Delivering oral edibles to a client actively engaging in sustained screaming, intense vocal protests, or rapid pacing presents a critical choking and aspiration risk.",
+		"op": "EXCLUDES",
+		"left": "IS_VOCAL_COMPROMISE",
+		"right": "IS_EDIBLE",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Material Degradation",
+		"rationale": "Utilizing delicate paper-based academic materials or non-waterproof visual aids within a water-play environment or bathtub defies physical logic and results in inevitable property destruction.",
+		"op": "EXCLUDES",
+		"left": "IS_ACADEMIC_MATERIAL",
+		"right": "IS_WATER_ENVIRONMENT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Environmental Stability for Fine Motor",
+		"rationale": "Executing precise fine-motor tasks (e.g., tracing, writing, cutting) requires a stable, sedentary environment and is physically impossible to facilitate accurately in a high-mobility environment like a playground.",
+		"op": "EXCLUDES",
+		"left": "IS_FINE_MOTOR_TARGET",
+		"right": "IS_HIGH_MOBILITY_ENVIRONMENT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Collision Hazard in Darkness",
+		"rationale": "A client actively bolting or exhibiting high-velocity elopement behaviors within a dark or visually deprived environment presents an imminent and severe risk of collision and physical trauma.",
+		"op": "EXCLUDES",
+		"left": "IS_ELOPEMENT",
+		"right": "IS_DARK_ENVIRONMENT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Safety Standards: Lethal Pica Hazard",
+		"rationale": "Permitting access to sharp instructional tools (e.g., scissors) while a client is actively mouthing non-edible items or engaging in Pica creates an immediate, life-threatening puncture and ingestion hazard.",
+		"op": "EXCLUDES",
+		"left": "IS_PICA",
+		"right": "IS_SHARP_OBJECT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Remote Peer Facilitation",
+		"rationale": "A remote telehealth clinician is geographically absent and physically incapable of directly managing, prompting, or intercepting dynamic physical peer-to-peer social play or turn-taking.",
+		"op": "EXCLUDES",
+		"left": "IS_REMOTE",
+		"right": "IS_SOCIAL_PLAY",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Medical Necessity: Exacerbation of Gastrointestinal Distress",
+		"rationale": "Enforcing high-exertion gross motor activities or heavy movement while a client is actively experiencing severe gastrointestinal distress, cramps, or nausea is physiologically contraindicated.",
+		"op": "EXCLUDES",
+		"left": "IS_GI_DISTRESS",
+		"right": "IS_HIGH_EXERTION",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Precision in High-Vibration Environments",
+		"rationale": "Executing tasks that require precise visual-motor integration and fine motor manipulation (e.g., cutting with scissors, tying shoes, using a pincer grasp) is physically impossible to facilitate and measure accurately within the vibrating, moving confines of a transport vehicle.",
+		"op": "EXCLUDES",
+		"left": "IS_VIBRATING_ENVIRONMENT",
+		"right": "IS_FINE_MOTOR_TARGET",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Visual Modality Necessity for Conditioned Reinforcers",
+		"rationale": "Token economies fundamentally require visual access to the generalized conditioned reinforcers (the board and tokens) to establish the contingency. Operating in a dark or visually deprived sensory room physically precludes this visual access.",
+		"op": "EXCLUDES",
+		"left": "IS_DARK_ENVIRONMENT",
+		"right": "IS_TOKEN_ECONOMY",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Auditory Processing in Social Contexts",
+		"rationale": "A client wearing noise-canceling headphones is physically blocked from processing the necessary auditory discriminative stimuli required to successfully engage in conversational turn-taking, peer greetings, or joint peer play.",
+		"op": "EXCLUDES",
+		"left": "IS_AUDITORY_BLOCKER",
+		"right": "IS_PEER_TARGET",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Fine Motor Manipulation Constraint",
+		"rationale": "A client cannot successfully or independently execute daily living skills requiring multi-step fine motor coordination (tying shoes, opening containers, dressing) if their hands are actively compromised by self-injurious biting or severe scratching.",
+		"op": "EXCLUDES",
+		"left": "IS_HAND_COMPROMISE",
+		"right": "IS_ADL_TARGET",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Projectile and Laceration Hazard",
+		"rationale": "A client actively engaging in high-magnitude property destruction (throwing materials, sweeping items off desks) mathematically converts any accessible sharp instructional objects (like scissors) into high-velocity lethal projectiles, posing an immediate physical threat.",
+		"op": "EXCLUDES",
+		"left": "IS_PROPERTY_DESTRUCTION",
+		"right": "IS_SHARP_OBJECT",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Competing Airway Functions",
+		"rationale": "A client cannot physically engage in sustained deep breathing exercises or blowing bubbles while their respiratory system and vocal cords are simultaneously hijacked by loud, high-pitch screaming or sustained vocal protests.",
+		"op": "EXCLUDES",
+		"left": "IS_VOCAL_COMPROMISE",
+		"right": "IS_RESPIRATORY_DEMAND",
+		"scope": "GLOBAL"
+	},
+	{
+		"citation": "Clinical Physics: Material Degradation",
+		"rationale": "Paper-based token boards or tangible stickers utilized as reinforcement will instantly degrade and be destroyed if used concurrently during water play or active bathing activities.",
+		"op": "EXCLUDES",
+		"left": "IS_WATER_ENVIRONMENT",
+		"right": "IS_TOKEN_MATERIAL",
+		"scope": "GLOBAL"
+	}
 ]
