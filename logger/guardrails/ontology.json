@@ -345,6 +345,10 @@
     "Kitchen",
     "Store / Community setting"
   ],
+  "IS_FRAGMENTABLE_MATERIAL":[
+		"kinetic sand",
+		"playdough and molds"
+	],
   "IS_GI_DISTRESS":[
     "Constipation / GI issues",
     "Lack of Appetite / Refused meal"
@@ -476,7 +480,7 @@
     "Accepting delayed reinforcement",
     "Asking for a break",
     "Coping / Tolerance",
-    "Tolerated loud environment"
+    "Tolerated loud environment",
     "Tolerating denied access",
     "Tolerating haircuts / nail clipping",
     "Tolerating loud noises",
@@ -516,6 +520,10 @@
     "sluggish and fatigued",
     "withdrawn and avoiding interaction"
   ],
+	"IS_LOWER_BODY_DISROBING":[
+		"removing pants or underwear",
+		"stripping completely naked"
+	],
   "IS_MEDICAL_CRISIS":[
     "Asthma / Respiratory issues",
     "Dehydration",
@@ -675,6 +683,11 @@
     "swallowing small objects"
   ],
   "IS_PREMACK_CONTINGENCY": ["Premack Principle (First/Then)", "Responded to Premack principle"],
+	"IS_PROJECTILE_BEHAVIOR":[
+		"sweeping items off the desk",
+		"Threw materials",
+		"throwing instructional materials"
+	],
   "IS_PROPERTY_DESTRUCTION":[
     "Broke instructional materials",
     "Property Destruction",
@@ -802,6 +815,12 @@
     "scratching own skin repeatedly",
     "skin picking"
   ],
+	"IS_SLEEP_LETHARGY":[
+		"exhibiting a slowed response time / yawning",
+		"exhibiting fatigued / slowed responses",
+		"lethargic due to poor sleep",
+		"passively slumping in chair"
+	],
 	"IS_SLIP_HAZARD":[
 		"Bathroom / Restroom",
 		"water play table",
@@ -858,6 +877,11 @@
 	"IS_TOXIC_HAZARD": [
 		"household cleaning supplies"
 	],
+	"IS_TRAFFIC_HAZARD_SKILL":[
+		"Navigated Parking Lot Safely",
+		"Practiced safety crossing",
+		"running into the street/parking lot"
+	],
   "IS_TRANSITION":[
     "Transition",
     "Returned to Class Routine",
@@ -898,29 +922,5 @@
 	],
   "IS_WATER_ENVIRONMENT":[
     "Bathroom / Restroom", "Washing hands", "Completing toileting routine", "Brushing teeth", "water play table"
-  ],
-  "IS_FRAGMENTABLE_MATERIAL":[
-      "kinetic sand",
-      "playdough and molds"
-    ],
-    "IS_TRAFFIC_HAZARD_SKILL":[
-      "Navigated Parking Lot Safely",
-      "Practiced safety crossing",
-      "running into the street/parking lot"
-    ],
-    "IS_PROJECTILE_BEHAVIOR":[
-      "sweeping items off the desk",
-      "Threw materials",
-      "throwing instructional materials"
-    ],
-    "IS_LOWER_BODY_DISROBING":[
-      "removing pants or underwear",
-      "stripping completely naked"
-    ],
-    "IS_SLEEP_LETHARGY":[
-      "exhibiting a slowed response time / yawning",
-      "exhibiting fatigued / slowed responses",
-      "lethargic due to poor sleep",
-      "passively slumping in chair"
-    ]
+  ]
 }
