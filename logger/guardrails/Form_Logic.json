@@ -1,9 +1,0 @@
-[
-  {
-    "citation": "UI Logic: Token Economy Material Match",
-    "rationale": "A token economy schedule inherently requires token-based materials to be utilized during the trial.",
-    "op": "REQUIRES",
-    "left": "IS_TOKEN_ECONOMY",
-    "right": "IS_TOKEN_MATERIAL"
-  }
-]
