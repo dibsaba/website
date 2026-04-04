@@ -460,7 +460,6 @@
                 
                 const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
                 sortedTimeline.forEach(t => {
-                    // Only inherit state from events that occurred BEFORE the one we are currently editing
                     if (!currentEditingId || (existingEvent && new Date(t.timestamp) < new Date(existingEvent.timestamp))) {
                         if (t.data) {
                             if (t.data.Location) currentLocation = t.data.Location;
@@ -478,24 +477,54 @@
                 if (Array.isArray(currentOthers)) persistentState.push(...currentOthers);
                 if (Array.isArray(currentHealth)) persistentState.push(...currentHealth);
 
-                // Clean up persistent state
                 persistentState = persistentState.filter(v => v && v !== "None selected");
 
                 let localState = [...allFormChecked, ...allSelectValues, ...activeSchemas];
                 let globalState = [...localState, ...persistentState];
-
                 const availableFormValues = Array.from(c.querySelectorAll('input[type="checkbox"], select option')).map(el => el.value).filter(v => v && v !== "None selected");
 
                 // ========================================================================
-                // 1. EVALUATE CHECKBOXES (Aggressively HIDE invalid ones)
+                // 1. EVALUATE CHECKBOXES
                 // ========================================================================
                 c.querySelectorAll('.checkbox-group').forEach(group => {
                     const fieldId = group.dataset.id;
                     const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
 
-                    // Step A: Completely hide options that contradict the Matrix
+                    // Step A: Evaluate against Persistent Context (Hide if invalid)
                     checkboxes.forEach(cb => {
                         const pillContainer = cb.closest('.chip-toggle, .checkbox-pill');
+                        const rawBase = [...persistentState, cb.value];
+                        const expandedBase = guardrails.expandRequiredState(rawBase, availableFormValues);
+                        const isBaseValid = guardrails.validateSubset("Global", expandedBase).valid;
+
+                        if (!isBaseValid) {
+                            if (pillContainer) pillContainer.style.display = 'none'; // Completely hidden
+                            if (cb.checked) {
+                                cb.checked = false;
+                                const toxicGlobal = globalState.indexOf(cb.value);
+                                if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
+                            }
+                            cb._isBaseHidden = true;
+                        } else {
+                            if (pillContainer) pillContainer.style.display = ''; // Restore CSS default visibility
+                            cb._isBaseHidden = false;
+                        }
+                    });
+
+                    // Step B: Evaluate against Local Choices (Gray out if invalid)
+                    const visibleCheckboxes = checkboxes.filter(cb => !cb._isBaseHidden);
+                    const currentlyChecked = visibleCheckboxes.filter(chk => chk.checked).map(chk => chk.value);
+                    const timeSelect = c.querySelector('select[data-id="Deescalation_Time"]');
+                    const formState = { "Deescalation_Time": timeSelect ? timeSelect.value : null };
+                    let maxAllowed = guardrails.getMaxSelections(fieldId, formState);
+                    const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
+
+                    visibleCheckboxes.forEach(cb => {
+                        const pillSpan = cb.nextElementSibling;
+                        const pillContainer = cb.closest('.chip-toggle, .checkbox-pill');
+                        let shouldDisable = false;
+
+                        // Matrix check against current dialog choices
                         const stateWithoutCb = globalState.filter(v => v !== cb.value);
                         const rawHypotheticalGlobal = [...stateWithoutCb, cb.value];
                         const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
@@ -509,50 +538,40 @@
                         }
 
                         if (!guardrails.validateSubset("Global", hypotheticalGlobal).valid) {
-                            if (pillContainer) pillContainer.style.display = 'none'; // HIDE IT
+                            shouldDisable = true;
                             if (cb.checked) {
                                 cb.checked = false;
                                 const toxicGlobal = globalState.indexOf(cb.value);
                                 if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
-                                const toxicLocal = localState.indexOf(cb.value);
-                                if (toxicLocal > -1) localState.splice(toxicLocal, 1);
                             }
-                        } else {
-                            if (pillContainer) pillContainer.style.display = 'inline-flex'; // SHOW IT
                         }
-                    });
 
-                    // Step B: Evaluate max limits & exclusive choices on the remaining VISIBLE checkboxes
-                    const visibleCheckboxes = checkboxes.filter(cb => {
-                        const pill = cb.closest('.chip-toggle, .checkbox-pill');
-                        return pill && pill.style.display !== 'none';
-                    });
-                    
-                    const currentlyChecked = visibleCheckboxes.filter(chk => chk.checked).map(chk => chk.value);
-                    const timeSelect = c.querySelector('select[data-id="Deescalation_Time"]');
-                    const formState = { "Deescalation_Time": timeSelect ? timeSelect.value : null };
-                    let maxAllowed = guardrails.getMaxSelections(fieldId, formState);
-                    const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
-
-                    visibleCheckboxes.forEach(cb => {
-                        const pillSpan = cb.nextElementSibling;
-                        let shouldDisable = false;
-
-                        if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
-                        else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
-                        else if (!cb.checked && currentlyChecked.length >= maxAllowed) shouldDisable = true;
+                        // Max allowed & Exclusivity
+                        if (!shouldDisable) {
+                            if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
+                            else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
+                            else if (!cb.checked && currentlyChecked.length >= maxAllowed) shouldDisable = true;
+                        }
 
                         cb.disabled = shouldDisable;
-                        if(pillSpan) {
-                            // Valid option, but limit reached. Just dim it.
-                            pillSpan.style.opacity = shouldDisable ? '0.4' : '1';
-                            pillSpan.style.cursor = shouldDisable ? 'not-allowed' : 'pointer';
+                        if (pillSpan) {
+                            if (shouldDisable) {
+                                pillSpan.style.opacity = '0.4';
+                                pillSpan.style.cursor = 'not-allowed';
+                                pillSpan.style.pointerEvents = 'none';
+                            } else {
+                                // Respect "Recommended" logic if set by applyWhitelist
+                                const isRecommended = pillContainer.dataset.recommended !== 'false';
+                                pillSpan.style.opacity = isRecommended ? '1' : '0.2';
+                                pillSpan.style.cursor = 'pointer';
+                                pillSpan.style.pointerEvents = isRecommended ? 'auto' : 'none';
+                            }
                         }
                     });
                 });
 
                 // ========================================================================
-                // 2. EVALUATE DROPDOWNS (Physically detach contradictory options)
+                // 2. EVALUATE DROPDOWNS
                 // ========================================================================
                 c.querySelectorAll('select').forEach(selectEl => {
                     if (!selectEl._allOptions) selectEl._allOptions = Array.from(selectEl.querySelectorAll('option'));
@@ -563,38 +582,44 @@
                     selectEl._allOptions.forEach(opt => {
                         if (!opt.value || opt.value === "None selected") return;
                         
-                        const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
-                        const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
-                        const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
-
-                        if (!guardrails.validateSubset("Global", hypotheticalGlobal).valid) {
-                            opt.disabled = true; 
-                            
-                            // Detach from DOM using an invisible comment placeholder
+                        // Step A: Evaluate against Persistent Context (Detach if invalid)
+                        const rawBase = [...persistentState, opt.value];
+                        const expandedBase = guardrails.expandRequiredState(rawBase, availableFormValues);
+                        if (!guardrails.validateSubset("Global", expandedBase).valid) {
                             if (!opt._placeholder) {
                                 opt._placeholder = document.createComment("hidden-opt");
                                 opt._placeholder._optRef = opt;
                             }
                             if (opt.parentNode) opt.parentNode.replaceChild(opt._placeholder, opt);
-                            
                             if (selectEl.value === opt.value) {
                                 selectEl.value = ""; 
                                 const toxicGlobal = globalState.indexOf(opt.value);
                                 if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
-                                const toxicLocal = localState.indexOf(opt.value);
-                                if (toxicLocal > -1) localState.splice(toxicLocal, 1);
                             }
+                            return; // Skip further checks for this detached option
                         } else {
-                            opt.disabled = false;
-                            
-                            // Restore safely to DOM
                             if (opt._placeholder && opt._placeholder.parentNode) {
                                 opt._placeholder.parentNode.replaceChild(opt, opt._placeholder);
                             }
                         }
+
+                        // Step B: Evaluate against Local Choices (Gray out if invalid)
+                        const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
+                        const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
+                        const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
+
+                        if (!guardrails.validateSubset("Global", hypotheticalGlobal).valid) {
+                            opt.disabled = true; // Stay in DOM, but be unclickable
+                            if (selectEl.value === opt.value) {
+                                selectEl.value = ""; 
+                                const toxicGlobal = globalState.indexOf(opt.value);
+                                if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
+                            }
+                        } else {
+                            opt.disabled = false;
+                        }
                     });
 
-                    // Hide empty optgroups so the user doesn't see floating category headers
                     Array.from(selectEl.querySelectorAll('optgroup')).forEach(group => {
                         const hasVisibleOptions = Array.from(group.childNodes).some(n => n.tagName === 'OPTION');
                         group.style.display = hasVisibleOptions ? '' : 'none';
@@ -618,7 +643,6 @@
                 });
 
                 if (isDeadlocked) {
-                    // This acts as a failsafe. If a programmatic error creates a deadlock, they are told why.
                     btnSave.disabled = true;
                     btnSave.style.background = 'var(--brand-danger)';
                     let displayContradiction = guardrails.validateSubset("Global", globalState).contradiction || 'Resolve Contradictions to Save';
@@ -986,16 +1010,12 @@
             const applyWhitelist = () => {
                 if (!intsGroup) return;
                 
-                // If no antecedent is selected, treat everything as blacklisted unless overridden
                 const hasAntecedent = antSelect.value && antSelect.value !== "None selected" && antSelect.value !== "";
                 const rules = hasAntecedent ? guardrails.getRulesForAntecedent(antSelect.value) : { whitelisted_interventions: [], blacklisted_interventions:[] };
                 
                 intsGroup.querySelectorAll('.checkbox-pill').forEach(p => {
                     const input = p.querySelector('input');
                     
-                    // ALWAYS keep elements in the document flow
-                    p.style.display = 'inline-block'; 
-
                     let isAllowed = false;
                     if (hasAntecedent) {
                         if (rules.whitelisted_interventions.includes(input.value)) isAllowed = true;
@@ -1004,17 +1024,16 @@
                         if (ovr) isAllowed = true;
                     }
 
-                    if (isAllowed) {
-                        // Reset opacity so the main runAllGuardrails can control it based on max selections
-                        p.style.opacity = '1';
-                        p.style.pointerEvents = 'auto';
-                    } else {
-                        // Visually disable and prevent clicks
-                        p.style.opacity = '0.2';
-                        p.style.pointerEvents = 'none';
-                        if (!ovr) input.checked = false; 
-                    }
+                    // Attach the state to the DOM node so runAllGuardrails can read it
+                    p.dataset.recommended = isAllowed ? 'true' : 'false';
+                    if (!isAllowed && !ovr) input.checked = false; 
                 });
+                
+                // Trigger runAllGuardrails to recalculate opacity, matrix validity, and max limits safely
+                const firstCb = intsGroup.querySelector('input[type="checkbox"]');
+                if (firstCb) {
+                    firstCb.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             };
 
             antSelect.addEventListener('change', () => { 
