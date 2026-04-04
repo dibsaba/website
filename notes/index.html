@@ -472,6 +472,7 @@
                 let globalState = [...localState, ...timelineState];
                 // --- GATHER AVAILABLE FORM OPTIONS ---
 								const availableFormValues = Array.from(c.querySelectorAll('input[type="checkbox"], select option')).map(el => el.value).filter(v => v && v !== "None selected");
+								const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
 
                 // ========================================================================
                 // 1. EVALUATE CHECKBOXES FIRST (So bad clicks uncheck themselves immediately)
