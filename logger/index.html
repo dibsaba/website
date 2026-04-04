@@ -575,12 +575,12 @@
                         else {
                             // Apply closure to local checkbox validation
                             const rawHypotheticalLocal = cb.checked ? localState : [...localState, cb.value];
-                            const hypotheticalLocal = guardrails.applyRequiresClosure(rawHypotheticalLocal, availableFormValues);
+                            const hypotheticalLocal = guardrails.expandRequiredState(rawHypotheticalLocal, availableFormValues);
                             const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                             
                             // Apply closure to global checkbox validation
                             const rawHypotheticalGlobal = cb.checked ? globalState : [...globalState, cb.value];
-                            const hypotheticalGlobal = guardrails.applyRequiresClosure(rawHypotheticalGlobal, availableFormValues);
+                            const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
                             
                             const container = cb.closest('.dynamic-chip-container');
                             if (container && !cb.checked) {
@@ -628,13 +628,13 @@
                         // Apply closure to global dropdown validation
                         const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
                         const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
-                        const hypotheticalGlobal = guardrails.applyRequiresClosure(rawHypotheticalGlobal, availableFormValues);
+                        const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
                         const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                         
                         // Apply closure to local dropdown validation
                         const localStateWithoutSelect = localState.filter(v => v !== selectEl.value);
                         const rawHypotheticalLocal =[...localStateWithoutSelect, opt.value];
-                        const hypotheticalLocal = guardrails.applyRequiresClosure(rawHypotheticalLocal, availableFormValues);
+                        const hypotheticalLocal = guardrails.expandRequiredState(rawHypotheticalLocal, availableFormValues);
                         const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                         
                         if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
