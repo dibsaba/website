@@ -592,7 +592,7 @@
 
                             const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                             
-                            if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
+                            if (!localValidation.valid || !globalValidation.valid) {
                                 shouldDisable = true;
                                 if (cb.checked) {
                                     cb.checked = false; 
@@ -637,16 +637,9 @@
                         const hypotheticalLocal = guardrails.expandRequiredState(rawHypotheticalLocal, availableFormValues);
                         const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                         
-                        if (!localValidation.valid || (!globalValidation.valid && !isDeadlocked)) {
-                            opt.disabled = true; 
-                            
-                            if (opt.parentElement.tagName !== 'SPAN') {
-                                const span = document.createElement('span');
-                                span.style.display = 'none';
-                                span.className = 'ios-hide';
-                                opt.parentElement.insertBefore(span, opt);
-                                span.appendChild(opt);
-                            }
+                        if (!localValidation.valid || !globalValidation.valid) {
+                            opt.disabled = true;
+                            opt.style.display = 'none';
                             
                             if (selectEl.value === opt.value) {
                                 selectEl.value = ""; 
@@ -657,12 +650,7 @@
                             }
                         } else {
                             opt.disabled = false;
-                            
-                            if (opt.parentElement.tagName === 'SPAN' && opt.parentElement.classList.contains('ios-hide')) {
-                                const span = opt.parentElement;
-                                span.parentElement.insertBefore(opt, span);
-                                span.remove();
-                            }
+                            opt.style.display = '';
                         }
                     });
                 });

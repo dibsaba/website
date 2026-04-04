@@ -56,7 +56,9 @@ export default class GuardrailEngine {
         this.functionRules = this.domainOverrides.map(override => ({
             antecedent: override.triggerValue,
             whitelisted_interventions: override.allowed,
-            blacklisted_interventions: [] 
+            blacklisted_interventions: schemaData && schemaData.Interventions 
+                ? schemaData.Interventions.filter(i => !override.allowed.includes(i)) 
+                : []
         }));
 
         // --- Matrix Engine State ---
@@ -239,7 +241,7 @@ export default class GuardrailEngine {
                 
                 if (idxA === undefined || idxB === undefined) continue;
                 
-                if (this.exclMatrix[idxA][idxB] === 1) {
+                if (this.exclMatrix[idxA][idxB] === 1 || this.exclMatrix[idxB][idxA] === 1) {
                     const keyA = Math.min(idxA, idxB);
                     const keyB = Math.max(idxA, idxB);
                     return { 
