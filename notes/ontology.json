@@ -1,0 +1,926 @@
+{
+  "IS_AAC_MATERIAL":[
+    "an AAC device",
+    "augmented communication software",
+    "iPad / Tablet",
+    "PECS communication book"
+  ],
+  "IS_AAC_TARGET": [
+    "Using an AAC device"
+  ],
+  "IS_ACADEMIC":[
+    "Academic Readiness",
+    "Completing patterning items",
+    "Counting 1-10",
+    "Following worksheet instructions",
+    "Identifying colors and shapes",
+    "Identifying numbers and letters",
+    "Matching non-identical items",
+    "Sorting by category",
+    "Tracing letters",
+    "Writing own name"
+  ],
+  "IS_ACADEMIC_MATERIAL":[
+    "2D picture cards",
+    "a token board",
+    "animal flashcards",
+    "PECS communication book",
+    "social story books",
+    "whiteboard and dry-erase markers",
+    "worksheets and crayons"
+  ],
+  "IS_ADL_TARGET":[
+    "Daily Living (ADLs)",
+    "Daily Living",
+    "Brushing teeth",
+    "Completing daily chores",
+    "Completing toileting routine",
+    "Dressing independently",
+    "Eating a variety of foods",
+    "Opening food containers",
+    "Packing a backpack",
+    "Tolerating haircuts / nail clipping",
+    "Tying shoes",
+    "Using utensils properly",
+    "Washing hands",
+    "Wiping independently"
+  ],
+  "IS_AGGRESSION":[
+    "Aggression",
+    "Attempted to bite",
+    "Swiped at therapist",
+    "biting directed at the therapist",
+    "hair-pulling",
+    "head-butting staff or peers",
+    "kicking the furniture or staff",
+    "open-handed hitting",
+    "pinching others' skin",
+    "punching with closed fists",
+    "scratching arms and hands"
+  ],
+  "IS_ATTENTION_EXTINCTION": [
+    "Planned Ignoring"
+  ],
+  "IS_ATTENTION_MAINTAINED": [
+    "Attention Diverted",
+    "Peer Interaction"
+  ],
+  "IS_AUDITORY_BLOCKER":[
+    "Music / Videos",
+    "headphones for noise cancellation",
+    "interactive videos",
+    "music player"
+  ],
+  "IS_AUDITORY_DEMAND": [
+		"Tolerating loud noises",
+		"Tolerated loud environment"
+	],
+  "IS_AUDITORY_DISTRESS": [
+    "Ear infection"
+  ],
+  "IS_AUDITORY_SENSITIVITY": [
+    "Triggered by loud noise"
+  ],
+  "IS_AUTOMATIC_MAINTAINED": [
+    "Unstructured Time/Automatic"
+  ],
+  "IS_AVERSIVE":[
+    "Escape Extinction",
+    "Overcorrection (Positive Practice)",
+    "Planned Ignoring",
+    "Response Cost"
+  ],
+  "IS_BCBA_LEVEL_TASK":[
+    "Provided Paraprofessional Feedback",
+    "Provided parent coaching",
+    "Reviewed IEP goals",
+    "discussing generalization strategies"
+  ],
+  "IS_BIO_HAZARD":[
+    "Disrobing",
+    "Pica",
+    "Scatolia (Fecal smearing)",
+    "Spitting",
+    "chewing on clothing or strings",
+    "licking the floor or walls",
+    "mouthing non-edible items",
+    "pooling saliva in mouth",
+    "removing pants or underwear",
+    "removing shirt",
+    "removing shoes and socks",
+    "smearing feces on the furniture",
+    "smearing feces on the walls",
+    "spitting at staff or peers",
+    "spitting on instructional materials",
+    "spitting on the floor",
+    "stripping completely naked",
+    "swallowing small objects"
+  ],
+  "IS_CAREGIVER_ENGAGEMENT":[
+    "Provided parent coaching",
+    "Reviewed data graphs with family",
+    "answering caregiver questions",
+    "asked for tips on community generalization",
+    "asked questions about the behavior plan",
+    "confirmed the next scheduled session",
+    "demonstrated the strategy back to the therapist",
+    "discussing generalization strategies",
+    "discussing mastered skills",
+    "expressed frustration with the current routine",
+    "expressed satisfaction with progress",
+    "mentioned sleep or diet issues",
+    "modeling the intervention",
+    "reported an increase in behaviors at home",
+    "reported no new concerns",
+    "reviewing behavior incidents",
+    "reviewing the upcoming schedule",
+    "thanked the clinical team",
+    "Discussed upcoming schedule change",
+    "Transitioned to Caregiver safely"
+  ],
+  "IS_CAREGIVER_UNAVAILABLE": [
+    "Caregiver unavailable",
+    "No responsible adult"
+  ],
+  "IS_CHAINED":[
+    "Daily Living",
+    "Daily Living (ADLs)",
+    "Vocational",
+    "Brushing teeth",
+    "Completing daily chores",
+    "Completing toileting routine",
+    "Dressing independently",
+    "Eating a variety of foods",
+    "Opening food containers",
+    "Packing a backpack",
+    "Tying shoes",
+    "Using utensils properly",
+    "Washing hands",
+    "Wiping independently",
+    "Clocking in and out",
+    "Completing assembly tasks",
+    "Following a visual checklist",
+    "Sorting mail or items",
+    "Wiping down tables"
+  ],
+  "IS_CHAINING_FORMAT":[
+    "Backward Chaining",
+    "Forward Chaining",
+    "Shaping",
+    "Task Analysis",
+    "Total Task Chaining"
+  ],
+  "IS_CHOKING_HAZARD":[
+    "Stringing beads",
+    "Tokens / Points",
+    "kinetic sand",
+    "Lego bricks",
+    "magnetic building tiles",
+    "playdough and molds",
+    "puzzles",
+    "shape sorters",
+    "swallowing small objects",
+    "wooden blocks",
+    "Stickers"
+  ],
+  "IS_CLINIC_SETTING":[
+    "Clinic"
+  ],
+ 	"IS_CONFIDENTIAL_DISCUSSION":[
+		"Reviewed IEP goals",
+		"reviewing behavior incidents",
+		"reviewing the upcoming schedule",
+		"Reviewed data graphs with family",
+		"discussing generalization strategies"
+	],
+  "IS_CONFINED":[
+    "Bathroom / Restroom",
+    "Vehicle / Transport"
+  ],
+  "IS_CONTAGIOUS":[
+    "Illness symptoms"
+  ],
+  "IS_CRISIS_INDICATOR":[
+    "Blocked attempt to swallow",
+    "Blocked using safety pads",
+    "Incident Report Filed",
+    "Preceded by crying",
+    "Required a tactical break",
+    "Required environmental clearing",
+    "Required physical block to prevent exit",
+    "Required physical blocking",
+    "agitated and crying"
+  ],
+  "IS_DARK_ENVIRONMENT": ["Sensory breaks (dark room / quiet)"],
+  "IS_DIFFERENTIAL_REINFORCEMENT":[
+    "DRA (Differential Reinforcement of Alternative Behavior)",
+    "DRI (Differential Reinforcement of Incompatible Behavior)",
+    "DRO (Differential Reinforcement of Other Behavior)",
+    "Differential Reinforcement",
+    "FCT (Functional Communication Training)"
+  ],
+  "IS_DISCRETE":[
+    "Academic Readiness",
+    "Communication",
+    "Completing patterning items",
+    "Counting 1-10",
+    "Following worksheet instructions",
+    "Identifying colors and shapes",
+    "Identifying numbers and letters",
+    "Matching non-identical items",
+    "Sorting by category",
+    "Tracing letters",
+    "Writing own name",
+    "Answering WH- questions",
+    "Conversational turn-taking",
+    "Echoic imitation",
+    "Following receptive instructions",
+    "Intraverbal fill-ins",
+    "Manding for cessation ('Stop'/'No')",
+    "Manding for desired items",
+    "Peer greetings",
+    "Pointing to request",
+    "Tacting 2D/3D objects",
+    "Tacting internal states (Pain/Emotions)"
+  ],
+  "IS_DISTANCE_REQUIRED": [
+    "Required safety distance"
+  ],
+  "IS_DYSREGULATED":[
+    "Engaged in precursor behaviors during transition",
+    "Preceded by crying",
+    "agitated and crying",
+    "avoiding eye contact / turning away",
+    "displaying precursor behaviors",
+    "dysregulated with precursor behaviors",
+    "engaging in crying / vocal protests",
+    "orienting away from speaker",
+    "visibly frustrated",
+    "whining and vocally protesting"
+  ],
+  "IS_EDIBLE":[
+    "Eating a variety of foods",
+    "Edibles",
+    "Successfully traded for edible",
+    "snack and food items"
+  ],
+  "IS_EDUCATIONAL_TUTORING":[
+    "Completing patterning items",
+    "Following worksheet instructions",
+    "Tracing letters",
+    "Writing own name"
+  ],
+  "IS_ELECTRONIC_DEVICE":[
+    "an AAC device", "augmented communication software", "iPad / Tablet", "interactive videos", "music player", "a tablet app", "headphones for noise cancellation"
+  ],
+  "IS_ELOPEMENT":[
+    "Elopement",
+    "attempting to elope back to the previous area",
+    "bolting towards the exit door",
+    "Bolted towards door",
+    "dodging staff to escape",
+    "hiding under furniture",
+    "leaving the instructional area",
+    "Left instructional area",
+    "pacing near the exit",
+    "running away from caregiver",
+    "running into the street/parking lot"
+  ],
+  "IS_ENVIRONMENTAL_MODIFICATION":[
+    "Required environmental clearing",
+    "Swept area for hazards"
+  ],
+  "IS_ERROR_OR_STRUGGLE":[
+    "Emerging skill",
+    "Failed to generalize",
+    "Field Reduced",
+    "Inconsistent responding",
+    "Prompt dependent",
+    "Required prompt fading",
+    "Required redirection to task"
+  ],
+  "IS_ESCAPE_EXTINCTION":[
+    "Behavior Momentum / High-P Sequence",
+    "Escape Extinction",
+    "Premack Principle (First/Then)"
+  ],
+  "IS_ESCAPE_MAINTAINED":[
+    "Demand/Escape",
+    "Interruption of Preferred Activity",
+    "Transition"
+  ],
+  "IS_ESCAPE_REINFORCER": [
+    "Break / Escape"
+  ],
+  "IS_EXCLUSIONARY_TIMEOUT":["Tactical Break", "Required a tactical break", "requiring a prolonged tactical break"],
+  "IS_EXECUTIVE_FUNCTIONING":["Problem-solving a barrier", "Self-monitoring behavior", "Independent task initiation", "Following 2-step instructions", "Executive Functioning"],
+  "IS_EXTINCTION_SENSITIVE": [
+    "Screaming subsided when ignored"
+  ],
+  "IS_FALL_HAZARD":[
+    "Jumping with two feet",
+    "Playground",
+    "Swinging",
+    "gross motor obstacle course",
+    "therapy ball"
+  ],
+  "IS_FINE_MOTOR_TARGET":[
+    "Completing patterning items",
+    "Cutting with scissors",
+    "Following worksheet instructions",
+    "Pincer grasp exercises",
+    "Stringing beads",
+    "Tracing letters",
+    "Using a pencil grip",
+    "Writing own name",
+    "worksheets and crayons",
+    "Using an AAC device",
+    "Tying shoes",
+    "Opening food containers",
+    "Wiping independently",
+    "Completing daily chores"
+  ],
+  "IS_FOOD_PREP_AREA":[
+    "Dining room",
+    "Kitchen",
+    "Store / Community setting"
+  ],
+  "IS_FRAGMENTABLE_MATERIAL":[
+		"kinetic sand",
+		"playdough and molds"
+	],
+  "IS_GI_DISTRESS":[
+    "Constipation / GI issues",
+    "Lack of Appetite / Refused meal"
+  ],
+  "IS_GROSS_MOTOR_TARGET":[
+    "Catching a ball",
+    "Crossing the midline",
+    "Gross motor imitation",
+    "Jumping with two feet",
+    "Motor Skills",
+    "Practiced safety crossing"
+  ],
+  "IS_HAND_COMPROMISE": ["biting own hand or arm", "scratching arms and hands"],
+  "IS_HAND_HELD_ITEM": ["utilizing a transition object"],
+  "IS_HIGH_AROUSAL":[
+    "agitated and crying",
+    "demonstrating a high rate of movement",
+    "happily running to the next area",
+    "highly distracted and hyperactive",
+    "pacing the room rapidly"
+  ],
+	"IS_HIGH_EFFORT_PUNISHMENT": [
+		"Overcorrection (Positive Practice)"
+	],
+  "IS_HIGH_EXERTION":[
+    "Catching a ball",
+    "Jumping with two feet",
+    "gross motor obstacle course",
+    "pacing the room rapidly",
+    "running into the street/parking lot"
+  ],
+  "IS_HIGH_MOBILITY_ENVIRONMENT":[
+    "Outdoors",
+    "Playground",
+    "gross motor obstacle course",
+    "playground equipment"
+  ],
+  "IS_HOME_SETTING":[
+    "Bedroom",
+    "Dining room",
+    "Home",
+    "Kitchen",
+    "Living room"
+  ],
+  "IS_IMMINENT_DANGER":[
+    "Aggression",
+    "Elopement",
+    "Pica",
+    "SIB",
+    "Self-Injurious Behavior (SIB)",
+    "banging head against the wall/floor",
+    "biting directed at the therapist",
+    "biting own hand or arm",
+    "biting own lips or cheeks",
+    "bolting towards the exit door",
+    "chewing on clothing or strings",
+    "dodging staff to escape",
+    "gouging own eyes",
+    "hair-pulling",
+    "head-butting staff or peers",
+    "hiding under furniture",
+    "hitting head with an open hand",
+    "kicking the furniture or staff",
+    "leaving the instructional area",
+    "licking the floor or walls",
+    "mouthing non-edible items",
+    "open-handed hitting",
+    "pacing near the exit",
+    "pinching others' skin",
+    "punching with closed fists",
+    "running away from caregiver",
+    "running into the street/parking lot",
+    "scratching arms and hands",
+    "scratching own skin repeatedly",
+    "skin picking",
+    "swallowing small objects"
+  ],
+  "IS_INAPPROPRIATE_LANGUAGE":[
+    "Inappropriate Language",
+    "calling staff or peers derogatory names",
+    "making sexually explicit comments",
+    "making verbally threatening statements",
+    "using profanity"
+  ],
+  "IS_INDEPENDENT":[
+    "Fluency",
+    "Independent",
+    "Maintained across therapists",
+    "Mastered",
+    "Mastered with novel stimuli",
+    "Smooth",
+    "Spontaneous demonstration",
+    "Transitioned smoothly and independently",
+    "displaying an absence of maladaptive behavior",
+    "happily running to the next area",
+    "independently carrying their schedule",
+    "walking independently",
+    "Generalized to new environment",
+    "Returned independently",
+    "Navigated Parking Lot Safely"
+  ],
+  "IS_INDOOR_SETTING":[
+    "Bathroom / Restroom",
+    "Bedroom",
+    "Classroom",
+    "Dining room",
+    "Hallway / Transition Area",
+    "Kitchen",
+    "Living room",
+    "Sensory room",
+    "Therapy room",
+    "Waiting Room"
+  ],
+  "IS_INFANT_TOY":[
+    "Bubbles",
+    "cause-and-effect toys",
+    "kinetic sand",
+    "playdough and molds"
+  ],
+  "IS_INTENSIVE_TEACHING":[
+    "DTT (Discrete Trial Training)",
+    "Errorless Teaching",
+    "Fluency Based Instruction",
+    "Max Prompting"
+  ],
+  "IS_INTERNAL_STATE_TARGET":[
+    "Accepting 'No'",
+    "Accepting changes in routine",
+    "Accepting delayed reinforcement",
+    "Asking for a break",
+    "Coping / Tolerance",
+    "Tolerated loud environment",
+    "Tolerating denied access",
+    "Tolerating haircuts / nail clipping",
+    "Tolerating loud noises",
+    "Tolerating loud environment",
+    "Tolerating task demands",
+    "Using deep breathing"
+  ],
+  "IS_LESSER_INTERVENTION":[
+    "Redirection",
+    "Stimulus Fading",
+    "Visual Schedule / Timer"
+  ],
+  "IS_LESSER_PROMPT":[
+    "Completed with partial physical prompt",
+    "Verbal Prompts",
+    "gesturally prompted",
+    "model-prompted",
+    "partially physically prompted",
+    "positionally prompted",
+    "requiring multiple verbal prompts",
+    "time-delayed",
+    "verbally prompted",
+    "visually prompted",
+    "Required verbal prompts to transition",
+    "Required visual schedule to transition"
+  ],
+  "IS_LOW_AROUSAL":[
+    "Fatigued / Withdrawn",
+    "Lethargy / Fatigue",
+    "Poor sleep",
+    "exhibiting a slowed response time / yawning",
+    "exhibiting fatigued / slowed responses",
+    "lethargic due to poor sleep",
+    "passively slumping in chair",
+    "physically fatigued",
+    "reluctant to separate from caregiver",
+    "sluggish and fatigued",
+    "withdrawn and avoiding interaction"
+  ],
+	"IS_LOWER_BODY_DISROBING":[
+		"removing pants or underwear",
+		"stripping completely naked"
+	],
+  "IS_MEDICAL_CRISIS":[
+    "Asthma / Respiratory issues",
+    "Dehydration",
+    "Seizure activity"
+  ],
+  "IS_MEDICAL_DISTRESS":[
+    "Allergies",
+    "Asthma / Respiratory issues",
+    "Constipation / GI issues",
+    "Dental pain",
+    "Ear infection",
+    "Headache",
+    "Illness symptoms",
+    "Lack of Appetite / Refused meal",
+    "Lethargy / Fatigue",
+    "Pain / Discomfort",
+    "Rash / Skin irritation",
+    "Seizure activity"
+  ],
+  "IS_MEDICAL_VARIABLE":[
+    "Medication change",
+    "Menses / Menstrual cycle",
+    "Missed meal",
+    "Observed medication side effects"
+  ],
+  "IS_MESSY_MATERIAL": ["playdough and molds", "kinetic sand", "water play table"],
+  "IS_NATURAL_MATERIAL":[
+    "gross motor obstacle course",
+    "household cleaning supplies",
+    "items found in the kitchen",
+    "playground equipment",
+    "preferred natural toys",
+    "snack and food items",
+    "water play table"
+  ],
+  "IS_NCR":[
+    "NCR (Noncontingent Reinforcement)"
+  ],
+  "IS_NET_TEACHING":[
+    "Incidental Teaching",
+    "NET (Natural Environment Teaching)"
+  ],
+  "IS_NON_CLINIC":[
+    "Community",
+    "Home",
+    "School",
+    "Telehealth"
+  ],
+  "IS_NON_DANGEROUS_BEHAVIOR":[
+    "Inappropriate Language",
+    "Motor Stereotypy",
+    "Non-compliance",
+    "Vocal Stereotypy",
+    "calling staff or peers derogatory names",
+    "dropping to the floor and crying",
+    "engaging in pacing / vocal stereotypy",
+    "ignoring staff instructions",
+    "intense hand-flapping",
+    "loud, sustained vocal protests",
+    "making sexually explicit comments",
+    "making verbally threatening statements",
+    "passively slumping in chair",
+    "refusing to transition",
+    "repetitive vocal scripting",
+    "rocking back and forth violently",
+    "screaming at a high pitch",
+    "spinning in circles",
+    "using profanity",
+    "verbally refusing tasks",
+    "walking away from task"
+  ],
+  "IS_NO_MEDICAL":[
+    "None reported"
+  ],
+  "IS_ORAL_DEMAND":[
+  	"Brushing teeth", "Eating a variety of foods"
+  ],
+  "IS_ORAL_DISTRESS":[
+    "Dental pain", "biting own lips or cheeks", "pooling saliva in mouth"
+  ],
+  "IS_OUTDOOR_MATERIAL":[
+    "gross motor obstacle course",
+    "playground equipment",
+    "water play table"
+  ],
+  "IS_OUTDOOR_REINFORCER": [
+    "Access to Outdoors"
+  ],
+  "IS_PEER_OR_SIBLING":[
+    "Imitating peer actions",
+    "Initiating peer play",
+    "Losing a game appropriately",
+    "Maintaining joint attention",
+    "Parallel play",
+    "Peer Interaction",
+    "Peer attention",
+    "Peer greetings",
+    "Peer(s)",
+    "Sharing preferred items",
+    "Sibling Joined Play",
+    "Sibling(s)",
+    "Sustaining cooperative play",
+    "Turn-taking with a peer"
+  ],
+  "IS_PEER_TARGET":["Peer greetings", "Imitating peer actions", "Initiating peer play", "Turn-taking with a peer", "Parallel play", "Losing a game appropriately", "Sharing preferred items", "Sustaining cooperative play", "Conversational turn-taking"],
+  "IS_PHYSICAL_CONTACT":[
+    "Blocked attempt to swallow",
+    "Blocked using safety pads",
+    "Completed with partial physical prompt",
+    "Physical Touch (deep pressure / squeezes)",
+    "Required physical block to prevent exit",
+    "Required physical blocking",
+    "Required physical guidance to transition",
+    "Tickles",
+    "fully physically prompted",
+    "holding the therapist's hand",
+    "partially physically prompted",
+    "requiring gentle physical guidance"
+  ],
+  "IS_PHYSICAL_CONTACT_WITH_THERAPIST":[
+    "biting directed at the therapist",
+    "head-butting staff or peers",
+  	"spitting at staff or peers",
+    "Swiped at therapist"
+  ],
+  "IS_PHYSICAL_INTERVENTION":[
+    "Blocked attempt to swallow",
+    "Blocked using safety pads",
+    "Blocking",
+    "Required a tactical break",
+    "Required physical block to prevent exit",
+    "Required physical blocking",
+    "Tactical Break",
+    "requiring a prolonged tactical break"
+  ],
+  "IS_PHYSICAL_PROMPT":[
+    "Completed with partial physical prompt",
+    "Max Prompting",
+    "Required physical guidance to transition",
+    "fully physically prompted",
+    "holding the therapist's hand",
+    "partially physically prompted",
+    "requiring gentle physical guidance"
+  ],
+  "IS_PHYSICAL_SAFETY_MANAGEMENT":[
+    "Blocked attempt to swallow",
+    "Blocked using safety pads",
+    "Required physical block to prevent exit",
+    "Required physical blocking",
+    "Required protective equipment"
+  ],
+  "IS_PICA":[
+    "Pica",
+    "chewing on clothing or strings",
+    "licking the floor or walls",
+    "mouthing non-edible items",
+    "swallowing small objects"
+  ],
+  "IS_PREMACK_CONTINGENCY": ["Premack Principle (First/Then)", "Responded to Premack principle"],
+	"IS_PROJECTILE_BEHAVIOR":[
+		"sweeping items off the desk",
+		"Threw materials",
+		"throwing instructional materials"
+	],
+  "IS_PROPERTY_DESTRUCTION":[
+    "Broke instructional materials",
+    "Property Destruction",
+    "Ripped data sheets",
+    "Swept items off desk",
+    "breaking toys",
+    "kicking holes in walls",
+    "overturning tables or chairs",
+    "ripping paper and data sheets",
+    "slamming doors",
+    "sweeping items off the desk",
+    "tearing fabric or clothing",
+    "throwing instructional materials",
+    "Threw materials"
+  ],
+  "IS_PROXIMITY_PAIRING":["holding the therapist's hand", "Tickles", "Physical Touch (deep pressure / squeezes)", "Paired w/ Toys"],
+  "IS_PROXIMITY_PROMPT":["gesturally prompted", "positionally prompted", "model-prompted"],
+  "IS_PUBLIC":[
+    "Community",
+    "Outdoors",
+    "Playground",
+    "Store / Community setting"
+  ],
+  "IS_RECREATION_MATERIAL":[
+    "Bubbles",
+    "Music / Videos",
+    "Swinging",
+    "a tablet app",
+    "cause-and-effect toys",
+    "interactive videos",
+    "iPad / Tablet",
+    "kinetic sand",
+    "Lego bricks",
+    "magnetic building tiles",
+    "playdough and molds",
+    "puzzles",
+    "shape sorters",
+    "therapy ball",
+    "wooden blocks"
+  ],
+  "IS_REGULATED":[
+    "Client requested to stay longer",
+    "Happy Transition",
+    "Highly Motivated",
+    "Paired w/ Toys",
+    "Quick Control",
+    "calm and cooperative",
+    "demonstrating a neutral affect",
+    "displaying an absence of maladaptive behavior",
+    "engaging in preferred activities",
+    "happy and interactive",
+    "readily responding to instructions",
+    "relaxed and engaged",
+    "smiling and energetic"
+  ],
+  "IS_REMOTE":[
+    "Telehealth"
+  ],
+  "IS_RESISTANT_TRANSITION":[
+    "Engaged in precursor behaviors during transition",
+    "Required physical guidance to transition",
+    "Transitioned with minor resistance",
+    "attempting to elope back to the previous area",
+    "dropping to the floor midway",
+    "requiring a prolonged tactical break",
+    "whining and vocally protesting"
+  ],
+  "IS_RESPIRATORY_DEMAND": ["Using deep breathing", "Bubbles"],
+  "IS_RESPIRATORY_DISTRESS": ["Asthma / Respiratory issues", "screaming at a high pitch"],
+  "IS_RESTRICTIVE_PUNISHMENT":[
+    "Overcorrection (Positive Practice)",
+    "Required a tactical break",
+    "Response Cost",
+    "Tactical Break",
+    "requiring a prolonged tactical break"
+  ],
+  "IS_ROUTINE_CHANGE":[
+    "Change in Routine"
+  ],
+  "IS_SCHOOL_SETTING":[
+    "Classroom",
+    "School"
+  ],
+  "IS_SENSORY_DISTRESS":[
+    "Headache"
+  ],
+  "IS_SENSORY_OVERLOAD":[
+    "Sensory Overload"
+  ],
+  "IS_SENSORY_REINFORCER":[
+    "Sensory Toys / Fidgets",
+    "Sensory breaks (dark room / quiet)"
+  ],
+  "IS_SEVERE_TOPOGRAPHY":[
+    "Attempted to bite",
+    "Blocked using safety pads",
+    "Required physical block to prevent exit",
+    "Required physical blocking",
+    "banging head against the wall/floor",
+    "biting directed at the therapist",
+    "bolting towards the exit door",
+    "gouging own eyes",
+    "hair-pulling",
+    "head-butting staff or peers",
+    "hitting head with an open hand",
+    "kicking holes in walls",
+    "kicking the furniture or staff",
+    "punching with closed fists",
+    "running into the street/parking lot",
+    "smearing feces on the walls",
+    "stripping completely naked",
+    "swallowing small objects"
+  ],
+  "IS_SHARP_OBJECT":[
+    "Cutting with scissors"
+  ],
+  "IS_SIB":[
+    "SIB",
+    "Self-Injurious Behavior (SIB)",
+    "banging head against the wall/floor",
+    "biting own hand or arm",
+    "biting own lips or cheeks",
+    "gouging own eyes",
+    "hitting head with an open hand",
+    "scratching own skin repeatedly",
+    "skin picking"
+  ],
+	"IS_SLEEP_LETHARGY":[
+		"exhibiting a slowed response time / yawning",
+		"exhibiting fatigued / slowed responses",
+		"lethargic due to poor sleep",
+		"passively slumping in chair"
+	],
+	"IS_SLIP_HAZARD":[
+		"Bathroom / Restroom",
+		"water play table",
+		"Washing hands",
+		"Completing toileting routine",
+		"Brushing teeth"
+	],
+  "IS_SMART_CHIP_DYSREGULATED":[
+    "Occurred when denied access",
+    "Preceded by crying",
+    "Triggered by loud noise",
+    "Triggered by routine change"
+  ],
+  "IS_SMART_CHIP_REGULATED":[
+  	"Client requested to stay longer",
+  	"Extended Pairing",
+    "Happy Transition",
+    "Highly Motivated",
+    "Paired w/ Toys",
+    "Quick Control"
+  ],
+  "IS_SMOOTH_TRANSITION":[
+    "Smooth",
+    "Transitioned smoothly and independently",
+    "happily running to the next area",
+    "transitioning smoothly without resistance"
+  ],
+  "IS_SOCIAL_PLAY":["Peer Interaction", "Turn-taking with a peer", "Initiating peer play", "Sustaining cooperative play", "Sharing preferred items", "Imitating peer actions", "Losing a game appropriately"],
+  "IS_SPONTANEOUS":[
+    "Spontaneous demonstration"
+  ],
+  "IS_STAFF_DIRECTED_AGGRESSION":["biting directed at the therapist", "Swiped at therapist", "head-butting staff or peers", "punching with closed fists", "open-handed hitting"],
+  "IS_TACTILE_DISTRESS":[
+    "Rash / Skin irritation", "skin picking", "scratching own skin repeatedly"
+  ],
+  "IS_TANGIBLE_MAINTAINED":[
+    "Denied Access/Tangible",
+    "Interruption of Preferred Activity"
+  ],
+  "IS_TOILETING_ADL":[
+  	"Bathroom / Restroom",
+    "Completing toileting routine",
+    "Toilet Training",
+    "Wiping independently"
+  ],
+  "IS_TOKEN_ECONOMY":[
+    "Token Economy",
+    "Token Economy / Token Board"
+  ],
+  "IS_TOKEN_MATERIAL":[
+    "Tokens / Points",
+    "a token board"
+  ],
+	"IS_TOXIC_HAZARD": [
+		"household cleaning supplies"
+	],
+	"IS_TRAFFIC_HAZARD_SKILL":[
+		"Navigated Parking Lot Safely",
+		"Practiced safety crossing",
+		"running into the street/parking lot"
+	],
+  "IS_TRANSITION":[
+    "Transition",
+    "Returned to Class Routine",
+    "Transitioned to Teacher",
+    "Transitioned to Waiting Room"
+  ],
+	"IS_VIBRATING_ENVIRONMENT": [
+		"Vehicle / Transport"
+	],
+  "IS_VISUAL_DEPENDENT_TASK":[
+  	"Tracing letters", "Writing own name", "Following worksheet instructions", "Following a visual checklist", "Completing patterning items",
+  	"Matching non-identical items", "Sorting by category", "Identifying colors and shapes", "Identifying numbers and letters", "Sustaining visual attention",
+  	"2D picture cards", "animal flashcards", "PECS communication book", "social story books", "whiteboard and dry-erase markers", "worksheets and crayons",
+  	"Visual schedule adherence", "a visual timer", "following a visual schedule", "Token Economy / Token Board", "a token board"
+  ],
+  "IS_VOCAL_COMPROMISE":["screaming at a high pitch", "repetitive vocal scripting", "loud, sustained vocal protests", "engaging in pacing / vocal stereotypy"],
+  "IS_VOCAL_VERBAL_TARGET":[
+    "Answering WH- questions",
+    "Conversational turn-taking",
+    "Echoic imitation",
+    "Intraverbal fill-ins",
+    "Manding for cessation ('Stop'/'No')",
+    "Manding for desired items",
+    "Peer greetings",
+    "Tacting 2D/3D objects",
+    "Tacting internal states (Pain/Emotions)"
+  ],
+  "IS_VOCATIONAL":[
+    "Clocking in and out",
+    "Completing assembly tasks",
+    "Following a visual checklist",
+    "Sorting mail or items",
+    "Vocational",
+    "Wiping down tables"
+  ],
+	"IS_WAIT_OUT": [
+		"Used wait out procedure"
+	],
+  "IS_WATER_ENVIRONMENT":[
+    "Bathroom / Restroom", "Washing hands", "Completing toileting routine", "Brushing teeth", "water play table"
+  ]
+}

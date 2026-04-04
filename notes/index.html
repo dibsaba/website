@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ABA Clinical Session Logger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+    	.chip-toggle input:checked + span { background: var(--brand-accent) !important; color: #fff !important; border-color: var(--brand-accent-dark) !important; }
+        :root { 
+            --font-sans: 'Inter', sans-serif; 
+            --font-serif: 'Playfair Display', serif; 
+            --brand-primary: #292524; 
+            --brand-primary-dark: #1c1917; 
+            --brand-accent: #ea580c; 
+            --brand-accent-light: #fb923c; 
+            --brand-accent-dark: #c2410c; 
+            --brand-cream: #fff7ed; 
+            --brand-sand: #f5f5f4; 
+            --brand-surface: #ffffff; 
+            --brand-danger: #ef4444; 
+            --brand-success: #16a34a; 
+            --text-body: #475569; 
+            --text-muted: #94a3b8; 
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); background-color: var(--brand-cream); color: var(--text-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        h1, h2, h3 { font-family: var(--font-serif); color: var(--brand-primary); }
+        button { font-family: var(--font-sans); font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+        
+        .btn-primary { background: var(--brand-accent); color: #fff; padding: 12px 20px; border-radius: 8px; width: 100%; font-weight: 600; }
+        .btn-primary:disabled { background: var(--text-muted); cursor: not-allowed; }
+        .btn-secondary { background: var(--brand-primary); color: #fff; padding: 12px 16px; border-radius: 8px; width:100%; }
+        .btn-secondary:disabled { background: var(--text-muted); opacity: 0.5; }
+        
+        input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-family: var(--font-sans); background: var(--brand-surface); color: var(--brand-primary); }
+        input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand-accent-light); border-color: transparent; }
+
+        .view { display: none; min-height: 100vh; }
+        .view.active { display: flex; flex-direction: column; }
+        
+        #auth-view { justify-content: center; align-items: center; padding: 20px; background-color: var(--brand-sand); }
+        .auth-card { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); text-align: center; max-width: 400px; width: 100%; }
+        .auth-card img { max-width: 100%; height: auto; margin: 0 auto 10px auto; display: block; }
+        .auth-card h2 { margin-bottom: 24px; font-family: var(--font-sans); font-size: 14px; font-weight: normal; color: #64748B; }
+        .auth-card .form-group { margin-bottom: 20px; text-align: left; position: relative; }
+        .auth-card input { height: 40px; padding-left: 10px; }
+        .auth-card input::placeholder { color: #94a3b8; }
+        
+        .pwd-toggle { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748B; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; }
+        .pwd-toggle:hover { color: var(--brand-primary); }
+        .pwd-toggle svg { width: 20px; height: 20px; }
+
+        #dashboard-view { 
+						/* Prevent the timeline from hiding behind the taller action bar */
+						padding-bottom: calc(200px + env(safe-area-inset-bottom)); 
+				}
+        .app-header { background: #fff; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 10; display:flex; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.03);}
+        .timeline-container { max-width: 800px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; width: 100%; }
+        .timeline-card { background: #fff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--brand-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        
+        .action-bar { 
+						position: fixed; 
+						bottom: 0; left: 0; right: 0; 
+						background: #fff; 
+						/* Add safe-area padding for modern iPhones */
+						padding: 15px 15px calc(15px + env(safe-area-inset-bottom)) 15px; 
+						display: flex; flex-direction: column; gap: 10px; 
+						align-items: center; 
+						box-shadow: 0 -4px 20px rgba(0,0,0,0.08); 
+						z-index: 50;
+				}
+        .action-bar-row { max-width: 800px; width: 100%; display: flex; gap: 10px; justify-content: center; }
+        .action-bar button { flex: 1; }
+        
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: #fff; width: 100%; max-width: 600px; max-height: 90vh; border-radius: 12px; display: flex; flex-direction: column; }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--brand-sand); display: flex; justify-content: space-between; align-items: center; }
+        .close-btn { background: none; font-size: 1.5rem; color: var(--text-muted); padding: 0 10px; line-height: 1; }
+        .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+        .modal-footer { padding: 20px; border-top: 1px solid var(--brand-sand); }
+        
+        .form-field { margin-bottom: 20px; }
+        .form-label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--brand-primary); }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        .checkbox-pill input { display: none; }
+        .checkbox-pill span { 
+						padding: 10px 16px; 
+						min-height: 44px;
+						display: inline-flex;
+						align-items: center;
+						background: var(--brand-sand); 
+						border-radius: 8px; 
+						cursor: pointer; 
+						font-size: 0.95rem; /* slightly larger for readability */
+						border: 1px solid transparent; 
+				}
+        .checkbox-pill input:checked + span { background: var(--brand-accent); color: #fff; border-color: var(--brand-accent-dark); }
+        .checkbox-pill input:disabled + span:active {
+						animation: shake 0.3s ease-in-out;
+						border-color: var(--brand-danger);
+				}
+				@keyframes shake {
+						0%, 100% { transform: translateX(0); }
+						25% { transform: translateX(-4px); }
+						75% { transform: translateX(4px); }
+				}
+				
+        /* Make required dropdowns that are empty stand out slightly */
+				select.required-choice:has(option[value=""]:checked) {
+						border-left: 4px solid var(--brand-accent-light);
+						background-color: var(--brand-cream);
+				}
+				
+				/* Make the disabled save button look intentional, not broken */
+				#btn-save:disabled {
+						background: var(--brand-sand);
+						color: var(--text-muted);
+						border: 2px dashed #cbd5e1;
+						opacity: 1; /* override previous opacity */
+				}
+				#btn-save:disabled::after {
+						content: " (Incomplete)";
+						font-size: 0.85rem;
+						font-weight: 400;
+				}
+				
+				.timeline-card {
+						transition: transform 0.1s;
+				}
+				.timeline-card:active {
+						transform: scale(0.98); /* Tactile feedback when tapping to edit */
+				}
+				.type-Session_Start { border-left-color: var(--brand-success); }
+				.type-Skill_Acquisition { border-left-color: #3b82f6; /* Blue for skill */ }
+				.type-Behavior_Reduction { border-left-color: var(--brand-danger); /* Red for behavior */ }
+				.type-Location_Transition { border-left-color: #8b5cf6; /* Purple for transition */ }
+				.type-Session_End { border-left-color: var(--brand-primary); }
+				
+				/* Bottom Sheet Animation for Mobile */
+				.bottom-sheet {
+						margin-top: auto; 
+						border-bottom-left-radius: 0;
+						border-bottom-right-radius: 0;
+						padding-bottom: env(safe-area-inset-bottom);
+						transform: translateY(100%);
+						animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+				}
+				@keyframes slideUp {
+						to { transform: translateY(0); }
+				}
+        
+        /* --- MOBILE RESPONSIVENESS FIXES (iPhone SE) --- */
+        @media (max-width: 480px) {
+        		/* Ensure action buttons are tall enough on small screens */
+						.action-bar-row:nth-child(2) button { 
+								flex: 1 1 45%; 
+								font-size: 0.9rem; 
+								padding: 10px; 
+								min-height: 48px; /* Bumped from 40px */
+						}
+						
+						.modal { 
+								position: absolute; 
+								inset: 0; 
+								border-radius: 0; 
+								/* Use dynamic viewport height so the keyboard doesn't hide the Save button */
+								height: 100dvh; 
+								max-height: 100dvh; 
+						}
+				}
+    </style>
+</head>
+<body>
+    
+    <div id="auth-view" class="view active">
+        <div class="auth-card">
+            <img src="dibs-logo-login.png" alt="Dibs ABA Logo" onerror="this.style.display='none'">
+            <h2>Sign into your account:</h2>
+            <div class="form-group"><input type="text" id="login-input" placeholder="Username"></div>
+            <div class="form-group">
+                <input type="password" id="password-input" placeholder="Password" style="padding-right: 40px;">
+                <button type="button" class="pwd-toggle" id="btn-toggle-pwd" title="Toggle Password Visibility">
+                    <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+            </div>
+            <button id="btn-login" class="btn-primary" style="min-height: 45px; margin-top: 10px;">Continue</button>
+            <p id="auth-error" style="color: #EF4444; display: none; margin-top: 12px; font-size: 12px; font-weight: bold;">Invalid login or password.</p>
+        </div>
+    </div>
+
+    <div id="dashboard-view" class="view">
+        <header class="app-header">
+            <h2>Session Timeline</h2>
+            <button id="btn-clear" style="background:none; color:var(--brand-danger); border:none; cursor:pointer; font-weight:600; text-decoration:underline;">Clear</button>
+        </header>
+        
+        <main class="timeline-container" id="timeline-feed"></main>
+        
+        <nav class="action-bar">
+						<div class="action-bar-row">
+								<button id="btn-start" class="btn-primary" style="background:var(--brand-success);">🟢 Start Session</button>
+						</div>
+						<div class="action-bar-row">
+								<button id="btn-skill" class="btn-secondary" disabled>🧩 Skill</button>
+								<!-- Give behavior a distinct, urgent border/icon so it's quickly found -->
+								<button id="btn-behavior" class="btn-secondary" style="border: 1px solid #ef4444;" disabled>📉 Behavior</button>
+								<button id="btn-transition" class="btn-secondary" disabled>🚶 Transition</button>
+								<button id="btn-end" class="btn-secondary" disabled>🛑 End</button>
+						</div>
+						<div class="action-bar-row">
+								<button id="btn-generate" class="btn-primary" disabled>📝 Generate Note</button>
+						</div>
+				</nav>
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="form-modal" class="modal" style="display:none;">
+            <header class="modal-header">
+                <h2 id="form-title">Event</h2>
+                <button class="close-btn" data-close>&times;</button>
+            </header>
+            <div class="modal-body" id="form-container"></div>
+            <footer class="modal-footer">
+                <button id="btn-save" class="btn-primary">Save Data</button>
+            </footer>
+        </div>
+        
+        <div id="generate-modal" class="modal" style="display:none;">
+            <header class="modal-header">
+                <h2>Generated Note</h2>
+                <button class="close-btn" data-close>&times;</button>
+            </header>
+            <div class="modal-body">
+                <textarea id="note-output" rows="14" readonly style="line-height: 1.5; font-size: 0.95rem;"></textarea>
+            </div>
+            <footer class="modal-footer">
+                <button id="btn-copy" class="btn-primary">Copy to Clipboard</button>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- THE CUSTOM INPUT BOTTOM-SHEET MODAL -->
+		<div id="custom-prompt-overlay" class="modal-overlay" style="z-index: 200;">
+				<div class="modal bottom-sheet">
+						<header class="modal-header">
+								<h2 id="custom-prompt-title" style="font-size: 1.1rem;">Add Custom Detail</h2>
+								<button class="close-btn" id="btn-custom-cancel">&times;</button>
+						</header>
+						<div class="modal-body">
+								<p id="custom-prompt-msg" style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);"></p>
+								<input type="text" id="custom-prompt-input" placeholder="Type specific clinical detail..." autocomplete="off">
+								<div id="custom-prompt-counter" style="text-align: right; font-size: 0.85rem; margin-top: 8px; font-weight: 600; transition: color 0.2s;">
+										0/8 words
+								</div>
+						</div>
+						<footer class="modal-footer">
+								<button id="btn-custom-save" class="btn-primary" disabled>Save Permanently</button>
+						</footer>
+				</div>
+		</div>
+
+<script type="module">
+        import GuardrailEngine from './guardrail_engine.js?v=3';
+        import SessionNormalizer from './session_normalizer.js';
+        import NarrativePlanner from './narrative_planner.js';
+        import NarrativeEngine from './narrative_engine.js';
+
+        const EXPECTED_LOGIN_HASH = "fc94da1f7e92bdba9c38e8164daea483f0304f6951a56919fa24076d0f237a70";
+        const EXPECTED_PASS_HASH = "24a4cf6660edcd7bba5139a1cbbc4586344f33e85e4c47a7596bbdb18329bd08";
+        
+        let timeline = JSON.parse(localStorage.getItem('aba_tl')) || [];
+        let savedTargets = JSON.parse(localStorage.getItem('aba_targets')) ||[];
+        
+        let schemaData, synonymsData, templatesData, guardrails;
+        let currentType = null;
+        let currentEditingId = null;
+
+        const UI_CONFIG = {
+            Session_Start:[
+                {id:"Location", label:"Location", type:"select"}, 
+                {id:"Specific_Setting", label:"Setting", type:"select"}, 
+                {id:"Responsible_Parties_Present", label:"Responsible Parties", type:"multichoice"}, 
+                {id:"Others_Present", label:"Others Present", type:"multichoice"}, 
+                {id:"Initial_Presentation", label:"Presentation", type:"multichoice"}, 
+                {id:"Health_Variables", label:"Health", type:"multichoice"},
+                {id:"Client_Affect", label:"Specific Affect / Context", type:"dynamic_dropdown", prompt_msg: "Enter a specific context (e.g., 'smiling and energetic'):"},
+                {id:"Smart_Chips", schema_ref:"Chips_Session_Start", label:"Quick Notes", type:"smart_chips"}
+            ],
+            Location_Transition:[
+                {id:"Specific_Setting", label:"New Area", type:"select"}, 
+                {id:"Transition_Context", label:"Transition Behavior", type:"select"},
+                {id:"Transition_Detail", label:"Specific Transition Detail", type:"dynamic_dropdown", prompt_msg: "Enter a specific detail (e.g., 'holding therapist hand'):"},
+                {id:"Smart_Chips", schema_ref:"Chips_Location_Transition", label:"Transition Details", type:"smart_chips"}
+            ],
+            Skill_Acquisition:[
+                {id:"Specific_Target", label:"Specific Target / Program", type:"dynamic_dropdown", prompt_msg: "Enter program name (e.g., 'Tying shoes', 'Manding'):"}, 
+                {id:"Teaching_Materials", label:"Specific Materials Used", type:"dynamic_dropdown", prompt_msg: "Enter specific materials (e.g., 'animal flashcards'):"},
+                {id:"Teaching_Formats", label:"Format", type:"select"}, 
+                {id:"Prompt_Levels", label:"Prompt", type:"select"}, 
+                {id:"Reinforcement_Schedules", label:"Schedule", type:"select"}, 
+                {id:"Specific_Reinforcers", label:"Reinforcer", type:"multichoice"},
+                {id:"Smart_Chips", schema_ref:"Chips_Skill_Acquisition", label:"Quick Notes", type:"smart_chips"}
+            ],
+            Behavior_Reduction:[
+                {id:"Target_Behaviors", label:"Behavior", type:"select"}, 
+                {id:"Intensity", label:"Intensity", type:"select"}, 
+                {id:"Antecedents", label:"Antecedent", type:"select"}, 
+                {id:"Specific_Topography", label:"Specific Topography", type:"dynamic_dropdown", prompt_msg: "Enter exact topography (e.g., 'open-handed hitting'):"},
+                {id:"Interventions", label:"Recommended Interventions", type:"multichoice"}, 
+                {id:"Deescalation_Time", label:"Time", type:"select"}, 
+                {id:"Smart_Chips", schema_ref:"Chips_Behavior_Reduction", label:"Behavior Details", type:"smart_chips"}
+            ],
+            Session_End:[
+                {id:"End_Demeanor", label:"Demeanor", type:"select"}, 
+                {id:"Caregiver_Handoff", label:"Handoff", type:"multichoice"},
+                {id:"Caregiver_Response", label:"Caregiver Response / Follow-up", type:"dynamic_dropdown", prompt_msg: "Enter a specific caregiver response (e.g., 'asked about BIP'):"},
+                {id:"Smart_Chips", schema_ref:"Chips_Session_End", label:"Quick Notes", type:"smart_chips"}
+            ]
+        };
+
+        const btnTogglePwd = document.getElementById('btn-toggle-pwd');
+        const passwordInput = document.getElementById('password-input');
+        const eyeIcon = document.getElementById('eye-icon');
+
+        btnTogglePwd.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+            }
+        });
+
+        async function hashString(str) {
+            if (!crypto.subtle) return null;
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        document.getElementById('btn-login').onclick = async () => {
+            if (!crypto.subtle) { alert("Security Error: Must be hosted on HTTPS to verify secure logins."); return; }
+            const errorLabel = document.getElementById('auth-error');
+            const loginInputVal = document.getElementById('login-input').value.trim();
+            const passInputVal = document.getElementById('password-input').value.trim();
+            
+            if (!loginInputVal || !passInputVal) { errorLabel.textContent = "Please enter both username and password."; errorLabel.style.display = 'block'; return; }
+
+            const btn = document.getElementById('btn-login');
+            btn.textContent = "Verifying..."; btn.disabled = true;
+
+            const loginHash = await hashString(loginInputVal);
+            const passHash = await hashString(passInputVal);
+
+            if (loginHash === EXPECTED_LOGIN_HASH && passHash === EXPECTED_PASS_HASH) {
+                document.getElementById('auth-view').classList.remove('active');
+                document.getElementById('dashboard-view').classList.add('active');
+                try {
+                    const cb = "?v=" + new Date().getTime();
+                    const[sch, syn, tpl] = await Promise.all([
+											fetch('schema.json' + cb), 
+											fetch('synonyms.json' + cb), 
+											fetch('templates.json' + cb)
+                    ]);
+                    schemaData = await sch.json();
+                    guardrails = await GuardrailEngine.build(schemaData);
+                    const synJson = await syn.json(); synonymsData = synJson.Synonyms || synJson;
+                    const tplJson = await tpl.json(); templatesData = tplJson.Templates || tplJson;
+                    renderTimeline();
+                } catch(e) { alert("Error loading JSON files."); console.error(e); }
+            } else {
+                errorLabel.textContent = "Invalid login or password."; errorLabel.style.display = 'block';
+                btn.textContent = "Continue"; btn.disabled = false;
+            }
+        };
+
+        const handleEnter = (e) => { if (e.key === 'Enter') document.getElementById('btn-login').click(); };
+        document.getElementById('login-input').addEventListener('keypress', handleEnter);
+        document.getElementById('password-input').addEventListener('keypress', handleEnter);
+
+        const closeModals = () => { document.getElementById('modal-overlay').classList.remove('active'); currentEditingId = null; };
+        document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeModals);
+
+        function requestCustomInput(title, message, maxWords = 8) {
+            return new Promise((resolve) => {
+                const overlay = document.getElementById('custom-prompt-overlay');
+                const titleEl = document.getElementById('custom-prompt-title');
+                const msgEl = document.getElementById('custom-prompt-msg');
+                const inputEl = document.getElementById('custom-prompt-input');
+                const counterEl = document.getElementById('custom-prompt-counter');
+                const saveBtn = document.getElementById('btn-custom-save');
+                const cancelBtn = document.getElementById('btn-custom-cancel');
+        
+                titleEl.innerText = title;
+                msgEl.innerText = message;
+                inputEl.value = '';
+                counterEl.innerText = `0/${maxWords} words`;
+                counterEl.style.color = 'var(--text-muted)';
+                saveBtn.disabled = true;
+        
+                overlay.style.display = 'flex';
+                setTimeout(() => inputEl.focus(), 100); 
+        
+                const validateInput = () => {
+                    const val = inputEl.value.trim();
+                    const words = val.length > 0 ? val.split(/\s+/).length : 0;
+                    const chars = val.length;
+                    
+                    counterEl.innerText = `${words}/${maxWords} words`;
+                    
+                    if (words > maxWords || chars < 3 || val.toLowerCase() === 'n/a' || val.toLowerCase() === 'none') {
+                        counterEl.style.color = 'var(--brand-danger)';
+                        saveBtn.disabled = true;
+                    } else {
+                        counterEl.style.color = 'var(--brand-success)';
+                        saveBtn.disabled = false;
+                    }
+                };
+        
+                inputEl.oninput = validateInput;
+        
+                const cleanup = () => {
+                    overlay.style.display = 'none';
+                    saveBtn.onclick = null;
+                    cancelBtn.onclick = null;
+                };
+        
+                saveBtn.onclick = () => { cleanup(); resolve(inputEl.value.trim()); };
+                cancelBtn.onclick = () => { cleanup(); resolve(null); };
+            });
+        }
+
+        const openForm = (type, existingEvent = null) => {
+            currentType = type;
+            currentEditingId = existingEvent ? existingEvent.id : null;
+            document.getElementById('form-title').innerText = existingEvent ? `Edit ${type.replace('_', ' ')}` : type.replace('_', ' ');
+            
+            const c = document.getElementById('form-container'); 
+            c.innerHTML = '';
+            const btnSave = document.getElementById('btn-save');
+
+            function runAllGuardrails(e) { // <-- 1. Accept the event argument
+                const allFormChecked = Array.from(c.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
+                const allSelectValues = Array.from(c.querySelectorAll('select')).map(sel => sel.value).filter(v => v && v !== "None selected");
+                const activeSchemas = Array.from(c.querySelectorAll('.dynamic-chip-container'))
+                    .filter(container => container.querySelectorAll('input[type="checkbox"]:checked').length > 0)
+                    .map(container => `SCHEMA:${container.dataset.schemaRef}`);
+                
+                // --- INJECT TIMELINE STATE FOR CROSS-MODAL VALIDATION ---
+                let timelineState =[];
+                let hasBehavior = false;
+                
+                timeline.forEach(t => {
+                    if (t.id !== currentEditingId) { 
+                        if (t.type === 'Behavior_Reduction') hasBehavior = true;
+                        Object.values(t.data).forEach(val => {
+                            if (Array.isArray(val)) timelineState.push(...val);
+                            else if (val && val !== "None selected") timelineState.push(val);
+                        });
+                    }
+                });
+
+                if (currentType === 'Behavior_Reduction') hasBehavior = true;
+                if (!hasBehavior) timelineState.push("NO_BEHAVIOR_LOGGED");
+                
+                // --- UNIFIED MUTABLE STATES FOR PREVENTATIVE DISABLING ---
+                let localState = [...allFormChecked, ...allSelectValues, ...activeSchemas];
+                let globalState = [...localState, ...timelineState];
+                // --- GATHER AVAILABLE FORM OPTIONS ---
+								const availableFormValues = Array.from(c.querySelectorAll('input[type="checkbox"], select option')).map(el => el.value).filter(v => v && v !== "None selected");
+
+                // ========================================================================
+                // 1. EVALUATE CHECKBOXES FIRST (So bad clicks uncheck themselves immediately)
+                // ========================================================================
+                c.querySelectorAll('.checkbox-group').forEach(group => {
+                    const fieldId = group.dataset.id;
+                    const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
+                    const currentlyChecked = checkboxes.filter(chk => chk.checked).map(chk => chk.value);
+
+										const timeSelect = c.querySelector('select[data-id="Deescalation_Time"]');
+                    const formState = { "Deescalation_Time": timeSelect ? timeSelect.value : null };
+                    let maxAllowed = guardrails.getMaxSelections(fieldId, formState);
+
+                    const isAtMax = currentlyChecked.length >= maxAllowed;
+                    const hasExclusive = currentlyChecked.some(val => guardrails.isExclusiveChoice(val));
+
+                    checkboxes.forEach(cb => {
+                        const pillSpan = cb.nextElementSibling;
+                        let shouldDisable = false;
+
+                        if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
+                        else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
+                        else {
+                            // Apply closure to local checkbox validation
+                            const rawHypotheticalLocal = cb.checked ? localState : [...localState, cb.value];
+                            const hypotheticalLocal = guardrails.expandRequiredState(rawHypotheticalLocal, availableFormValues);
+                            const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
+                            
+                            // Apply closure to global checkbox validation
+                            const rawHypotheticalGlobal = cb.checked ? globalState : [...globalState, cb.value];
+                            const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
+                            
+                            const container = cb.closest('.dynamic-chip-container');
+                            if (container && !cb.checked) {
+                                const schemaTag = `SCHEMA:${container.dataset.schemaRef}`;
+                                if (!hypotheticalGlobal.includes(schemaTag)) {
+                                    hypotheticalGlobal.push(schemaTag);
+                                }
+                            }
+
+                            const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+                            
+                            if (!localValidation.valid || !globalValidation.valid) {
+                                shouldDisable = true;
+                                if (cb.checked) {
+                                    cb.checked = false; 
+                                    const toxicGlobal = globalState.indexOf(cb.value);
+                                    if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
+                                    const toxicLocal = localState.indexOf(cb.value);
+                                    if (toxicLocal > -1) localState.splice(toxicLocal, 1);
+                                }
+                            }
+                        }
+                        
+                        // Enforce the max limits (e.g. 4 for Initial_Presentation)
+                        if (!cb.checked && !shouldDisable && currentlyChecked.length >= maxAllowed) shouldDisable = true;
+
+                        cb.disabled = shouldDisable;
+                        if(pillSpan) {
+                            pillSpan.style.opacity = shouldDisable ? '0.4' : '1';
+                            pillSpan.style.cursor = shouldDisable ? 'not-allowed' : 'pointer';
+                        }
+                    });
+                });
+
+                // ========================================================================
+                // 2. EVALUATE DROPDOWNS SECOND (Safely against the cleaned state)
+                // ========================================================================
+                c.querySelectorAll('select').forEach(selectEl => {
+                    const fieldId = selectEl.dataset.id;
+                    
+                    // Maintain a persistent cache so we don't lose track of options we detach from the DOM
+                    if (!selectEl._allOptions) selectEl._allOptions = Array.from(selectEl.querySelectorAll('option'));
+                    Array.from(selectEl.querySelectorAll('option')).forEach(newOpt => {
+                        if (!selectEl._allOptions.includes(newOpt)) selectEl._allOptions.push(newOpt);
+                    });
+                    
+                    selectEl._allOptions.forEach(opt => {
+                        if (!opt.value || opt.value === "None selected") return;
+                        
+                        const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
+                        const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
+                        const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
+                        const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
+                        
+                        const localStateWithoutSelect = localState.filter(v => v !== selectEl.value);
+                        const rawHypotheticalLocal =[...localStateWithoutSelect, opt.value];
+                        const hypotheticalLocal = guardrails.expandRequiredState(rawHypotheticalLocal, availableFormValues);
+                        const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
+                        
+                        if (!localValidation.valid || !globalValidation.valid) {
+                            opt.disabled = true; 
+                            
+                            // Detach from DOM using an invisible comment placeholder
+                            if (!opt._placeholder) {
+                                opt._placeholder = document.createComment("hidden-opt");
+                                opt._placeholder._optRef = opt;
+                            }
+                            if (opt.parentNode) opt.parentNode.replaceChild(opt._placeholder, opt);
+                            
+                            if (selectEl.value === opt.value) {
+                                selectEl.value = ""; 
+                                const toxicGlobal = globalState.indexOf(opt.value);
+                                if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
+                                const toxicLocal = localState.indexOf(opt.value);
+                                if (toxicLocal > -1) localState.splice(toxicLocal, 1);
+                            }
+                        } else {
+                            opt.disabled = false;
+                            
+                            // Restore safely to DOM
+                            if (opt._placeholder && opt._placeholder.parentNode) {
+                                opt._placeholder.parentNode.replaceChild(opt, opt._placeholder);
+                            }
+                        }
+                    });
+
+                    // Hide empty optgroups so the user doesn't see floating category headers
+                    Array.from(selectEl.querySelectorAll('optgroup')).forEach(group => {
+                        const hasVisibleOptions = Array.from(group.childNodes).some(n => n.tagName === 'OPTION');
+                        group.style.display = hasVisibleOptions ? '' : 'none';
+                        group.disabled = !hasVisibleOptions; 
+                    });
+                });
+                
+                // --- THE ULTIMATE SAVE BUTTON LOCKOUT ---
+                const btnSave = document.getElementById('btn-save');
+                let formIsValid = true;
+                
+                c.querySelectorAll('.required-choice').forEach(el => {
+                    if (el.tagName === 'SELECT') {
+                        if (el.value === '') formIsValid = false; 
+                    } else if (el.classList.contains('checkbox-group')) {
+                        if (el.querySelectorAll('input[type="checkbox"]:checked').length === 0) formIsValid = false;
+                    }
+                });
+
+                if (isDeadlocked) {
+                    btnSave.disabled = true;
+                    btnSave.style.background = 'var(--brand-danger)';
+                    btnSave.innerText = 'Resolve Contradictions to Save';
+                } else if (!formIsValid) {
+                    btnSave.disabled = true;
+                    btnSave.style.background = '';
+                    btnSave.innerText = 'Incomplete Data';
+                } else {
+                    btnSave.disabled = false;
+                    btnSave.style.background = '';
+                    btnSave.innerText = 'Save Data';
+                }
+            }
+            
+            c.onchange = (e) => runAllGuardrails(e);
+            c.oninput = (e) => runAllGuardrails(e);
+
+            UI_CONFIG[type].forEach(f => {
+                const w = document.createElement('div'); w.className = 'form-field';
+                w.innerHTML = `<label class="form-label">${f.label}</label>`;
+                
+                let optionsArray = schemaData[f.id] || [];
+                let existingVal = existingEvent ? existingEvent.data[f.id] : null; 
+
+                if (f.type === 'dynamic_dropdown') {
+                    const ddContainer = document.createElement('div');
+                    w.appendChild(ddContainer);
+
+                    const storageKey = `aba_dict_${f.id}`; 
+
+                    const renderDropdown = () => {
+                        let customSaved = JSON.parse(localStorage.getItem(storageKey)) ||[];
+                        customSaved = customSaved.filter(t => t && t.toLowerCase() !== 'undefined' && t.toLowerCase() !== 'n/a' && t.length > 2);
+                        
+                        let baseOptions = schemaData[f.id] ||[];
+
+                        let html = `<div style="display:flex; flex-direction: column; gap: 8px;">
+                            <select data-id="${f.id}" class="required-choice" style="width: 100%; min-height: 48px; font-size: 16px;">
+                                <option value="">-- Select --</option>`;
+                        
+                        const renderOpt = (val) => {
+                            const isSelected = existingVal === val ? 'selected' : '';
+                            return `<option value="${val}" ${isSelected}>${val}</option>`;
+                        };
+
+                        if (!Array.isArray(baseOptions) && typeof baseOptions === 'object') {
+                            for (const[groupName, items] of Object.entries(baseOptions)) {
+                                html += `<optgroup label="— ${groupName} —">`;
+                                items.forEach(t => html += renderOpt(t));
+                                html += `</optgroup>`;
+                            }
+                        } else {
+                            baseOptions.forEach(t => html += renderOpt(t));
+                        }
+
+                        if (customSaved.length > 0) {
+                            html += `<optgroup label="— Custom Added —">`;
+                            customSaved.forEach(t => html += renderOpt(t));
+                            html += `</optgroup>`;
+                        }
+                        
+                        html += `</select>
+                            <button type="button" class="btn-add-target" 
+                                style="width: 100%; min-height: 48px; border: 2px dashed #cbd5e1; background: #f8fafc; color: var(--text-body); border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
+                                ➕ Create New Option
+                            </button>
+                        </div>`;
+                        
+                        ddContainer.innerHTML = html;
+
+                        ddContainer.querySelector('select').addEventListener('change', (e) => {
+                            existingVal = e.target.value;
+                            runAllGuardrails();
+                        });
+
+                        ddContainer.querySelector('.btn-add-target').addEventListener('click', async () => {
+                            const promptMsg = f.prompt_msg || "Enter a specific clinical detail (1-8 words):";
+                            const newItem = await requestCustomInput("Add Custom Target", promptMsg);
+                            
+                            if (newItem) {
+                                const val = newItem;
+                                let existsInBase = false;
+                                if (!Array.isArray(baseOptions)) {
+                                    existsInBase = Object.values(baseOptions).flat().map(v=>v.toLowerCase()).includes(val.toLowerCase());
+                                } else {
+                                    existsInBase = baseOptions.map(v=>v.toLowerCase()).includes(val.toLowerCase());
+                                }
+
+                                if (!existsInBase && !customSaved.map(v=>v.toLowerCase()).includes(val.toLowerCase())) {
+                                    customSaved.push(val);
+                                    localStorage.setItem(storageKey, JSON.stringify(customSaved));
+                                }
+                                
+                                existingVal = val;
+                                renderDropdown();
+                                runAllGuardrails();
+                            }
+                        });
+                    };
+                    renderDropdown();
+                } else if (f.type === 'smart_chips') {
+                    const chipContainer = document.createElement('div');
+                    chipContainer.className = 'dynamic-chip-container';
+                    chipContainer.dataset.schemaRef = f.schema_ref;
+                    chipContainer.dataset.fieldId = f.id;
+                    w.appendChild(chipContainer);
+
+                    let customChips = JSON.parse(localStorage.getItem('aba_custom_chips')) || {};
+
+                    const renderChips = (contextKey = null) => {
+                        let currentOptions = schemaData[f.schema_ref];
+                        let storageKey = f.schema_ref;
+                        
+                        if (!Array.isArray(currentOptions) && typeof currentOptions === 'object') {
+                            currentOptions = currentOptions[contextKey] || currentOptions["Home"] || Object.values(currentOptions)[0];
+                            storageKey = `${f.schema_ref}_${contextKey}`;
+                        }
+
+                        const savedCustom = customChips[storageKey] ||[];
+                        const combinedOptions = [...new Set([...(currentOptions || []), ...savedCustom])];
+
+                        let chipsHtml = `<div class="checkbox-group" data-id="${f.id}" style="display:flex; gap:8px; margin-bottom:12px; padding-bottom:6px; flex-wrap:wrap; align-items:center;">`;
+                        
+                        combinedOptions.forEach(o => {
+                            const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
+                            chipsHtml += `<label class="chip-toggle">
+                                <input type="checkbox" style="display:none;" value="${o}" ${isChecked}>
+                                <span style="background:var(--brand-sand); border:1px solid var(--brand-accent-light); color:var(--brand-accent-dark); border-radius:20px; padding:10px 16px; min-height:40px; display:inline-flex; align-items:center; font-size:0.95rem; white-space:nowrap; cursor:pointer; transition:all 0.2s;">${o}</span>
+                            </label>`;
+                        });
+
+                        chipsHtml += `</div>
+                            <button type="button" class="btn-add-custom" data-storage-key="${storageKey}" 
+                                style="width: 100%; min-height: 48px; margin-top: 4px; border: 2px dashed var(--brand-accent-light); color: var(--brand-accent-dark); background: transparent; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; display: flex; justify-content: center; align-items: center;">
+                                ➕ Add Custom Detail
+                            </button>`;
+                        
+                        chipContainer.innerHTML = chipsHtml;
+
+                        const addBtn = chipContainer.querySelector('.btn-add-custom');
+                        if (addBtn) {
+                            addBtn.addEventListener('click', async () => {
+                                const newChip = await requestCustomInput("Add Custom Chip", "Enter a specific, clinical detail to add permanently (e.g., 'Pinched therapist forearm'):");
+                                if (newChip) {
+                                    const val = newChip.trim();
+                                    
+                                    if (!customChips[storageKey]) customChips[storageKey] = [];
+                                    if (!customChips[storageKey].includes(val)) {
+                                        customChips[storageKey].push(val);
+                                        localStorage.setItem('aba_custom_chips', JSON.stringify(customChips));
+                                        
+                                        // FIX 1: Capture current checked state before adding a custom chip
+                                        const currentChecked = Array.from(chipContainer.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
+                                        existingVal = currentChecked;
+                                        
+                                        if (!existingVal.includes(val)) existingVal.push(val);
+                                        
+                                        renderChips(contextKey);
+                                        runAllGuardrails();
+                                    }
+                                }
+                            });
+                        }
+                    };
+                    
+                    renderChips();
+
+                    if (type === 'Session_End') {
+                        let savedLocation = "Home";
+                        const started = timeline.find(t => t.type === 'Session_Start');
+                        if (started && started.data.Location) savedLocation = started.data.Location;
+                        renderChips(savedLocation);
+                    }
+                    
+                    if (type === 'Behavior_Reduction') {
+                        setTimeout(() => {
+                            const behaviorSelect = c.querySelector('select[data-id="Target_Behaviors"]');
+                            if (behaviorSelect) {
+                                renderChips(behaviorSelect.value);
+                                behaviorSelect.addEventListener('change', (e) => {
+                                    // FIX 2: Capture current checked state before the dropdown rebuilds the HTML
+                                    const currentChecked = Array.from(chipContainer.querySelectorAll('input[type="checkbox"]:checked')).map(chk => chk.value);
+                                    existingVal = currentChecked.length > 0 ? currentChecked : null;
+                                    
+                                    renderChips(e.target.value);
+                                });
+                            }
+                        }, 0);
+                    }
+                } else if (f.type === 'textarea') {
+                    const safePlaceholder = (f.placeholder || '').replace(/\n/g, '&#10;');
+                    w.innerHTML += `<textarea data-id="${f.id}" rows="3" placeholder="${safePlaceholder}">${existingVal || ''}</textarea>`;
+                } else if (f.type === 'select') {
+                    let sel = `<select data-id="${f.id}" class="required-choice">
+                        <option value="">-- Select --</option>`;
+                    optionsArray.forEach(o => {
+                        const isSelected = existingVal === o ? 'selected' : '';
+                        sel += `<option value="${o}" ${isSelected}>${o}</option>`;
+                    });
+                    sel += `</select>`;
+                    w.innerHTML += sel;
+                } else {
+                    let grp = `<div class="checkbox-group required-choice" data-id="${f.id}">`;
+                    optionsArray.forEach(o => {
+                        const isChecked = (Array.isArray(existingVal) && existingVal.includes(o)) ? 'checked' : '';
+                        grp += `<label class="checkbox-pill"><input type="checkbox" value="${o}" ${isChecked}><span>${o}</span></label>`;
+                    });
+                    grp += `</div>`;
+                    w.innerHTML += grp;
+                }
+                c.appendChild(w);
+            });
+
+            if (type === 'Session_Start') {
+                const locSelect = c.querySelector('select[data-id="Location"]');
+                const setSelect = c.querySelector('select[data-id="Specific_Setting"]');
+                if (locSelect && setSelect) {
+                    const updateSettings = () => {
+                        const allowed = guardrails.getAllowedSettings(locSelect.value);
+                        const currentVal = setSelect.value;
+                        setSelect.innerHTML = '<option value="">-- Select --</option>';
+                        let options = schemaData['Specific_Setting'] ||[];
+                        if (allowed) options = options.filter(o => allowed.includes(o));
+                        options.forEach(o => {
+                            const isSelected = currentVal === o ? 'selected' : '';
+                            setSelect.innerHTML += `<option value="${o}" ${isSelected}>${o}</option>`;
+                        });
+                        runAllGuardrails();
+                    };
+                    locSelect.addEventListener('change', updateSettings);
+                    updateSettings(); 
+                }
+            }
+
+            if (type === 'Location_Transition') {
+                let currentLocation = null;
+                let currentSetting = null;
+                
+                const sortedTimeline = [...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+                sortedTimeline.forEach(t => {
+                    if (!existingEvent || new Date(t.timestamp) < new Date(existingEvent.timestamp)) {
+                        if (t.data && t.data.Location) currentLocation = t.data.Location;
+                        if (t.data && t.data.Specific_Setting) currentSetting = t.data.Specific_Setting;
+                    }
+                });
+
+                const setSelect = c.querySelector('select[data-id="Specific_Setting"]');
+                if (setSelect) {
+                    const validOptions = guardrails.getAvailableTransitions(currentLocation, currentSetting);
+                    setSelect.innerHTML = '<option value="">-- Select --</option>';
+                    if (validOptions.length === 0) {
+                        setSelect.innerHTML = `<option value="">No valid transition areas</option>`;
+                        setSelect.disabled = true;
+                    } else {
+                        validOptions.forEach(o => {
+                            const isSelected = existingEvent && existingEvent.data.Specific_Setting === o ? 'selected' : '';
+                            setSelect.innerHTML += `<option value="${o}" ${isSelected}>${o}</option>`;
+                        });
+                    }
+                }
+            }
+
+            if (type === 'Behavior_Reduction') setupBehaviorGuardrails(c);
+            
+            runAllGuardrails();
+            
+            document.getElementById('form-modal').style.display = 'flex';
+            document.getElementById('generate-modal').style.display = 'none';
+            document.getElementById('modal-overlay').classList.add('active');
+        };
+
+        function setupBehaviorGuardrails(container) {
+            const behaviorSelect = container.querySelector('select[data-id="Target_Behaviors"]');
+            const antSelect = container.querySelector('select[data-id="Antecedents"]');
+            const intsGroup = container.querySelector('.checkbox-group[data-id="Interventions"]');
+            
+            const topographySelect = container.querySelector('select[data-id="Specific_Topography"]');
+            if (behaviorSelect && topographySelect) {
+                const updateTopographies = () => {
+                    const selectedBehavior = behaviorSelect.value;
+                    Array.from(topographySelect.querySelectorAll('optgroup')).forEach(group => {
+                        const label = group.label.replace(/—/g, '').trim();
+                        if (label === 'Custom Added') return;
+                        
+                        if (selectedBehavior && label === selectedBehavior) {
+                            group.disabled = false;
+                            Array.from(group.childNodes).forEach(child => {
+                                if (child.nodeType === Node.COMMENT_NODE && child._optRef) group.replaceChild(child._optRef, child);
+                            });
+                        } else {
+                            group.disabled = true;
+                            Array.from(group.children).forEach(opt => {
+                                if (opt.tagName === 'OPTION') {
+                                    if (!opt._placeholder) {
+                                        opt._placeholder = document.createComment("hidden-opt");
+                                        opt._placeholder._optRef = opt;
+                                    }
+                                    group.replaceChild(opt._placeholder, opt);
+                                }
+                            });
+                        }
+                    });
+                    if (topographySelect.value && topographySelect.selectedOptions.length === 0) {
+                        topographySelect.value = "";
+                        topographySelect.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                };
+                behaviorSelect.addEventListener('change', updateTopographies);
+                setTimeout(updateTopographies, 0);
+            }
+            
+            const handleContradictions = () => {
+                const val = behaviorSelect.value;
+                const actions = guardrails.getContradictionActions('Target_Behaviors', val);
+                
+                container.querySelectorAll('select').forEach(el => el.disabled = false);
+                
+                // Ensure the container is ALWAYS flex so it takes up its physical space
+                if (intsGroup) intsGroup.style.display = 'flex';
+                
+                const overrideBtn = container.querySelector('#btn-override-whitelist');
+                if (overrideBtn) overrideBtn.style.display = 'block';
+
+                actions.forEach(rule => {
+                    if (rule.action === 'disable_all') {
+                        const targetEl = container.querySelector(`[data-id="${rule.target_category}"]`);
+                        if (targetEl) {
+                            if (targetEl.tagName === 'SELECT') targetEl.disabled = true;
+                            if (targetEl.classList.contains('checkbox-group')) {
+                                // Don't hide the group, just visually lock it out
+                                targetEl.style.opacity = '0.3';
+                                targetEl.style.pointerEvents = 'none';
+                                if (overrideBtn) overrideBtn.style.display = 'none';
+                            }
+                        }
+                    }
+                });
+            };
+            behaviorSelect.addEventListener('change', handleContradictions);
+
+            const overrideBtn = document.createElement('button'); 
+            overrideBtn.id = 'btn-override-whitelist';
+            overrideBtn.type = 'button';
+            overrideBtn.className = 'btn-secondary'; 
+            overrideBtn.innerText = 'Show All Allowable'; 
+            overrideBtn.style.marginTop = '10px';
+            let ovr = false; 
+
+            // Grab the heading (label) element for Interventions so we can update its text
+            let intsLabel = null;
+            if (intsGroup && intsGroup.parentNode) {
+                intsLabel = intsGroup.parentNode.querySelector('label.form-label');
+            }
+
+            if (intsGroup) intsGroup.parentNode.appendChild(overrideBtn);
+
+            const applyWhitelist = () => {
+                if (!intsGroup) return;
+                
+                // If no antecedent is selected, treat everything as blacklisted unless overridden
+                const hasAntecedent = antSelect.value && antSelect.value !== "None selected" && antSelect.value !== "";
+                const rules = hasAntecedent ? guardrails.getRulesForAntecedent(antSelect.value) : { whitelisted_interventions: [], blacklisted_interventions:[] };
+                
+                intsGroup.querySelectorAll('.checkbox-pill').forEach(p => {
+                    const input = p.querySelector('input');
+                    
+                    // ALWAYS keep elements in the document flow
+                    p.style.display = 'inline-block'; 
+
+                    let isAllowed = false;
+                    if (hasAntecedent) {
+                        if (rules.whitelisted_interventions.includes(input.value)) isAllowed = true;
+                        if (ovr && !rules.blacklisted_interventions.includes(input.value)) isAllowed = true;
+                    } else {
+                        if (ovr) isAllowed = true;
+                    }
+
+                    if (isAllowed) {
+                        // Reset opacity so the main runAllGuardrails can control it based on max selections
+                        p.style.opacity = '1';
+                        p.style.pointerEvents = 'auto';
+                    } else {
+                        // Visually disable and prevent clicks
+                        p.style.opacity = '0.2';
+                        p.style.pointerEvents = 'none';
+                        if (!ovr) input.checked = false; 
+                    }
+                });
+            };
+
+            antSelect.addEventListener('change', () => { 
+                ovr = false; 
+                overrideBtn.innerText = 'Show All Allowable'; 
+                if (intsLabel) intsLabel.innerText = 'Recommended Interventions';
+                applyWhitelist(); 
+            });
+            
+            overrideBtn.addEventListener('click', () => { 
+                ovr = !ovr; 
+                overrideBtn.innerText = ovr ? 'Show Only Recommended' : 'Show All Allowable'; 
+                if (intsLabel) intsLabel.innerText = ovr ? 'Allowable Interventions' : 'Recommended Interventions';
+                applyWhitelist(); 
+            });
+            
+            handleContradictions();
+            applyWhitelist();
+            
+            const timeSelect = container.querySelector('select[data-id="Deescalation_Time"]');
+            
+            if (timeSelect && intsGroup) {
+                timeSelect.addEventListener('change', () => {
+                    const firstCb = intsGroup.querySelector('input[type="checkbox"]');
+                    if (firstCb) {
+                        firstCb.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+            }
+        }
+
+        document.getElementById('btn-start').onclick = () => openForm('Session_Start');
+        document.getElementById('btn-skill').onclick = () => openForm('Skill_Acquisition');
+        document.getElementById('btn-behavior').onclick = () => openForm('Behavior_Reduction');
+        document.getElementById('btn-transition').onclick = () => openForm('Location_Transition');
+        document.getElementById('btn-end').onclick = () => openForm('Session_End');
+
+        document.getElementById('btn-save').onclick = () => {
+            const data = {};
+            const inputs = document.getElementById('form-container').querySelectorAll('[data-id]');
+
+            inputs.forEach(el => {
+                if (el.tagName === 'SELECT') {
+                    data[el.dataset.id] = el.value;
+                    if (el.dataset.id === 'Specific_Target') {
+                        const selectedOpt = el.options[el.selectedIndex];
+                        if (selectedOpt && selectedOpt.parentElement.tagName === 'OPTGROUP') {
+                            data['Skill_Domains'] = selectedOpt.parentElement.label.replace(/—/g, '').trim();
+                        } else {
+                            data['Skill_Domains'] = "Individualized Skills"; 
+                        }
+                    }
+                }
+                if (el.classList.contains('checkbox-group')) { 
+                    const c = Array.from(el.querySelectorAll('input:checked')).map(i => i.value); 
+                    data[el.dataset.id] = c.length ? c : ["None selected"]; 
+                }
+            });
+            
+            // Save active schemas so cross-form rules survive ---
+            const activeSchemas = Array.from(document.getElementById('form-container').querySelectorAll('.dynamic-chip-container'))
+                .filter(container => container.querySelectorAll('input[type="checkbox"]:checked').length > 0)
+                .map(container => `SCHEMA:${container.dataset.schemaRef}`);
+            
+            if (activeSchemas.length > 0) {
+                data["Active_Schemas"] = activeSchemas;
+            }
+            // ------------------------------------------------------------
+
+            if (currentEditingId) {
+                const idx = timeline.findIndex(t => t.id === currentEditingId);
+                if (idx > -1) timeline[idx].data = data;
+            } else {
+                timeline.push({ id: Date.now().toString(), type: currentType, timestamp: new Date().toISOString(), data });
+            }
+            
+            localStorage.setItem('aba_tl', JSON.stringify(timeline));
+            renderTimeline(); 
+            closeModals();
+        };
+
+        function renderTimeline() {
+            const f = document.getElementById('timeline-feed'); f.innerHTML = '';
+            const started = timeline.some(t => t.type === 'Session_Start');
+            const ended = timeline.some(t => t.type === 'Session_End');
+            
+            document.getElementById('btn-start').style.display = started ? 'none' : 'block';['btn-skill', 'btn-behavior', 'btn-transition', 'btn-end'].forEach(id => document.getElementById(id).disabled = !started || ended);
+            document.getElementById('btn-generate').disabled = timeline.length === 0;
+
+            const sorted =[...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+            sorted.forEach(ev => {
+                const card = document.createElement('div'); 
+                card.className = `timeline-card type-${ev.type}`;
+                card.style.cursor = 'pointer'; 
+                
+                const label = ev.type.replace('_',' ');
+                let detailsHtml = '';
+                
+                UI_CONFIG[ev.type].forEach(field => {
+                    const val = ev.data[field.id];
+                    if (val && val !== "None selected" && val.length > 0) {
+                        const displayVal = Array.isArray(val) ? val.join(', ') : val;
+                        detailsHtml += `<p style="margin-top:4px; font-size:0.9rem; color:var(--text-body);"><strong>${field.label}:</strong> ${displayVal}</p>`;
+                    }
+                });
+
+                card.innerHTML = `
+                    <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--brand-sand); padding-bottom:8px; margin-bottom:8px;">
+                        <strong style="color:var(--brand-primary); font-size:1.05rem;">${label}</strong>
+                        <span style="font-size:0.8rem; color:var(--text-muted);">✎ Edit</span>
+                    </div>
+                    <div class="card-body">${detailsHtml}</div>
+                `;
+                
+                card.onclick = () => openForm(ev.type, ev);
+                f.appendChild(card);
+            });
+        }
+
+        document.getElementById('btn-generate').onclick = () => {
+            const sessionWarnings = guardrails.auditSession(timeline);
+            if (sessionWarnings.length > 0) {
+                alert(`CLINICAL AUDIT FAILURE:\n\n${sessionWarnings.join('\n\n')}\n\nYou must edit your session data to resolve these issues before generating a note.`);
+                return;
+            }
+
+            const sortedTimeline =[...timeline].sort((a,b) => new Date(a.timestamp)-new Date(b.timestamp));
+            const sessionObj = SessionNormalizer.normalize(sortedTimeline);
+            const plan = NarrativePlanner.buildPlan(sessionObj);
+            const note = NarrativeEngine.generate(synonymsData, templatesData, plan);
+            
+            document.getElementById('note-output').value = note;
+            document.getElementById('form-modal').style.display = 'none';
+            document.getElementById('generate-modal').style.display = 'flex';
+            document.getElementById('modal-overlay').classList.add('active');
+        };
+
+        document.getElementById('btn-copy').onclick = () => {
+            navigator.clipboard.writeText(document.getElementById('note-output').value);
+            document.getElementById('btn-copy').innerText = "Copied to Clipboard!";
+            setTimeout(() => {
+                document.getElementById('btn-copy').innerText = "Copy to Clipboard";
+                closeModals();
+            }, 2000);
+        };
+        
+        document.getElementById('btn-clear').onclick = () => { 
+            if(confirm("Clear current session data? This cannot be undone.")) { 
+                timeline =[]; 
+                localStorage.removeItem('aba_tl'); 
+                renderTimeline(); 
+            } 
+        };
+    </script>
+</body>
+</html>
