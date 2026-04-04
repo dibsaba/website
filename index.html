@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ABA Clinical Session Logger</title>
+    <title>ABA Appointment Note Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
     	.chip-toggle input:checked + span { background: var(--brand-accent) !important; color: #fff !important; border-color: var(--brand-accent-dark) !important; }
@@ -481,6 +481,7 @@
 
                 let localState = [...allFormChecked, ...allSelectValues, ...activeSchemas];
                 let globalState = [...localState, ...persistentState];
+
                 const availableFormValues = Array.from(c.querySelectorAll('input[type="checkbox"], select option')).map(el => el.value).filter(v => v && v !== "None selected");
 
                 // ========================================================================
@@ -490,7 +491,7 @@
                     const fieldId = group.dataset.id;
                     const checkboxes = Array.from(group.querySelectorAll('input[type="checkbox"]'));
 
-                    // Step A: Evaluate against Persistent Context (Hide if invalid)
+                    // Step A: Evaluate against Persistent Context (Hide completely if invalid)
                     checkboxes.forEach(cb => {
                         const pillContainer = cb.closest('.chip-toggle, .checkbox-pill');
                         const rawBase = [...persistentState, cb.value];
@@ -498,7 +499,7 @@
                         const isBaseValid = guardrails.validateSubset("Global", expandedBase).valid;
 
                         if (!isBaseValid) {
-                            if (pillContainer) pillContainer.style.display = 'none'; // Completely hidden
+                            if (pillContainer) pillContainer.style.display = 'none'; 
                             if (cb.checked) {
                                 cb.checked = false;
                                 const toxicGlobal = globalState.indexOf(cb.value);
@@ -506,12 +507,12 @@
                             }
                             cb._isBaseHidden = true;
                         } else {
-                            if (pillContainer) pillContainer.style.display = ''; // Restore CSS default visibility
+                            if (pillContainer) pillContainer.style.display = ''; 
                             cb._isBaseHidden = false;
                         }
                     });
 
-                    // Step B: Evaluate against Local Choices (Gray out if invalid)
+                    // Step B: Evaluate Local Choices (Gray out if invalid, preserve clicks)
                     const visibleCheckboxes = checkboxes.filter(cb => !cb._isBaseHidden);
                     const currentlyChecked = visibleCheckboxes.filter(chk => chk.checked).map(chk => chk.value);
                     const timeSelect = c.querySelector('select[data-id="Deescalation_Time"]');
@@ -522,56 +523,57 @@
                     visibleCheckboxes.forEach(cb => {
                         const pillSpan = cb.nextElementSibling;
                         const pillContainer = cb.closest('.chip-toggle, .checkbox-pill');
-                        let shouldDisable = false;
+                        let wouldContradict = false;
 
-                        // Matrix check against current dialog choices
                         const stateWithoutCb = globalState.filter(v => v !== cb.value);
-                        const rawHypotheticalGlobal = [...stateWithoutCb, cb.value];
-                        const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
                         
-                        const container = cb.closest('.dynamic-chip-container');
-                        if (container && !cb.checked) {
-                            const schemaTag = `SCHEMA:${container.dataset.schemaRef}`;
-                            if (!hypotheticalGlobal.includes(schemaTag)) {
-                                hypotheticalGlobal.push(schemaTag);
+                        // CRITICAL FIX: Only blame this option if the form is valid WITHOUT it
+                        if (guardrails.validateSubset("Global", stateWithoutCb).valid) {
+                            const rawHypotheticalGlobal = [...stateWithoutCb, cb.value];
+                            const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
+                            if (!guardrails.validateSubset("Global", hypotheticalGlobal).valid) {
+                                wouldContradict = true;
                             }
                         }
 
-                        if (!guardrails.validateSubset("Global", hypotheticalGlobal).valid) {
-                            shouldDisable = true;
-                            if (cb.checked) {
-                                cb.checked = false;
-                                const toxicGlobal = globalState.indexOf(cb.value);
-                                if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
-                            }
+                        let limitReached = false;
+                        if (!wouldContradict) {
+                            if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) limitReached = true;
+                            else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) limitReached = true;
+                            else if (!cb.checked && currentlyChecked.length >= maxAllowed) limitReached = true;
                         }
 
-                        // Max allowed & Exclusivity
-                        if (!shouldDisable) {
-                            if (hasExclusive && !guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
-                            else if (currentlyChecked.length > 0 && !guardrails.isExclusiveChoice(currentlyChecked[0]) && guardrails.isExclusiveChoice(cb.value)) shouldDisable = true;
-                            else if (!cb.checked && currentlyChecked.length >= maxAllowed) shouldDisable = true;
-                        }
+                        const isRecommended = pillContainer && pillContainer.dataset.recommended !== 'false';
 
-                        cb.disabled = shouldDisable;
-                        if (pillSpan) {
-                            if (shouldDisable) {
-                                pillSpan.style.opacity = '0.4';
-                                pillSpan.style.cursor = 'not-allowed';
-                                pillSpan.style.pointerEvents = 'none';
-                            } else {
-                                // Respect "Recommended" logic if set by applyWhitelist
-                                const isRecommended = pillContainer.dataset.recommended !== 'false';
-                                pillSpan.style.opacity = isRecommended ? '1' : '0.2';
+                        if (cb.checked) {
+                            cb.disabled = false; // Always allow unchecking
+                            if (pillSpan) {
+                                pillSpan.style.opacity = '1';
                                 pillSpan.style.cursor = 'pointer';
-                                pillSpan.style.pointerEvents = isRecommended ? 'auto' : 'none';
+                                pillSpan.style.pointerEvents = 'auto';
+                            }
+                        } else {
+                            if (wouldContradict || limitReached || !isRecommended) {
+                                cb.disabled = true;
+                                if (pillSpan) {
+                                    pillSpan.style.opacity = '0.4';
+                                    pillSpan.style.cursor = 'not-allowed';
+                                    pillSpan.style.pointerEvents = 'none';
+                                }
+                            } else {
+                                cb.disabled = false;
+                                if (pillSpan) {
+                                    pillSpan.style.opacity = '1';
+                                    pillSpan.style.cursor = 'pointer';
+                                    pillSpan.style.pointerEvents = 'auto';
+                                }
                             }
                         }
                     });
                 });
 
                 // ========================================================================
-                // 2. EVALUATE DROPDOWNS
+                // 2. EVALUATE DROPDOWNS (Physically detach invalid options for macOS Safari)
                 // ========================================================================
                 c.querySelectorAll('select').forEach(selectEl => {
                     if (!selectEl._allOptions) selectEl._allOptions = Array.from(selectEl.querySelectorAll('option'));
@@ -582,10 +584,13 @@
                     selectEl._allOptions.forEach(opt => {
                         if (!opt.value || opt.value === "None selected") return;
                         
-                        // Step A: Evaluate against Persistent Context (Detach if invalid)
+                        // A: Persistent Check (Detach if invalid)
                         const rawBase = [...persistentState, opt.value];
                         const expandedBase = guardrails.expandRequiredState(rawBase, availableFormValues);
-                        if (!guardrails.validateSubset("Global", expandedBase).valid) {
+                        const baseValid = guardrails.validateSubset("Global", expandedBase).valid;
+
+                        if (!baseValid) {
+                            opt.disabled = true; 
                             if (!opt._placeholder) {
                                 opt._placeholder = document.createComment("hidden-opt");
                                 opt._placeholder._optRef = opt;
@@ -596,41 +601,51 @@
                                 const toxicGlobal = globalState.indexOf(opt.value);
                                 if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
                             }
-                            return; // Skip further checks for this detached option
+                            return; // Skip local check
                         } else {
                             if (opt._placeholder && opt._placeholder.parentNode) {
                                 opt._placeholder.parentNode.replaceChild(opt, opt._placeholder);
                             }
                         }
 
-                        // Step B: Evaluate against Local Choices (Gray out if invalid)
+                        // B: Local Check (Gray out if invalid)
                         const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
-                        const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
-                        const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
-
-                        if (!guardrails.validateSubset("Global", hypotheticalGlobal).valid) {
-                            opt.disabled = true; // Stay in DOM, but be unclickable
-                            if (selectEl.value === opt.value) {
-                                selectEl.value = ""; 
-                                const toxicGlobal = globalState.indexOf(opt.value);
-                                if (toxicGlobal > -1) globalState.splice(toxicGlobal, 1);
+                        if (guardrails.validateSubset("Global", stateWithoutSelect).valid) {
+                            const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
+                            const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
+                            if (!guardrails.validateSubset("Global", hypotheticalGlobal).valid) {
+                                opt.disabled = true;
+                            } else {
+                                opt.disabled = false;
                             }
                         } else {
-                            opt.disabled = false;
+                            opt.disabled = false; // Form is broken regardless, don't blame this option
                         }
                     });
 
+                    // MacOS Safari Fix: Detach empty optgroups physically instead of using CSS display
                     Array.from(selectEl.querySelectorAll('optgroup')).forEach(group => {
-                        const hasVisibleOptions = Array.from(group.childNodes).some(n => n.tagName === 'OPTION');
-                        group.style.display = hasVisibleOptions ? '' : 'none';
-                        group.disabled = !hasVisibleOptions; 
+                        const hasAttachedOptions = Array.from(group.childNodes).some(n => n.tagName === 'OPTION');
+                        if (!hasAttachedOptions) {
+                            if (!group._placeholder) {
+                                group._placeholder = document.createComment("hidden-optgroup");
+                                group._placeholder._optRef = group;
+                            }
+                            if (group.parentNode) group.parentNode.replaceChild(group._placeholder, group);
+                        } else {
+                            if (group._placeholder && group._placeholder.parentNode) {
+                                group._placeholder.parentNode.replaceChild(group, group._placeholder);
+                            }
+                        }
                     });
                 });
 
                 // ========================================================================
                 // 3. ULTIMATE SAVE BUTTON CHECK
                 // ========================================================================
-                const isDeadlocked = !guardrails.validateSubset("Global", globalState).valid;
+                const globalValidationObj = guardrails.validateSubset("Global", globalState);
+                const isDeadlocked = !globalValidationObj.valid;
+                
                 const btnSave = document.getElementById('btn-save');
                 let formIsValid = true;
                 
@@ -645,7 +660,7 @@
                 if (isDeadlocked) {
                     btnSave.disabled = true;
                     btnSave.style.background = 'var(--brand-danger)';
-                    let displayContradiction = guardrails.validateSubset("Global", globalState).contradiction || 'Resolve Contradictions to Save';
+                    let displayContradiction = globalValidationObj.contradiction || 'Resolve Contradictions to Save';
                     displayContradiction = displayContradiction.replace(/SCHEMA:Chips_([A-Za-z_]+)/g, (match, p1) => p1.replace(/_/g, ' '));
                     btnSave.innerText = "Conflict: " + displayContradiction;
                     btnSave.style.fontSize = '0.85rem';
@@ -918,6 +933,7 @@
             runAllGuardrails();
             
             document.getElementById('form-modal').style.display = 'flex';
+            document.querySelector('.modal-body').scrollTop = 0;
             document.getElementById('generate-modal').style.display = 'none';
             document.getElementById('modal-overlay').classList.add('active');
         };
@@ -1024,12 +1040,15 @@
                         if (ovr) isAllowed = true;
                     }
 
-                    // Attach the state to the DOM node so runAllGuardrails can read it
                     p.dataset.recommended = isAllowed ? 'true' : 'false';
-                    if (!isAllowed && !ovr) input.checked = false; 
+                    
+                    // Only uncheck if it's no longer allowed AND they aren't overriding
+                    if (!isAllowed && !ovr && input.checked) {
+                        input.checked = false; 
+                    }
                 });
                 
-                // Trigger runAllGuardrails to recalculate opacity, matrix validity, and max limits safely
+                // Trigger runAllGuardrails to safely recalculate opacity and matrix validity
                 const firstCb = intsGroup.querySelector('input[type="checkbox"]');
                 if (firstCb) {
                     firstCb.dispatchEvent(new Event('change', { bubbles: true }));
