@@ -620,26 +620,37 @@
                 // ========================================================================
                 c.querySelectorAll('select').forEach(selectEl => {
                     const fieldId = selectEl.dataset.id;
-                    const allOptions = selectEl.querySelectorAll('option');
                     
-                    allOptions.forEach(opt => {
+                    if (!selectEl._allOptions) {
+                        selectEl._allOptions = Array.from(selectEl.querySelectorAll('option'));
+                    }
+                    Array.from(selectEl.querySelectorAll('option')).forEach(newOpt => {
+                        if (!selectEl._allOptions.includes(newOpt)) selectEl._allOptions.push(newOpt);
+                    });
+                    
+                    selectEl._allOptions.forEach(opt => {
                         if (!opt.value || opt.value === "None selected") return;
                         
-                        // Apply closure to global dropdown validation
                         const stateWithoutSelect = globalState.filter(v => v !== selectEl.value);
                         const rawHypotheticalGlobal = [...stateWithoutSelect, opt.value];
                         const hypotheticalGlobal = guardrails.expandRequiredState(rawHypotheticalGlobal, availableFormValues);
                         const globalValidation = guardrails.validateSubset("Global", hypotheticalGlobal);
                         
-                        // Apply closure to local dropdown validation
                         const localStateWithoutSelect = localState.filter(v => v !== selectEl.value);
                         const rawHypotheticalLocal =[...localStateWithoutSelect, opt.value];
                         const hypotheticalLocal = guardrails.expandRequiredState(rawHypotheticalLocal, availableFormValues);
                         const localValidation = guardrails.validateSubset(fieldId, hypotheticalLocal);
                         
                         if (!localValidation.valid || !globalValidation.valid) {
-                            opt.disabled = true;
-                            opt.style.display = 'none';
+                            opt.disabled = true; 
+                            
+                            if (!opt._placeholder) {
+                                opt._placeholder = document.createComment("hidden-opt");
+                                opt._placeholder._optRef = opt;
+                            }
+                            if (opt.parentNode) {
+                                opt.parentNode.replaceChild(opt._placeholder, opt);
+                            }
                             
                             if (selectEl.value === opt.value) {
                                 selectEl.value = ""; 
@@ -650,7 +661,15 @@
                             }
                         } else {
                             opt.disabled = false;
-                            opt.style.display = '';
+                            
+                            let shouldRestore = true;
+                            if (opt._placeholder && opt._placeholder.parentNode && opt._placeholder.parentNode.tagName === 'OPTGROUP' && opt._placeholder.parentNode.disabled) {
+                                shouldRestore = false;
+                            }
+                            
+                            if (shouldRestore && opt._placeholder && opt._placeholder.parentNode) {
+                                opt._placeholder.parentNode.replaceChild(opt, opt._placeholder);
+                            }
                         }
                     });
                 });
@@ -943,6 +962,41 @@
             const behaviorSelect = container.querySelector('select[data-id="Target_Behaviors"]');
             const antSelect = container.querySelector('select[data-id="Antecedents"]');
             const intsGroup = container.querySelector('.checkbox-group[data-id="Interventions"]');
+            
+            const topographySelect = container.querySelector('select[data-id="Specific_Topography"]');
+            if (behaviorSelect && topographySelect) {
+                const updateTopographies = () => {
+                    const selectedBehavior = behaviorSelect.value;
+                    Array.from(topographySelect.querySelectorAll('optgroup')).forEach(group => {
+                        const label = group.label.replace(/—/g, '').trim();
+                        if (label === 'Custom Added') return;
+                        
+                        if (selectedBehavior && label === selectedBehavior) {
+                            group.disabled = false;
+                            Array.from(group.childNodes).forEach(child => {
+                                if (child.nodeType === Node.COMMENT_NODE && child._optRef) group.replaceChild(child._optRef, child);
+                            });
+                        } else {
+                            group.disabled = true;
+                            Array.from(group.children).forEach(opt => {
+                                if (opt.tagName === 'OPTION') {
+                                    if (!opt._placeholder) {
+                                        opt._placeholder = document.createComment("hidden-opt");
+                                        opt._placeholder._optRef = opt;
+                                    }
+                                    group.replaceChild(opt._placeholder, opt);
+                                }
+                            });
+                        }
+                    });
+                    if (topographySelect.value && topographySelect.selectedOptions.length === 0) {
+                        topographySelect.value = "";
+                        topographySelect.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                };
+                behaviorSelect.addEventListener('change', updateTopographies);
+                setTimeout(updateTopographies, 0);
+            }
             
             const handleContradictions = () => {
                 const val = behaviorSelect.value;
