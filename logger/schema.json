@@ -72,7 +72,6 @@
       "Occurred during transition",
       "Redirected to safe item",
       "Required environmental clearing",
-      "Ripped data sheets",
       "Swept items off desk"
     ],
     "Self-Injurious Behavior (SIB)":[
@@ -93,7 +92,9 @@
   "Chips_Location_Transition": [
     "Carried preferred item",
     "Navigated stairs safely",
-    "Required longer wait time"
+    "Required longer wait time",
+    "Smooth",
+    "Verbal Prompts"
   ],
   "Chips_Session_End": {
     "Clinic": [

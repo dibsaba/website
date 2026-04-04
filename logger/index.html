@@ -621,9 +621,8 @@
                 c.querySelectorAll('select').forEach(selectEl => {
                     const fieldId = selectEl.dataset.id;
                     
-                    if (!selectEl._allOptions) {
-                        selectEl._allOptions = Array.from(selectEl.querySelectorAll('option'));
-                    }
+                    // Maintain a persistent cache so we don't lose track of options we detach from the DOM
+                    if (!selectEl._allOptions) selectEl._allOptions = Array.from(selectEl.querySelectorAll('option'));
                     Array.from(selectEl.querySelectorAll('option')).forEach(newOpt => {
                         if (!selectEl._allOptions.includes(newOpt)) selectEl._allOptions.push(newOpt);
                     });
@@ -644,13 +643,12 @@
                         if (!localValidation.valid || !globalValidation.valid) {
                             opt.disabled = true; 
                             
+                            // Detach from DOM using an invisible comment placeholder
                             if (!opt._placeholder) {
                                 opt._placeholder = document.createComment("hidden-opt");
                                 opt._placeholder._optRef = opt;
                             }
-                            if (opt.parentNode) {
-                                opt.parentNode.replaceChild(opt._placeholder, opt);
-                            }
+                            if (opt.parentNode) opt.parentNode.replaceChild(opt._placeholder, opt);
                             
                             if (selectEl.value === opt.value) {
                                 selectEl.value = ""; 
@@ -662,15 +660,18 @@
                         } else {
                             opt.disabled = false;
                             
-                            let shouldRestore = true;
-                            if (opt._placeholder && opt._placeholder.parentNode && opt._placeholder.parentNode.tagName === 'OPTGROUP' && opt._placeholder.parentNode.disabled) {
-                                shouldRestore = false;
-                            }
-                            
-                            if (shouldRestore && opt._placeholder && opt._placeholder.parentNode) {
+                            // Restore safely to DOM
+                            if (opt._placeholder && opt._placeholder.parentNode) {
                                 opt._placeholder.parentNode.replaceChild(opt, opt._placeholder);
                             }
                         }
+                    });
+
+                    // Hide empty optgroups so the user doesn't see floating category headers
+                    Array.from(selectEl.querySelectorAll('optgroup')).forEach(group => {
+                        const hasVisibleOptions = Array.from(group.childNodes).some(n => n.tagName === 'OPTION');
+                        group.style.display = hasVisibleOptions ? '' : 'none';
+                        group.disabled = !hasVisibleOptions; 
                     });
                 });
                 

@@ -100,6 +100,7 @@ export default class NarrativeEngine {
             if (sentence) {
                 // --- THE NEW SEMANTIC EXPANSION ENGINE ---
                 if (eventData.Smart_Chips && Array.isArray(eventData.Smart_Chips)) {
+                    let unexpandedChips = [];
                     eventData.Smart_Chips.forEach(chip => {
                         if (chip !== "None selected") {
                             if (templates.Chip_Expansions && templates.Chip_Expansions[chip]) {
@@ -107,11 +108,13 @@ export default class NarrativeEngine {
                                 let chipSentence = getElement(chipOptions);
                                 sentence += " " + chipSentence;
                             } else {
-                                // FALLBACK: Guarantee no auto-clicked or custom chip is ever dropped
-                                sentence += ` The clinician noted: ${chip.toLowerCase()}.`;
+                                unexpandedChips.push(chip.toLowerCase());
                             }
                         }
                     });
+                    if (unexpandedChips.length > 0) {
+                        sentence += ` The clinician noted: ${this.formatList(unexpandedChips)}.`;
+                    }
                 }
 
                 // If they still typed custom text, append it as well (without the colon prefix)
