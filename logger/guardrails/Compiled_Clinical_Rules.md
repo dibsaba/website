@@ -1,5 +1,5 @@
 # Clinical Logic Database
-> **NOTE TO SYSTEM:** This file is read by the app. Do not alter the formatting of lines starting with '##', '* REQ:', or '* EXC:'.
+> **NOTE TO SYSTEM:** This file is read by the app. Do not alter lines starting with '##', '* REQ:', or '* EXC:'.
 
 ## [IS_AAC_MATERIAL]
 
